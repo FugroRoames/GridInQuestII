@@ -37,6 +37,7 @@ Type
     FEdit: TEdit;
     FLabel: TLabel;
     FValid: Boolean;
+    FOnValid: TNotifyEvent;
     Procedure DoOnChange(Sender: TObject);
     Procedure DoOnUTF8KeyPress(Sender: TObject; Var UTF8Key: TUTF8Char);
     Procedure Validate;
@@ -47,8 +48,10 @@ Type
     { Public declarations. }
     Constructor Create(TheOwner: TComponent; NewCaption: String; AxisType: TAxisType; Locked: Boolean); Virtual;
     Procedure Clear;
-    Property CoordinateValue: TCoordinate Read FCoordinateValue;
+    Property AxisType: TAxisType Read FAxisType;
+    Property Coordinate: TCoordinate Read FCoordinateValue;
     Property Valid: Boolean Read FValid;
+    Property OnValid: TNotifyEvent Read FOnValid Write FOnValid;
   End;
 
 Type
@@ -72,19 +75,22 @@ Type
     { Private declarations. }
     FCoordinateSystemPanel: TCoordinateSystemPanel;
     FFirstCoordinatePanel: TCoordinatePanel;
+    FOnValid: TNotifyEvent;
     FSecondCoordinatePanel: TCoordinatePanel;
     FThirdCoordinatePanel: TCoordinatePanel;
     FPanelType: TPanelType;
     Function GetCoordinates: TCoordinates;
-    function GetCoordinatesAsText: String;
-    Function GetCoordinatesValid: Boolean;
+    Function GetCoordinatesAsText: String;
+    Function GetValid: Boolean;
+    Procedure DoCoordinateValid(Sender: TObject);
   Public
     { Public declarations. }
     Constructor Create(TheOwner: TComponent; PanelType: TPanelType; CoordinateSystem: Integer = -1); Virtual;
     Procedure Clear(CoordinateSystem: Integer = -1);
     Property Coordinates: TCoordinates Read GetCoordinates;
     Property CoordinatesAsText: String Read GetCoordinatesAsText;
-    Property CoordinatesValid: Boolean Read GetCoordinatesValid;
+    Property Valid: Boolean Read GetValid;
+    Property OnValid: TNotifyEvent Read FOnValid Write FOnValid;
   Published
     { Published declarations. }
   End;
@@ -159,8 +165,9 @@ End;
 Procedure TCoordinatePanel.DoOnChange(Sender: TObject);
 Begin
   Validate;
-//  If Valid Then
-// TODO: Fire an on valid event.
+  If Valid Then
+    If Assigned(OnValid) Then
+      OnValid(Self);
 End;
 
 Procedure TCoordinatePanel.DoOnUTF8KeyPress(Sender: TObject; Var UTF8Key: TUTF8Char);
@@ -220,33 +227,8 @@ Begin
   FLabel.Width := Self.ClientWidth Div 4;
 End;
 
-function TCoordinatesEntryPanel.GetCoordinates: TCoordinates;
-Begin
-  // TODO: Swap panels depending upon system axis order.
-  If CoordinatesValid Then
-    Begin
-      Result.X := FFirstCoordinatePanel.CoordinateValue;
-      Result.Y := FSecondCoordinatePanel.CoordinateValue;
-      Result.Z := FThirdCoordinatePanel.CoordinateValue;
-    End
-  Else
-    Result := TCoordinates(NullCoordinates);
-End;
-
-Function TCoordinatesEntryPanel.GetCoordinatesAsText: String;
-Begin
-  Result := 'TODO: Format Coordinates';
-End;
-
-function TCoordinatesEntryPanel.GetCoordinatesValid: Boolean;
-Begin
-  Result := FFirstCoordinatePanel.Valid And
-            FSecondCoordinatePanel.Valid And
-            FThirdCoordinatePanel.Valid;
-End;
-
-constructor TCoordinatesEntryPanel.Create(TheOwner: TComponent;
-  PanelType: TPanelType; CoordinateSystem: Integer);
+Constructor TCoordinatesEntryPanel.Create(TheOwner: TComponent;
+                                          PanelType: TPanelType; CoordinateSystem: Integer);
 Var
   ThisPanel: TPanel;
   NewCaption: String;
@@ -258,10 +240,13 @@ Begin
   { The child controls are created in reverse order so that Align=alTop orders them correctly. }
   FThirdCoordinatePanel := TCoordinatePanel.Create(TheOwner, 'Altitude:', atZAxis, (PanelType=ptOutput));
   FThirdCoordinatePanel.Parent := ThisPanel;
+  FThirdCoordinatePanel.OnValid := @DoCoordinateValid;
   FSecondCoordinatePanel := TCoordinatePanel.Create(TheOwner, 'Longitude:', atXAxis, (PanelType=ptOutput));
   FSecondCoordinatePanel.Parent := ThisPanel;
+  FSecondCoordinatePanel.OnValid := @DoCoordinateValid;
   FFirstCoordinatePanel := TCoordinatePanel.Create(TheOwner, 'Latitude:', atYAxis, (PanelType=ptOutput));
   FFirstCoordinatePanel.Parent := ThisPanel;
+  FFirstCoordinatePanel.OnValid := @DoCoordinateValid;
   FPanelType := PanelType;
   Case PanelType Of
   ptInput: NewCaption := 'Input System:';
@@ -278,7 +263,50 @@ Begin
     Parent := TWinControl(TheOwner);
 End;
 
-procedure TCoordinatesEntryPanel.Clear(CoordinateSystem: Integer);
+Function TCoordinatesEntryPanel.GetCoordinates: TCoordinates;
+  Procedure SetResultAxis(Coordinate: TCoordinate; AxisType: TAxisType);
+  Begin
+    Case AxisType Of
+    atXAxis: Result.X := Coordinate;
+    atYAxis: Result.Y := Coordinate;
+    atZAxis: Result.Z := Coordinate;
+    End;
+  End;
+Begin
+  If Valid Then
+    Begin
+      With FFirstCoordinatePanel Do
+        SetResultAxis(Coordinate, AxisType);
+      With FSecondCoordinatePanel Do
+        SetResultAxis(Coordinate, AxisType);
+      With FThirdCoordinatePanel Do
+        SetResultAxis(Coordinate, AxisType);
+    End
+  Else
+    Result := TCoordinates(NullCoordinates);
+End;
+
+Function TCoordinatesEntryPanel.GetCoordinatesAsText: String;
+Begin
+  Result := 'TODO: Format Coordinates';
+End;
+
+Function TCoordinatesEntryPanel.GetValid: Boolean;
+Begin
+  Result := FFirstCoordinatePanel.Valid And
+            FSecondCoordinatePanel.Valid And
+            (FThirdCoordinatePanel.Valid Or
+            (FThirdCoordinatePanel.FEdit.Text=EmptyStr));
+End;
+
+Procedure TCoordinatesEntryPanel.DoCoordinateValid(Sender: TObject);
+Begin
+  If Valid Then
+    If Assigned(OnValid) Then
+      OnValid(Self);
+End;
+
+Procedure TCoordinatesEntryPanel.Clear(CoordinateSystem: Integer);
 Begin
   FCoordinateSystemPanel.Clear(CoordinateSystem);
   FFirstCoordinatePanel.Clear;

@@ -120,6 +120,7 @@ Type
     InputCSVData: TCSVData;
     Function DataLoaded: Boolean;
     Procedure SetupDataDisplay;
+    Procedure DoInputValid(Sender: TObject);
   Public
     { Public declarations. }
   End;
@@ -156,6 +157,7 @@ Begin
   InputPanel := TCoordinatesEntryPanel.Create(SidePanel, ptInput, DefaultInputSystem);
   InputPanel.TabOrder := 0;
   OutputPanel.TabOrder := 1;
+  InputPanel.OnValid := @DoInputValid;
   InputCSVData := TCSVData.Create;
 End;
 
@@ -264,8 +266,8 @@ Begin
   CopyAction.Enabled := CutAction.Enabled;
   PasteAction.Enabled := (Screen.ActiveControl Is TEdit) And
                          (Length(Clipboard.AsText)>0);
-  CopyInputAction.Enabled := InputPanel.CoordinatesValid;
-  CopyOutputAction.Enabled := OutputPanel.CoordinatesValid;
+  CopyInputAction.Enabled := InputPanel.Valid;
+  CopyOutputAction.Enabled := OutputPanel.Valid;
 End;
 
 Procedure TMainForm.ClearActionExecute(Sender: TObject);
@@ -361,6 +363,19 @@ Begin
         Else
           Width := NewWidth;
       End;
+End;
+
+Procedure TMainForm.DoInputValid(Sender: TObject);
+Begin
+  With MainGlobe Do
+    Begin
+      // TODO: Need to perform conversion here for non-geodetic coordinates.
+      Marker.Lat := InputPanel.Coordinates.Latitude;
+      Marker.Lon := InputPanel.Coordinates.Longitude;
+      ShowMarker := True;
+      Refresh;
+    End;
+
 End;
 
 End.
