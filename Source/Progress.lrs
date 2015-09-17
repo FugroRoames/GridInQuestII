@@ -1,0 +1,14 @@
+{ This is an automatically generated lazarus resource file }
+
+LazarusResources.Add('TProgressForm','FORMDATA',[
+  'TPF0'#13'TProgressForm'#12'ProgressForm'#4'Left'#3#211#1#6'Height'#2'/'#3'To'
+  +'p'#3#218#0#5'Width'#3#224#0#11'BorderIcons'#11#0#11'BorderStyle'#7#8'bsDial'
+  +'og'#7'Caption'#6#8'Progress'#12'ClientHeight'#2'/'#11'ClientWidth'#3#224#0#7
+  +'OnClose'#7#9'FormClose'#8'OnCreate'#7#10'FormCreate'#9'PopupMenu'#7#14'Clos'
+  +'ePopupMenu'#8'Position'#7#14'poScreenCenter'#10'LCLVersion'#6#3'1.5'#0#12'T'
+  +'ProgressBar'#11'ProgressBar'#4'Left'#2#0#6'Height'#2'/'#3'Top'#2#0#5'Width'
+  +#3#224#0#5'Align'#7#8'alClient'#9'PopupMenu'#7#14'ClosePopupMenu'#6'Smooth'#9
+  +#4'Step'#2#1#8'TabOrder'#2#0#0#0#10'TPopupMenu'#14'ClosePopupMenu'#3'top'#2#8
+  +#0#9'TMenuItem'#13'CloseMenuItem'#7'Caption'#6#11'&Close This'#7'OnClick'#7
+  +#18'CloseMenuItemClick'#0#0#0#0
+]);
