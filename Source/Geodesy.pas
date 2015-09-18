@@ -59,7 +59,7 @@ Type
     Property Measure: TCoordinate Read M Write M;
   End;
 
-Type TExtents = Packed Object//(Geometry.TExtents)
+Type TExtents = Packed Object
     P1, P2: TCoordinates;
     Property Min: TCoordinates Read P1 Write P1;
     Property Max: TCoordinates Read P2 Write P2;
@@ -71,9 +71,74 @@ Type TExtents = Packed Object//(Geometry.TExtents)
     Property Northern: TCoordinate Read P2.Y Write P2.Y;
   End;
 
+Type
+  TSexagesimalCoordinate = Packed Object
+      Degrees, Minutes, Seconds, Sign: TCoordinate;
+  End;
+
+Type TSexagesimalCoordinates = Packed Object
+    Latitude, Longitude: TSexagesimalCoordinate;
+    Altitude: TCoordinate;
+  End;
+
+Const
+  OneOverSixty: TCoordinate = 1/60;
+  OneOverSixtySquared: TCoordinate = 1/(60*60);
+  OneOverOneThousand: TCoordinate = 1/1000;
+  OneOverTenThousand: TCoordinate = 1/10000;
+  OneOverOneHundredThousand: TCoordinate = 1/100000;
+  OneOverFiveHundredThousand: TCoordinate = 1/500000;
+  OneOverOneMillion: TCoordinate = 1/1000000;
+  ConvergenceThreshold: TCoordinate = 0.00001;
+
+Function SexagesimalToDecimalCoordinate(Coordinate: TSexagesimalCoordinate): TCoordinate;
+Function DecimalToSexagesimalCoordinate(Coordinate: TCoordinate): TSexagesimalCoordinate;
+Function SexagesimalToDecimalCoordinates(Const Coordinates: TSexagesimalCoordinates): TCoordinates;
+Function DecimalToSexagesimalCoordinates(Const Coordinates: TCoordinates): TSexagesimalCoordinates;
+
+// TODO: Introduce an available Coordinate systems list object.
 Function GetAvailableSystemsList: String;
 
 Implementation
+
+Function SexagesimalToDecimalCoordinate(Coordinate: TSexagesimalCoordinate): TCoordinate;
+Begin;
+  With Coordinate Do
+    Result := Sign*(Degrees+Minutes*OneOverSixty+Seconds*OneOverSixtySquared);
+End;
+
+Function DecimalToSexagesimalCoordinate(Coordinate: TCoordinate): TSexagesimalCoordinate;
+Begin
+  With Result Do
+    Begin
+      Sign := Math.Sign(Coordinate);
+      Coordinate := Abs(Coordinate);
+      Degrees := Int(Coordinate);
+      Coordinate := Frac(Coordinate)*60;
+      Minutes := Int(Coordinate);
+      Seconds := Frac(Coordinate)*60;
+    End;
+End;
+
+Function SexagesimalToDecimalCoordinates(Const Coordinates: TSexagesimalCoordinates): TCoordinates;
+Begin
+  With Result Do
+    Begin
+      Latitude := SexagesimalToDecimalCoordinate(Coordinates.Latitude);
+      Longitude := SexagesimalToDecimalCoordinate(Coordinates.Longitude);
+      Altitude := Coordinates.Altitude;
+    End;
+End;
+
+Function DecimalToSexagesimalCoordinates(Const Coordinates: TCoordinates): TSexagesimalCoordinates;
+Begin
+  With Result Do
+    Begin
+      Latitude := DecimalToSexagesimalCoordinate(Coordinates.Latitude);
+      Longitude := DecimalToSexagesimalCoordinate(Coordinates.Longitude);
+      Altitude := Coordinates.Altitude;
+    End;
+End;
 
 Function GetAvailableSystemsList: String;
 Begin

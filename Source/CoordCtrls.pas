@@ -23,7 +23,7 @@ Interface
 
 Uses
   Classes, SysUtils, LCLType, LResources, Forms, Controls,
-  Graphics, Dialogs, StdCtrls, ExtCtrls, Geometry, Geodesy, CoordUtils;
+  Graphics, Dialogs, StdCtrls, ExtCtrls, Geometry, Geodesy, GeodUtils;
 
 Type
   TPanelType = (ptInput, ptOutput);

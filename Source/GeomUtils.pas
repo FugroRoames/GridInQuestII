@@ -1,6 +1,7 @@
-Program GridInQuestII;
+Unit GeomUtils;
 
-{ GridInQuest II Coordinate Transformation Utility Program.
+
+{ Geometry Formatting Utilities Library.
 
   Copyright (C) 2015 Paul Michell, Michell Computing.
 
@@ -14,29 +15,21 @@ Program GridInQuestII;
   FITNESS FOR A PARTICULAR PURPOSE. See the GNU Library General Public License
   for more details. }
 
+{ Usage Note:
+  Geodesy must follow Geometry on the Uses clause for the redefinition of
+  TCoordinates to be visible in code. }
+
 {$IFDEF FPC}
   {$MODE OBJFPC}
   {$LONGSTRINGS ON}
 {$ENDIF}
 
+Interface
+
 Uses
-  {$IFDEF UNIX}
-    cthreads,
-    cmem,
-  {$ENDIF}
-  Interfaces, Splash, Forms, Controls, Main, GeomUtils;
+  Classes, SysUtils, StrUtils, Math, Geometry;
 
-{$R *.res}
+Implementation
 
-{TODO: Remove local copy of 'fileinfo.pp' once Lazarus is update to use FPC 3 on all platforms. }
-
-Begin
-  Application.Title:='Grid InQuest II';
-  RequireDerivedFormResource := True;
-  Screen.Cursor := crHourGlass;
-  Application.Initialize;
-  ShowSplashForm(2000);
-  Application.CreateForm(TMainForm, MainForm);
-  Screen.Cursor := crDefault;
-  Application.Run;
 End.
+
