@@ -84,12 +84,6 @@ Type TSexagesimalCoordinates = Packed Object
 Const
   OneOverSixty: TCoordinate = 1/60;
   OneOverSixtySquared: TCoordinate = 1/(60*60);
-  OneOverOneThousand: TCoordinate = 1/1000;
-  OneOverTenThousand: TCoordinate = 1/10000;
-  OneOverOneHundredThousand: TCoordinate = 1/100000;
-  OneOverFiveHundredThousand: TCoordinate = 1/500000;
-  OneOverOneMillion: TCoordinate = 1/1000000;
-  ConvergenceThreshold: TCoordinate = 0.00001;
 
 Function SexagesimalToDecimalCoordinate(Coordinate: TSexagesimalCoordinate): TCoordinate;
 Function DecimalToSexagesimalCoordinate(Coordinate: TCoordinate): TSexagesimalCoordinate;

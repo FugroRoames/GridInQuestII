@@ -105,13 +105,33 @@ Type TExtents = Packed Object
   End;
 
 Const
+  OneOverOneThousand: TCoordinate = 1/1000;
+  OneOverTenThousand: TCoordinate = 1/10000;
+  OneOverOneHundredThousand: TCoordinate = 1/100000;
+  OneOverFiveHundredThousand: TCoordinate = 1/500000;
+  OneOverOneMillion: TCoordinate = 1/1000000;
+  ConvergenceThreshold: TCoordinate = 0.00001;
   NullCoordinates: TCoordinates = (X: 0; Y: 0; Z: 0);
+
+{ Coordinates operator overloads. }
+Operator = (A, B: T2DCoordinates): Boolean;
+Operator = (A, B: T3DCoordinates): Boolean;
 
 { Coordinate formatting routines. }
 Function Format2DCoordinates(Point: T2DCoordinates): String;
 Function Format3DCoordinates(Point: T3DCoordinates): String;
 
 Implementation
+
+Operator = (A, B: T2DCoordinates): Boolean;
+Begin
+  Result := (A.X=B.X) And (A.Y=B.Y);
+End;
+
+Operator = (A, B: T3DCoordinates): Boolean;
+Begin
+  Result := (A.X=B.X) And (A.Y=B.Y) And (A.Z=B.Z);
+End;
 
 Function Format2DCoordinates(Point: T2DCoordinates): String;
 Begin

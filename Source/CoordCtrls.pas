@@ -33,7 +33,7 @@ Type
   Private
     { Private declarations. }
     FAxisType: TAxisType;
-    FCoordinateValue: TCoordinate;
+    FCoordinate: TCoordinate;
     FEdit: TEdit;
     FLabel: TLabel;
     FValid: Boolean;
@@ -43,13 +43,14 @@ Type
     Procedure Validate;
   Protected
     { Protected declarations. }
+    Procedure DoExit; Override;
     Procedure DoOnResize; Override;
   Public
     { Public declarations. }
     Constructor Create(TheOwner: TComponent; NewCaption: String; AxisType: TAxisType; Locked: Boolean); Virtual;
     Procedure Clear;
     Property AxisType: TAxisType Read FAxisType;
-    Property Coordinate: TCoordinate Read FCoordinateValue;
+    Property Coordinate: TCoordinate Read FCoordinate;
     Property Valid: Boolean Read FValid;
     Property OnValid: TNotifyEvent Read FOnValid Write FOnValid;
   End;
@@ -141,18 +142,18 @@ End;
 
 Procedure TCoordinatePanel.Clear;
 Begin
-  FCoordinateValue := 0;
+  FCoordinate := 0;
   FEdit.Clear;
   FValid := False;
 End;
 
 Procedure TCoordinatePanel.Validate;
 Begin
-  FValid := TryGeodeticTextToCoordinate(FEdit.Text, FCoordinateValue, FAxisType);
+  FValid := TryGeodeticTextToCoordinate(FEdit.Text, FCoordinate, FAxisType);
   If FEdit.ReadOnly Then
     FEdit.Font.Color := clBlue
   Else
-    If FValid Or (FEdit.Text=EmptyStr) Then
+    If Valid Or (FEdit.Text=EmptyStr) Then
       Begin
         FEdit.Font.Color := clBlack;
       End
@@ -160,6 +161,13 @@ Begin
       Begin
         FEdit.Font.Color := clRed;
       End;
+End;
+
+Procedure TCoordinatePanel.DoExit;
+Begin
+  If Valid Then
+    FEdit.Text := FormatCoordinate(DecimalToSexagesimalCoordinate(Coordinate));
+  Inherited DoExit;
 End;
 
 Procedure TCoordinatePanel.DoOnChange(Sender: TObject);

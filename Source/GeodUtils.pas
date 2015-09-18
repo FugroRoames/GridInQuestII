@@ -33,12 +33,24 @@ Type
 
 Const
   SexigesimalDelims = [#0..' '];
+  SexagesimalFormat = '%.0F° %.0F'' %.3F"';
+  CompactSexagesimalFormat = '%.0FD%.0FM%.3FS';
 
+Function FormatCoordinate(Const Coordinate: TSexagesimalCoordinate; FormatPattern: String = SexagesimalFormat): String; Overload;
 Function TryGeodeticTextToCoordinate(Text: String; Var Value: TCoordinate; AxisType: TAxisType; UnitSuffix: String = 'm'): Boolean;
 Function TryGeocentricTextToCoordinate(Text: String; Var Value: TCoordinate; AxisType: TAxisType; UnitSuffix: String = 'm'): Boolean;
 Function TryCartesianTextToCoordinate(Text: String; Var Value: TCoordinate; AxisType: TAxisType; UnitSuffix: String = 'm'): Boolean;
 
 Implementation
+
+Function FormatCoordinate(Const Coordinate: TSexagesimalCoordinate; FormatPattern: String = SexagesimalFormat): String;
+Begin
+  With Coordinate Do
+    If Sign=1 Then
+      Result := '+'+Format(FormatPattern, [Degrees, Minutes, Seconds])
+    Else
+      Result := '-'+Format(FormatPattern, [Degrees, Minutes, Seconds]);
+End;
 
 Function TryGeodeticTextToCoordinate(Text: String; Var Value: TCoordinate; AxisType: TAxisType; UnitSuffix: String = 'm'): Boolean;
 Var
