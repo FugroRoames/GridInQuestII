@@ -10,7 +10,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="22"/>
         <CursorPos Y="29"/>
-        <UsageCount Value="151"/>
+        <UsageCount Value="152"/>
       </Unit0>
       <Unit1>
         <Filename Value="Main.pas"/>
@@ -19,8 +19,8 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <TopLine Value="361"/>
-        <CursorPos X="77" Y="372"/>
-        <UsageCount Value="151"/>
+        <CursorPos X="9" Y="377"/>
+        <UsageCount Value="152"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit1>
@@ -30,7 +30,7 @@
         <EditorIndex Value="8"/>
         <TopLine Value="71"/>
         <CursorPos X="40" Y="89"/>
-        <UsageCount Value="151"/>
+        <UsageCount Value="152"/>
         <Loaded Value="True"/>
       </Unit2>
       <Unit3>
@@ -39,7 +39,7 @@
         <EditorIndex Value="10"/>
         <TopLine Value="105"/>
         <CursorPos X="36" Y="128"/>
-        <UsageCount Value="151"/>
+        <UsageCount Value="152"/>
         <Loaded Value="True"/>
       </Unit3>
       <Unit4>
@@ -47,7 +47,7 @@
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="29" Y="10"/>
-        <UsageCount Value="144"/>
+        <UsageCount Value="145"/>
       </Unit4>
       <Unit5>
         <Filename Value="Options.pas"/>
@@ -57,7 +57,7 @@
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="59" Y="3"/>
-        <UsageCount Value="125"/>
+        <UsageCount Value="126"/>
       </Unit5>
       <Unit6>
         <Filename Value="../Controls/CoordCtrls.pas"/>
@@ -65,7 +65,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="163"/>
         <CursorPos X="44" Y="166"/>
-        <UsageCount Value="107"/>
+        <UsageCount Value="108"/>
       </Unit6>
       <Unit7>
         <Filename Value="CSVUtils.pas"/>
@@ -73,7 +73,7 @@
         <EditorIndex Value="5"/>
         <TopLine Value="10"/>
         <CursorPos X="22" Y="25"/>
-        <UsageCount Value="101"/>
+        <UsageCount Value="102"/>
         <Loaded Value="True"/>
       </Unit7>
       <Unit8>
@@ -82,23 +82,23 @@
         <UnitName Value="CoordUtils"/>
         <EditorIndex Value="-1"/>
         <CursorPos Y="33"/>
-        <UsageCount Value="51"/>
+        <UsageCount Value="52"/>
       </Unit8>
       <Unit9>
         <Filename Value="readme.txt"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="6" Y="3"/>
-        <UsageCount Value="28"/>
+        <UsageCount Value="29"/>
         <DefaultSyntaxHighlighter Value="None"/>
       </Unit9>
       <Unit10>
         <Filename Value="GeomUtils.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="3"/>
-        <TopLine Value="188"/>
-        <CursorPos X="25" Y="204"/>
-        <UsageCount Value="24"/>
+        <TopLine Value="143"/>
+        <CursorPos X="69" Y="145"/>
+        <UsageCount Value="25"/>
         <Loaded Value="True"/>
       </Unit10>
       <Unit11>
@@ -183,14 +183,14 @@
         <EditorIndex Value="6"/>
         <TopLine Value="10"/>
         <CursorPos X="23" Y="18"/>
-        <UsageCount Value="68"/>
+        <UsageCount Value="69"/>
         <Loaded Value="True"/>
       </Unit23>
       <Unit24>
         <Filename Value="DataStreams.pas"/>
         <EditorIndex Value="7"/>
         <CursorPos X="25" Y="5"/>
-        <UsageCount Value="68"/>
+        <UsageCount Value="69"/>
         <Loaded Value="True"/>
       </Unit24>
       <Unit25>
@@ -273,7 +273,7 @@
         <Filename Value="GlobeCtrl.pas"/>
         <EditorIndex Value="4"/>
         <TopLine Value="22"/>
-        <UsageCount Value="60"/>
+        <UsageCount Value="61"/>
         <Loaded Value="True"/>
       </Unit36>
       <Unit37>
@@ -521,7 +521,7 @@
         <EditorIndex Value="9"/>
         <TopLine Value="70"/>
         <CursorPos X="21" Y="69"/>
-        <UsageCount Value="12"/>
+        <UsageCount Value="13"/>
         <Loaded Value="True"/>
       </Unit70>
       <Unit71>
@@ -538,110 +538,142 @@
       </Unit72>
       <Unit73>
         <Filename Value="CoordCtrls.pas"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="159"/>
-        <CursorPos X="78" Y="169"/>
-        <UsageCount Value="13"/>
+        <TopLine Value="307"/>
+        <CursorPos X="56" Y="313"/>
+        <UsageCount Value="14"/>
         <Loaded Value="True"/>
       </Unit73>
       <Unit74>
         <Filename Value="GeodUtils.pas"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="2"/>
-        <TopLine Value="34"/>
-        <CursorPos X="40" Y="36"/>
-        <UsageCount Value="12"/>
+        <TopLine Value="62"/>
+        <CursorPos X="19" Y="71"/>
+        <UsageCount Value="13"/>
         <Loaded Value="True"/>
       </Unit74>
     </Units>
-    <JumpHistory Count="22" HistoryIndex="21">
+    <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="CoordCtrls.pas"/>
-        <Caret Line="244" Column="3" TopLine="239"/>
-      </Position1>
-      <Position2>
-        <Filename Value="Geodesy.pas"/>
-        <Caret Line="29" Column="12" TopLine="27"/>
-      </Position2>
-      <Position3>
-        <Filename Value="GeodUtils.pas"/>
-        <Caret Column="15"/>
-      </Position3>
-      <Position4>
-        <Filename Value="GeodUtils.pas"/>
-        <Caret Line="40" Column="53" TopLine="30"/>
-      </Position4>
-      <Position5>
         <Filename Value="About.pas"/>
         <Caret Line="3" Column="52"/>
-      </Position5>
-      <Position6>
+      </Position1>
+      <Position2>
         <Filename Value="CSVUtils.pas"/>
         <Caret Line="131" Column="3"/>
-      </Position6>
-      <Position7>
+      </Position2>
+      <Position3>
         <Filename Value="About.pas"/>
         <Caret Line="67" Column="51" TopLine="54"/>
+      </Position3>
+      <Position4>
+        <Filename Value="GeomUtils.pas"/>
+        <Caret Line="169" Column="14" TopLine="154"/>
+      </Position4>
+      <Position5>
+        <Filename Value="GeomUtils.pas"/>
+      </Position5>
+      <Position6>
+        <Filename Value="GeomUtils.pas"/>
+        <Caret Line="159" Column="33" TopLine="142"/>
+      </Position6>
+      <Position7>
+        <Filename Value="GeomUtils.pas"/>
+        <Caret Line="37" TopLine="5"/>
       </Position7>
       <Position8>
         <Filename Value="GeomUtils.pas"/>
-        <Caret Line="169" Column="14" TopLine="154"/>
+        <Caret Line="82" Column="30" TopLine="36"/>
       </Position8>
       <Position9>
         <Filename Value="GeomUtils.pas"/>
+        <Caret Line="202" Column="8" TopLine="188"/>
       </Position9>
       <Position10>
-        <Filename Value="GeomUtils.pas"/>
-        <Caret Line="159" Column="33" TopLine="142"/>
-      </Position10>
-      <Position11>
-        <Filename Value="GeomUtils.pas"/>
-        <Caret Line="37" TopLine="5"/>
-      </Position11>
-      <Position12>
-        <Filename Value="GeomUtils.pas"/>
-        <Caret Line="82" Column="30" TopLine="36"/>
-      </Position12>
-      <Position13>
-        <Filename Value="GeomUtils.pas"/>
-        <Caret Line="202" Column="8" TopLine="188"/>
-      </Position13>
-      <Position14>
         <Filename Value="GeodUtils.pas"/>
         <Caret Line="37" Column="16" TopLine="29"/>
-      </Position14>
-      <Position15>
+      </Position10>
+      <Position11>
         <Filename Value="GeodUtils.pas"/>
         <Caret Line="46" Column="16" TopLine="36"/>
-      </Position15>
-      <Position16>
+      </Position11>
+      <Position12>
         <Filename Value="GeodUtils.pas"/>
         <Caret Line="44" Column="26" TopLine="31"/>
+      </Position12>
+      <Position13>
+        <Filename Value="CoordCtrls.pas"/>
+        <Caret Line="46" Column="21" TopLine="38"/>
+      </Position13>
+      <Position14>
+        <Filename Value="CoordCtrls.pas"/>
+        <Caret Line="46" Column="17" TopLine="38"/>
+      </Position14>
+      <Position15>
+        <Filename Value="CoordCtrls.pas"/>
+        <Caret Line="145" Column="12" TopLine="142"/>
+      </Position15>
+      <Position16>
+        <Filename Value="CoordCtrls.pas"/>
+        <Caret Line="168" Column="3" TopLine="166"/>
       </Position16>
       <Position17>
         <Filename Value="CoordCtrls.pas"/>
-        <Caret Line="46" Column="21" TopLine="38"/>
+        <Caret Line="169" Column="104" TopLine="159"/>
       </Position17>
       <Position18>
-        <Filename Value="CoordCtrls.pas"/>
-        <Caret Line="46" Column="17" TopLine="38"/>
+        <Filename Value="GeodUtils.pas"/>
+        <Caret Line="46" Column="67" TopLine="33"/>
       </Position18>
       <Position19>
         <Filename Value="CoordCtrls.pas"/>
-        <Caret Line="145" Column="12" TopLine="142"/>
+        <Caret Line="172" Column="34" TopLine="156"/>
       </Position19>
       <Position20>
-        <Filename Value="CoordCtrls.pas"/>
-        <Caret Line="168" Column="3" TopLine="166"/>
+        <Filename Value="GeomUtils.pas"/>
+        <Caret Line="148" Column="62" TopLine="134"/>
       </Position20>
       <Position21>
         <Filename Value="CoordCtrls.pas"/>
-        <Caret Line="169" Column="104" TopLine="159"/>
+        <Caret Line="172" Column="40" TopLine="166"/>
       </Position21>
       <Position22>
-        <Filename Value="GeodUtils.pas"/>
-        <Caret Line="46" Column="67" TopLine="33"/>
+        <Filename Value="CoordCtrls.pas"/>
+        <Caret Line="171" Column="38" TopLine="166"/>
       </Position22>
+      <Position23>
+        <Filename Value="GeodUtils.pas"/>
+        <Caret Line="42" Column="68" TopLine="32"/>
+      </Position23>
+      <Position24>
+        <Filename Value="CoordCtrls.pas"/>
+        <Caret Line="172" Column="31" TopLine="162"/>
+      </Position24>
+      <Position25>
+        <Filename Value="GeomUtils.pas"/>
+        <Caret Line="156" Column="23" TopLine="148"/>
+      </Position25>
+      <Position26>
+        <Filename Value="GeomUtils.pas"/>
+        <Caret Line="56" Column="34" TopLine="47"/>
+      </Position26>
+      <Position27>
+        <Filename Value="CoordCtrls.pas"/>
+        <Caret Line="66" Column="21" TopLine="61"/>
+      </Position27>
+      <Position28>
+        <Filename Value="CoordCtrls.pas"/>
+        <Caret Line="50" TopLine="30"/>
+      </Position28>
+      <Position29>
+        <Filename Value="CoordCtrls.pas"/>
+        <Caret Line="241" Column="33" TopLine="225"/>
+      </Position29>
+      <Position30>
+        <Filename Value="CoordCtrls.pas"/>
+        <Caret Line="66" Column="23" TopLine="57"/>
+      </Position30>
     </JumpHistory>
   </ProjectSession>
 </CONFIG>

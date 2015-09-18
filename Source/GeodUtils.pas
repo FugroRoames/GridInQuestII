@@ -31,25 +31,51 @@ Uses
 Type
   TAxisType = (atXAxis, atYAxis, atZAxis);
 
+Type
+  TSexagesimalOption = (soPlusMinusPrefix, soNorthSouthPrefix, soEastWestPrefix, soNorthSouthSuffix, soEastWestSuffix);
+
 Const
   SexigesimalDelims = [#0..' '];
-  SexagesimalFormat = '%.0F° %.0F'' %.3F"';
+  SexagesimalFormat = '%.0F° %.0F'' %.3F" ';
   CompactSexagesimalFormat = '%.0FD%.0FM%.3FS';
 
-Function FormatCoordinate(Const Coordinate: TSexagesimalCoordinate; FormatPattern: String = SexagesimalFormat): String; Overload;
+Function FormatCoordinate(Const Coordinate: TSexagesimalCoordinate; Option: TSexagesimalOption = soPlusMinusPrefix; FormatPattern: String = SexagesimalFormat): String; Overload;
 Function TryGeodeticTextToCoordinate(Text: String; Var Value: TCoordinate; AxisType: TAxisType; UnitSuffix: String = 'm'): Boolean;
 Function TryGeocentricTextToCoordinate(Text: String; Var Value: TCoordinate; AxisType: TAxisType; UnitSuffix: String = 'm'): Boolean;
 Function TryCartesianTextToCoordinate(Text: String; Var Value: TCoordinate; AxisType: TAxisType; UnitSuffix: String = 'm'): Boolean;
 
 Implementation
 
-Function FormatCoordinate(Const Coordinate: TSexagesimalCoordinate; FormatPattern: String = SexagesimalFormat): String;
+Function FormatCoordinate(Const Coordinate: TSexagesimalCoordinate; Option: TSexagesimalOption = soPlusMinusPrefix; FormatPattern: String = SexagesimalFormat): String;
 Begin
   With Coordinate Do
-    If Sign=1 Then
-      Result := '+'+Format(FormatPattern, [Degrees, Minutes, Seconds])
-    Else
-      Result := '-'+Format(FormatPattern, [Degrees, Minutes, Seconds]);
+    Case Option Of
+    soPlusMinusPrefix:
+      If Sign=1 Then
+        Result := '+'+Format(FormatPattern, [Degrees, Minutes, Seconds])
+      Else
+        Result := '-'+Format(FormatPattern, [Degrees, Minutes, Seconds]);
+    soNorthSouthPrefix:
+      If Sign=1 Then
+        Result := 'N'+Format(FormatPattern, [Degrees, Minutes, Seconds])
+      Else
+        Result := 'S'+Format(FormatPattern, [Degrees, Minutes, Seconds]);
+    soEastWestPrefix:
+      If Sign=1 Then
+        Result := 'E'+Format(FormatPattern, [Degrees, Minutes, Seconds])
+      Else
+        Result := 'W'+Format(FormatPattern, [Degrees, Minutes, Seconds]);
+    soNorthSouthSuffix:
+      If Sign=1 Then
+        Result := Format(FormatPattern, [Degrees, Minutes, Seconds])+'N'
+      Else
+        Result := Format(FormatPattern, [Degrees, Minutes, Seconds])+'S';
+    soEastWestSuffix:
+      If Sign=1 Then
+        Result := Format(FormatPattern, [Degrees, Minutes, Seconds])+'E'
+      Else
+        Result := Format(FormatPattern, [Degrees, Minutes, Seconds])+'W';
+    End;
 End;
 
 Function TryGeodeticTextToCoordinate(Text: String; Var Value: TCoordinate; AxisType: TAxisType; UnitSuffix: String = 'm'): Boolean;

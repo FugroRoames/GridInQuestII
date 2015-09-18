@@ -23,7 +23,7 @@ Interface
 
 Uses
   Classes, SysUtils, LCLType, LResources, Forms, Controls,
-  Graphics, Dialogs, StdCtrls, ExtCtrls, Geometry, Geodesy, GeodUtils;
+  Graphics, Dialogs, StdCtrls, ExtCtrls, Geometry, Geodesy, GeomUtils, GeodUtils;
 
 Type
   TPanelType = (ptInput, ptOutput);
@@ -63,6 +63,7 @@ Type
     FLabel: TLabel;
   Protected
     { Protected declarations. }
+    Procedure DoOnChange(Sender: TObject);
     Procedure DoOnResize; Override;
   Public
     { Public declarations. }
@@ -166,7 +167,12 @@ End;
 Procedure TCoordinatePanel.DoExit;
 Begin
   If Valid Then
-    FEdit.Text := FormatCoordinate(DecimalToSexagesimalCoordinate(Coordinate));
+    Case AxisType Of
+    atXAxis: FEdit.Text := FormatCoordinate(DecimalToSexagesimalCoordinate(Coordinate), soEastWestSuffix);
+    atYAxis: FEdit.Text := FormatCoordinate(DecimalToSexagesimalCoordinate(Coordinate), soNorthSouthSuffix);
+    atZAxis: FEdit.Text := FormatCoordinate(Coordinate, 3, 'm');
+    End;
+
   Inherited DoExit;
 End;
 
@@ -208,6 +214,7 @@ Begin
       Items.Text := GetAvailableSystemsList;
       Parent := ThisPanel;
       Style := csDropDownList;
+      OnChange := @DoOnChange;
     End;
   FLabel := TLabel.Create(TheOwner);
   With FLabel Do
@@ -227,6 +234,11 @@ End;
 Procedure TCoordinateSystemPanel.Clear(CoordinateSystem: Integer);
 Begin
   FComboBox.ItemIndex := CoordinateSystem;
+End;
+
+Procedure TCoordinateSystemPanel.DoOnChange(Sender: TObject);
+Begin
+  TCoordinatesEntryPanel(Parent).Clear(FComboBox.ItemIndex);
 End;
 
 Procedure TCoordinateSystemPanel.DoOnResize;
@@ -296,7 +308,12 @@ End;
 
 Function TCoordinatesEntryPanel.GetCoordinatesAsText: String;
 Begin
-  Result := 'TODO: Format Coordinates';
+  If Valid Then
+    Result := Trim(FFirstCoordinatePanel.FEdit.Text+'  '+
+                   FSecondCoordinatePanel.FEdit.Text+'  '+
+                   FThirdCoordinatePanel.FEdit.Text)
+  Else
+    Result := EmptyStr;
 End;
 
 Function TCoordinatesEntryPanel.GetValid: Boolean;

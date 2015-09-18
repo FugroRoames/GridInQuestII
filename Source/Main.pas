@@ -375,7 +375,6 @@ Begin
       ShowMarker := True;
       Refresh;
     End;
-
 End;
 
 End.

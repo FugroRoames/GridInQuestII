@@ -53,8 +53,8 @@ Const
   SquareMilesPerSquareMeter = 1/SquareMetersPerSquareMile;
 
 Procedure DetermineOptimalCoordinateUnits(Value: TCoordinate; UnitType: TUnitType; UnitSystem: TUnitSystem; Var UnitSuffix: String; Var ValueMultiplier: TCoordinate; Var RequiredDecimalPlaces: Integer);
-Function FormatCoordinate(Const Coordinate: TCoordinate; DecimalPlaces: Integer = 2): String; Overload;
-Function FormatCoordinate(Value: TCoordinate; UnitType: TUnitType; UnitSystem: TUnitSystem = usMetric; DecimalPlaces: Integer = -1): String; Overload;
+Function FormatCoordinate(Const Coordinate: TCoordinate; DecimalPlaces: Integer = 2; Units: String = ''): String; Overload;
+Function FormatCoordinateWithUnits(Value: TCoordinate; UnitType: TUnitType; UnitSystem: TUnitSystem = usMetric; DecimalPlaces: Integer = -1): String; Overload;
 Function FormatScaleValue(Const Scale: TCoordinate): String;
 Function ExtractScaleValue(Const ScaleText: String): TCoordinate;
 Function FormatCoordinatePair(Const Coordinates: TCoordinates; DecimalPlaces: Integer = 2): String;
@@ -140,12 +140,12 @@ Begin
       RequiredDecimalPlaces := Trunc(1+Abs(Log10(Value)));
 End;
 
-Function FormatCoordinate(Const Coordinate: TCoordinate; DecimalPlaces: Integer = 2): String; Overload;
+Function FormatCoordinate(Const Coordinate: TCoordinate; DecimalPlaces: Integer = 2; Units: String = ''): String; Overload;
 Begin
-  Result := FloatToStrF(Coordinate, ffFixed, 0, DecimalPlaces);
+  Result := FloatToStrF(Coordinate, ffFixed, 0, DecimalPlaces)+Units;
 End;
 
-Function FormatCoordinate(Value: TCoordinate; UnitType: TUnitType; UnitSystem: TUnitSystem = usMetric; DecimalPlaces: Integer = -1): String; Overload;
+Function FormatCoordinateWithUnits(Value: TCoordinate; UnitType: TUnitType; UnitSystem: TUnitSystem = usMetric; DecimalPlaces: Integer = -1): String; Overload;
 Var
   AdjustedValue: TCoordinate;
   CoordinateFormat: String;
