@@ -170,9 +170,8 @@ Begin
     Case AxisType Of
     atXAxis: FEdit.Text := FormatCoordinate(DecimalToSexagesimalCoordinate(Coordinate), soEastWestSuffix);
     atYAxis: FEdit.Text := FormatCoordinate(DecimalToSexagesimalCoordinate(Coordinate), soNorthSouthSuffix);
-    atZAxis: FEdit.Text := FormatCoordinate(Coordinate, 3, 'm');
+    atZAxis: FEdit.Text := FormatCoordinateWithUnits(Coordinate, 'm', 3);
     End;
-
   Inherited DoExit;
 End;
 

@@ -53,11 +53,12 @@ Const
   SquareMilesPerSquareMeter = 1/SquareMetersPerSquareMile;
 
 Procedure DetermineOptimalCoordinateUnits(Value: TCoordinate; UnitType: TUnitType; UnitSystem: TUnitSystem; Var UnitSuffix: String; Var ValueMultiplier: TCoordinate; Var RequiredDecimalPlaces: Integer);
-Function FormatCoordinate(Const Coordinate: TCoordinate; DecimalPlaces: Integer = 2; Units: String = ''): String; Overload;
-Function FormatCoordinateWithUnits(Value: TCoordinate; UnitType: TUnitType; UnitSystem: TUnitSystem = usMetric; DecimalPlaces: Integer = -1): String; Overload;
+Function FormatCoordinate(Const Value: TCoordinate; DecimalPlaces: Integer = -1): String; Overload;
+Function FormatCoordinateWithUnits(Const Value: TCoordinate; Units: String; DecimalPlaces: Integer = -1): String;
+Function FormatCoordinateWithConversion(Const Value: TCoordinate; UnitType: TUnitType; UnitSystem: TUnitSystem = usMetric; DecimalPlaces: Integer = -1): String; Overload;
 Function FormatScaleValue(Const Scale: TCoordinate): String;
 Function ExtractScaleValue(Const ScaleText: String): TCoordinate;
-Function FormatCoordinatePair(Const Coordinates: TCoordinates; DecimalPlaces: Integer = 2): String;
+Function FormatCoordinatePair(Const Coordinates: TCoordinates; DecimalPlaces: Integer = -1): String;
 Function ExtractCoordinatePair(Const CoordinatesText: String; Out Coordinates: TCoordinates): Boolean;
 
 Implementation
@@ -140,12 +141,25 @@ Begin
       RequiredDecimalPlaces := Trunc(1+Abs(Log10(Value)));
 End;
 
-Function FormatCoordinate(Const Coordinate: TCoordinate; DecimalPlaces: Integer = 2; Units: String = ''): String; Overload;
+Function FormatCoordinate(Const Value: TCoordinate; DecimalPlaces: Integer = -1): String; Overload;
+Var
+  PlaceText: String;
 Begin
-  Result := FloatToStrF(Coordinate, ffFixed, 0, DecimalPlaces)+Units;
+  If DecimalPlaces=-1 Then
+    Result := FloatToStr(Value)
+  Else
+    Begin
+      //PlaceText := StrSpace('#', DecimalPlaces);
+      Result := FormatFloat('0.'+PlaceText, Value);
+    End;
 End;
 
-Function FormatCoordinateWithUnits(Value: TCoordinate; UnitType: TUnitType; UnitSystem: TUnitSystem = usMetric; DecimalPlaces: Integer = -1): String; Overload;
+Function FormatCoordinateWithUnits(Const Value: TCoordinate; Units: String; DecimalPlaces: Integer = -1): String;
+Begin
+  Result := FormatCoordinate(Value, DecimalPlaces)+Units;
+End;
+
+Function FormatCoordinateWithConversion(Const Value: TCoordinate; UnitType: TUnitType; UnitSystem: TUnitSystem = usMetric; DecimalPlaces: Integer = -1): String; Overload;
 Var
   AdjustedValue: TCoordinate;
   CoordinateFormat: String;
@@ -184,7 +198,7 @@ Begin
     Result := 0;
 End;
 
-Function FormatCoordinatePair(Const Coordinates: TCoordinates; DecimalPlaces: Integer = 2): String;
+Function FormatCoordinatePair(Const Coordinates: TCoordinates; DecimalPlaces: Integer = -1): String;
 Begin
   With Coordinates Do
     Result := FormatCoordinate(X, DecimalPlaces)+','+FormatCoordinate(Y, DecimalPlaces);
