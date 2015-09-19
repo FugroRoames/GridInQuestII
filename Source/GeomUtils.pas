@@ -53,9 +53,9 @@ Const
   SquareMilesPerSquareMeter = 1/SquareMetersPerSquareMile;
 
 Procedure DetermineOptimalCoordinateUnits(Value: TCoordinate; UnitType: TUnitType; UnitSystem: TUnitSystem; Var UnitSuffix: String; Var ValueMultiplier: TCoordinate; Var RequiredDecimalPlaces: Integer);
-Function FormatCoordinate(Const Value: TCoordinate; DecimalPlaces: Integer = -1): String; Overload;
-Function FormatCoordinateWithUnits(Const Value: TCoordinate; Units: String; DecimalPlaces: Integer = -1): String;
-Function FormatCoordinateWithConversion(Const Value: TCoordinate; UnitType: TUnitType; UnitSystem: TUnitSystem = usMetric; DecimalPlaces: Integer = -1): String; Overload;
+Function FormatCoordinate(Const Value: TCoordinate; DecimalPlaces: Integer = -1; ZeroFill: Boolean = False): String; Overload;
+Function FormatCoordinateWithUnits(Const Value: TCoordinate; Units: String; DecimalPlaces: Integer = -1; ZeroFill: Boolean = False): String;
+Function FormatCoordinateWithConversion(Const Value: TCoordinate; UnitType: TUnitType; UnitSystem: TUnitSystem = usMetric; DecimalPlaces: Integer = -1; ZeroFill: Boolean = False): String; Overload;
 Function FormatScaleValue(Const Scale: TCoordinate): String;
 Function ExtractScaleValue(Const ScaleText: String): TCoordinate;
 Function FormatCoordinatePair(Const Coordinates: TCoordinates; DecimalPlaces: Integer = -1): String;
@@ -141,7 +141,7 @@ Begin
       RequiredDecimalPlaces := Trunc(1+Abs(Log10(Value)));
 End;
 
-Function FormatCoordinate(Const Value: TCoordinate; DecimalPlaces: Integer = -1): String; Overload;
+Function FormatCoordinate(Const Value: TCoordinate; DecimalPlaces: Integer = -1; ZeroFill: Boolean = False): String; Overload;
 Var
   PlaceText: String;
 Begin
@@ -149,30 +149,33 @@ Begin
     Result := FloatToStr(Value)
   Else
     Begin
-      //PlaceText := StrSpace('#', DecimalPlaces);
+      If ZeroFill Then
+        PlaceText := StringOfChar('0', DecimalPlaces)
+      Else
+        PlaceText := StringOfChar('#', DecimalPlaces);
       Result := FormatFloat('0.'+PlaceText, Value);
     End;
 End;
 
-Function FormatCoordinateWithUnits(Const Value: TCoordinate; Units: String; DecimalPlaces: Integer = -1): String;
+Function FormatCoordinateWithUnits(Const Value: TCoordinate; Units: String; DecimalPlaces: Integer = -1; ZeroFill: Boolean = False): String;
 Begin
-  Result := FormatCoordinate(Value, DecimalPlaces)+Units;
+  Result := FormatCoordinate(Value, DecimalPlaces, ZeroFill)+Units;
 End;
 
-Function FormatCoordinateWithConversion(Const Value: TCoordinate; UnitType: TUnitType; UnitSystem: TUnitSystem = usMetric; DecimalPlaces: Integer = -1): String; Overload;
+Function FormatCoordinateWithConversion(Const Value: TCoordinate; UnitType: TUnitType; UnitSystem: TUnitSystem = usMetric; DecimalPlaces: Integer = -1; ZeroFill: Boolean = False): String; Overload;
 Var
   AdjustedValue: TCoordinate;
   CoordinateFormat: String;
-  UnitSuffix: String;
+  Units: String;
   ValueMultiplier: TCoordinate;
   RequiredDecimalPlaces: Integer;
 Begin
-  DetermineOptimalCoordinateUnits(Value, UnitType, UnitSystem, UnitSuffix, ValueMultiplier, RequiredDecimalPlaces);
+  DetermineOptimalCoordinateUnits(Value, UnitType, UnitSystem, Units, ValueMultiplier, RequiredDecimalPlaces);
   AdjustedValue := Value*ValueMultiplier;
   If DecimalPlaces=-1 Then
-    Result := FloatToStrF(AdjustedValue, ffFixed, 0, RequiredDecimalPlaces)+UnitSuffix
+    Result := FormatCoordinateWithUnits(AdjustedValue, Units, RequiredDecimalPlaces, ZeroFill)
   Else
-    Result := FloatToStrF(AdjustedValue, ffFixed, 0, DecimalPlaces)+UnitSuffix;
+    Result := FormatCoordinateWithUnits(AdjustedValue, Units, DecimalPlaces, ZeroFill);
 End;
 
 Function FormatScaleValue(Const Scale: TCoordinate): String;

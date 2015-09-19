@@ -104,6 +104,11 @@ Procedure Register;
 
 Implementation
 
+{$IFDEF Darwin}
+Uses
+  LazUTF8;
+{$ENDIF}
+
 Constructor TCoordinatePanel.Create(TheOwner: TComponent; NewCaption: String; AxisType: TAxisType; Locked: Boolean);
 Var
   ThisPanel: TPanel;
@@ -170,7 +175,7 @@ Begin
     Case AxisType Of
     atXAxis: FEdit.Text := FormatCoordinate(DecimalToSexagesimalCoordinate(Coordinate), soEastWestSuffix);
     atYAxis: FEdit.Text := FormatCoordinate(DecimalToSexagesimalCoordinate(Coordinate), soNorthSouthSuffix);
-    atZAxis: FEdit.Text := FormatCoordinateWithUnits(Coordinate, 'm', 3);
+    atZAxis: FEdit.Text := FormatCoordinateWithUnits(Coordinate, 'm');
     End;
   Inherited DoExit;
 End;
@@ -184,10 +189,25 @@ Begin
 End;
 
 Procedure TCoordinatePanel.DoOnUTF8KeyPress(Sender: TObject; Var UTF8Key: TUTF8Char);
+Var
+  PartText: String;
 Begin
   { Substitute reverse dash for degree symbol. }
+  {$IFDEF Darwin}
+  If UTF8Key='`' Then
+    Begin
+      UTF8Key := #0; { remove the reverse dash character. }
+      With FEdit Do
+        Begin
+          PartText := UTF8Copy(Text, 1, SelStart)+'°';
+          Text := PartText+UTF8Copy(Text, SelStart+SelLength+1, MaxInt);
+          SelStart := UTF8Length(PartText);
+        End;
+    End;
+  {$ELSE}
   If UTF8Key='`' Then
     UTF8Key := #$C2#$B0; { UTF8 code for '°' character. }
+  {$ENDIF}
 End;
 
 Procedure TCoordinatePanel.DoOnResize;
