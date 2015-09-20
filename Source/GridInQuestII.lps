@@ -3,14 +3,14 @@
   <ProjectSession>
     <Version Value="9"/>
     <BuildModes Active="Debug"/>
-    <Units Count="79">
+    <Units Count="82">
       <Unit0>
         <Filename Value="GridInQuestII.lpr"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="22"/>
         <CursorPos Y="29"/>
-        <UsageCount Value="161"/>
+        <UsageCount Value="176"/>
       </Unit0>
       <Unit1>
         <Filename Value="Main.pas"/>
@@ -18,10 +18,9 @@
         <ComponentName Value="MainForm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <IsVisibleTab Value="True"/>
-        <TopLine Value="22"/>
-        <CursorPos Y="229"/>
-        <UsageCount Value="161"/>
+        <TopLine Value="326"/>
+        <CursorPos X="45" Y="332"/>
+        <UsageCount Value="176"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit1>
@@ -31,7 +30,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="71"/>
         <CursorPos X="40" Y="89"/>
-        <UsageCount Value="161"/>
+        <UsageCount Value="176"/>
       </Unit2>
       <Unit3>
         <Filename Value="Geometry.pas"/>
@@ -39,7 +38,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="105"/>
         <CursorPos X="36" Y="128"/>
-        <UsageCount Value="161"/>
+        <UsageCount Value="176"/>
       </Unit3>
       <Unit4>
         <Filename Value="Splash.pas"/>
@@ -47,18 +46,18 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="15"/>
         <CursorPos X="69" Y="25"/>
-        <UsageCount Value="154"/>
+        <UsageCount Value="169"/>
       </Unit4>
       <Unit5>
-        <Filename Value="Transform.pas"/>
+        <Filename Value="Settings.pas"/>
         <IsPartOfProject Value="True"/>
-        <ComponentName Value="TransformForm"/>
+        <ComponentName Value="SettingsForm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="5"/>
-        <TopLine Value="43"/>
-        <CursorPos Y="48"/>
-        <UsageCount Value="135"/>
+        <TopLine Value="48"/>
+        <CursorPos X="30" Y="58"/>
+        <UsageCount Value="150"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit5>
@@ -68,15 +67,15 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="163"/>
         <CursorPos X="44" Y="166"/>
-        <UsageCount Value="117"/>
+        <UsageCount Value="132"/>
       </Unit6>
       <Unit7>
         <Filename Value="CSVUtils.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="201"/>
-        <CursorPos X="56" Y="220"/>
-        <UsageCount Value="111"/>
+        <TopLine Value="98"/>
+        <CursorPos Y="117"/>
+        <UsageCount Value="126"/>
       </Unit7>
       <Unit8>
         <Filename Value="coordutils.pas"/>
@@ -84,14 +83,14 @@
         <UnitName Value="CoordUtils"/>
         <EditorIndex Value="-1"/>
         <CursorPos Y="33"/>
-        <UsageCount Value="61"/>
+        <UsageCount Value="76"/>
       </Unit8>
       <Unit9>
         <Filename Value="readme.txt"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="6" Y="3"/>
-        <UsageCount Value="38"/>
+        <UsageCount Value="53"/>
         <DefaultSyntaxHighlighter Value="None"/>
       </Unit9>
       <Unit10>
@@ -100,24 +99,24 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="140"/>
         <CursorPos X="69" Y="145"/>
-        <UsageCount Value="34"/>
+        <UsageCount Value="49"/>
       </Unit10>
       <Unit11>
         <Filename Value="OSiOSNI.pas"/>
         <EditorIndex Value="-1"/>
         <CursorPos Y="7"/>
-        <UsageCount Value="19"/>
+        <UsageCount Value="17"/>
       </Unit11>
       <Unit12>
         <Filename Value="OSGB.pas"/>
         <EditorIndex Value="-1"/>
         <CursorPos Y="7"/>
-        <UsageCount Value="19"/>
+        <UsageCount Value="17"/>
       </Unit12>
       <Unit13>
         <Filename Value="../../Downloads/TEP 25CM LIDAR/Saleproducts/Geomatics2014/25CM_res/SJ/SJ69/DSM/SJ6491ne_DSM_25CM.asc"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="3"/>
+        <UsageCount Value="1"/>
         <DefaultSyntaxHighlighter Value="None"/>
       </Unit13>
       <Unit14>
@@ -126,7 +125,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="211"/>
         <CursorPos X="26" Y="55"/>
-        <UsageCount Value="3"/>
+        <UsageCount Value="1"/>
       </Unit14>
       <Unit15>
         <Filename Value="../FreePascal/Lazarus/components/lazutils/fileutil.pas"/>
@@ -134,7 +133,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="280"/>
         <CursorPos X="30" Y="285"/>
-        <UsageCount Value="3"/>
+        <UsageCount Value="1"/>
       </Unit15>
       <Unit16>
         <Filename Value="../FreePascal/Lazarus/lcl/stdctrls.pp"/>
@@ -142,12 +141,12 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="23"/>
         <CursorPos X="22" Y="28"/>
-        <UsageCount Value="3"/>
+        <UsageCount Value="1"/>
       </Unit16>
       <Unit17>
         <Filename Value="../FreePascal/Lazarus/lcl/include/customgroupbox.inc"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="3"/>
+        <UsageCount Value="1"/>
       </Unit17>
       <Unit18>
         <Filename Value="../FreePascal/Lazarus/lcl/lclintf.pas"/>
@@ -155,51 +154,52 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="207"/>
         <CursorPos X="16" Y="217"/>
-        <UsageCount Value="3"/>
+        <UsageCount Value="1"/>
       </Unit18>
       <Unit19>
         <Filename Value="TN02.pas"/>
         <EditorIndex Value="-1"/>
         <CursorPos Y="26"/>
-        <UsageCount Value="64"/>
+        <UsageCount Value="62"/>
       </Unit19>
       <Unit20>
         <Filename Value="GM02.pas"/>
         <EditorIndex Value="-1"/>
         <CursorPos Y="26"/>
-        <UsageCount Value="64"/>
+        <UsageCount Value="62"/>
       </Unit20>
       <Unit21>
         <Filename Value="OSGBUtils.pas"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="12"/>
+        <UsageCount Value="10"/>
       </Unit21>
       <Unit22>
         <Filename Value="OSIGUtils.pas"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="12"/>
+        <UsageCount Value="10"/>
       </Unit22>
       <Unit23>
         <Filename Value="WKT.pas"/>
         <EditorIndex Value="2"/>
-        <TopLine Value="22"/>
-        <CursorPos X="23" Y="22"/>
-        <UsageCount Value="74"/>
+        <TopLine Value="41"/>
+        <CursorPos X="21" Y="61"/>
+        <UsageCount Value="81"/>
         <Loaded Value="True"/>
       </Unit23>
       <Unit24>
         <Filename Value="DataStreams.pas"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="178"/>
-        <CursorPos X="8" Y="184"/>
-        <UsageCount Value="74"/>
+        <TopLine Value="91"/>
+        <CursorPos X="17" Y="98"/>
+        <UsageCount Value="81"/>
         <Loaded Value="True"/>
       </Unit24>
       <Unit25>
         <Filename Value="VRF10.pas"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="4" Y="24"/>
-        <UsageCount Value="64"/>
+        <UsageCount Value="62"/>
       </Unit25>
       <Unit26>
         <Filename Value="../../FreePascal/Lazarus/lcl/forms.pp"/>
@@ -207,7 +207,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="1257"/>
         <CursorPos X="30" Y="1265"/>
-        <UsageCount Value="6"/>
+        <UsageCount Value="4"/>
       </Unit26>
       <Unit27>
         <Filename Value="../../FreePascal/Lazarus/lcl/controls.pp"/>
@@ -215,13 +215,13 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="2025"/>
         <CursorPos X="5" Y="2035"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="7"/>
       </Unit27>
       <Unit28>
         <Filename Value="../../Woodland Calculator/Source/Global.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="6"/>
-        <UsageCount Value="3"/>
+        <UsageCount Value="1"/>
       </Unit28>
       <Unit29>
         <Filename Value="../../FreePascal/Lazarus/lcl/stdctrls.pp"/>
@@ -229,25 +229,25 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="757"/>
         <CursorPos X="15" Y="768"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="8"/>
       </Unit29>
       <Unit30>
         <Filename Value="fileinfo.pp"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="14" Y="16"/>
-        <UsageCount Value="7"/>
+        <UsageCount Value="5"/>
       </Unit30>
       <Unit31>
         <Filename Value="/usr/share/fpcsrc/packages/fcl-res/src/versiontypes.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="152"/>
-        <UsageCount Value="6"/>
+        <UsageCount Value="4"/>
       </Unit31>
       <Unit32>
         <Filename Value="/usr/share/fpcsrc/rtl/objpas/classes/classesh.inc"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="109"/>
-        <CursorPos X="43" Y="119"/>
+        <TopLine Value="873"/>
+        <CursorPos X="14" Y="883"/>
         <UsageCount Value="9"/>
       </Unit32>
       <Unit33>
@@ -255,54 +255,54 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="3436"/>
         <CursorPos X="3" Y="3441"/>
-        <UsageCount Value="5"/>
+        <UsageCount Value="3"/>
       </Unit33>
       <Unit34>
         <Filename Value="/media/paul/KUBUNTU/fileinfo.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="42"/>
         <CursorPos X="3" Y="51"/>
-        <UsageCount Value="4"/>
+        <UsageCount Value="2"/>
       </Unit34>
       <Unit35>
         <Filename Value="../../Globe/LCLSource/main.pas"/>
         <UnitName Value="Main"/>
         <EditorIndex Value="-1"/>
         <CursorPos Y="46"/>
-        <UsageCount Value="4"/>
+        <UsageCount Value="2"/>
       </Unit35>
       <Unit36>
         <Filename Value="GlobeCtrl.pas"/>
         <EditorIndex Value="3"/>
-        <TopLine Value="511"/>
-        <CursorPos X="35" Y="517"/>
-        <UsageCount Value="66"/>
+        <TopLine Value="59"/>
+        <CursorPos X="68" Y="516"/>
+        <UsageCount Value="73"/>
         <Loaded Value="True"/>
       </Unit36>
       <Unit37>
         <Filename Value="/usr/share/fpcsrc/tests/test/units/dos/tbreak.pp"/>
         <EditorIndex Value="-1"/>
         <CursorPos Y="6"/>
-        <UsageCount Value="4"/>
+        <UsageCount Value="2"/>
       </Unit37>
       <Unit38>
         <Filename Value="Main.lfm"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="465"/>
         <CursorPos X="9" Y="483"/>
-        <UsageCount Value="4"/>
+        <UsageCount Value="2"/>
         <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit38>
       <Unit39>
         <Filename Value="../fileinfo.pp"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="4"/>
+        <UsageCount Value="2"/>
       </Unit39>
       <Unit40>
         <Filename Value="C:/Projects/Procura/Source/Global.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="180"/>
-        <UsageCount Value="4"/>
+        <UsageCount Value="2"/>
       </Unit40>
       <Unit41>
         <Filename Value="Progress.pas"/>
@@ -311,7 +311,7 @@
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="52" Y="3"/>
-        <UsageCount Value="52"/>
+        <UsageCount Value="50"/>
       </Unit41>
       <Unit42>
         <Filename Value="/usr/share/fpcsrc/packages/fcl-image/src/fpcanvas.pp"/>
@@ -319,14 +319,14 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="335"/>
         <CursorPos X="31" Y="344"/>
-        <UsageCount Value="4"/>
+        <UsageCount Value="2"/>
       </Unit42>
       <Unit43>
         <Filename Value="/usr/share/fpcsrc/rtl/objpas/sysutils/sysstrh.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="114"/>
         <CursorPos X="10" Y="124"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="7"/>
       </Unit43>
       <Unit44>
         <Filename Value="../../FreePascal/Lazarus/lcl/lcltype.pp"/>
@@ -334,7 +334,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="576"/>
         <CursorPos X="3" Y="427"/>
-        <UsageCount Value="7"/>
+        <UsageCount Value="5"/>
       </Unit44>
       <Unit45>
         <Filename Value="../../FreePascal/Lazarus/lcl/extctrls.pp"/>
@@ -342,14 +342,14 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="990"/>
         <CursorPos X="28" Y="998"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="7"/>
       </Unit45>
       <Unit46>
         <Filename Value="../../FreePascal/Lazarus/lcl/include/wincontrol.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="8250"/>
         <CursorPos X="5" Y="8257"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="7"/>
       </Unit46>
       <Unit47>
         <Filename Value="../../FreePascal/Lazarus/lcl/grids.pas"/>
@@ -357,62 +357,62 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="1095"/>
         <CursorPos X="23" Y="1111"/>
-        <UsageCount Value="12"/>
+        <UsageCount Value="10"/>
       </Unit47>
       <Unit48>
         <Filename Value="/usr/share/fpcsrc/rtl/objpas/sysutils/filutilh.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="134"/>
         <CursorPos X="10" Y="144"/>
-        <UsageCount Value="5"/>
+        <UsageCount Value="3"/>
       </Unit48>
       <Unit49>
         <Filename Value="/usr/share/fpcsrc/rtl/inc/objpash.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="187"/>
         <CursorPos X="23" Y="197"/>
-        <UsageCount Value="6"/>
+        <UsageCount Value="4"/>
       </Unit49>
       <Unit50>
         <Filename Value="/usr/share/fpcsrc/rtl/objpas/classes/stringl.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="914"/>
         <CursorPos X="3" Y="926"/>
-        <UsageCount Value="6"/>
+        <UsageCount Value="4"/>
       </Unit50>
       <Unit51>
         <Filename Value="/usr/share/fpcsrc/rtl/objpas/sysutils/sysutilh.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="301"/>
         <CursorPos X="13" Y="311"/>
-        <UsageCount Value="6"/>
+        <UsageCount Value="4"/>
       </Unit51>
       <Unit52>
         <Filename Value="/usr/share/fpcsrc/rtl/objpas/sysutils/sysutils.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="152"/>
         <CursorPos X="9" Y="156"/>
-        <UsageCount Value="6"/>
+        <UsageCount Value="4"/>
       </Unit52>
       <Unit53>
         <Filename Value="/usr/share/fpcsrc/packages/amunits/examples/otherlibs/checkbox.pas"/>
         <UnitName Value="CheckBoxGad"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="7"/>
+        <UsageCount Value="5"/>
       </Unit53>
       <Unit54>
         <Filename Value="/usr/share/fpcsrc/rtl/unix/sysunixh.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="19"/>
         <CursorPos X="2" Y="29"/>
-        <UsageCount Value="6"/>
+        <UsageCount Value="4"/>
       </Unit54>
       <Unit55>
         <Filename Value="/usr/share/fpcsrc/rtl/objpas/sysutils/finah.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="20"/>
         <CursorPos X="23" Y="22"/>
-        <UsageCount Value="6"/>
+        <UsageCount Value="4"/>
       </Unit55>
       <Unit56>
         <Filename Value="/usr/share/fpcsrc/packages/fcl-base/src/custapp.pp"/>
@@ -420,21 +420,21 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="67"/>
         <CursorPos X="21" Y="74"/>
-        <UsageCount Value="6"/>
+        <UsageCount Value="4"/>
       </Unit56>
       <Unit57>
         <Filename Value="/usr/share/fpcsrc/compiler/utils/fpc.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="11"/>
         <CursorPos Y="21"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="7"/>
       </Unit57>
       <Unit58>
         <Filename Value="/usr/share/fpcsrc/rtl/inc/ustringh.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="12"/>
         <CursorPos X="10" Y="22"/>
-        <UsageCount Value="6"/>
+        <UsageCount Value="4"/>
       </Unit58>
       <Unit59>
         <Filename Value="/Developer/lazarus/lcl/extctrls.pp"/>
@@ -442,7 +442,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="973"/>
         <CursorPos X="35" Y="992"/>
-        <UsageCount Value="6"/>
+        <UsageCount Value="4"/>
       </Unit59>
       <Unit60>
         <Filename Value="/Developer/lazarus/lcl/controls.pp"/>
@@ -450,35 +450,35 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="350"/>
         <CursorPos X="3" Y="359"/>
-        <UsageCount Value="6"/>
+        <UsageCount Value="4"/>
       </Unit60>
       <Unit61>
         <Filename Value="/usr/local/share/fpcsrc/packages/univint/src/MacOSAll.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="1928"/>
         <CursorPos X="73" Y="1942"/>
-        <UsageCount Value="11"/>
+        <UsageCount Value="9"/>
       </Unit61>
       <Unit62>
         <Filename Value="/usr/local/share/fpcsrc/packages/univint/src/Math64.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="51"/>
         <CursorPos Y="70"/>
-        <UsageCount Value="6"/>
+        <UsageCount Value="4"/>
       </Unit62>
       <Unit63>
         <Filename Value="/usr/local/share/fpcsrc/packages/univint/src/CFBase.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="252"/>
         <CursorPos X="9" Y="252"/>
-        <UsageCount Value="7"/>
+        <UsageCount Value="5"/>
       </Unit63>
       <Unit64>
         <Filename Value="/usr/local/share/fpcsrc/rtl/inc/ustringh.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="12"/>
         <CursorPos X="10" Y="22"/>
-        <UsageCount Value="7"/>
+        <UsageCount Value="5"/>
       </Unit64>
       <Unit65>
         <Filename Value="C:/Applications/Lazarus/lcl/controls.pp"/>
@@ -486,35 +486,35 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="1017"/>
         <CursorPos X="15" Y="1021"/>
-        <UsageCount Value="8"/>
+        <UsageCount Value="6"/>
       </Unit65>
       <Unit66>
         <Filename Value="C:/Applications/Lazarus/lcl/include/control.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="2877"/>
         <CursorPos X="3" Y="2890"/>
-        <UsageCount Value="8"/>
+        <UsageCount Value="6"/>
       </Unit66>
       <Unit67>
         <Filename Value="C:/Applications/FreePascal/2.6.4/source/rtl/inc/wstringh.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="5"/>
         <CursorPos X="10" Y="20"/>
-        <UsageCount Value="7"/>
+        <UsageCount Value="5"/>
       </Unit67>
       <Unit68>
         <Filename Value="/usr/share/fpcsrc/packages/rtl-objpas/src/inc/strutils.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="267"/>
         <CursorPos X="80" Y="279"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="7"/>
       </Unit68>
       <Unit69>
         <Filename Value="/usr/share/fpcsrc/rtl/objpas/sysutils/sysstr.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="912"/>
         <CursorPos X="30" Y="914"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="7"/>
       </Unit69>
       <Unit70>
         <Filename Value="About.pas"/>
@@ -524,25 +524,25 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="70"/>
         <CursorPos X="21" Y="69"/>
-        <UsageCount Value="16"/>
+        <UsageCount Value="14"/>
       </Unit70>
       <Unit71>
         <Filename Value="../../FreePascal/Lazarus/lcl/include/customedit.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="134"/>
         <CursorPos X="3" Y="154"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="7"/>
       </Unit71>
       <Unit72>
         <Filename Value="../../GridInQuestIIOLD/Source/CoordUtils.pas"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="8"/>
       </Unit72>
       <Unit73>
         <Filename Value="CoordCtrls.pas"/>
         <EditorIndex Value="4"/>
         <CursorPos X="56" Y="313"/>
-        <UsageCount Value="19"/>
+        <UsageCount Value="26"/>
         <Loaded Value="True"/>
       </Unit73>
       <Unit74>
@@ -550,14 +550,14 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="62"/>
         <CursorPos X="19" Y="71"/>
-        <UsageCount Value="16"/>
+        <UsageCount Value="14"/>
       </Unit74>
       <Unit75>
         <Filename Value="/usr/local/share/fpcsrc/rtl/objpas/classes/classesh.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="66"/>
         <CursorPos X="13" Y="77"/>
-        <UsageCount Value="11"/>
+        <UsageCount Value="9"/>
       </Unit75>
       <Unit76>
         <Filename Value="/Developer/lazarus/lcl/lclintf.pas"/>
@@ -565,14 +565,14 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="71"/>
         <CursorPos X="10" Y="81"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="8"/>
       </Unit76>
       <Unit77>
         <Filename Value="/usr/local/share/fpcsrc/rtl/objpas/classes/streams.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="540"/>
         <CursorPos X="19" Y="552"/>
-        <UsageCount Value="11"/>
+        <UsageCount Value="9"/>
       </Unit77>
       <Unit78>
         <Filename Value="/Developer/lazarus/lcl/forms.pp"/>
@@ -580,129 +580,150 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="603"/>
         <CursorPos X="14" Y="611"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="8"/>
       </Unit78>
+      <Unit79>
+        <Filename Value="/usr/share/fpcsrc/rtl/objpas/classes/streams.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="746"/>
+        <CursorPos X="3" Y="751"/>
+        <UsageCount Value="9"/>
+      </Unit79>
+      <Unit80>
+        <Filename Value="/usr/share/fpcsrc/rtl/inc/strings.pp"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="65"/>
+        <CursorPos X="14" Y="75"/>
+        <UsageCount Value="9"/>
+      </Unit80>
+      <Unit81>
+        <Filename Value="/usr/share/fpcsrc/rtl/inc/genstr.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="140"/>
+        <CursorPos X="4" Y="146"/>
+        <UsageCount Value="9"/>
+      </Unit81>
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="Main.pas"/>
-        <Caret Line="103" Column="52" TopLine="98"/>
+        <Filename Value="DataStreams.pas"/>
+        <Caret Line="346" TopLine="335"/>
       </Position1>
       <Position2>
-        <Filename Value="Transform.pas"/>
-        <Caret Line="58" Column="11" TopLine="43"/>
+        <Filename Value="DataStreams.pas"/>
+        <Caret Line="345" TopLine="335"/>
       </Position2>
       <Position3>
         <Filename Value="DataStreams.pas"/>
-        <Caret Line="362" TopLine="344"/>
+        <Caret Line="346" TopLine="335"/>
       </Position3>
       <Position4>
         <Filename Value="DataStreams.pas"/>
-        <Caret Line="250" Column="32" TopLine="244"/>
+        <Caret Line="345" TopLine="335"/>
       </Position4>
       <Position5>
         <Filename Value="DataStreams.pas"/>
-        <Caret Line="45" Column="55" TopLine="40"/>
+        <Caret Line="346" TopLine="335"/>
       </Position5>
       <Position6>
-        <Filename Value="Main.pas"/>
-        <Caret Line="203" Column="40" TopLine="197"/>
+        <Filename Value="DataStreams.pas"/>
+        <Caret Line="345" TopLine="335"/>
       </Position6>
       <Position7>
-        <Filename Value="Main.pas"/>
-        <Caret Line="162" Column="40" TopLine="152"/>
+        <Filename Value="DataStreams.pas"/>
+        <Caret Line="346" TopLine="335"/>
       </Position7>
       <Position8>
-        <Filename Value="Main.pas"/>
-        <Caret Line="207" Column="63" TopLine="194"/>
+        <Filename Value="DataStreams.pas"/>
+        <Caret Line="345" TopLine="335"/>
       </Position8>
       <Position9>
-        <Filename Value="Main.pas"/>
-        <Caret Line="168" Column="54" TopLine="160"/>
+        <Filename Value="DataStreams.pas"/>
+        <Caret Line="346" TopLine="335"/>
       </Position9>
       <Position10>
-        <Filename Value="Main.pas"/>
-        <Caret Line="184" Column="44" TopLine="183"/>
+        <Filename Value="DataStreams.pas"/>
+        <Caret Line="345" TopLine="335"/>
       </Position10>
       <Position11>
-        <Filename Value="Main.pas"/>
-        <Caret Line="2"/>
+        <Filename Value="DataStreams.pas"/>
+        <Caret Line="346" TopLine="335"/>
       </Position11>
       <Position12>
-        <Filename Value="Transform.pas"/>
-        <Caret Line="48" TopLine="43"/>
+        <Filename Value="DataStreams.pas"/>
+        <Caret Line="345" TopLine="335"/>
       </Position12>
       <Position13>
         <Filename Value="DataStreams.pas"/>
-        <Caret Line="189" Column="6" TopLine="179"/>
+        <Caret Line="346" TopLine="335"/>
       </Position13>
       <Position14>
         <Filename Value="DataStreams.pas"/>
-        <Caret Line="81" TopLine="64"/>
+        <Caret Line="345" TopLine="335"/>
       </Position14>
       <Position15>
         <Filename Value="DataStreams.pas"/>
-        <Caret Line="82" TopLine="65"/>
+        <Caret Line="346" TopLine="335"/>
       </Position15>
       <Position16>
         <Filename Value="DataStreams.pas"/>
-        <Caret Line="83" TopLine="66"/>
+        <Caret Line="345" TopLine="335"/>
       </Position16>
       <Position17>
         <Filename Value="DataStreams.pas"/>
-        <Caret Line="84" TopLine="67"/>
+        <Caret Line="346" TopLine="335"/>
       </Position17>
       <Position18>
         <Filename Value="DataStreams.pas"/>
-        <Caret Line="85" TopLine="68"/>
+        <Caret Line="345" TopLine="335"/>
       </Position18>
       <Position19>
         <Filename Value="DataStreams.pas"/>
-        <Caret Line="86" TopLine="69"/>
+        <Caret Line="346" TopLine="335"/>
       </Position19>
       <Position20>
         <Filename Value="DataStreams.pas"/>
-        <Caret Line="87" TopLine="70"/>
+        <Caret Line="345" TopLine="335"/>
       </Position20>
       <Position21>
         <Filename Value="DataStreams.pas"/>
-        <Caret Line="88" TopLine="71"/>
+        <Caret Line="346" TopLine="335"/>
       </Position21>
       <Position22>
         <Filename Value="DataStreams.pas"/>
-        <Caret Line="97" TopLine="87"/>
+        <Caret Line="345" TopLine="335"/>
       </Position22>
       <Position23>
         <Filename Value="DataStreams.pas"/>
-        <Caret Line="98" TopLine="87"/>
+        <Caret Line="346" TopLine="335"/>
       </Position23>
       <Position24>
         <Filename Value="DataStreams.pas"/>
-        <Caret Line="99" TopLine="87"/>
+        <Caret Line="345" TopLine="335"/>
       </Position24>
       <Position25>
         <Filename Value="DataStreams.pas"/>
-        <Caret Line="97" TopLine="87"/>
+        <Caret Line="98" Column="60" TopLine="95"/>
       </Position25>
       <Position26>
         <Filename Value="DataStreams.pas"/>
-        <Caret Line="98" TopLine="87"/>
+        <Caret Line="102" Column="10" TopLine="95"/>
       </Position26>
       <Position27>
-        <Filename Value="DataStreams.pas"/>
-        <Caret Line="99" TopLine="87"/>
+        <Filename Value="GlobeCtrl.pas"/>
+        <Caret Line="479" Column="25" TopLine="460"/>
       </Position27>
       <Position28>
-        <Filename Value="DataStreams.pas"/>
-        <Caret Line="100" TopLine="90"/>
+        <Filename Value="GlobeCtrl.pas"/>
+        <Caret Line="517" Column="3" TopLine="512"/>
       </Position28>
       <Position29>
         <Filename Value="DataStreams.pas"/>
-        <Caret Line="188" TopLine="178"/>
+        <Caret Line="73" Column="68" TopLine="65"/>
       </Position29>
       <Position30>
         <Filename Value="DataStreams.pas"/>
-        <Caret Line="189" TopLine="178"/>
+        <Caret Line="310" TopLine="304"/>
       </Position30>
     </JumpHistory>
   </ProjectSession>

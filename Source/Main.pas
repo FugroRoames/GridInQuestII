@@ -24,7 +24,7 @@ Interface
 Uses
   Classes, SysUtils, FileUtil, LCLIntf, Forms, Controls, Graphics, Dialogs, ExtCtrls,
   Menus, ActnList, StdCtrls, PairSplitter, Grids, Spin, Clipbrd, Math, Geometry, Geodesy,
-  GlobeCtrl, CoordCtrls, DataStreams, Transform, Options, About;
+  GlobeCtrl, CoordCtrls, DataStreams, Settings, Options, About;
 
 Type
   TMainForm = Class(TForm)
@@ -75,7 +75,6 @@ Type
     HelpMenuItem: TMenuItem;
     AboutMenuItem: TMenuItem;
     ExitMenuItem: TMenuItem;
-    DataPanel: TPanel;
     SidePanel: TPanel;
     PanelSplitter: TSplitter;
     Procedure AboutActionExecute(Sender: TObject);
@@ -110,6 +109,7 @@ Type
     InputData: TDataStream;
     Function DataLoaded: Boolean;
     Procedure DoInputValid(Sender: TObject);
+    Procedure SetupDataGrid;
   Public
     { Public declarations. }
   End;
@@ -162,18 +162,17 @@ Procedure TMainForm.LoadActionExecute(Sender: TObject);
 Begin
   If OpenPointsDialog.Execute Then
     Begin
-      If ShowTransformForm Then
-        InputData := TDataStream.Create(OpenPointsDialog.FileName);
+      InputData := TDataStream.Create(OpenPointsDialog.FileName);
       If DataLoaded Then
         Begin
-          PointsDrawGrid.RowCount := InputData.RecordCount;
-          PointsDrawGrid.ColCount := InputData.FieldCount;
           SaveAction.Enabled := True;
           UnloadAction.Enabled := True;
-          PointsDrawGridSelection(Self,0,1);
           InputPanel.Hide;
           OutputPanel.Hide;
+          SetupDataGrid;
         End;
+      //If
+      ShowSettingsForm(InputData)// Then
     End;
 End;
 
@@ -198,10 +197,7 @@ Begin
       If aCol=0 Then
         CellText := IntToStr(aRow)
       Else
-        Begin
-          InputData.RecordNumber := aRow-1;
-          CellText := InputData.Fields[aCol-1];
-        End;
+        CellText := InputData.Values[aRow-1, aCol-1];
       TOverrideGrid(PointsDrawGrid).DrawCellText(aCol, aRow, PointsDrawGrid.CellRect(aCol, aRow), aState, CellText);
     End;
 End;
@@ -231,6 +227,7 @@ End;
 
 Procedure TMainForm.UnloadActionExecute(Sender: TObject);
 Begin
+  PointsDrawGrid.Hide;
   InputPanel.Show;
   OutputPanel.Show;
   MainGlobe.ShowMarker := False;
@@ -324,6 +321,38 @@ Begin
       ShowMarker := True;
       Refresh;
     End;
+End;
+
+Procedure TMainForm.SetupDataGrid;
+Var
+  Col, LastCol: Integer;
+  NewWidth, AlternativeWidth: Integer;
+Begin
+  PointsDrawGrid.Columns.Clear;
+  PointsDrawGrid.RowCount := InputData.RecordCount;
+  PointsDrawGrid.FixedRows := 1;
+  PointsDrawGrid.FixedCols := 1;
+  Canvas.Font := PointsDrawGrid.Font;
+  { Ensure the fixed column is wide enough to fit two more than the number of digets required for the row count. }
+  NewWidth := Canvas.TextWidth(StringOfChar('0', 2+Length(IntToStr(InputData.RecordCount))));
+  PointsDrawGrid.ColWidths[0] := NewWidth;
+  LastCol := InputData.FieldCount-1;
+  For Col := 0 To LastCol Do
+    With PointsDrawGrid.Columns.Add Do
+      Begin
+        Title.Caption := InputData.Names[Col];
+        { Calculate the width of the caption plus a couple of spaces. }
+        NewWidth := Canvas.TextWidth('  '+Title.Caption);
+        { Calculate the width of the first data item plus a couple of spaces. }
+        AlternativeWidth := Canvas.TextWidth('  '+InputData.Values[0, Col]);
+        { Choose the wider of the two widths. }
+        If AlternativeWidth>NewWidth Then
+          Width := AlternativeWidth
+        Else
+          Width := NewWidth;
+      End;
+  PointsDrawGrid.Show;
+  PointsDrawGridSelection(Self,0,1);
 End;
 
 End.

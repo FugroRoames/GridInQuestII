@@ -514,7 +514,9 @@ Begin
   { Load the Area Geometry dataset from its resource object. }
   ResourceStream := TResourceStream.Create(hInstance, 'COUNTRIES', 'DATA');
   DecompressionStream := TDecompressionStream.Create(ResourceStream);
-  DataStream := TDataStream.Create(DecompressionStream);
+  DataStream := TDataStream.Create;
+  DataStream.FieldTerminator := #9;
+  DataStream.LoadFromStream(DecompressionStream);
   SetLength(CountryData, DataStream.RecordCount);
   LastIndex := DataStream.RecordCount-1;
   For Index := 0 To LastIndex Do

@@ -1,4 +1,4 @@
-Unit Transform;
+Unit Settings;
 
 { GridInQuest II Coordinate Transformation Utility Transform Settings Unit.
 
@@ -23,10 +23,10 @@ Interface
 
 Uses
   Classes, SysUtils, FileInfo, FileUtil, LCLVersion, {$IFDEF Windows}Windows, {$ENDIF}
-  Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls, ComCtrls;
+  Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls, ComCtrls, DataStreams;
 
 Type
-  TTransformForm = Class(TForm)
+  TSettingsForm = Class(TForm)
     BottomPanel: TPanel;
     Button1: TButton;
     ErrorHandlingComboBox: TComboBox;
@@ -45,27 +45,25 @@ Type
     { public declarations }
   End;
 
-Function ShowTransformForm(): Boolean;
+Function ShowSettingsForm(Data: TDataStream): Boolean;
 
 Implementation
 
 {$R *.lfm}
 
-Function ShowTransformForm(): Boolean;
+Function ShowSettingsForm(Data: TDataStream): Boolean;
 Begin
-  With TTransformForm.Create(Application.MainForm) Do
+  With TSettingsForm.Create(Application.MainForm) Do
     Begin
+      FirstColumnComboBox.Items.Text := Data.NamesList;
+      SecondColumnComboBox.Items.Text := Data.NamesList;
+      ThirdColumnComboBox.Items.Text := Data.NamesList;
       Result := (ShowModal=mrOK);
       Free;
     End;
 End;
 
 (*
-InputCSVData: TCSVData;
-
-SetupDataDisplay;
-Procedure HeaderRowCheckBoxChange(Sender: TObject);
-Procedure StartRowEditChange(Sender: TObject);
 
 Procedure TMainForm.StartRowEditChange(Sender: TObject);
 Begin
@@ -87,32 +85,6 @@ Begin
   Else
     InputCSVData.NameRow := -1;
   InputCSVData.StartRow := StrToIntDef(StartRowEdit.Text, 1)-1;
-  FirstColumnComboBox.Items.Text := InputCSVData.NamesList;
-  SecondColumnComboBox.Items.Text := InputCSVData.NamesList;
-  ThirdColumnComboBox.Items.Text := InputCSVData.NamesList;
-  PointsDrawGrid.Columns.Clear;
-  PointsDrawGrid.RowCount := InputCSVData.RowCount+1;
-  PointsDrawGrid.FixedRows := 1;
-  PointsDrawGrid.FixedCols := 1;
-  Canvas.Font := PointsDrawGrid.Font;
-  { Ensure the fixed column is wide enough to fit two more than the number of digets required for the row count. }
-  NewWidth := Canvas.TextWidth(StringOfChar('0', 2+Length(IntToStr(InputCSVData.RowCount))));
-  PointsDrawGrid.ColWidths[0] := NewWidth;
-  LastCol := InputCSVData.ColCount-1;
-  For Col := 0 To LastCol Do
-    With PointsDrawGrid.Columns.Add Do
-      Begin
-        Title.Caption := InputCSVData.Names[Col];
-        { Calculate the width of the caption plus a couple of spaces. }
-        NewWidth := Canvas.TextWidth('  '+Title.Caption);
-        { Calculate the width of the first data item plus a couple of spaces. }
-        AlternativeWidth := Canvas.TextWidth('  '+InputCSVData.Values[0, Col]);
-        { Choose the wider of the two widths. }
-        If AlternativeWidth>NewWidth Then
-          Width := AlternativeWidth
-        Else
-          Width := NewWidth;
-      End;
 End;
 
 
