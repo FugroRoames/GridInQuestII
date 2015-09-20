@@ -30,7 +30,7 @@ Type
   TMainForm = Class(TForm)
     ClearAction: TAction;
     CopyBreak: TMenuItem;
-    MenuItem1: TMenuItem;
+    CutMenuItem: TMenuItem;
     PasteMenuItem: TMenuItem;
     CopyMenuItem: TMenuItem;
     ClearMenuItem: TMenuItem;
