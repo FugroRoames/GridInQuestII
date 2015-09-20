@@ -92,7 +92,7 @@ Var
   BytesRead: Int64;
   DataBuffer: Array [0..4095] Of Byte;
 Begin
-  Inherited Create;
+  Create;
   Repeat
     BytesRead := InputStream.Read(DataBuffer, SizeOf(DataBuffer));
     Write(DataBuffer, BytesRead);
