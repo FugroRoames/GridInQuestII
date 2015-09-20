@@ -42,6 +42,8 @@ Type
     Procedure PrepareCurrentRecord;
   Public
     Constructor Create;
+    Constructor Create(InputStream: TStream);
+    Constructor Create(FileName: String);
     Destructor Destroy; Override;
     Function GetFieldValuesAsString(Const FieldNumber: Integer): String;
     Function GetFilteredFieldValuesAsString(Const FieldNumber, FilterFieldNumber: Integer; Const FilterText: String): String;
@@ -69,14 +71,12 @@ Const
 //  FieldTerminators: TSysCharSet = [#0, #13, ','];
   TextDelimiter: Char = '"';
 
-Function DataStreamFromStream(InputStream: TStream): TDataStream;
-
 Implementation
 
 Var
   SortFieldNumber: Integer;
 
-constructor TDataStream.Create;
+Constructor TDataStream.Create;
 Begin
   FBOF := True;
   FEOF := True;
@@ -87,7 +87,29 @@ Begin
   FCurrentRecord := Nil;
 End;
 
-destructor TDataStream.Destroy;
+Constructor TDataStream.Create(InputStream: TStream);
+Var
+  BytesRead: Int64;
+  DataBuffer: Array [0..4095] Of Byte;
+Begin
+  Inherited Create;
+  Repeat
+    BytesRead := InputStream.Read(DataBuffer, SizeOf(DataBuffer));
+    Write(DataBuffer, BytesRead);
+  Until BytesRead = 0;
+  PrepareData(True); { Skip the first data row as this contains field names. }
+End;
+
+Constructor TDataStream.Create(FileName: String);
+Var
+  FileStream: TFileStream;
+Begin
+  FileStream := TFileStream.Create(FileName, fmOpenRead);
+  Create(FileStream);
+  FileStream.Free;
+End;
+
+Destructor TDataStream.Destroy;
 Begin
   FreeAndNil(FRecords);
   Inherited Destroy;
@@ -185,7 +207,6 @@ Begin
       CountingFields := True;
       IsDelimited := False;
       While BufferPointer<=BufferEnd Do
-//        If BufferPointer^=RecordTerminator Then
         If BufferPointer^ In RecordTerminators Then
           Begin
             CountingFields := False;
@@ -221,8 +242,7 @@ Begin
       FRecordNumber := -1;
       FCurrentRecord := Nil;
       FFieldCount := 0;
-    End;;
-  FRecordNumber := 0;
+    End;
 End;
 
 Function CompareRecordPointers(Record1, Record2: Pointer): Integer;
@@ -356,20 +376,6 @@ Begin
     End
   Else
     Result := EmptyStr;
-End;
-
-Function DataStreamFromStream(InputStream: TStream): TDataStream;
-Var
-  BytesRead: Int64;
-  DataBuffer: Array [0..4095] Of Byte;
-Begin
-  Result := TDataStream.Create;
-  Repeat
-    BytesRead := InputStream.Read(DataBuffer, SizeOf(DataBuffer));
-    Result.Write(DataBuffer, BytesRead);
-  Until BytesRead = 0;
-  Result.PrepareData(True); { Skip the first data row as this contains field names. }
-  Result.First;
 End;
 
 End.

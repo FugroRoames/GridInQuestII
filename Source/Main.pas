@@ -24,7 +24,7 @@ Interface
 Uses
   Classes, SysUtils, FileUtil, LCLIntf, Forms, Controls, Graphics, Dialogs, ExtCtrls,
   Menus, ActnList, StdCtrls, PairSplitter, Grids, Spin, Clipbrd, Math, Geometry, Geodesy,
-  GlobeCtrl, CoordCtrls, CSVUtils, Options, About;
+  GlobeCtrl, CoordCtrls, DataStreams, Transform, Options, About;
 
 Type
   TMainForm = Class(TForm)
@@ -41,30 +41,20 @@ Type
     ZoomInAction: TAction;
     ZoomOutAction: TAction;
     ReCenterAction: TAction;
-    Button1: TButton;
     MapMenuItem: TMenuItem;
     ZoomInMenuItem: TMenuItem;
     ZoomOutMenuItem: TMenuItem;
     ReCentreBreak: TMenuItem;
     ReCenterMenuItem: TMenuItem;
-    StartRowEdit: TEdit;
-    HeaderRowCheckBox: TCheckBox;
-    FirstColumnComboBox: TComboBox;
-    SecondColumnComboBox: TComboBox;
-    ErrorHandlingComboBox: TComboBox;
-    ErrorHandlingLabel: TLabel;
-    StartRowLabel: TLabel;
     ManualAction: TAction;
     CopyInputAction: TAction;
     CopyOutputAction: TAction;
     OpenPointsDialog: TOpenDialog;
     OptionsAction: TAction;
     LoadAction: TAction;
-    ConvertPanel: TPanel;
     PointsDrawGrid: TDrawGrid;
     SaveAction: TAction;
     SavePointsDialog: TSaveDialog;
-    ThirdColumnComboBox: TComboBox;
     UnloadAction: TAction;
     UnloadMenuItem: TMenuItem;
     EditMenuItem: TMenuItem;
@@ -98,7 +88,6 @@ Type
     Procedure ExitActionExecute(Sender: TObject);
     Procedure FormCreate(Sender: TObject);
     Procedure FormDestroy(Sender: TObject);
-    Procedure HeaderRowCheckBoxChange(Sender: TObject);
     Procedure LoadActionExecute(Sender: TObject);
     Procedure ManualActionExecute(Sender: TObject);
     Procedure OptionsActionExecute(Sender: TObject);
@@ -107,19 +96,19 @@ Type
     Procedure PointsDrawGridSelection(Sender: TObject; aCol, aRow: Integer);
     Procedure ReCenterActionExecute(Sender: TObject);
     Procedure SaveActionExecute(Sender: TObject);
-    Procedure StartRowEditChange(Sender: TObject);
     Procedure UnloadActionExecute(Sender: TObject);
     Procedure ZoomInActionExecute(Sender: TObject);
     Procedure ZoomOutActionExecute(Sender: TObject);
   Private
     { Private declarations. }
+    InputLatIndex: Integer;
+    InputLonIndex: Integer;
     ManualFileName: String;
     MainGlobe: TGlobeControl;
     InputPanel: TCoordinatesEntryPanel;
     OutputPanel: TCoordinatesEntryPanel;
-    InputCSVData: TCSVData;
+    InputData: TDataStream;
     Function DataLoaded: Boolean;
-    Procedure SetupDataDisplay;
     Procedure DoInputValid(Sender: TObject);
   Public
     { Public declarations. }
@@ -158,35 +147,34 @@ Begin
   InputPanel.TabOrder := 0;
   OutputPanel.TabOrder := 1;
   InputPanel.OnValid := @DoInputValid;
-  InputCSVData := TCSVData.Create;
+  InputData := Nil;
+  InputLatIndex := -1;
+  InputLonIndex := -1;
 End;
 
 Procedure TMainForm.FormDestroy(Sender: TObject);
 Begin
-  InputCSVData.Free;
-End;
-
-Procedure TMainForm.HeaderRowCheckBoxChange(Sender: TObject);
-Begin
-  SetupDataDisplay;
+  If Assigned(InputData) Then
+    InputData.Free;
 End;
 
 Procedure TMainForm.LoadActionExecute(Sender: TObject);
 Begin
   If OpenPointsDialog.Execute Then
-    If InputCSVData.LoadFromCSVFile(OpenPointsDialog.FileName) Then
-      Begin
-        SetupDataDisplay;
-        If InputCSVData.RowCount>0 Then
-          Begin
-            SaveAction.Enabled := True;
-            UnloadAction.Enabled := True;
-            PointsDrawGridSelection(Self,0,1);
-            InputPanel.Hide;
-            OutputPanel.Hide;
-            DataPanel.Show;
-          End;
-      End;
+    Begin
+      If ShowTransformForm Then
+        InputData := TDataStream.Create(OpenPointsDialog.FileName);
+      If DataLoaded Then
+        Begin
+          PointsDrawGrid.RowCount := InputData.RecordCount;
+          PointsDrawGrid.ColCount := InputData.FieldCount;
+          SaveAction.Enabled := True;
+          UnloadAction.Enabled := True;
+          PointsDrawGridSelection(Self,0,1);
+          InputPanel.Hide;
+          OutputPanel.Hide;
+        End;
+    End;
 End;
 
 Procedure TMainForm.ManualActionExecute(Sender: TObject);
@@ -210,48 +198,47 @@ Begin
       If aCol=0 Then
         CellText := IntToStr(aRow)
       Else
-        CellText := InputCSVData.Values[aRow-1, aCol-1];
+        Begin
+          InputData.RecordNumber := aRow-1;
+          CellText := InputData.Fields[aCol-1];
+        End;
       TOverrideGrid(PointsDrawGrid).DrawCellText(aCol, aRow, PointsDrawGrid.CellRect(aCol, aRow), aState, CellText);
     End;
 End;
 
 Procedure TMainForm.PointsDrawGridSelection(Sender: TObject; aCol, aRow: Integer);
 Begin
-{  If (aRow<>-1) And (Length(PreviewData)>aCol) Then
-    Begin
-      MainGlobe.Marker.Lat := PreviewData[aRow-1].Y;
-      MainGlobe.Marker.Lon := PreviewData[aRow-1].X;
-      MainGlobe.ShowMarker := True;
-      MainGlobe.Refresh;
-    End
-  Else
-    Begin
-      MainGlobe.ShowMarker := False;
-    End; }
+  MainGlobe.ShowMarker := False;
+  If DataLoaded Then
+    If (InputLatIndex<>-1) And (InputLonIndex=-1) Then
+      If (aRow<>-1) And (aCol<InputData.FieldCount) Then
+        Begin
+          InputData.RecordNumber := aRow-1;
+          MainGlobe.Marker.Lat := StrToFloatDef(InputData.Fields[InputLatIndex], 0);
+          MainGlobe.Marker.Lon := StrToFloatDef(InputData.Fields[InputLonIndex], 0);
+          MainGlobe.ShowMarker := True;
+          MainGlobe.Refresh;
+        End;
 End;
 
 Procedure TMainForm.SaveActionExecute(Sender: TObject);
 Begin
   If SavePointsDialog.Execute Then
     Begin
-      // TODO
+      // TODO: Save data and transformation results.
     End;
-End;
-
-Procedure TMainForm.StartRowEditChange(Sender: TObject);
-Begin
-  SetupDataDisplay;
 End;
 
 Procedure TMainForm.UnloadActionExecute(Sender: TObject);
 Begin
-  DataPanel.Hide;
   InputPanel.Show;
   OutputPanel.Show;
   MainGlobe.ShowMarker := False;
   SaveAction.Enabled := False;
   UnloadAction.Enabled := False;
-//  SetLength(PreviewData, 0);
+  FreeAndNil(InputData);
+  InputLatIndex := -1;
+  InputLonIndex := -1;
 End;
 
 Procedure TMainForm.ExitActionExecute(Sender: TObject);
@@ -324,45 +311,7 @@ End;
 
 Function TMainForm.DataLoaded: Boolean;
 Begin
-//  Result := (Length(PreviewData)>0);
-End;
-
-Procedure TMainForm.SetupDataDisplay;
-Var
-  Col, LastCol: Integer;
-  NewWidth, AlternativeWidth: Integer;
-Begin
-  If HeaderRowCheckBox.Checked Then
-    InputCSVData.NameRow := 0
-  Else
-    InputCSVData.NameRow := -1;
-  InputCSVData.StartRow := StrToIntDef(StartRowEdit.Text, 1)-1;
-  FirstColumnComboBox.Items.Text := InputCSVData.NamesList;
-  SecondColumnComboBox.Items.Text := InputCSVData.NamesList;
-  ThirdColumnComboBox.Items.Text := InputCSVData.NamesList;
-  PointsDrawGrid.Columns.Clear;
-  PointsDrawGrid.RowCount := InputCSVData.RowCount+1;
-  PointsDrawGrid.FixedRows := 1;
-  PointsDrawGrid.FixedCols := 1;
-  Canvas.Font := PointsDrawGrid.Font;
-  { Ensure the fixed column is wide enough to fit two more than the number of digets required for the row count. }
-  NewWidth := Canvas.TextWidth(StringOfChar('0', 2+Length(IntToStr(InputCSVData.RowCount))));
-  PointsDrawGrid.ColWidths[0] := NewWidth;
-  LastCol := InputCSVData.ColCount-1;
-  For Col := 0 To LastCol Do
-    With PointsDrawGrid.Columns.Add Do
-      Begin
-        Title.Caption := InputCSVData.Names[Col];
-        { Calculate the width of the caption plus a couple of spaces. }
-        NewWidth := Canvas.TextWidth('  '+Title.Caption);
-        { Calculate the width of the first data item plus a couple of spaces. }
-        AlternativeWidth := Canvas.TextWidth('  '+InputCSVData.Values[0, Col]);
-        { Choose the wider of the two widths. }
-        If AlternativeWidth>NewWidth Then
-          Width := AlternativeWidth
-        Else
-          Width := NewWidth;
-      End;
+  Result := Assigned(InputData);
 End;
 
 Procedure TMainForm.DoInputValid(Sender: TObject);
