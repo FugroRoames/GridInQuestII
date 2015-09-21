@@ -22,8 +22,8 @@ Unit Main;
 Interface
 
 Uses
-  Classes, SysUtils, FileUtil, LCLIntf, Forms, Controls, Graphics, Dialogs, ExtCtrls,
-  Menus, ActnList, StdCtrls, PairSplitter, Grids, Spin, Clipbrd, Math, Geometry, Geodesy,
+  Classes, SysUtils, FileUtil, LCLIntf, Forms, Controls, Graphics, Dialogs,
+  ExtCtrls, Menus, ActnList, StdCtrls, Grids, Clipbrd, Geometry, Geodesy,
   GlobeCtrl, CoordCtrls, DataStreams, Settings, Options, About;
 
 Type
@@ -334,7 +334,7 @@ Begin
   DataDrawGrid.Columns.Clear;
   DataDrawGrid.Row := 0;
   DataDrawGrid.Col := 0;
-  DataDrawGrid.RowCount := InputData.RecordCount;
+  DataDrawGrid.RowCount := InputData.RecordCount+1; { Records plus header row. }
   DataDrawGrid.FixedRows := 1;
   DataDrawGrid.FixedCols := 1;
   Canvas.Font := DataDrawGrid.Font;
