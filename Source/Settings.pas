@@ -22,19 +22,24 @@ Unit Settings;
 Interface
 
 Uses
-  Classes, SysUtils, FileInfo, FileUtil, LCLVersion, {$IFDEF Windows}Windows, {$ENDIF}
-  Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls, ComCtrls, DataStreams;
+  Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs,
+  StdCtrls, ExtCtrls, DataStreams;
 
 Type
   TSettingsForm = Class(TForm)
     BottomPanel: TPanel;
     Button1: TButton;
     ErrorHandlingComboBox: TComboBox;
+    InputSystemComboBox: TComboBox;
     ErrorHandlingLabel: TLabel;
     FirstColumnComboBox: TComboBox;
     HeaderRowCheckBox: TCheckBox;
+    InputSystemComboBox1: TComboBox;
+    Label1: TLabel;
+    Label2: TLabel;
     OKButton: TButton;
     CancelButton: TButton;
+    Panel1: TPanel;
     SecondColumnComboBox: TComboBox;
     StartRowEdit: TEdit;
     StartRowLabel: TLabel;
