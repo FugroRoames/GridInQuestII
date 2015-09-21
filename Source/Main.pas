@@ -52,7 +52,7 @@ Type
     OpenPointsDialog: TOpenDialog;
     OptionsAction: TAction;
     LoadAction: TAction;
-    PointsDrawGrid: TDrawGrid;
+    DataDrawGrid: TDrawGrid;
     SaveAction: TAction;
     SavePointsDialog: TSaveDialog;
     UnloadAction: TAction;
@@ -91,8 +91,8 @@ Type
     Procedure ManualActionExecute(Sender: TObject);
     Procedure OptionsActionExecute(Sender: TObject);
     Procedure PasteActionExecute(Sender: TObject);
-    Procedure PointsDrawGridDrawCell(Sender: TObject; aCol, aRow: Integer; aRect: TRect; aState: TGridDrawState);
-    Procedure PointsDrawGridSelection(Sender: TObject; aCol, aRow: Integer);
+    Procedure DataDrawGridDrawCell(Sender: TObject; aCol, aRow: Integer; aRect: TRect; aState: TGridDrawState);
+    Procedure DataDrawGridSelection(Sender: TObject; aCol, aRow: Integer);
     Procedure ReCenterActionExecute(Sender: TObject);
     Procedure SaveActionExecute(Sender: TObject);
     Procedure UnloadActionExecute(Sender: TObject);
@@ -186,24 +186,26 @@ Begin
   ShowOptionsForm;
 End;
 
-Procedure TMainForm.PointsDrawGridDrawCell(Sender: TObject; aCol, aRow: Integer; aRect: TRect; aState: TGridDrawState);
+Procedure TMainForm.DataDrawGridDrawCell(Sender: TObject; aCol, aRow: Integer; aRect: TRect; aState: TGridDrawState);
 Var
   CellText: String;
 Begin
+ // writeln('CALL: PointsDrawGridDrawCell ', aRow, ' ', aCol);
   If aRow=0 Then
-    PointsDrawGrid.DefaultDrawCell(aCol, aRow, aRect, aState)
+    DataDrawGrid.DefaultDrawCell(aCol, aRow, aRect, aState)
   Else
     Begin
       If aCol=0 Then
         CellText := IntToStr(aRow)
       Else
         CellText := InputData.Values[aRow-1, aCol-1];
-      TOverrideGrid(PointsDrawGrid).DrawCellText(aCol, aRow, PointsDrawGrid.CellRect(aCol, aRow), aState, CellText);
+      TOverrideGrid(DataDrawGrid).DrawCellText(aCol, aRow, aRect, aState, CellText);
     End;
 End;
 
-Procedure TMainForm.PointsDrawGridSelection(Sender: TObject; aCol, aRow: Integer);
+Procedure TMainForm.DataDrawGridSelection(Sender: TObject; aCol, aRow: Integer);
 Begin
+//  writeln('CALL: PointsDrawGridSelection ', aRow);
   MainGlobe.ShowMarker := False;
   If DataLoaded Then
     If (InputLatIndex<>-1) And (InputLonIndex=-1) Then
@@ -227,7 +229,7 @@ End;
 
 Procedure TMainForm.UnloadActionExecute(Sender: TObject);
 Begin
-  PointsDrawGrid.Hide;
+  DataDrawGrid.Hide;
   InputPanel.Show;
   OutputPanel.Show;
   MainGlobe.ShowMarker := False;
@@ -328,17 +330,20 @@ Var
   Col, LastCol: Integer;
   NewWidth, AlternativeWidth: Integer;
 Begin
-  PointsDrawGrid.Columns.Clear;
-  PointsDrawGrid.RowCount := InputData.RecordCount;
-  PointsDrawGrid.FixedRows := 1;
-  PointsDrawGrid.FixedCols := 1;
-  Canvas.Font := PointsDrawGrid.Font;
+  DataDrawGrid.BeginUpdate;
+  DataDrawGrid.Columns.Clear;
+  DataDrawGrid.Row := 0;
+  DataDrawGrid.Col := 0;
+  DataDrawGrid.RowCount := InputData.RecordCount;
+  DataDrawGrid.FixedRows := 1;
+  DataDrawGrid.FixedCols := 1;
+  Canvas.Font := DataDrawGrid.Font;
   { Ensure the fixed column is wide enough to fit two more than the number of digets required for the row count. }
   NewWidth := Canvas.TextWidth(StringOfChar('0', 2+Length(IntToStr(InputData.RecordCount))));
-  PointsDrawGrid.ColWidths[0] := NewWidth;
+  DataDrawGrid.ColWidths[0] := NewWidth;
   LastCol := InputData.FieldCount-1;
   For Col := 0 To LastCol Do
-    With PointsDrawGrid.Columns.Add Do
+    With DataDrawGrid.Columns.Add Do
       Begin
         Title.Caption := InputData.Names[Col];
         { Calculate the width of the caption plus a couple of spaces. }
@@ -351,8 +356,9 @@ Begin
         Else
           Width := NewWidth;
       End;
-  PointsDrawGrid.Show;
-  PointsDrawGridSelection(Self,0,1);
+  DataDrawGrid.Show;
+  DataDrawGrid.EndUpdate;
+  //PointsDrawGridSelection(Self,0,1);
 End;
 
 End.

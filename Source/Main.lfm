@@ -428,7 +428,7 @@ object MainForm: TMainForm
     ClientHeight = 625
     ClientWidth = 533
     TabOrder = 0
-    object PointsDrawGrid: TDrawGrid
+    object DataDrawGrid: TDrawGrid
       Left = 0
       Height = 625
       Top = 0
@@ -444,8 +444,8 @@ object MainForm: TMainForm
       TitleFont.Name = 'Arial'
       TitleFont.Quality = fqCleartype
       Visible = False
-      OnDrawCell = PointsDrawGridDrawCell
-      OnSelection = PointsDrawGridSelection
+      OnDrawCell = DataDrawGridDrawCell
+      OnSelection = DataDrawGridSelection
     end
   end
   object PanelSplitter: TSplitter
