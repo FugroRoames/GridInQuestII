@@ -170,7 +170,7 @@ Begin
     If GZ>50 Then
       GZ -= 25;
   AdjustLocation(0, 0);
-  Inherited DoMouseWheel(Shift, WheelDelta, MousePos);
+  Result := Inherited DoMouseWheel(Shift, WheelDelta, MousePos);
 End;
 
 Procedure TGlobeControl.DoOnResize;
