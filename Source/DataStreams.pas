@@ -50,7 +50,7 @@ Type
     DataEndPointer: PChar;
     FieldTerminators: TSysCharSet;
     RecordTerminators: TSysCharSet;
-    Procedure ParseRow(Const RowStartPointer: PChar; Const Data: TStringList);
+    Procedure ParseRow(Const Data: TStringList; Const RowStartPointer: PChar; Const RowEndPointer: PChar = Nil);
     Procedure PrepareCurrentRecord;
   Public
     Constructor Create;
@@ -151,9 +151,18 @@ Begin
 End;
 
 Procedure TDataStream.PrepareCurrentRecord;
+Var
+  StartPointer, EndPointer: PChar;
 Begin
   If FRecordNumber>-1 Then
-    ParseRow(PChar(FRecords[FRecordNumber]), FCurrentRow);
+    Begin
+      StartPointer := PChar(FRecords[FRecordNumber]);
+      If FRecordNumber=RecordCount-1 Then
+        EndPointer := DataEndPointer
+      Else
+        EndPointer := PChar(FRecords[FRecordNumber+1]);
+      ParseRow(FCurrentRow, StartPointer, EndPointer);
+    End;
 End;
 
 Procedure TDataStream.PrepareData;
@@ -202,7 +211,7 @@ Begin
           { Process the name row if found. }
           If RowIndex=NameRow Then
             Begin
-              ParseRow(BufferPointer, FNames);
+              ParseRow(FNames, BufferPointer);
               FFieldCount := FNames.Count;
               CountingFields := False;
             End;
@@ -216,7 +225,7 @@ Begin
           If IsFirstRow Then
             Begin
               FCurrentRow.Clear;
-              ParseRow(BufferPointer, FCurrentRow);
+              ParseRow(FCurrentRow, BufferPointer);
               If CountingFields Then
                 Begin
                   FFieldCount := FCurrentRow.Count;
@@ -341,19 +350,25 @@ Begin
     End;
 End;
 
-Procedure TDataStream.ParseRow(Const RowStartPointer: PChar; Const Data: TStringList);
+Procedure TDataStream.ParseRow(Const Data: TStringList; Const RowStartPointer: PChar; Const RowEndPointer: PChar = Nil);
 Var
   CurrentPointer: PChar;
+  EndPointer: PChar;
   FieldPointer: PChar;
   FieldLength: Integer;
 Begin
   Data.Clear;
   CurrentPointer := RowStartPointer;
-  While Not (CurrentPointer^ In RecordTerminators) Do
+  If RowEndPointer=Nil Then
     Begin
-      { Move to the first character of the new field. }
-      If CurrentPointer^ In FieldTerminators Then
-        Inc(CurrentPointer);
+      EndPointer := RowStartPointer;
+      While Not (EndPointer^ In RecordTerminators) Do
+        Inc(EndPointer);
+    End
+  Else
+    EndPointer := RowEndPointer;
+  While CurrentPointer<EndPointer Do
+    Begin
       { Move past any whitespace. }
       While CurrentPointer^=' ' Do
         Inc(CurrentPointer);
@@ -372,6 +387,9 @@ Begin
           { Find the end of the current field. }
           While Not (CurrentPointer^ In FieldTerminators) Do
             Inc(CurrentPointer);
+          { Move past any whitespace. }
+          While CurrentPointer^=' ' Do
+            Inc(CurrentPointer);
         End
       Else
         Begin
@@ -382,6 +400,9 @@ Begin
           FieldLength := CurrentPointer-FieldPointer;
           Data.Add(Copy(FieldPointer, 1, FieldLength));
         End;
+      { Move past any field. }
+      If CurrentPointer^ In FieldTerminators Then
+        Inc(CurrentPointer);
     End;
 End;
 
