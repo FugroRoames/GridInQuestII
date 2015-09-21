@@ -136,7 +136,9 @@ Begin
   Until BytesRead = 0;
   WriteWord(0); { Ensure that the memory data is zero terminated. }
   PrepareData;
-  First;
+  FRecordNumber := 0;
+  FBOF := False;
+  FEOF := False;
 End;
 
 Procedure TDataStream.LoadFromFile(FileName: String);
@@ -158,15 +160,15 @@ Procedure TDataStream.PrepareData;
 Var
   BufferPointer: PChar;
   CountingFields: Boolean;
-  IsDelimited: Boolean;
+  IsFirstRow: Boolean;
   RowIndex: Integer;
   Procedure FindNextRecord;
   Begin
     While Not (BufferPointer^ In RecordTerminators) Do
       Inc(BufferPointer);
     If BufferPointer<DataEndPointer Then
-    While BufferPointer^ In RecordTerminators Do
-      Inc(BufferPointer);
+      While BufferPointer^ In RecordTerminators Do
+        Inc(BufferPointer);
     Inc(RowIndex);
   End;
 Begin
@@ -207,18 +209,25 @@ Begin
           FindNextRecord;
         End;
       { Build the main record index. }
-      While BufferPointer<=DataEndPointer Do
+      IsFirstRow := True;
+      While BufferPointer<DataEndPointer Do
         Begin
           { Parse the current record to count the fields if needed. }
-          If CountingFields Then
+          If IsFirstRow Then
             Begin
               FCurrentRow.Clear;
               ParseRow(BufferPointer, FCurrentRow);
-              FFieldCount := FCurrentRow.Count;
-              CountingFields := False;
+              If CountingFields Then
+                Begin
+                  FFieldCount := FCurrentRow.Count;
+                  CountingFields := False;
+                End;
+              IsFirstRow := False;
             End;
           { Add the current record to the record index list. }
           FRecords.Add(BufferPointer);
+          If RowIndex=3173958 Then
+            writeln('halt');
           FindNextRecord;
         End;
     End;
@@ -343,7 +352,7 @@ Begin
   While Not (CurrentPointer^ In RecordTerminators) Do
     Begin
       { Move to the first character of the new field. }
-      While CurrentPointer^ In FieldTerminators Do
+      If CurrentPointer^ In FieldTerminators Then
         Inc(CurrentPointer);
       { Move past any whitespace. }
       While CurrentPointer^=' ' Do
