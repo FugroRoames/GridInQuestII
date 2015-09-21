@@ -79,6 +79,7 @@ object SettingsForm: TSettingsForm
     Top = 136
     Width = 153
     ItemHeight = 24
+    OnChange = FirstColumnComboBoxChange
     Style = csDropDownList
     TabOrder = 3
   end
@@ -88,6 +89,7 @@ object SettingsForm: TSettingsForm
     Top = 136
     Width = 151
     ItemHeight = 24
+    OnChange = SecondColumnComboBoxChange
     Style = csDropDownList
     TabOrder = 4
   end

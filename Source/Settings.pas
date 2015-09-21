@@ -44,6 +44,8 @@ Type
     StartRowEdit: TEdit;
     StartRowLabel: TLabel;
     ThirdColumnComboBox: TComboBox;
+    Procedure FirstColumnComboBoxChange(Sender: TObject);
+    Procedure SecondColumnComboBoxChange(Sender: TObject);
   Private
     { private declarations }
   Public
@@ -56,6 +58,9 @@ Implementation
 
 {$R *.lfm}
 
+Uses
+  Main;
+
 Function ShowSettingsForm(Data: TDataStream): Boolean;
 Begin
   With TSettingsForm.Create(Application.MainForm) Do
@@ -66,6 +71,16 @@ Begin
       Result := (ShowModal=mrOK);
       Free;
     End;
+End;
+
+Procedure TSettingsForm.FirstColumnComboBoxChange(Sender: TObject);
+Begin
+  MainForm.InputLatIndex := FirstColumnComboBox.ItemIndex;
+End;
+
+Procedure TSettingsForm.SecondColumnComboBoxChange(Sender: TObject);
+Begin
+  MainForm.InputLonIndex := SecondColumnComboBox.ItemIndex;
 End;
 
 (*

@@ -100,8 +100,6 @@ Type
     Procedure ZoomOutActionExecute(Sender: TObject);
   Private
     { Private declarations. }
-    InputLatIndex: Integer;
-    InputLonIndex: Integer;
     ManualFileName: String;
     MainGlobe: TGlobeControl;
     InputPanel: TCoordinatesEntryPanel;
@@ -112,6 +110,8 @@ Type
     Procedure SetupDataGrid;
   Public
     { Public declarations. }
+    InputLatIndex: Integer;
+    InputLonIndex: Integer;
   End;
 
 Var
@@ -190,7 +190,6 @@ Procedure TMainForm.DataDrawGridDrawCell(Sender: TObject; aCol, aRow: Integer; a
 Var
   CellText: String;
 Begin
- // writeln('CALL: PointsDrawGridDrawCell ', aRow, ' ', aCol);
   If aRow=0 Then
     DataDrawGrid.DefaultDrawCell(aCol, aRow, aRect, aState)
   Else
@@ -205,10 +204,9 @@ End;
 
 Procedure TMainForm.DataDrawGridSelection(Sender: TObject; aCol, aRow: Integer);
 Begin
-//  writeln('CALL: PointsDrawGridSelection ', aRow);
   MainGlobe.ShowMarker := False;
   If DataLoaded Then
-    If (InputLatIndex<>-1) And (InputLonIndex=-1) Then
+    If (InputLatIndex<>-1) And (InputLonIndex<>-1) Then
       If (aRow<>-1) And (aCol<InputData.FieldCount) Then
         Begin
           InputData.RecordNumber := aRow-1;
@@ -358,7 +356,6 @@ Begin
       End;
   DataDrawGrid.Show;
   DataDrawGrid.EndUpdate;
-  //PointsDrawGridSelection(Self,0,1);
 End;
 
 End.
