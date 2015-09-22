@@ -235,8 +235,6 @@ Begin
             End;
           { Add the current record to the record index list. }
           FRecords.Add(BufferPointer);
-          If RowIndex=3173958 Then
-            writeln('halt');
           FindNextRecord;
         End;
     End;
