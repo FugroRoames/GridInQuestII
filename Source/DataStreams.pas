@@ -25,33 +25,44 @@ Uses
   Classes, RtlConsts, SysUtils, Strings;
 
 Type
+  TFormatType = (ftDelimited, ftFixed);
+
+Type
   TDataStream = Class(TMemoryStream)
   Private
     FBOF: Boolean;
     FCurrentRow: TStringList;
     FEOF: Boolean;
     FFieldCount: Integer;
+    FFieldLengths: TFPList;
+    FFieldStarts: TFPList;
     FFieldTerminator: Char;
     FFirstRow: Integer;
+    FFormatType: TFormatType;
     FNameRow: Integer;
     FNames: TStringList;
-    FRecords: TFPList;
+    FRows: TFPList;
+    FRecordCount: Integer;
     FRecordNumber: Integer;
     FTextDelimiter: Char;
     Function GetField(Index: Integer): String;
+    Function GetFieldLengths(Index: Integer): Integer;
+    Function GetFieldStarts(Index: Integer): Integer;
     Function GetName(Index: Integer): String;
     Function GetNamesList: String;
-    Function GetRecordCount: Integer;
     Function GetValue(RecordIndex, FieldIndex: Integer): String;
+    Procedure SetFieldCount(Value: Integer);
+    Procedure SetFieldLengths(Index: Integer; Value: Integer);
+    Procedure SetFieldStarts(Index: Integer; Value: Integer);
     Procedure SetFieldTerminator(Value: Char);
+    Procedure SetFirstRow(Value: Integer);
+    Procedure SetNameRow(Value: Integer);
     Procedure SetRecordNumber(Const Value: Integer);
   Protected
-    DataStartPointer: PChar;
-    DataEndPointer: PChar;
     FieldTerminators: TSysCharSet;
     RecordTerminators: TSysCharSet;
-    Procedure ParseRow(Const Data: TStringList; Const RowStartPointer: PChar; Const RowEndPointer: PChar = Nil);
-    Procedure PrepareCurrentRecord;
+    Procedure ParseRow(Const Data: TStringList; Const RowIndex: Integer);
+    Procedure ParseRows;
   Public
     Constructor Create;
     Constructor Create(InputStream: TStream);
@@ -59,50 +70,52 @@ Type
     Destructor Destroy; Override;
     Procedure LoadFromStream(InputStream: TStream);
     Procedure LoadFromFile(FileName: String);
-    Procedure PrepareData;
-    Procedure ResetData;
-    Procedure SortByField(FieldNumber: Integer);
+    Procedure Clear;
     Procedure First;
     Procedure Last;
     Procedure Next;
     Procedure Prior;
     Property BOF: Boolean Read FBOF;
     Property EOF: Boolean Read FEOF;
-    Property FieldCount: Integer Read FFieldCount;
-    Property Fields[Index: Integer]: String Read GetField; Default;
+    Property FieldCount: Integer Read FFieldCount Write SetFieldCount;
+    Property FieldLengths[Index: Integer]: Integer Read GetFieldLengths Write SetFieldLengths;
+    Property FieldStarts[Index: Integer]: Integer Read GetFieldStarts Write SetFieldStarts;
+    Property Fields[Index: Integer]: String Read GetField;
     Property FieldTerminator: Char Read FFieldTerminator Write SetFieldTerminator;
-    Property FirstRow: Integer Read FFirstRow Write FFirstRow;
-    Property NameRow: Integer Read FNameRow Write FNameRow;
+    Property FirstRow: Integer Read FFirstRow Write SetFirstRow;
+    Property FormatType: TFormatType Read FFormatType Write FFormatType;
+    Property NameRow: Integer Read FNameRow Write SetNameRow;
     Property Names[Index: Integer]: String Read GetName;
     Property NamesList: String Read GetNamesList;
-    Property RecordCount: Integer Read GetRecordCount;
+    Property RecordCount: Integer Read FRecordCount;
     Property RecordNumber: Integer Read FRecordNumber Write SetRecordNumber;
     Property TextDelimiter: Char Read FTextDelimiter Write FTextDelimiter;
-    Property Values[RecordIndex, FieldIndex: Integer]: String Read GetValue;
+    Property Values[RecordIndex, FieldIndex: Integer]: String Read GetValue; Default;
   End;
 
 Const
-  TabTerminator: TSysCharSet = [#9];
-  CommaTerminator: TSysCharSet = [','];
+  TabTerminator: Char = #9;
+  CommaTerminator: Char = ',';
   StandardRecordTerminators: TSysCharSet = [#0, #10, #13];
   StandardTextDelimiter: Char = '"';
 
 Implementation
 
-Var
-  SortFieldNumber: Integer;
-
 Constructor TDataStream.Create;
 Begin
-  FNameRow := 0;
-  FFirstRow := 1;
   FTextDelimiter := #0;
   FCurrentRow := TStringList.Create;
   FNames := TStringList.Create;
-  FRecords := TFPList.Create;
-  FieldTerminators := StandardRecordTerminators+CommaTerminator;
+  FRows := TFPList.Create;
+  FFieldStarts := TFPList.Create;
+  FFieldLengths := TFPList.Create;
+  FNameRow := 0;
+  FFirstRow := 1;
+  FFormatType := ftDelimited;
+  FieldTerminator := CommaTerminator;
   RecordTerminators := StandardRecordTerminators;
-  ResetData;
+  SetFieldCount(1); { Always at least one field: the whole row of the data file. }
+  Clear;
 End;
 
 Constructor TDataStream.Create(InputStream: TStream);
@@ -120,9 +133,23 @@ End;
 Destructor TDataStream.Destroy;
 Begin
   FreeAndNil(FCurrentRow);
+  FreeAndNil(FFieldStarts);
+  FreeAndNil(FFieldLengths);
   FreeAndNil(FNames);
-  FreeAndNil(FRecords);
+  FreeAndNil(FRows);
   Inherited Destroy;
+End;
+
+Procedure TDataStream.Clear;
+Begin
+  FFieldStarts.Count := 1;
+  FFieldLengths.Count := 1;
+  FNames.Clear;
+  FRows.Clear;
+  FBOF := True;
+  FEOF := True;
+  FRecordCount := 0;
+  FRecordNumber := -1;
 End;
 
 Procedure TDataStream.LoadFromStream(InputStream: TStream);
@@ -135,7 +162,7 @@ Begin
     Write(DataBuffer, BytesRead);
   Until BytesRead = 0;
   WriteWord(0); { Ensure that the memory data is zero terminated. }
-  PrepareData;
+  ParseRows;
   FRecordNumber := 0;
   FBOF := False;
   FEOF := False;
@@ -150,142 +177,6 @@ Begin
   FileStream.Free;
 End;
 
-Procedure TDataStream.PrepareCurrentRecord;
-Var
-  StartPointer, EndPointer: PChar;
-Begin
-  If FRecordNumber>-1 Then
-    Begin
-      StartPointer := PChar(FRecords[FRecordNumber]);
-      If FRecordNumber=RecordCount-1 Then
-        EndPointer := DataEndPointer
-      Else
-        EndPointer := PChar(FRecords[FRecordNumber+1]);
-      ParseRow(FCurrentRow, StartPointer, EndPointer);
-    End;
-End;
-
-Procedure TDataStream.PrepareData;
-Var
-  BufferPointer: PChar;
-  CountingFields: Boolean;
-  IsFirstRow: Boolean;
-  RowIndex: Integer;
-  Procedure FindNextRecord;
-  Begin
-    While Not (BufferPointer^ In RecordTerminators) Do
-      Inc(BufferPointer);
-    If BufferPointer<DataEndPointer Then
-      While BufferPointer^ In RecordTerminators Do
-        Inc(BufferPointer);
-    Inc(RowIndex);
-  End;
-Begin
-  { Prepare for the data scan. }
-  ResetData;
-  DataStartPointer := PChar(Memory);
-  DataEndPointer := DataStartPointer;
-  BufferPointer := DataStartPointer;
-  CountingFields := True;
-  Inc(DataEndPointer, Size);
-  RowIndex := 0;
-  { Clear any control characters at the end of the data buffer. }
-  While DataEndPointer<' ' Do
-    Begin
-      DataEndPointer^ := #0;
-      Dec(DataEndPointer);
-    End;
-  { If there is valid data to read. }
-  If DataEndPointer>BufferPointer Then
-    Begin
-      { Validate any name row. }
-      If NameRow<>-1 Then
-        If FirstRow<=NameRow Then
-          FirstRow := NameRow+1;
-      { Skip any header rows. }
-      While RowIndex<FirstRow Do
-        Begin
-          { If the end of buffer is reached then there are no data rows. }
-          If BufferPointer>=DataEndPointer Then
-            Exit;
-          { Process the name row if found. }
-          If RowIndex=NameRow Then
-            Begin
-              ParseRow(FNames, BufferPointer);
-              FFieldCount := FNames.Count;
-              CountingFields := False;
-            End;
-          FindNextRecord;
-        End;
-      { Build the main record index. }
-      IsFirstRow := True;
-      While BufferPointer<DataEndPointer Do
-        Begin
-          { Parse the current record to count the fields if needed. }
-          If IsFirstRow Then
-            Begin
-              FCurrentRow.Clear;
-              ParseRow(FCurrentRow, BufferPointer);
-              If CountingFields Then
-                Begin
-                  FFieldCount := FCurrentRow.Count;
-                  CountingFields := False;
-                End;
-              IsFirstRow := False;
-            End;
-          { Add the current record to the record index list. }
-          FRecords.Add(BufferPointer);
-          FindNextRecord;
-        End;
-    End;
-End;
-
-Procedure TDataStream.ResetData;
-Begin
-  FNames.Clear;
-  FRecords.Clear;
-  FBOF := True;
-  FEOF := True;
-  FRecordNumber := -1;
-  FFieldCount := 0;
-End;
-
-Function CompareRecordPointers(Record1, Record2: Pointer): Integer;
-Var
-  Field1, Field2: PChar;
-  Count: Integer;
-Begin
-  Field1 := PChar(Record1);
-  Count := 0;
-  While Count<SortFieldNumber Do
-    Begin
-      If Field1^=#0 Then
-        Inc(Count);
-      Inc(Field1);
-    End;
-  Field2 := PChar(Record2);
-  Count := 0;
-  While Count<SortFieldNumber Do
-    Begin
-      If Field2^=#0 Then
-        Inc(Count);
-      Inc(Field2);
-    End;
-  Result := strcomp(Field1, Field2);
-End;
-
-Procedure TDataStream.SortByField(FieldNumber: Integer);
-Begin
-  If (FieldNumber>=0) And (FieldNumber<FieldCount) Then
-    Begin
-      SortFieldNumber := FieldNumber;
-      FRecords.Sort(@CompareRecordPointers);
-      FRecordNumber := 0;
-    End
-  Else
-    Raise EStreamError.Create('Field number out of range.');
-End;
-
 Procedure TDataStream.First;
 Begin
   SetRecordNumber(0);
@@ -298,23 +189,22 @@ End;
 
 Procedure TDataStream.Next;
 Begin
-  SetRecordNumber(FRecordNumber+1);
+  SetRecordNumber(RecordNumber+1);
 End;
 
 Procedure TDataStream.Prior;
 Begin
-  SetRecordNumber(FRecordNumber-1);
+  SetRecordNumber(RecordNumber-1);
 End;
 
-Function TDataStream.GetRecordCount: Integer;
+Procedure TDataStream.SetFieldLengths(Index: Integer; Value: Integer);
 Begin
-  Result := FRecords.Count;
+  FFieldLengths[Index] := Pointer(Value);
 End;
 
-Function TDataStream.GetValue(RecordIndex, FieldIndex: Integer): String;
+Procedure TDataStream.SetFieldStarts(Index: Integer; Value: Integer);
 Begin
-  SetRecordNumber(RecordIndex);
-  Result := GetField(FieldIndex);
+  FFieldStarts[Index] := Pointer(Value);
 End;
 
 Procedure TDataStream.SetFieldTerminator(Value: Char);
@@ -326,9 +216,39 @@ Begin
     End;
 End;
 
+Procedure TDataStream.SetFirstRow(Value: Integer);
+Begin
+  If Value<0 Then
+    Value := 0;
+  If Value>=FRows.Count Then
+    Value := FRows.Count-1;
+  If FFirstRow<>Value Then
+    Begin
+      FFirstRow := Value;
+      { Remove any named row setting if after new first row. }
+      If FNameRow>FFirstRow Then
+        FNameRow := -1;
+    End;
+End;
+
+Procedure TDataStream.SetNameRow(Value: Integer);
+Begin
+  If Value<0 Then
+    Value := -1; { Indicates no named row. }
+  If Value>=FRows.Count Then
+    Value := FRows.Count-1;
+  If FNameRow<>Value Then
+    Begin
+      FNameRow := Value;
+      { Force any invalid first row value to the next row after the named row. }
+      If FFirstRow<=FNameRow Then
+        FFirstRow := FNameRow+1;
+    End;
+End;
+
 Procedure TDataStream.SetRecordNumber(Const Value: Integer);
 Begin
-  If FRecordNumber<>Value Then
+  If RecordNumber<>Value Then
     Begin
       FBOF := False;
       FEOF := False;
@@ -344,70 +264,27 @@ Begin
         End
       Else
         FRecordNumber := Value;
-      PrepareCurrentRecord;
-    End;
-End;
-
-Procedure TDataStream.ParseRow(Const Data: TStringList; Const RowStartPointer: PChar; Const RowEndPointer: PChar = Nil);
-Var
-  CurrentPointer: PChar;
-  EndPointer: PChar;
-  FieldPointer: PChar;
-  FieldLength: Integer;
-Begin
-  Data.Clear;
-  CurrentPointer := RowStartPointer;
-  If RowEndPointer=Nil Then
-    Begin
-      EndPointer := RowStartPointer;
-      While Not (EndPointer^ In RecordTerminators) Do
-        Inc(EndPointer);
-    End
-  Else
-    EndPointer := RowEndPointer;
-  While CurrentPointer<EndPointer Do
-    Begin
-      { Move past any whitespace. }
-      While CurrentPointer^=' ' Do
-        Inc(CurrentPointer);
-      FieldPointer := CurrentPointer;
-      { If a text delimiter is set, skip any delimited data. }
-      If (TextDelimiter<>#0) And (FieldPointer^=TextDelimiter) Then
-        Begin
-          { Find the extents of the delimited text. }
-          Inc(CurrentPointer);
-          FieldPointer := CurrentPointer;
-          While Not (CurrentPointer^=TextDelimiter) Do
-            Inc(CurrentPointer);
-          { Add the extracted field to the data list. }
-          FieldLength := CurrentPointer-FieldPointer;
-          Data.Add(Copy(FieldPointer, 1, FieldLength));
-          { Find the end of the current field. }
-          While Not (CurrentPointer^ In FieldTerminators) Do
-            Inc(CurrentPointer);
-          { Move past any whitespace. }
-          While CurrentPointer^=' ' Do
-            Inc(CurrentPointer);
-        End
-      Else
-        Begin
-          { Find the end of the current field. }
-          While Not (CurrentPointer^ In FieldTerminators) Do
-            Inc(CurrentPointer);
-          { Add the extracted field to the data list. }
-          FieldLength := CurrentPointer-FieldPointer;
-          Data.Add(Copy(FieldPointer, 1, FieldLength));
-        End;
-      { Move past any field. }
-      If CurrentPointer^ In FieldTerminators Then
-        Inc(CurrentPointer);
+      ParseRow(FCurrentRow, FirstRow+RecordNumber);
     End;
 End;
 
 Function TDataStream.GetField(Index: Integer): String;
 Begin
+  WriteLn('GetField ', Index);
   If Index<FCurrentRow.Count Then
-    Result := FCurrentRow[Index];
+    Result := FCurrentRow[Index]
+  Else
+    Result := EmptyStr;
+End;
+
+Function TDataStream.GetFieldLengths(Index: Integer): Integer;
+Begin
+  Result := Integer(FFieldLengths[Index]);
+End;
+
+Function TDataStream.GetFieldStarts(Index: Integer): Integer;
+Begin
+  Result := Integer(FFieldStarts[Index]);
 End;
 
 Function TDataStream.GetName(Index: Integer): String;
@@ -430,7 +307,7 @@ Begin
   Else
     Begin
       Result := EmptyStr;
-      LastIndex := FFieldCount-1;
+      LastIndex := FieldCount-1;
       For Index := 0 To LastIndex Do
         Begin
           Result := Result+GetName(Index);
@@ -438,6 +315,140 @@ Begin
             Result := Result+LineEnding;
         End;
     End;
+End;
+
+Function TDataStream.GetValue(RecordIndex, FieldIndex: Integer): String;
+Begin
+  WriteLn('GetValue ', RecordIndex, ' ', FieldIndex);
+  SetRecordNumber(RecordIndex);
+  Result := GetField(FieldIndex);
+End;
+
+Procedure TDataStream.SetFieldCount(Value: Integer);
+Begin
+  If FFieldCount<>Value Then
+    Begin
+      If Value<1 Then
+        Value := 1;
+      FFieldCount := Value;
+      FFieldStarts.Count := Value;
+      FFieldLengths.Count := Value;
+    End;
+End;
+
+Procedure TDataStream.ParseRow(Const Data: TStringList; Const RowIndex: Integer);
+Var
+  RecordPointer: PChar;
+  CurrentPointer: PChar;
+  FieldPointer: PChar;
+  Index, LastIndex: Integer;
+Begin
+  { Clear the return data list. }
+  Data.Clear;
+  RecordPointer := PChar(FRows[RowIndex]);
+  CurrentPointer := RecordPointer;
+  { Rebuild the field breaks for each row for delimited files. }
+  If FormatType=ftDelimited Then
+    Begin
+      Index := 0;
+      While Index<FieldCount Do
+        Begin
+          { Move past any whitespace. }
+          While CurrentPointer^=' ' Do
+            Inc(CurrentPointer);
+          { If a text delimiter is set, skip any delimited data. }
+          If (TextDelimiter<>#0) And (FieldPointer^=TextDelimiter) Then
+            Begin
+              { Find the start of the delimited text. }
+              Inc(CurrentPointer);
+              FieldPointer := CurrentPointer;
+              While Not (CurrentPointer^=TextDelimiter) Do
+                Inc(CurrentPointer);
+            End
+          Else
+            Begin
+              { Find the start of the field. }
+              FieldPointer := CurrentPointer;
+              { Find the end of the current field. }
+              While Not (CurrentPointer^ In FieldTerminators) Do
+                Inc(CurrentPointer);
+            End;
+          { Add the extracted field extents to the index lists. }
+          FieldStarts[Index] := 1+FieldPointer-RecordPointer;
+          FieldLengths[Index] := CurrentPointer-FieldPointer;
+          { Find the start of the next field. }
+          While Not (CurrentPointer^ In FieldTerminators) Do
+            Inc(CurrentPointer);
+          If CurrentPointer^=FieldTerminator Then
+            Inc(CurrentPointer);
+          Inc(Index);
+        End;
+    End;
+  { Build the record's data list. }
+  LastIndex := FFieldCount-1;
+  For Index := 0 To LastIndex Do
+    Data.Add(Trim(Copy(RecordPointer, FieldStarts[Index], FieldLengths[Index])));
+End;
+
+Procedure TDataStream.ParseRows;
+Var
+  BufferPointer: PChar;
+  BufferEndPointer: PChar;
+  RowIndex: Integer;
+  FoundFields: Integer;
+  Procedure FindNextRecord;
+  Begin
+    While Not (BufferPointer^ In RecordTerminators) Do
+      Inc(BufferPointer);
+    If BufferPointer<BufferEndPointer Then
+      While BufferPointer^ In RecordTerminators Do
+        Inc(BufferPointer);
+    Inc(RowIndex);
+  End;
+Begin
+  { Prepare for the data scan. }
+  Clear;
+  BufferPointer := PChar(Memory);
+  BufferEndPointer := BufferPointer;
+  Inc(BufferEndPointer, Size);
+  { Clear any control characters at the end of the data buffer. }
+  While BufferEndPointer<' ' Do
+    Begin
+      BufferEndPointer^ := #0;
+      Dec(BufferEndPointer);
+    End;
+  { If there is valid data to read. }
+  If BufferEndPointer>BufferPointer Then
+    { Build the main record index. }
+    While BufferPointer<BufferEndPointer Do
+      Begin
+        { Add the current record to the record index list. }
+        FRows.Add(BufferPointer);
+        FindNextRecord;
+      End;
+  { Add a row record for the end of the buffer. }
+  FRows.Add(BufferEndPointer);
+  { For delimited files with a named row. }
+  If FormatType=ftDelimited Then
+    If NameRow<>-1 Then
+      Begin
+        { Calculate the number of fields from the header field count. }
+        FoundFields := 1;
+        BufferPointer := FRows[NameRow];
+        While BufferPointer<FRows[NameRow+1] Do
+          Begin
+            If BufferPointer^=FieldTerminator Then
+              Inc(FoundFields);
+            Inc(BufferPointer);
+          End;
+        SetFieldCount(FoundFields);
+        { Setup the field names list. }
+        ParseRow(FNames, NameRow);
+      End;
+  { Set the found record count. }
+  FRecordCount := FRows.Count-FirstRow-1;
+  { Setup the first record. }
+  ParseRow(FCurrentRow, FirstRow);
 End;
 
 End.
