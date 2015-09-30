@@ -70,7 +70,6 @@ Type
     Destructor Destroy; Override;
     Procedure LoadFromStream(InputStream: TStream);
     Procedure LoadFromFile(FileName: String);
-    Procedure Clear;
     Procedure First;
     Procedure Last;
     Procedure Next;
@@ -115,7 +114,6 @@ Begin
   FieldTerminator := CommaTerminator;
   RecordTerminators := StandardRecordTerminators;
   SetFieldCount(1); { Always at least one field: the whole row of the data file. }
-  Clear;
 End;
 
 Constructor TDataStream.Create(InputStream: TStream);
@@ -140,32 +138,18 @@ Begin
   Inherited Destroy;
 End;
 
-Procedure TDataStream.Clear;
-Begin
-  FFieldStarts.Count := 1;
-  FFieldLengths.Count := 1;
-  FNames.Clear;
-  FRows.Clear;
-  FBOF := True;
-  FEOF := True;
-  FRecordCount := 0;
-  FRecordNumber := -1;
-End;
-
 Procedure TDataStream.LoadFromStream(InputStream: TStream);
 Var
   BytesRead: Int64;
   DataBuffer: Array [0..4095] Of Byte;
 Begin
+  Clear;
   Repeat
     BytesRead := InputStream.Read(DataBuffer, SizeOf(DataBuffer));
     Write(DataBuffer, BytesRead);
   Until BytesRead = 0;
   WriteWord(0); { Ensure that the memory data is zero terminated. }
   ParseRows;
-  FRecordNumber := 0;
-  FBOF := False;
-  FEOF := False;
 End;
 
 Procedure TDataStream.LoadFromFile(FileName: String);
@@ -270,7 +254,7 @@ End;
 
 Function TDataStream.GetField(Index: Integer): String;
 Begin
-  WriteLn('GetField ', Index);
+//  WriteLn('GetField ', Index);
   If Index<FCurrentRow.Count Then
     Result := FCurrentRow[Index]
   Else
@@ -319,7 +303,7 @@ End;
 
 Function TDataStream.GetValue(RecordIndex, FieldIndex: Integer): String;
 Begin
-  WriteLn('GetValue ', RecordIndex, ' ', FieldIndex);
+//  WriteLn('GetValue ', RecordIndex, ' ', FieldIndex);
   SetRecordNumber(RecordIndex);
   Result := GetField(FieldIndex);
 End;
@@ -341,7 +325,9 @@ Var
   RecordPointer: PChar;
   CurrentPointer: PChar;
   FieldPointer: PChar;
-  Index, LastIndex: Integer;
+  FieldIndex, LastFieldIndex: Integer;
+  FieldText: String;
+  Index: Integer;
 Begin
   { Clear the return data list. }
   Data.Clear;
@@ -350,8 +336,8 @@ Begin
   { Rebuild the field breaks for each row for delimited files. }
   If FormatType=ftDelimited Then
     Begin
-      Index := 0;
-      While Index<FieldCount Do
+      FieldIndex := 0;
+      While FieldIndex<FieldCount Do
         Begin
           { Move past any whitespace. }
           While CurrentPointer^=' ' Do
@@ -373,21 +359,38 @@ Begin
               While Not (CurrentPointer^ In FieldTerminators) Do
                 Inc(CurrentPointer);
             End;
-          { Add the extracted field extents to the index lists. }
-          FieldStarts[Index] := 1+FieldPointer-RecordPointer;
-          FieldLengths[Index] := CurrentPointer-FieldPointer;
+          { Add the extracted field extents to the FieldIndex lists. }
+          FieldStarts[FieldIndex] := 1+FieldPointer-RecordPointer;
+          FieldLengths[FieldIndex] := CurrentPointer-FieldPointer;
           { Find the start of the next field. }
           While Not (CurrentPointer^ In FieldTerminators) Do
             Inc(CurrentPointer);
           If CurrentPointer^=FieldTerminator Then
             Inc(CurrentPointer);
-          Inc(Index);
+          Inc(FieldIndex);
         End;
     End;
   { Build the record's data list. }
-  LastIndex := FFieldCount-1;
-  For Index := 0 To LastIndex Do
-    Data.Add(Trim(Copy(RecordPointer, FieldStarts[Index], FieldLengths[Index])));
+  LastFieldIndex := FFieldCount-1;
+  For FieldIndex := 0 To LastFieldIndex Do
+    Begin
+      CurrentPointer := RecordPointer;
+      Inc(CurrentPointer, FieldStarts[FieldIndex]-1);
+      SetLength(FieldText, FieldLengths[FieldIndex]);
+      For Index := 1 To FieldLengths[FieldIndex] Do
+        Begin
+          FieldText[Index] := CurrentPointer^;
+          Inc(CurrentPointer);
+        End;
+      FieldText := Trim(FieldText);
+      Data.Add(FieldText);
+    End;
+  { Note: The above loop block is equivolent to:
+
+    Data.Add(Trim(Copy(RecordPointer, FieldStarts[FieldIndex], FieldLengths[FieldIndex])));
+
+    However, Copy performs poorly on large data files, hence the direct character copying above.
+    This code will need further work to accomodate UTF8 extended characters. }
 End;
 
 Procedure TDataStream.ParseRows;
@@ -407,7 +410,11 @@ Var
   End;
 Begin
   { Prepare for the data scan. }
-  Clear;
+  FFieldCount := 1;
+  FFieldStarts.Count := 1;
+  FFieldLengths.Count := 1;
+  FNames.Clear;
+  FRows.Clear;
   BufferPointer := PChar(Memory);
   BufferEndPointer := BufferPointer;
   Inc(BufferEndPointer, Size);
@@ -447,8 +454,18 @@ Begin
       End;
   { Set the found record count. }
   FRecordCount := FRows.Count-FirstRow-1;
-  { Setup the first record. }
-  ParseRow(FCurrentRow, FirstRow);
+  { Setup the first record if there are records. }
+  If FRecordCount>0 Then
+    Begin
+      FBOF := False;
+      FEOF := False;
+      ParseRow(FCurrentRow, FirstRow);
+    End
+  Else
+    Begin
+      FBOF := True;
+      FEOF := True;
+    End;
 End;
 
 End.
