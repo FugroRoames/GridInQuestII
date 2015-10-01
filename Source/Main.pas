@@ -24,7 +24,7 @@ Interface
 Uses
   Classes, SysUtils, FileUtil, LCLIntf, Forms, Controls, Graphics, Dialogs,
   ExtCtrls, Menus, ActnList, StdCtrls, Grids, Clipbrd, Geometry, Geodesy,
-  GlobeCtrl, CoordCtrls, DataStreams, Settings, Options, About;
+  GlobeCtrl, CoordCtrls, DataStreams, Progress, Settings, Options, About;
 
 Type
   TMainForm = Class(TForm)
@@ -108,6 +108,8 @@ Type
     Function DataLoaded: Boolean;
     Procedure DoInputValid(Sender: TObject);
     Procedure SetupDataGrid;
+    Procedure DoLoadProgress(Sender: TObject; Progress: Integer);
+    Procedure DoParseProgress(Sender: TObject; Progress: Integer);
   Public
     { Public declarations. }
     InputLatIndex: Integer;
@@ -131,6 +133,7 @@ Type
 
 Procedure TMainForm.FormCreate(Sender: TObject);
 Begin
+  CreateProgressForm;
   {$IFDEF Darwin}
     ManualFileName := Copy(Application.ExeName, 1, Pos('.app', Application.ExeName)+3);
   {$ELSE}
@@ -162,7 +165,10 @@ Procedure TMainForm.LoadActionExecute(Sender: TObject);
 Begin
   If OpenPointsDialog.Execute Then
     Begin
-      InputData := TDataStream.Create(OpenPointsDialog.FileName);
+      InputData := TDataStream.Create;
+      InputData.OnLoadProgress := @DoLoadProgress;
+      InputData.OnParseProgress := @DoParseProgress;
+      InputData.LoadFromFile(OpenPointsDialog.FileName);
       If DataLoaded Then
         Begin
           SaveAction.Enabled := True;
@@ -356,6 +362,16 @@ Begin
       End;
   DataDrawGrid.Show;
   DataDrawGrid.EndUpdate;
+End;
+
+Procedure TMainForm.DoLoadProgress(Sender: TObject; Progress: Integer);
+Begin
+  ShowProgressForm(Progress, 'Load Data Progress');
+End;
+
+Procedure TMainForm.DoParseProgress(Sender: TObject; Progress: Integer);
+Begin
+//  ShowProgressForm(Progress, 'Parse Data Progress');
 End;
 
 End.

@@ -1,34 +1,61 @@
 object ProgressForm: TProgressForm
-  Left = 467
-  Height = 47
-  Top = 218
-  Width = 224
+  Left = 530
+  Height = 62
+  Top = 331
+  Width = 441
   BorderIcons = []
-  BorderStyle = bsDialog
+  BorderStyle = bsNone
   Caption = 'Progress'
-  ClientHeight = 47
-  ClientWidth = 224
+  ClientHeight = 62
+  ClientWidth = 441
+  FormStyle = fsStayOnTop
   OnClose = FormClose
-  OnCreate = FormCreate
-  PopupMenu = ClosePopupMenu
   Position = poScreenCenter
+  ShowInTaskBar = stNever
   LCLVersion = '1.5'
-  object ProgressBar: TProgressBar
+  object BorderShape: TShape
     Left = 0
-    Height = 47
+    Height = 62
     Top = 0
-    Width = 224
+    Width = 441
     Align = alClient
-    PopupMenu = ClosePopupMenu
-    Smooth = True
-    Step = 1
-    TabOrder = 0
+    Brush.Style = bsClear
   end
-  object ClosePopupMenu: TPopupMenu
-    top = 8
-    object CloseMenuItem: TMenuItem
-      Caption = '&Close This'
-      OnClick = CloseMenuItemClick
+  object ProgressPanel: TPanel
+    Left = 0
+    Height = 62
+    Top = 0
+    Width = 441
+    Align = alClient
+    BevelOuter = bvNone
+    ClientHeight = 62
+    ClientWidth = 441
+    TabOrder = 0
+    object CaptionLabel: TLabel
+      Left = 2
+      Height = 24
+      Top = 2
+      Width = 437
+      Align = alTop
+      Alignment = taCenter
+      AutoSize = False
+      BorderSpacing.Around = 2
+      Caption = '   '
+      Layout = tlCenter
+      ParentColor = False
+    end
+    object ProgressBar: TProgressBar
+      Left = 5
+      Height = 34
+      Top = 28
+      Width = 431
+      Align = alClient
+      BorderSpacing.Left = 5
+      BorderSpacing.Right = 5
+      Smooth = True
+      Step = 1
+      TabOrder = 0
+      BarShowText = True
     end
   end
 end

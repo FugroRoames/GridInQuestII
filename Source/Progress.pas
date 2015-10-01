@@ -23,24 +23,19 @@ Interface
 
 Uses
   Classes, SysUtils, LResources, LCLType, Forms, Controls, Graphics, Dialogs, ComCtrls,
-  ExtCtrls,  Menus;
+  ExtCtrls,  Menus, StdCtrls;
 
 Type
   TProgressForm = Class(TForm)
-    CloseMenuItem: TMenuItem;
-    ClosePopupMenu: TPopupMenu;
+    CaptionLabel: TLabel;
+    ProgressPanel: TPanel;
+    BorderShape: TShape;
     ProgressBar: TProgressBar;
-    Procedure FormCreate(Sender: TObject);
-    Procedure CloseMenuItemClick(Sender: TObject);
     Procedure FormClose(Sender: TObject; Var CloseAction: TCloseAction);
-  Private
-    Activated: Boolean;
   End;
 
-Procedure InitializeProgressForm;
-Procedure SetProgressActivation(Activate: Boolean);
-Procedure ShowProgress(Progress: Integer; Caption: String = '');
-Procedure ShowProgressForm(Caption: String = '');
+Procedure CreateProgressForm;
+Procedure ShowProgressForm(Progress: Integer; NewCaption: String = '');
 Procedure HideProgressForm;
 
 Implementation
@@ -48,102 +43,59 @@ Implementation
 Var
   ProgressForm: TProgressForm;
 
-Procedure InitializeProgressForm;
+Procedure CreateProgressForm;
 Begin
-  Application.CreateForm(TProgressForm, ProgressForm);
+  If Not Assigned(ProgressForm) Then
+    ProgressForm := TProgressForm.Create(Nil);
 End;
 
-Procedure SetProgressActivation(Activate: Boolean);
+Procedure ShowProgressForm(Progress: Integer; NewCaption: String = '');
 Begin
-  Try
-    ProgressForm.Activated := Activate;
-  Except
-    LogErrorMessage('Progress Form Enable Error');
-  End;
-End;
-
-Procedure ShowProgress(Progress: Integer; Caption: String = '');
-Begin
-  Try
-    If ProgressForm=Nil Then
-      InitializeProgressForm;
-    If ProgressForm.Activated Then
+  If Assigned(ProgressForm) Then
+    With ProgressForm Do
       Begin
-        ShowProgressForm(Caption);
-        With ProgressForm.ProgressBar Do
+        CaptionLabel.Caption := NewCaption;
+        If Showing Then
+          BringToFront
+        Else
+          ShowOnTop;
+        With ProgressBar Do
           Begin
-            If Position<>Progress Then
-              StepBy(Progress-Position);
+            Screen.Cursor := crAppStart;
+            Position := Progress;
             If Position=Max Then
-              Begin
-                Application.ProcessMessages;
-                ProgressForm.Close;
-              End;
+              Close;
           End;
+        Update;
+        Sleep(10);
       End;
-  Except
-    // TODO: Close on error
-  End;
-End;
-
-Procedure ShowProgressForm(Caption: String = '');
-Begin
-  Screen.Cursor := crAppStart;
-  Try
-    If ProgressForm=Nil Then
-      InitializeProgressForm;
-    If ProgressForm.Activated Then
-      Begin
-        If Caption<>EmptyStr Then
-          Begin
-            ProgressForm.Caption := Caption;
-            ProgressForm.Update;
-          End;
-        If Not ProgressForm.Showing Then
-          ProgressForm.Show;
-        ProgressForm.BringToFront;
-      End;
-  Except
-    // TODO: Close on error
-  End;
 End;
 
 Procedure HideProgressForm;
 Begin
-  Screen.Cursor := crDefault;
-  If ProgressForm<>Nil Then
-    Try
+  If Assigned(ProgressForm) Then
+    Begin
       ProgressForm.Close;
       If Assigned(Application.MainForm) Then
         Application.MainForm.BringToFront;
-    Except
-      // TODO: Close on error
     End;
-End;
-
-Procedure TProgressForm.FormCreate(Sender: TObject);
-Begin
-//  {$IFDEF Windows}
-//  If Assigned(Application.MainForm) Then
-//    SetWindowLong(Self.Handle,GWL_HWNDPARENT,Application.MainForm.Handle);
-//  {$ENDIF}
-  ProgressBar.DoubleBuffered := True;
-  Activated := False;
 End;
 
 Procedure TProgressForm.FormClose(Sender: TObject; Var CloseAction: TCloseAction);
 Begin
+  Screen.Cursor := crDefault;
   CloseAction := caHide;
-End;
-
-Procedure TProgressForm.CloseMenuItemClick(Sender: TObject);
-Begin
-  Close;
 End;
 
 Initialization
 
 {$I Progress.lrs}
+
+ProgressForm := Nil;
+
+Finalization
+
+FreeAndNil(ProgressForm);
 
 End.
 
