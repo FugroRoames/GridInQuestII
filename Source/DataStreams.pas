@@ -28,6 +28,9 @@ Type
   TFormatType = (ftDelimited, ftFixed);
 
 Type
+  TOnProgressEvent = Procedure(Sender: TObject; Progress: Integer) Of Object;
+
+Type
   TDataStream = Class(TMemoryStream)
   Private
     FBOF: Boolean;
@@ -41,6 +44,8 @@ Type
     FFormatType: TFormatType;
     FNameRow: Integer;
     FNames: TStringList;
+    FOnLoadProgress: TOnProgressEvent;
+    FOnParseProgress: TOnProgressEvent;
     FRows: TFPList;
     FRecordCount: Integer;
     FRecordNumber: Integer;
@@ -90,6 +95,8 @@ Type
     Property RecordNumber: Integer Read FRecordNumber Write SetRecordNumber;
     Property TextDelimiter: Char Read FTextDelimiter Write FTextDelimiter;
     Property Values[RecordIndex, FieldIndex: Integer]: String Read GetValue; Default;
+    Property OnLoadProgress: TOnProgressEvent Read FOnLoadProgress Write FOnLoadProgress;
+    Property OnParseProgress: TOnProgressEvent Read FOnParseProgress Write FOnParseProgress;
   End;
 
 Const
@@ -141,12 +148,31 @@ End;
 Procedure TDataStream.LoadFromStream(InputStream: TStream);
 Var
   BytesRead: Int64;
-  DataBuffer: Array [0..4095] Of Byte;
+  BytesLoaded: Int64;
+  DataSize: Int64;
+  DataBuffer: Array [0..8188] Of Byte;
+  Progress, LastProgress: Integer;
 Begin
+  BytesLoaded := 0;
+  Progress := 0;
+  LastProgress := 0;
+  If Assigned(FOnLoadProgress) Then
+    DataSize := InputStream.Size; { Only bother fetching the data size if reporting progress. }
   Clear;
   Repeat
     BytesRead := InputStream.Read(DataBuffer, SizeOf(DataBuffer));
+    Inc(BytesLoaded, BytesRead);
     Write(DataBuffer, BytesRead);
+    If Assigned(FOnLoadProgress) Then
+      If DataSize>10000000 Then { Data must be >10Mb before progress events are fired. }
+        Begin
+          Progress := Integer((100*BytesLoaded) Div DataSize);
+          If Progress>100 Then
+            Progress := 100;
+          If Progress>LastProgress Then
+            FOnLoadProgress(Self, Progress);
+          LastProgress := Progress;
+        End;
   Until BytesRead = 0;
   WriteWord(0); { Ensure that the memory data is zero terminated. }
   ParseRows;
