@@ -621,15 +621,15 @@ object MainForm: TMainForm
   object OpenPointsDialog: TOpenDialog
     Title = 'Open Data Points File'
     DefaultExt = '.csv'
-    Filter = 'Comma Separated Text|*.csv'
-    left = 600
-    top = 88
+    Filter = 'Comma Separated Text|*.csv|Tab Delimited Text|*.tab|General Text|*.txt|All Files|*.*'
+    left = 872
+    top = 8
   end
   object SavePointsDialog: TSaveDialog
     Title = 'Save Data Points File'
     DefaultExt = '.csv'
-    Filter = 'Comma Separated Text|csv'
-    left = 744
-    top = 88
+    Filter = 'Comma Separated Text|*.csv|Tab Delimited Text|*.tab|General Text|*.txt'
+    left = 1040
+    top = 8
   end
 end
