@@ -102,6 +102,7 @@ Type
 Const
   TabTerminator: Char = #9;
   CommaTerminator: Char = ',';
+  MinProgressSize: Int64 = 10485760; { 10Mb }
   StandardRecordTerminators: TSysCharSet = [#0, #10, #13];
   StandardTextDelimiter: Char = '"';
 
@@ -156,15 +157,22 @@ Begin
   BytesLoaded := 0;
   Progress := 0;
   LastProgress := 0;
+  { If load progress events are required. }
   If Assigned(FOnLoadProgress) Then
-    DataSize := InputStream.Size; { Only bother fetching the data size if reporting progress. }
+      Begin
+        DataSize := InputStream.Size;
+        { If the data file is large enough, send the first load event. }
+        If DataSize>MinProgressSize Then
+          FOnLoadProgress(Self, 0);
+      End;
   Clear;
   Repeat
     BytesRead := InputStream.Read(DataBuffer, SizeOf(DataBuffer));
     Inc(BytesLoaded, BytesRead);
     Write(DataBuffer, BytesRead);
+    { If load progress events are required, send the events. }
     If Assigned(FOnLoadProgress) Then
-      If DataSize>10000000 Then { Data must be >10Mb before progress events are fired. }
+      If DataSize>MinProgressSize Then
         Begin
           Progress := Integer((100*BytesLoaded) Div DataSize);
           If Progress>100 Then
@@ -175,6 +183,12 @@ Begin
         End;
   Until BytesRead = 0;
   WriteWord(0); { Ensure that the memory data is zero terminated. }
+  { If load progress events are required, send the last event. }
+  If Assigned(FOnLoadProgress) Then
+    If DataSize>MinProgressSize Then
+      Begin
+        FOnLoadProgress(Self, 0);
+      End;
   ParseRows;
 End;
 
@@ -422,9 +436,11 @@ End;
 Procedure TDataStream.ParseRows;
 Var
   BufferPointer: PChar;
+  BufferStartPointer: PChar;
   BufferEndPointer: PChar;
   RowIndex: Integer;
   FoundFields: Integer;
+  Progress, LastProgress: Integer;
   Procedure FindNextRecord;
   Begin
     While Not (BufferPointer^ In RecordTerminators) Do
@@ -435,6 +451,10 @@ Var
     Inc(RowIndex);
   End;
 Begin
+  { If parse progress events are required, send the first event. }
+  If Assigned(FOnParseProgress) Then
+    If Size>MinProgressSize Then
+      FOnParseProgress(Self, 0);
   { Prepare for the data scan. }
   FFieldCount := 1;
   FFieldStarts.Count := 1;
@@ -442,6 +462,7 @@ Begin
   FNames.Clear;
   FRows.Clear;
   BufferPointer := PChar(Memory);
+  BufferStartPointer := BufferPointer;
   BufferEndPointer := BufferPointer;
   Inc(BufferEndPointer, Size);
   { Clear any control characters at the end of the data buffer. }
@@ -455,6 +476,17 @@ Begin
     { Build the main record index. }
     While BufferPointer<BufferEndPointer Do
       Begin
+        { If parse progress events are required. }
+        If Assigned(FOnParseProgress) Then
+          If Size>MinProgressSize Then
+            Begin
+              Progress := Integer((100*(BufferPointer-BufferStartPointer)) Div Size);
+              If Progress>100 Then
+                Progress := 100;
+              If Progress>LastProgress Then
+                FOnParseProgress(Self, Progress);
+              LastProgress := Progress;
+            End;
         { Add the current record to the record index list. }
         FRows.Add(BufferPointer);
         FindNextRecord;
@@ -492,6 +524,10 @@ Begin
       FBOF := True;
       FEOF := True;
     End;
+  { If parse progress events are required, send the final event. }
+  If Assigned(FOnParseProgress) Then
+    If Size>MinProgressSize Then
+      FOnParseProgress(Self, 100);
 End;
 
 End.

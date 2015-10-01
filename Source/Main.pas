@@ -371,7 +371,7 @@ End;
 
 Procedure TMainForm.DoParseProgress(Sender: TObject; Progress: Integer);
 Begin
-//  ShowProgressForm(Progress, 'Parse Data Progress');
+  ShowProgressForm(Progress, 'Parse Data Progress');
 End;
 
 End.

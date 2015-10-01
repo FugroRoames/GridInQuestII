@@ -67,13 +67,17 @@ Begin
             Screen.Cursor := crAppStart;
             Position := Progress;
             If Position=Max Then
-              Begin
-                Close;
-                Application.MainForm.Update;
-              End;
+              If Showing Then
+                Begin
+                  Close;
+                  Application.MainForm.Update;
+                End;
           End;
-        Update;
-        Sleep(10);
+        If Showing Then
+          Begin
+            Update;
+            Sleep(5);
+          End;
       End;
 End;
 
