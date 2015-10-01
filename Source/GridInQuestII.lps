@@ -2,13 +2,14 @@
 <CONFIG>
   <ProjectSession>
     <Version Value="9"/>
-    <BuildModes Active="Debug"/>
+    <BuildModes Active="Release"/>
     <Units Count="75">
       <Unit0>
         <Filename Value="GridInQuestII.lpr"/>
         <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
         <TopLine Value="22"/>
-        <CursorPos X="44" Y="39"/>
+        <CursorPos X="3" Y="38"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
       </Unit0>
@@ -18,7 +19,6 @@
         <ComponentName Value="MainForm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
         <TopLine Value="132"/>
         <CursorPos X="3" Y="137"/>
@@ -68,7 +68,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="163"/>
         <CursorPos X="44" Y="166"/>
-        <UsageCount Value="184"/>
+        <UsageCount Value="185"/>
       </Unit6>
       <Unit7>
         <Filename Value="CSVUtils.pas"/>
@@ -76,7 +76,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="98"/>
         <CursorPos Y="117"/>
-        <UsageCount Value="178"/>
+        <UsageCount Value="179"/>
       </Unit7>
       <Unit8>
         <Filename Value="coordutils.pas"/>
@@ -84,14 +84,14 @@
         <UnitName Value="CoordUtils"/>
         <EditorIndex Value="-1"/>
         <CursorPos Y="33"/>
-        <UsageCount Value="128"/>
+        <UsageCount Value="129"/>
       </Unit8>
       <Unit9>
         <Filename Value="readme.txt"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="6" Y="3"/>
-        <UsageCount Value="105"/>
+        <UsageCount Value="106"/>
         <DefaultSyntaxHighlighter Value="None"/>
       </Unit9>
       <Unit10>
@@ -100,7 +100,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="140"/>
         <CursorPos X="69" Y="145"/>
-        <UsageCount Value="101"/>
+        <UsageCount Value="102"/>
       </Unit10>
       <Unit11>
         <Filename Value="OSiOSNI.pas"/>
@@ -296,8 +296,8 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="3"/>
-        <TopLine Value="39"/>
-        <CursorPos X="32" Y="46"/>
+        <TopLine Value="48"/>
+        <CursorPos Y="63"/>
         <UsageCount Value="49"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>

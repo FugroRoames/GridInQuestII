@@ -58,13 +58,19 @@ Begin
         If Showing Then
           BringToFront
         Else
-          ShowOnTop;
+          Begin
+            Application.MainForm.Update;
+            ShowOnTop;
+          End;
         With ProgressBar Do
           Begin
             Screen.Cursor := crAppStart;
             Position := Progress;
             If Position=Max Then
-              Close;
+              Begin
+                Close;
+                Application.MainForm.Update;
+              End;
           End;
         Update;
         Sleep(10);

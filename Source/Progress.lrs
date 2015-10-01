@@ -1,20 +1,21 @@
 { This is an automatically generated lazarus resource file }
 
 LazarusResources.Add('TProgressForm','FORMDATA',[
-  'TPF0'#13'TProgressForm'#12'ProgressForm'#4'Left'#3#18#2#6'Height'#2'>'#3'Top'
-  +#3'K'#1#5'Width'#3#185#1#11'BorderIcons'#11#0#11'BorderStyle'#7#6'bsNone'#7
-  +'Caption'#6#8'Progress'#12'ClientHeight'#2'>'#11'ClientWidth'#3#185#1#9'Form'
+  'TPF0'#13'TProgressForm'#12'ProgressForm'#4'Left'#3#24#2#6'Height'#2'E'#3'Top'
+  +#3'm'#1#5'Width'#3#185#1#11'BorderIcons'#11#0#11'BorderStyle'#7#6'bsNone'#7
+  +'Caption'#6#8'Progress'#12'ClientHeight'#2'E'#11'ClientWidth'#3#185#1#9'Form'
   +'Style'#7#11'fsStayOnTop'#7'OnClose'#7#9'FormClose'#8'Position'#7#14'poScree'
   +'nCenter'#13'ShowInTaskBar'#7#7'stNever'#10'LCLVersion'#6#3'1.5'#0#6'TShape'
-  +#11'BorderShape'#4'Left'#2#0#6'Height'#2'>'#3'Top'#2#0#5'Width'#3#185#1#5'Al'
+  +#11'BorderShape'#4'Left'#2#0#6'Height'#2'E'#3'Top'#2#0#5'Width'#3#185#1#5'Al'
   +'ign'#7#8'alClient'#11'Brush.Style'#7#7'bsClear'#0#0#6'TPanel'#13'ProgressPa'
-  +'nel'#4'Left'#2#0#6'Height'#2'>'#3'Top'#2#0#5'Width'#3#185#1#5'Align'#7#8'al'
-  +'Client'#10'BevelOuter'#7#6'bvNone'#12'ClientHeight'#2'>'#11'ClientWidth'#3
-  +#185#1#8'TabOrder'#2#0#0#6'TLabel'#12'CaptionLabel'#4'Left'#2#2#6'Height'#2
-  +#24#3'Top'#2#2#5'Width'#3#181#1#5'Align'#7#5'alTop'#9'Alignment'#7#8'taCente'
-  +'r'#8'AutoSize'#8#20'BorderSpacing.Around'#2#2#7'Caption'#6#3'   '#6'Layout'
-  +#7#8'tlCenter'#11'ParentColor'#8#0#0#12'TProgressBar'#11'ProgressBar'#4'Left'
-  +#2#5#6'Height'#2'"'#3'Top'#2#28#5'Width'#3#175#1#5'Align'#7#8'alClient'#18'B'
-  +'orderSpacing.Left'#2#5#19'BorderSpacing.Right'#2#5#6'Smooth'#9#4'Step'#2#1#8
-  +'TabOrder'#2#0#11'BarShowText'#9#0#0#0#0
+  +'nel'#4'Left'#2#0#6'Height'#2'E'#3'Top'#2#0#5'Width'#3#185#1#5'Align'#7#8'al'
+  +'Client'#10'BevelOuter'#7#6'bvNone'#11'BorderStyle'#7#8'bsSingle'#12'ClientH'
+  +'eight'#2'A'#11'ClientWidth'#3#181#1#8'TabOrder'#2#0#0#6'TLabel'#12'CaptionL'
+  +'abel'#4'Left'#2#5#6'Height'#2#24#3'Top'#2#5#5'Width'#3#171#1#5'Align'#7#5'a'
+  +'lTop'#9'Alignment'#7#8'taCenter'#8'AutoSize'#8#18'BorderSpacing.Left'#2#5#17
+  +'BorderSpacing.Top'#2#5#19'BorderSpacing.Right'#2#5#7'Caption'#6#3'   '#6'La'
+  +'yout'#7#8'tlCenter'#11'ParentColor'#8#0#0#12'TProgressBar'#11'ProgressBar'#4
+  +'Left'#2#5#6'Height'#2#31#3'Top'#2#29#5'Width'#3#171#1#5'Align'#7#8'alClient'
+  +#18'BorderSpacing.Left'#2#5#19'BorderSpacing.Right'#2#5#20'BorderSpacing.Bot'
+  +'tom'#2#5#6'Smooth'#9#4'Step'#2#1#8'TabOrder'#2#0#11'BarShowText'#9#0#0#0#0
 ]);

@@ -1,12 +1,12 @@
 object ProgressForm: TProgressForm
-  Left = 530
-  Height = 62
-  Top = 331
+  Left = 536
+  Height = 69
+  Top = 365
   Width = 441
   BorderIcons = []
   BorderStyle = bsNone
   Caption = 'Progress'
-  ClientHeight = 62
+  ClientHeight = 69
   ClientWidth = 441
   FormStyle = fsStayOnTop
   OnClose = FormClose
@@ -15,7 +15,7 @@ object ProgressForm: TProgressForm
   LCLVersion = '1.5'
   object BorderShape: TShape
     Left = 0
-    Height = 62
+    Height = 69
     Top = 0
     Width = 441
     Align = alClient
@@ -23,35 +23,39 @@ object ProgressForm: TProgressForm
   end
   object ProgressPanel: TPanel
     Left = 0
-    Height = 62
+    Height = 69
     Top = 0
     Width = 441
     Align = alClient
     BevelOuter = bvNone
-    ClientHeight = 62
-    ClientWidth = 441
+    BorderStyle = bsSingle
+    ClientHeight = 65
+    ClientWidth = 437
     TabOrder = 0
     object CaptionLabel: TLabel
-      Left = 2
+      Left = 5
       Height = 24
-      Top = 2
-      Width = 437
+      Top = 5
+      Width = 427
       Align = alTop
       Alignment = taCenter
       AutoSize = False
-      BorderSpacing.Around = 2
+      BorderSpacing.Left = 5
+      BorderSpacing.Top = 5
+      BorderSpacing.Right = 5
       Caption = '   '
       Layout = tlCenter
       ParentColor = False
     end
     object ProgressBar: TProgressBar
       Left = 5
-      Height = 34
-      Top = 28
-      Width = 431
+      Height = 31
+      Top = 29
+      Width = 427
       Align = alClient
       BorderSpacing.Left = 5
       BorderSpacing.Right = 5
+      BorderSpacing.Bottom = 5
       Smooth = True
       Step = 1
       TabOrder = 0
