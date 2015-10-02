@@ -63,7 +63,7 @@ End;
 
 Constructor TProgressDisplay.Create;
 Begin
-  FDisplayHeight := Screen.Height Div 10;
+  FDisplayHeight := Screen.Height Div 15;
   FDisplayWidth := Screen.Width Div 5;
   FProgressForm := TForm.Create(Nil);
   With FProgressForm Do
@@ -83,7 +83,10 @@ Procedure TProgressDisplay.Hide;
 Begin
   With FProgressForm Do
     If Showing Then
-      Hide;
+      Begin
+        Hide;
+        Application.MainForm.Update;
+      End;
 End;
 
 Procedure TProgressDisplay.Show(NewCaption: String = '');
@@ -112,6 +115,9 @@ Begin
 End;
 
 Procedure TProgressDisplay.DoPaint(Sender: TObject);
+Var
+  CompletedRect: TRect;
+  Style: TTextStyle;
 Begin
   With FProgressForm.Canvas Do
     Begin
@@ -119,29 +125,40 @@ Begin
       FillRect(FProgressForm.ClientRect);
       Pen.Color := clBlack;
       Rectangle(FProgressForm.ClientRect);
+      CompletedRect := FProgressRect;
+      With CompletedRect Do
+        Right := Left+(FProgress*(Right-Left) Div 100);
+      Brush.Color := clMoneyGreen;
+      FillRect(CompletedRect);
+      Brush.Style := bsClear;
       Rectangle(FProgressRect);
+      Font.Color := clBlack;
+      Font.Size := 0;
+      Font.Quality := fqCleartypeNatural;
+      With Style Do
+        Begin
+          Alignment := taLeftJustify;
+          Layout := tlTop;
+          SingleLine := True;
+          Clipping := True;
+          ExpandTabs := False;
+          ShowPrefix := False;
+          Wordbreak := False;
+          Opaque := False;
+          SystemFont := False;
+          RightToLeft := False;
+          EndEllipsis := True;
+        End;
+      TextRect(FProgressForm.ClientRect, 5, 5, FCaption, Style);
+      With Style Do
+        Begin
+          Alignment := taCenter;
+          Layout := tlCenter;
+        End;
+      TextRect(FProgressRect, 0, 0, IntToStr(FProgress)+'%', Style);
     End;
 End;
-
-Procedure TProgressDisplay.SetProgress(Value: Integer);
-Begin
-  If Value<0 Then
-    Value := 0;
-  If Value>100 Then
-    Value := 100;
-  If FProgress<>Value Then
-    Begin
-      FProgress := Value;
-      FProgressForm.Repaint;
-      If Value=100 Then
-        Hide;
-    End;
-End;
-
-//Try
-    {With TLabel.Create(ProgressForm) Do
-      Begin
-        Align := alTop;
+{       Align := alTop;
         Alignment := taRightJustify;
         Font.Color := clBlack;
         Font.Size := 10;
@@ -150,14 +167,7 @@ End;
         Height := 20;
         Layout := tlCenter;
         Parent := ProgressForm;
-       End;    }
-  //Application.ProcessMessages;
-// Except
-// End;
 
-{  If Assigned(ProgressForm) Then
-    With ProgressForm Do
-      Begin
         CaptionLabel.Caption := NewCaption;
         If Showing Then
           BringToFront
@@ -177,25 +187,20 @@ End;
                   Hide;
                   Application.MainForm.Update;
                 End;
-          End;
-        If Showing Then
-          Begin
-            Update;
-            Sleep(5);
-          End;
-      End;  }
-
-{  If Assigned(ProgressForm) Then
-    Begin
-      ProgressForm.Hide;
-      If Assigned(Application.MainForm) Then
-        Application.MainForm.BringToFront;
-    End;}
-{Procedure TProgressForm.FormClose(Sender: TObject; Var CloseAction: TCloseAction);
-Begin
-  Screen.Cursor := crDefault;
-  CloseAction := caHide;
-End;
 }
+
+Procedure TProgressDisplay.SetProgress(Value: Integer);
+Begin
+  If Value<0 Then
+    Value := 0;
+  If Value>100 Then
+    Value := 100;
+  If FProgress<>Value Then
+    Begin
+      FProgress := Value;
+      FProgressForm.Repaint;
+    End;
+End;
+
 End.
 

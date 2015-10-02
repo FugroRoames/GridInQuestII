@@ -180,6 +180,7 @@ Begin
           Begin
             ShowMessage('Insufficient memory to load data.');
             InputData.Free;
+            ProgressDisplay.Hide;
             Screen.Cursor := crDefault;
             Exit;
           End;
@@ -189,6 +190,7 @@ Begin
       InputPanel.Hide;
       OutputPanel.Hide;
       SetupDataGrid;
+      ProgressDisplay.Hide;
       ShowSettingsForm(InputData);
       Screen.Cursor := crDefault;
     End;
@@ -391,19 +393,19 @@ End;
 
 Procedure TMainForm.DoLoadProgress(Sender: TObject; Progress: Integer);
 Begin
-{  If Progress=0 Then
+  If Progress=0 Then
     ProgressDisplay.Show('Load Data Progress')
   Else
     ProgressDisplay.Progress := Progress;
-}End;
+End;
 
 Procedure TMainForm.DoParseProgress(Sender: TObject; Progress: Integer);
 Begin
- { If Progress=0 Then
+  If Progress=0 Then
     ProgressDisplay.Show('Parse Data Progress')
   Else
     ProgressDisplay.Progress := Progress;
-}End;
+End;
 
 End.
 
