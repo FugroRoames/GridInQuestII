@@ -1,7 +1,7 @@
 object SettingsForm: TSettingsForm
-  Left = 872
+  Left = 482
   Height = 359
-  Top = 263
+  Top = 220
   Width = 520
   BorderStyle = bsDialog
   Caption = 'Data Settings'
@@ -46,9 +46,9 @@ object SettingsForm: TSettingsForm
   end
   object HeaderRowCheckBox: TCheckBox
     Left = 32
-    Height = 25
+    Height = 22
     Top = 256
-    Width = 192
+    Width = 156
     Caption = 'First Row is Header'
     Checked = True
     Font.Name = 'Arial'
@@ -58,15 +58,15 @@ object SettingsForm: TSettingsForm
   end
   object StartRowLabel: TLabel
     Left = 264
-    Height = 24
+    Height = 13
     Top = 257
-    Width = 122
+    Width = 74
     Caption = 'Data Start Row'
     ParentColor = False
   end
   object StartRowEdit: TEdit
     Left = 432
-    Height = 38
+    Height = 21
     Top = 248
     Width = 64
     NumbersOnly = True
@@ -75,38 +75,38 @@ object SettingsForm: TSettingsForm
   end
   object FirstColumnComboBox: TComboBox
     Left = 24
-    Height = 38
+    Height = 21
     Top = 136
     Width = 153
-    ItemHeight = 24
+    ItemHeight = 13
     OnChange = FirstColumnComboBoxChange
     Style = csDropDownList
     TabOrder = 3
   end
   object SecondColumnComboBox: TComboBox
     Left = 184
-    Height = 38
+    Height = 21
     Top = 136
     Width = 151
-    ItemHeight = 24
+    ItemHeight = 13
     OnChange = SecondColumnComboBoxChange
     Style = csDropDownList
     TabOrder = 4
   end
   object ThirdColumnComboBox: TComboBox
     Left = 345
-    Height = 38
+    Height = 21
     Top = 136
     Width = 151
-    ItemHeight = 24
+    ItemHeight = 13
     Style = csDropDownList
     TabOrder = 5
   end
   object ErrorHandlingLabel: TLabel
     Left = 16
-    Height = 24
+    Height = 13
     Top = 187
-    Width = 121
+    Width = 72
     Caption = 'Error Handling:'
     ParentColor = False
   end
@@ -120,10 +120,10 @@ object SettingsForm: TSettingsForm
   end
   object ErrorHandlingComboBox: TComboBox
     Left = 152
-    Height = 38
+    Height = 21
     Top = 184
     Width = 159
-    ItemHeight = 30
+    ItemHeight = 13
     ItemIndex = 0
     Items.Strings = (
       'Skip Records'
@@ -135,16 +135,16 @@ object SettingsForm: TSettingsForm
   end
   object InputSystemComboBox: TComboBox
     Left = 192
-    Height = 38
+    Height = 21
     Top = 96
     Width = 303
-    ItemHeight = 24
+    ItemHeight = 13
     Style = csDropDownList
     TabOrder = 8
   end
   object Label1: TLabel
     Left = 0
-    Height = 24
+    Height = 13
     Top = 0
     Width = 520
     Align = alTop
@@ -154,7 +154,7 @@ object SettingsForm: TSettingsForm
   object Panel1: TPanel
     Left = 0
     Height = 50
-    Top = 24
+    Top = 13
     Width = 520
     Align = alTop
     ClientHeight = 50
@@ -162,12 +162,12 @@ object SettingsForm: TSettingsForm
     TabOrder = 9
     object InputSystemComboBox1: TComboBox
       Left = 392
-      Height = 38
+      Height = 21
       Top = 0
       Width = 100
       BorderSpacing.Left = 400
       BorderSpacing.Around = 5
-      ItemHeight = 24
+      ItemHeight = 13
       Style = csDropDownList
       TabOrder = 0
     end

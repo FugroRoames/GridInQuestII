@@ -174,9 +174,10 @@ Begin
     If Assigned(FOnLoadProgress) Then
       If DataSize>MinProgressSize Then
         Begin
-          Progress := Integer((100*BytesLoaded) Div DataSize);
-          If Progress>100 Then
-            Progress := 100;
+          Progress := Integer((99*BytesLoaded) Div DataSize);
+          { Limit the progress reporting to 99 as 100 will be sent once as the last event below. }
+          If Progress>99 Then
+            Progress := 99;
           If Progress>LastProgress Then
             FOnLoadProgress(Self, Progress);
           LastProgress := Progress;
@@ -187,7 +188,7 @@ Begin
   If Assigned(FOnLoadProgress) Then
     If DataSize>MinProgressSize Then
       Begin
-        FOnLoadProgress(Self, 0);
+        FOnLoadProgress(Self, 100);
       End;
   ParseRows;
 End;
@@ -459,8 +460,10 @@ Begin
   FFieldCount := 1;
   FFieldStarts.Count := 1;
   FFieldLengths.Count := 1;
+  FCurrentRow.Clear;
   FNames.Clear;
   FRows.Clear;
+  FRecordCount := 0;
   BufferPointer := PChar(Memory);
   BufferStartPointer := BufferPointer;
   BufferEndPointer := BufferPointer;
@@ -480,9 +483,10 @@ Begin
         If Assigned(FOnParseProgress) Then
           If Size>MinProgressSize Then
             Begin
-              Progress := Integer((100*(BufferPointer-BufferStartPointer)) Div Size);
-              If Progress>100 Then
-                Progress := 100;
+              Progress := Integer((99*Int64(BufferPointer-BufferStartPointer)) Div Size);
+              { Limit the progress reporting to 99 as 100 will be sent once as the last event below. }
+              If Progress>99 Then
+                Progress := 99;
               If Progress>LastProgress Then
                 FOnParseProgress(Self, Progress);
               LastProgress := Progress;

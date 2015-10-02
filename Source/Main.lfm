@@ -1,10 +1,10 @@
 object MainForm: TMainForm
-  Left = 434
+  Left = 451
   Height = 661
-  Top = 135
+  Top = 104
   Width = 1190
   Caption = 'Grid InQuest II'
-  ClientHeight = 625
+  ClientHeight = 641
   ClientWidth = 1190
   Font.Name = 'Arial'
   Font.Quality = fqCleartype
@@ -420,17 +420,17 @@ object MainForm: TMainForm
   LCLVersion = '1.5'
   object SidePanel: TPanel
     Left = 0
-    Height = 625
+    Height = 641
     Top = 0
     Width = 533
     Align = alLeft
     BevelOuter = bvNone
-    ClientHeight = 625
+    ClientHeight = 641
     ClientWidth = 533
     TabOrder = 0
     object DataDrawGrid: TDrawGrid
       Left = 0
-      Height = 625
+      Height = 641
       Top = 0
       Width = 533
       Align = alClient
@@ -450,7 +450,7 @@ object MainForm: TMainForm
   end
   object PanelSplitter: TSplitter
     Left = 533
-    Height = 625
+    Height = 641
     Top = 0
     Width = 5
     ParentColor = False
@@ -461,6 +461,7 @@ object MainForm: TMainForm
     top = 8
     object FileMenuItem: TMenuItem
       Caption = 'File'
+      OnClick = FileMenuItemClick
       object LoadMenuItem: TMenuItem
         Action = LoadAction
       end
@@ -544,22 +545,23 @@ object MainForm: TMainForm
     left = 728
     top = 8
     object LoadAction: TAction
-      Caption = '&Load Points...'
+      Caption = '&Load Data Points...'
       OnExecute = LoadActionExecute
     end
     object SaveAction: TAction
-      Caption = '&Save Points...'
+      Caption = '&Save Data Points...'
       Enabled = False
       OnExecute = SaveActionExecute
     end
     object UnloadAction: TAction
-      Caption = '&Unload Points'
+      Caption = '&Unload Data Points'
       Enabled = False
       OnExecute = UnloadActionExecute
     end
     object ExitAction: TAction
       Caption = 'E&xit'
       OnExecute = ExitActionExecute
+      ShortCut = 16472
     end
     object ClearAction: TAction
       Caption = '&Clear'
@@ -616,6 +618,7 @@ object MainForm: TMainForm
     object AboutAction: TAction
       Caption = '&About'
       OnExecute = AboutActionExecute
+      ShortCut = 16449
     end
   end
   object OpenPointsDialog: TOpenDialog

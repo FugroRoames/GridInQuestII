@@ -26,32 +26,136 @@ Uses
   ExtCtrls,  Menus, StdCtrls;
 
 Type
-  TProgressForm = Class(TForm)
-    CaptionLabel: TLabel;
-    ProgressPanel: TPanel;
-    BorderShape: TShape;
-    ProgressBar: TProgressBar;
-    Procedure FormClose(Sender: TObject; Var CloseAction: TCloseAction);
+  TProgressDisplay = Class
+  Private
+    FCaption: String;
+    FDisplayHeight: Integer;
+    FDisplayWidth: Integer;
+    FProgress: Integer;
+    FProgressForm: TForm;
+    FProgressRect: TRect;
+    Procedure DoPaint(Sender: TObject);
+    Procedure SetProgress(Value: Integer);
+    //CaptionLabel: TLabel;
+    //ProgressPanel: TPanel;
+    //BorderShape: TShape;
+    //ProgressBar: TProgressBar;
+    //Procedure FormClose(Sender: TObject; Var CloseAction: TCloseAction);
+  Public
+    Constructor Create;
+    Destructor Free;
+    Procedure Hide;
+    Procedure Show(NewCaption: String = '');
+    Property Caption: String Read FCaption Write FCaption;
+    Property DisplayHeight: Integer Read FDisplayHeight Write FDisplayHeight;
+    Property DisplayWidth: Integer Read FDisplayWidth Write FDisplayWidth;
+    Property Progress: Integer Read FProgress Write SetProgress;
   End;
 
-Procedure CreateProgressForm;
-Procedure ShowProgressForm(Progress: Integer; NewCaption: String = '');
-Procedure HideProgressForm;
+Function CreateProgressDisplay(): TProgressDisplay;
 
 Implementation
 
-Var
-  ProgressForm: TProgressForm;
-
-Procedure CreateProgressForm;
+Function CreateProgressDisplay(): TProgressDisplay;
 Begin
-  If Not Assigned(ProgressForm) Then
-    ProgressForm := TProgressForm.Create(Nil);
+  Result := TProgressDisplay.Create;
 End;
 
-Procedure ShowProgressForm(Progress: Integer; NewCaption: String = '');
+Constructor TProgressDisplay.Create;
 Begin
-  If Assigned(ProgressForm) Then
+  FDisplayHeight := Screen.Height Div 10;
+  FDisplayWidth := Screen.Width Div 5;
+  FProgressForm := TForm.Create(Nil);
+  With FProgressForm Do
+    Begin
+      BorderStyle := bsNone;
+      FormStyle := fsStayOnTop;
+      OnPaint := @DoPaint;
+    End;
+End;
+
+Destructor TProgressDisplay.Free;
+Begin
+  FProgressForm.Free;
+End;
+
+Procedure TProgressDisplay.Hide;
+Begin
+  With FProgressForm Do
+    If Showing Then
+      Hide;
+End;
+
+Procedure TProgressDisplay.Show(NewCaption: String = '');
+Begin
+  With FProgressForm Do
+    Begin
+      If NewCaption = '' Then
+        FCaption := 'Progress'
+      Else
+        FCaption := NewCaption;
+      If Not Showing Then
+        Begin
+          Application.MainForm.Update;
+          SetBounds((Screen.Width-DisplayWidth) Div 2, (Screen.Height-DisplayHeight) Div 2,
+                                    DisplayWidth, DisplayHeight);
+          With FProgressRect Do
+            Begin
+              Left := 5;
+              Top := 25;
+              Right := ClientWidth-5;
+              Bottom := ClientHeight-5;
+            End;
+          Show;
+        End;
+    End;
+End;
+
+Procedure TProgressDisplay.DoPaint(Sender: TObject);
+Begin
+  With FProgressForm.Canvas Do
+    Begin
+      Brush.Color := clDefault;
+      FillRect(FProgressForm.ClientRect);
+      Pen.Color := clBlack;
+      Rectangle(FProgressForm.ClientRect);
+      Rectangle(FProgressRect);
+    End;
+End;
+
+Procedure TProgressDisplay.SetProgress(Value: Integer);
+Begin
+  If Value<0 Then
+    Value := 0;
+  If Value>100 Then
+    Value := 100;
+  If FProgress<>Value Then
+    Begin
+      FProgress := Value;
+      FProgressForm.Repaint;
+      If Value=100 Then
+        Hide;
+    End;
+End;
+
+//Try
+    {With TLabel.Create(ProgressForm) Do
+      Begin
+        Align := alTop;
+        Alignment := taRightJustify;
+        Font.Color := clBlack;
+        Font.Size := 10;
+        //Font.Style:= [fsBold];
+        Font.Quality := fqCleartypeNatural;
+        Height := 20;
+        Layout := tlCenter;
+        Parent := ProgressForm;
+       End;    }
+  //Application.ProcessMessages;
+// Except
+// End;
+
+{  If Assigned(ProgressForm) Then
     With ProgressForm Do
       Begin
         CaptionLabel.Caption := NewCaption;
@@ -69,7 +173,8 @@ Begin
             If Position=Max Then
               If Showing Then
                 Begin
-                  Close;
+                  //Close;
+                  Hide;
                   Application.MainForm.Update;
                 End;
           End;
@@ -78,34 +183,19 @@ Begin
             Update;
             Sleep(5);
           End;
-      End;
-End;
+      End;  }
 
-Procedure HideProgressForm;
-Begin
-  If Assigned(ProgressForm) Then
+{  If Assigned(ProgressForm) Then
     Begin
-      ProgressForm.Close;
+      ProgressForm.Hide;
       If Assigned(Application.MainForm) Then
         Application.MainForm.BringToFront;
-    End;
-End;
-
-Procedure TProgressForm.FormClose(Sender: TObject; Var CloseAction: TCloseAction);
+    End;}
+{Procedure TProgressForm.FormClose(Sender: TObject; Var CloseAction: TCloseAction);
 Begin
   Screen.Cursor := crDefault;
   CloseAction := caHide;
 End;
-
-Initialization
-
-{$I Progress.lrs}
-
-ProgressForm := Nil;
-
-Finalization
-
-FreeAndNil(ProgressForm);
-
+}
 End.
 

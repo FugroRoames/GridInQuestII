@@ -85,6 +85,7 @@ Type
     Procedure CutActionExecute(Sender: TObject);
     Procedure EditMenuItemClick(Sender: TObject);
     Procedure ExitActionExecute(Sender: TObject);
+    Procedure FileMenuItemClick(Sender: TObject);
     Procedure FormCreate(Sender: TObject);
     Procedure FormDestroy(Sender: TObject);
     Procedure LoadActionExecute(Sender: TObject);
@@ -105,7 +106,9 @@ Type
     InputPanel: TCoordinatesEntryPanel;
     OutputPanel: TCoordinatesEntryPanel;
     InputData: TDataStream;
+    ProgressDisplay: TProgressDisplay;
     Function DataLoaded: Boolean;
+    Procedure ClearDataGrid;
     Procedure DoInputValid(Sender: TObject);
     Procedure SetupDataGrid;
     Procedure DoLoadProgress(Sender: TObject; Progress: Integer);
@@ -133,7 +136,7 @@ Type
 
 Procedure TMainForm.FormCreate(Sender: TObject);
 Begin
-  CreateProgressForm;
+  ProgressDisplay := CreateProgressDisplay();
   {$IFDEF Darwin}
     ManualFileName := Copy(Application.ExeName, 1, Pos('.app', Application.ExeName)+3);
   {$ELSE}
@@ -159,26 +162,35 @@ Procedure TMainForm.FormDestroy(Sender: TObject);
 Begin
   If Assigned(InputData) Then
     InputData.Free;
+  ProgressDisplay.Free;
 End;
 
 Procedure TMainForm.LoadActionExecute(Sender: TObject);
 Begin
   If OpenPointsDialog.Execute Then
     Begin
+      Screen.Cursor := crHourglass;
       InputData := TDataStream.Create;
       InputData.OnLoadProgress := @DoLoadProgress;
       InputData.OnParseProgress := @DoParseProgress;
-      InputData.LoadFromFile(OpenPointsDialog.FileName);
-      If DataLoaded Then
-        Begin
-          SaveAction.Enabled := True;
-          UnloadAction.Enabled := True;
-          InputPanel.Hide;
-          OutputPanel.Hide;
-          SetupDataGrid;
-        End;
-      //If
-      ShowSettingsForm(InputData)// Then
+      Try
+        InputData.LoadFromFile(OpenPointsDialog.FileName);
+      Except
+        On E:Exception Do
+          Begin
+            ShowMessage('Insufficient memory to load data.');
+            InputData.Free;
+            Screen.Cursor := crDefault;
+            Exit;
+          End;
+      End;
+      SaveAction.Enabled := True;
+      UnloadAction.Enabled := True;
+      InputPanel.Hide;
+      OutputPanel.Hide;
+      SetupDataGrid;
+      ShowSettingsForm(InputData);
+      Screen.Cursor := crDefault;
     End;
 End;
 
@@ -249,6 +261,13 @@ Begin
   Close;
 End;
 
+Procedure TMainForm.FileMenuItemClick(Sender: TObject);
+Begin
+  LoadAction.Enabled := Not DataLoaded;
+  SaveAction.Enabled := DataLoaded;
+  UnloadAction.Enabled := DataLoaded;
+End;
+
 Procedure TMainForm.EditMenuItemClick(Sender: TObject);
 Begin
   CutAction.Enabled := (Screen.ActiveControl Is TEdit) And
@@ -317,6 +336,16 @@ Begin
   Result := Assigned(InputData);
 End;
 
+Procedure TMainForm.ClearDataGrid;
+Begin
+  DataDrawGrid.Columns.Clear;
+  DataDrawGrid.RowCount := 1;
+  DataDrawGrid.FixedRows := 1;
+  DataDrawGrid.FixedCols := 1;
+  DataDrawGrid.Row := 0;
+  DataDrawGrid.Col := 0;
+End;
+
 Procedure TMainForm.DoInputValid(Sender: TObject);
 Begin
   With MainGlobe Do
@@ -335,12 +364,8 @@ Var
   NewWidth, AlternativeWidth: Integer;
 Begin
   DataDrawGrid.BeginUpdate;
-  DataDrawGrid.Columns.Clear;
-  DataDrawGrid.Row := 0;
-  DataDrawGrid.Col := 0;
+  ClearDataGrid;
   DataDrawGrid.RowCount := InputData.RecordCount+1; { Records plus header row. }
-  DataDrawGrid.FixedRows := 1;
-  DataDrawGrid.FixedCols := 1;
   Canvas.Font := DataDrawGrid.Font;
   { Ensure the fixed column is wide enough to fit two more than the number of digets required for the row count. }
   NewWidth := Canvas.TextWidth(StringOfChar('0', 2+Length(IntToStr(InputData.RecordCount))));
@@ -366,13 +391,19 @@ End;
 
 Procedure TMainForm.DoLoadProgress(Sender: TObject; Progress: Integer);
 Begin
-  ShowProgressForm(Progress, 'Load Data Progress');
-End;
+{  If Progress=0 Then
+    ProgressDisplay.Show('Load Data Progress')
+  Else
+    ProgressDisplay.Progress := Progress;
+}End;
 
 Procedure TMainForm.DoParseProgress(Sender: TObject; Progress: Integer);
 Begin
-  ShowProgressForm(Progress, 'Parse Data Progress');
-End;
+ { If Progress=0 Then
+    ProgressDisplay.Show('Parse Data Progress')
+  Else
+    ProgressDisplay.Progress := Progress;
+}End;
 
 End.
 
