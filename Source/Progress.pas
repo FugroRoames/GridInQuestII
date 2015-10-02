@@ -105,11 +105,17 @@ Begin
           With FProgressRect Do
             Begin
               Left := 5;
-              Top := 25;
+              Top := Canvas.TextHeight('X')+10;
               Right := ClientWidth-5;
               Bottom := ClientHeight-5;
             End;
-          Show;
+          ShowOnTop;
+          {$IFDEF Windows}
+            FProgressForm.Update;
+          {$ELSE}
+            FProgressForm.Update;
+            Application.ProcessMessages;
+          {$ENDIF}
         End;
     End;
 End;
@@ -154,40 +160,11 @@ Begin
         Begin
           Alignment := taCenter;
           Layout := tlCenter;
+          Font.Size := 12;
         End;
       TextRect(FProgressRect, 0, 0, IntToStr(FProgress)+'%', Style);
     End;
 End;
-{       Align := alTop;
-        Alignment := taRightJustify;
-        Font.Color := clBlack;
-        Font.Size := 10;
-        //Font.Style:= [fsBold];
-        Font.Quality := fqCleartypeNatural;
-        Height := 20;
-        Layout := tlCenter;
-        Parent := ProgressForm;
-
-        CaptionLabel.Caption := NewCaption;
-        If Showing Then
-          BringToFront
-        Else
-          Begin
-            Application.MainForm.Update;
-            ShowOnTop;
-          End;
-        With ProgressBar Do
-          Begin
-            Screen.Cursor := crAppStart;
-            Position := Progress;
-            If Position=Max Then
-              If Showing Then
-                Begin
-                  //Close;
-                  Hide;
-                  Application.MainForm.Update;
-                End;
-}
 
 Procedure TProgressDisplay.SetProgress(Value: Integer);
 Begin
@@ -198,7 +175,12 @@ Begin
   If FProgress<>Value Then
     Begin
       FProgress := Value;
-      FProgressForm.Repaint;
+      {$IFDEF Windows}
+        FProgressForm.Repaint;
+      {$ELSE}
+        FProgressForm.Repaint;
+        Application.ProcessMessages;
+      {$ENDIF}
     End;
 End;
 
