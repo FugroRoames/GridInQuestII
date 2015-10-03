@@ -84,14 +84,36 @@ Type TSexagesimalCoordinates = Packed Object
 Const
   OneOverSixty: TCoordinate = 1/60;
   OneOverSixtySquared: TCoordinate = 1/(60*60);
+  NullCoordinates: TCoordinates = (X: 0; Y: 0; Z: 0);
 
 Function SexagesimalToDecimalCoordinate(Coordinate: TSexagesimalCoordinate): TCoordinate;
 Function DecimalToSexagesimalCoordinate(Coordinate: TCoordinate): TSexagesimalCoordinate;
 Function SexagesimalToDecimalCoordinates(Const Coordinates: TSexagesimalCoordinates): TCoordinates;
 Function DecimalToSexagesimalCoordinates(Const Coordinates: TCoordinates): TSexagesimalCoordinates;
 
-// TODO: Introduce an available Coordinate systems list object.
-Function GetAvailableSystemsList: String;
+Type TCoordinateSystem = Object
+    Abbreviation: String;
+    AxisOrder: TAxisOrder;
+    CoordinateType: TCoordinateType;
+    Description: String;
+    EPSGNumber: Integer;
+    Name: String;
+    Function ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates;
+    Function ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates;
+  End;
+
+Type TCoordinateSystemPointer = ^TCoordinateSystem;
+
+Type TCoordinateSystems = Object
+    Count: Integer;
+    Function AvailableSystemsList(OmitIndex: Integer = -1): String;
+    Function IndexOf(Const CoordinateSystem: TCoordinateSystem): Integer;
+    Function Items(Index: Integer): TCoordinateSystem;
+    Procedure Register(Const CoordinateSystem: TCoordinateSystem);
+  End;
+
+Var
+  CoordinateSystems: TCoordinateSystems;
 
 Implementation
 
@@ -134,30 +156,67 @@ Begin
     End;
 End;
 
-Function GetAvailableSystemsList: String;
+Function TCoordinateSystem.ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates;
 Begin
-  Result := 'ETRS89 Geocentric'#13#10+
-            'ETRS89 Geodetic'#13#10+
-            'ETRS89 / UTM Zone 29N'#13#10+
-            'ETRS89 / UTM Zone 30N'#13#10+
-            'ETRS89 / UTM Zone 31N'#13#10+
-            'IRENET95 / Irish Transverse Mercator (ITM)'#13#10+
-            'OSGB36 / British National Grid (BNG)'#13#10+
-            'TM75 / Irish Grid (IG)';
+  { Actual conversions performed by child implementations. }
+  Result := NullCoordinates;
 End;
 
-{
-ETRS89 Geocentric
-ETRS89 Geodetic
-ETRS89 / UTM Zone 29N
-ETRS89 / UTM Zone 30N
-ETRS89 / UTM Zone 31N
-IRENET95 / Irish Transverse Mercator (ITM/VRF10)
-OSGB36 / British National Grid (BNG/GM02) //?????
-OSGB36 / British National Grid (BNG/VRF10)
-OSGB36 Geocentric (OSNET) //?????
-TM75 / Irish Grid (IG)
-}
+Function TCoordinateSystem.ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates;
+Begin
+  { Actual conversions performed by child implementations. }
+  Result := NullCoordinates;
+End;
+
+Var
+  CoordinateSystemsList: Array Of TCoordinateSystemPointer;
+
+Function TCoordinateSystems.AvailableSystemsList(OmitIndex: Integer = -1): String;
+Var
+  FirstIndex: Integer;
+  LastIndex: Integer;
+  Index: Integer;
+Begin
+  FirstIndex := Low(CoordinateSystemsList);
+  LastIndex := High(CoordinateSystemsList);
+  For Index := FirstIndex To LastIndex Do
+    Begin
+      If Index<>OmitIndex Then
+        Result := Result+CoordinateSystemsList[Index]^.Description;
+      If Index<>LastIndex Then
+        Result := Result+LineEnding;
+    End;
+End;
+
+Function TCoordinateSystems.IndexOf(Const CoordinateSystem: TCoordinateSystem): Integer;
+Var
+  FirstIndex: Integer;
+  LastIndex: Integer;
+  Index: Integer;
+Begin
+  FirstIndex := Low(CoordinateSystemsList);
+  LastIndex := High(CoordinateSystemsList);
+  For Index := FirstIndex To LastIndex Do
+    If CoordinateSystem.EPSGNumber=CoordinateSystemsList[Index]^.EPSGNumber Then
+      Begin
+        Result := Index;
+        Exit;
+      End;
+  Result := -1;
+End;
+
+Function TCoordinateSystems.Items(Index: Integer): TCoordinateSystem;
+Begin
+  Result := CoordinateSystemsList[Index]^;
+End;
+
+Procedure TCoordinateSystems.Register(Const CoordinateSystem: TCoordinateSystem);
+Begin
+  Count := Length(CoordinateSystemsList);
+  Inc(Count);
+  SetLength(CoordinateSystemsList, Count);
+  CoordinateSystemsList[High(CoordinateSystemsList)] := @CoordinateSystem;
+End;
 
 End.
 

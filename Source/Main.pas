@@ -122,9 +122,6 @@ Type
 Var
   MainForm: TMainForm;
 
-Const
-  DefaultInputSystem = 1;
-
 Implementation
 
 {$R *.lfm}
@@ -149,7 +146,7 @@ Begin
   MainGlobe.Parent := Self;
   { Panels must be created in reverse order for top alignment to work correctly. }
   OutputPanel := TCoordinatesEntryPanel.Create(SidePanel, ptOutput);
-  InputPanel := TCoordinatesEntryPanel.Create(SidePanel, ptInput, DefaultInputSystem);
+  InputPanel := TCoordinatesEntryPanel.Create(SidePanel, ptInput);
   InputPanel.TabOrder := 0;
   OutputPanel.TabOrder := 1;
   InputPanel.OnValid := @DoInputValid;
@@ -283,7 +280,7 @@ End;
 
 Procedure TMainForm.ClearActionExecute(Sender: TObject);
 Begin
-  InputPanel.Clear(DefaultInputSystem);
+  InputPanel.Clear;
   OutputPanel.Clear;
 End;
 

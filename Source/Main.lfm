@@ -1,7 +1,7 @@
 object MainForm: TMainForm
-  Left = 451
+  Left = 293
   Height = 661
-  Top = 104
+  Top = 149
   Width = 1190
   Caption = 'Grid InQuest II'
   ClientHeight = 641
@@ -422,17 +422,17 @@ object MainForm: TMainForm
     Left = 0
     Height = 641
     Top = 0
-    Width = 533
+    Width = 523
     Align = alLeft
     BevelOuter = bvNone
     ClientHeight = 641
-    ClientWidth = 533
+    ClientWidth = 523
     TabOrder = 0
     object DataDrawGrid: TDrawGrid
       Left = 0
       Height = 641
       Top = 0
-      Width = 533
+      Width = 523
       Align = alClient
       ColCount = 0
       ExtendedSelect = False
@@ -449,7 +449,7 @@ object MainForm: TMainForm
     end
   end
   object PanelSplitter: TSplitter
-    Left = 533
+    Left = 523
     Height = 641
     Top = 0
     Width = 5
@@ -457,7 +457,7 @@ object MainForm: TMainForm
     ResizeStyle = rsLine
   end
   object MainMenu: TMainMenu
-    left = 608
+    left = 632
     top = 8
     object FileMenuItem: TMenuItem
       Caption = 'File'
@@ -542,7 +542,7 @@ object MainForm: TMainForm
     end
   end
   object ActionList: TActionList
-    left = 728
+    left = 752
     top = 8
     object LoadAction: TAction
       Caption = '&Load Data Points...'
@@ -622,17 +622,21 @@ object MainForm: TMainForm
     end
   end
   object OpenPointsDialog: TOpenDialog
+    Width = 28
+    Height = 28
     Title = 'Open Data Points File'
     DefaultExt = '.csv'
     Filter = 'Comma Separated Text|*.csv|Tab Delimited Text|*.tab|General Text|*.txt|All Files|*.*'
-    left = 872
+    left = 896
     top = 8
   end
   object SavePointsDialog: TSaveDialog
+    Width = 28
+    Height = 28
     Title = 'Save Data Points File'
     DefaultExt = '.csv'
     Filter = 'Comma Separated Text|*.csv|Tab Delimited Text|*.tab|General Text|*.txt'
-    left = 1040
+    left = 1072
     top = 8
   end
 end

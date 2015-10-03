@@ -68,7 +68,7 @@ Type
   Public
     { Public declarations. }
     Constructor Create(TheOwner: TComponent; NewCaption: String); Virtual;
-    Procedure Clear(CoordinateSystem: Integer = -1);
+    Procedure Clear;
   End;
 
 Type
@@ -87,8 +87,8 @@ Type
     Procedure DoCoordinateValid(Sender: TObject);
   Public
     { Public declarations. }
-    Constructor Create(TheOwner: TComponent; PanelType: TPanelType; CoordinateSystem: Integer = -1); Virtual;
-    Procedure Clear(CoordinateSystem: Integer = -1);
+    Constructor Create(TheOwner: TComponent; PanelType: TPanelType); Virtual;
+    Procedure Clear;
     Property Coordinates: TCoordinates Read GetCoordinates;
     Property CoordinatesAsText: String Read GetCoordinatesAsText;
     Property Valid: Boolean Read GetValid;
@@ -230,7 +230,7 @@ Begin
   With FComboBox Do
     Begin
       Align := alClient;
-      Items.Text := GetAvailableSystemsList;
+      Items.Text := CoordinateSystems.AvailableSystemsList;
       Parent := ThisPanel;
       Style := csDropDownList;
       OnChange := @DoOnChange;
@@ -250,14 +250,20 @@ Begin
     Parent := TWinControl(TheOwner);
 End;
 
-Procedure TCoordinateSystemPanel.Clear(CoordinateSystem: Integer);
+Procedure TCoordinateSystemPanel.Clear;
 Begin
-  FComboBox.ItemIndex := CoordinateSystem;
+  FComboBox.ItemIndex := -1;
 End;
 
 Procedure TCoordinateSystemPanel.DoOnChange(Sender: TObject);
+Var
+  Index: Integer;
+  CoordinateSystem: TCoordinateSystem;
 Begin
-  TCoordinatesEntryPanel(Parent).Clear(FComboBox.ItemIndex);
+  Index := FComboBox.ItemIndex;
+  CoordinateSystem := CoordinateSystems.Items(Index);
+  TCoordinatesEntryPanel(Parent).Clear;
+  FComboBox.ItemIndex := Index;
 End;
 
 Procedure TCoordinateSystemPanel.DoOnResize;
@@ -266,8 +272,7 @@ Begin
   FLabel.Width := Self.ClientWidth Div 4;
 End;
 
-Constructor TCoordinatesEntryPanel.Create(TheOwner: TComponent;
-                                          PanelType: TPanelType; CoordinateSystem: Integer);
+Constructor TCoordinatesEntryPanel.Create(TheOwner: TComponent; PanelType: TPanelType);
 Var
   ThisPanel: TPanel;
   NewCaption: String;
@@ -293,7 +298,6 @@ Begin
   End;
   FCoordinateSystemPanel := TCoordinateSystemPanel.Create(TheOwner, NewCaption);
   FCoordinateSystemPanel.Parent := ThisPanel;
-  FCoordinateSystemPanel.FComboBox.ItemIndex := CoordinateSystem;
   FCoordinateSystemPanel.TabOrder := 0;
   FFirstCoordinatePanel.TabOrder := 1;
   FSecondCoordinatePanel.TabOrder := 2;
@@ -350,9 +354,9 @@ Begin
       OnValid(Self);
 End;
 
-Procedure TCoordinatesEntryPanel.Clear(CoordinateSystem: Integer);
+Procedure TCoordinatesEntryPanel.Clear;
 Begin
-  FCoordinateSystemPanel.Clear(CoordinateSystem);
+  FCoordinateSystemPanel.Clear;
   FFirstCoordinatePanel.Clear;
   FSecondCoordinatePanel.Clear;
   FThirdCoordinatePanel.Clear;
