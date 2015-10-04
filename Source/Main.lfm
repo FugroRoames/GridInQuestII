@@ -4,7 +4,7 @@ object MainForm: TMainForm
   Top = 149
   Width = 1190
   Caption = 'Grid InQuest II'
-  ClientHeight = 625
+  ClientHeight = 641
   ClientWidth = 1190
   Font.Name = 'Arial'
   Font.Quality = fqCleartype
@@ -420,17 +420,17 @@ object MainForm: TMainForm
   LCLVersion = '1.5'
   object SidePanel: TPanel
     Left = 0
-    Height = 625
+    Height = 641
     Top = 0
     Width = 523
     Align = alLeft
     BevelOuter = bvNone
-    ClientHeight = 625
+    ClientHeight = 641
     ClientWidth = 523
     TabOrder = 0
     object DataDrawGrid: TDrawGrid
       Left = 0
-      Height = 625
+      Height = 641
       Top = 0
       Width = 523
       Align = alClient
@@ -438,7 +438,7 @@ object MainForm: TMainForm
       ExtendedSelect = False
       FixedCols = 0
       FixedRows = 0
-      Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goColSizing, goRowSelect, goThumbTracking, goSmoothScroll, goFixedRowNumbering, goFixedColSizing]
+      Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goColSizing, goRowSelect, goThumbTracking, goFixedRowNumbering, goFixedColSizing]
       RowCount = 0
       TabOrder = 0
       TitleFont.Name = 'Arial'
@@ -450,7 +450,7 @@ object MainForm: TMainForm
   end
   object PanelSplitter: TSplitter
     Left = 523
-    Height = 625
+    Height = 641
     Top = 0
     Width = 5
     ParentColor = False

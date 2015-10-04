@@ -194,6 +194,12 @@ Begin
       SetupDataGrid;
       ProgressDisplay.Hide;
       ShowSettingsForm(InputData);
+      If InputData.RecordCount>0 Then;
+        Begin
+          DataDrawGrid.Row := 1;
+          DataDrawGrid.TopRow := 1;
+          DataDrawGridSelection(Self, 1, 1);
+        End;
       Screen.Cursor := crDefault;
     End;
 End;
