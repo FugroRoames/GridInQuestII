@@ -28,9 +28,11 @@ Uses
 
 Type
   TMainForm = Class(TForm)
+    DataSettingsAction: TAction;
     ClearAction: TAction;
     CopyBreak: TMenuItem;
     CutMenuItem: TMenuItem;
+    DataSettingsMenuItem: TMenuItem;
     PasteMenuItem: TMenuItem;
     CopyMenuItem: TMenuItem;
     ClearMenuItem: TMenuItem;
@@ -83,6 +85,7 @@ Type
     Procedure CopyInputActionExecute(Sender: TObject);
     Procedure CopyOutputActionExecute(Sender: TObject);
     Procedure CutActionExecute(Sender: TObject);
+    Procedure DataSettingsActionExecute(Sender: TObject);
     Procedure EditMenuItemClick(Sender: TObject);
     Procedure ExitActionExecute(Sender: TObject);
     Procedure FileMenuItemClick(Sender: TObject);
@@ -110,6 +113,7 @@ Type
     Function DataLoaded: Boolean;
     Procedure ClearDataGrid;
     Procedure DoInputValid(Sender: TObject);
+    Procedure DoOutputChangeSystem(Sender: TObject);
     Procedure SetupDataGrid;
     Procedure DoLoadProgress(Sender: TObject; Progress: Integer);
     Procedure DoParseProgress(Sender: TObject; Progress: Integer);
@@ -150,6 +154,7 @@ Begin
   InputPanel.TabOrder := 0;
   OutputPanel.TabOrder := 1;
   InputPanel.OnValid := @DoInputValid;
+  OutputPanel.OnChangeSystem := @DoOutputChangeSystem;
   InputData := Nil;
   InputLatIndex := -1;
   InputLonIndex := -1;
@@ -210,13 +215,11 @@ Begin
   If aRow=0 Then
     DataDrawGrid.DefaultDrawCell(aCol, aRow, aRect, aState)
   Else
-    Begin
-      If aCol=0 Then
-        CellText := IntToStr(aRow)
-      Else
+    If aCol>0 Then
+      Begin
         CellText := InputData.Values[aRow-1, aCol-1];
-      TOverrideGrid(DataDrawGrid).DrawCellText(aCol, aRow, aRect, aState, CellText);
-    End;
+        TOverrideGrid(DataDrawGrid).DrawCellText(aCol, aRow, aRect, aState, CellText);
+      End;
 End;
 
 Procedure TMainForm.DataDrawGridSelection(Sender: TObject; aCol, aRow: Integer);
@@ -265,10 +268,12 @@ Begin
   LoadAction.Enabled := Not DataLoaded;
   SaveAction.Enabled := DataLoaded;
   UnloadAction.Enabled := DataLoaded;
+  DataSettingsAction.Enabled := DataLoaded;
 End;
 
 Procedure TMainForm.EditMenuItemClick(Sender: TObject);
 Begin
+  ClearAction.Enabled := Not DataLoaded;
   CutAction.Enabled := (Screen.ActiveControl Is TEdit) And
                        (TEdit(Screen.ActiveControl).SelText<>EmptyStr);
   CopyAction.Enabled := CutAction.Enabled;
@@ -288,6 +293,11 @@ Procedure TMainForm.CutActionExecute(Sender: TObject);
 Begin
   Clipboard.AsText := TEdit(Screen.ActiveControl).SelText;
   TEdit(Screen.ActiveControl).SelText := EmptyStr;
+End;
+
+Procedure TMainForm.DataSettingsActionExecute(Sender: TObject);
+Begin
+  ShowSettingsForm(InputData);
 End;
 
 Procedure TMainForm.CopyActionExecute(Sender: TObject);
@@ -349,11 +359,23 @@ Procedure TMainForm.DoInputValid(Sender: TObject);
 Begin
   With MainGlobe Do
     Begin
+      { If there is an output coordinate system selected, perform the conversion. }
+      If OutputPanel.CoordinateSystemSelected Then
+        DoOutputChangeSystem(Self);
       // TODO: Need to perform conversion here for non-geodetic coordinates.
       Marker.Lat := InputPanel.Coordinates.Latitude;
       Marker.Lon := InputPanel.Coordinates.Longitude;
       ShowMarker := True;
       Refresh;
+    End;
+End;
+
+Procedure TMainForm.DoOutputChangeSystem(Sender: TObject);
+Begin
+  If InputPanel.Valid Then
+    Begin
+      // TODO: Perform conversion.
+      OutputPanel.Coordinates := InputPanel.Coordinates;
     End;
 End;
 
@@ -366,9 +388,6 @@ Begin
   ClearDataGrid;
   DataDrawGrid.RowCount := InputData.RecordCount+1; { Records plus header row. }
   Canvas.Font := DataDrawGrid.Font;
-  { Ensure the fixed column is wide enough to fit two more than the number of digets required for the row count. }
-  NewWidth := Canvas.TextWidth(StringOfChar('0', 2+Length(IntToStr(InputData.RecordCount))));
-  DataDrawGrid.ColWidths[0] := NewWidth;
   LastCol := InputData.FieldCount-1;
   For Col := 0 To LastCol Do
     With DataDrawGrid.Columns.Add Do

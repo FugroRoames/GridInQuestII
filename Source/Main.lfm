@@ -4,7 +4,7 @@ object MainForm: TMainForm
   Top = 149
   Width = 1190
   Caption = 'Grid InQuest II'
-  ClientHeight = 641
+  ClientHeight = 625
   ClientWidth = 1190
   Font.Name = 'Arial'
   Font.Quality = fqCleartype
@@ -420,17 +420,17 @@ object MainForm: TMainForm
   LCLVersion = '1.5'
   object SidePanel: TPanel
     Left = 0
-    Height = 641
+    Height = 625
     Top = 0
     Width = 523
     Align = alLeft
     BevelOuter = bvNone
-    ClientHeight = 641
+    ClientHeight = 625
     ClientWidth = 523
     TabOrder = 0
     object DataDrawGrid: TDrawGrid
       Left = 0
-      Height = 641
+      Height = 625
       Top = 0
       Width = 523
       Align = alClient
@@ -438,7 +438,7 @@ object MainForm: TMainForm
       ExtendedSelect = False
       FixedCols = 0
       FixedRows = 0
-      Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goColSizing, goRowSelect, goThumbTracking, goSmoothScroll]
+      Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goColSizing, goRowSelect, goThumbTracking, goSmoothScroll, goFixedRowNumbering, goFixedColSizing]
       RowCount = 0
       TabOrder = 0
       TitleFont.Name = 'Arial'
@@ -450,7 +450,7 @@ object MainForm: TMainForm
   end
   object PanelSplitter: TSplitter
     Left = 523
-    Height = 641
+    Height = 625
     Top = 0
     Width = 5
     ParentColor = False
@@ -470,6 +470,9 @@ object MainForm: TMainForm
       end
       object UnloadMenuItem: TMenuItem
         Action = UnloadAction
+      end
+      object DataSettingsMenuItem: TMenuItem
+        Action = DataSettingsAction
       end
       object ExitBreak: TMenuItem
         Caption = '-'
@@ -508,9 +511,11 @@ object MainForm: TMainForm
       end
       object OptionsBreak: TMenuItem
         Caption = '-'
+        Visible = False
       end
       object OptionsMenuItem: TMenuItem
         Action = OptionsAction
+        Visible = False
       end
     end
     object MapMenuItem: TMenuItem
@@ -594,6 +599,7 @@ object MainForm: TMainForm
     end
     object OptionsAction: TAction
       Caption = 'O&ptions...'
+      Enabled = False
       OnExecute = OptionsActionExecute
     end
     object ZoomInAction: TAction
@@ -619,6 +625,12 @@ object MainForm: TMainForm
       Caption = '&About'
       OnExecute = AboutActionExecute
       ShortCut = 16449
+    end
+    object DataSettingsAction: TAction
+      Caption = '&Data Settings'
+      Enabled = False
+      OnExecute = DataSettingsActionExecute
+      ShortCut = 16452
     end
   end
   object OpenPointsDialog: TOpenDialog

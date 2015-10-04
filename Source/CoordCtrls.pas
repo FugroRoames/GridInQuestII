@@ -49,7 +49,7 @@ Type
     { Public declarations. }
     Constructor Create(TheOwner: TComponent; NewCaption: String; AxisType: TAxisType; Locked: Boolean); Virtual;
     Procedure Clear;
-    Property AxisType: TAxisType Read FAxisType;
+    Property AxisType: TAxisType Read FAxisType Write FAxisType;
     Property Coordinate: TCoordinate Read FCoordinate;
     Property Valid: Boolean Read FValid;
     Property OnValid: TNotifyEvent Read FOnValid Write FOnValid;
@@ -61,7 +61,7 @@ Type
     { Private declarations. }
     FComboBox: TComboBox;
     FLabel: TLabel;
-  Protected
+   Protected
     { Protected declarations. }
     Procedure DoOnChange(Sender: TObject);
     Procedure DoOnResize; Override;
@@ -77,21 +77,30 @@ Type
     { Private declarations. }
     FCoordinateSystemPanel: TCoordinateSystemPanel;
     FFirstCoordinatePanel: TCoordinatePanel;
+    FLocked: Boolean;
+    FOnChangeSystem: TNotifyEvent;
     FOnValid: TNotifyEvent;
     FSecondCoordinatePanel: TCoordinatePanel;
     FThirdCoordinatePanel: TCoordinatePanel;
     FPanelType: TPanelType;
+    FCoordinateType: TCoordinateType;
     Function GetCoordinates: TCoordinates;
     Function GetCoordinatesAsText: String;
     Function GetValid: Boolean;
     Procedure DoCoordinateValid(Sender: TObject);
+    Procedure SetCoordinates(Value: TCoordinates);
+    Procedure SetLocked(Value: Boolean);
   Public
     { Public declarations. }
     Constructor Create(TheOwner: TComponent; PanelType: TPanelType); Virtual;
     Procedure Clear;
-    Property Coordinates: TCoordinates Read GetCoordinates;
+    Function CoordinateSystemSelected: Boolean;
+    Property Coordinates: TCoordinates Read GetCoordinates Write SetCoordinates;
     Property CoordinatesAsText: String Read GetCoordinatesAsText;
+    Property CoordinateType: TCoordinateType Read FCoordinateType Write FCoordinateType;
+    Property Locked: Boolean Read FLocked Write SetLocked;
     Property Valid: Boolean Read GetValid;
+    Property OnChangeSystem: TNotifyEvent Read FOnChangeSystem Write FOnChangeSystem;
     Property OnValid: TNotifyEvent Read FOnValid Write FOnValid;
   Published
     { Published declarations. }
@@ -155,7 +164,16 @@ End;
 
 Procedure TCoordinatePanel.Validate;
 Begin
-  FValid := TryGeodeticTextToCoordinate(FEdit.Text, FCoordinate, FAxisType);
+  Case TCoordinatesEntryPanel(Parent).CoordinateType Of
+  ctGeocentric:
+    FValid := TryGeocentricTextToCoordinate(FEdit.Text, FCoordinate, FAxisType);
+  ctGeodetic:
+    FValid := TryGeodeticTextToCoordinate(FEdit.Text, FCoordinate, FAxisType);
+  ctCartesian:
+    FValid := TryCartesianTextToCoordinate(FEdit.Text, FCoordinate, FAxisType);
+  Else
+    FValid := False;
+  End;
   If FEdit.ReadOnly Then
     FEdit.Font.Color := clBlue
   Else
@@ -172,10 +190,27 @@ End;
 Procedure TCoordinatePanel.DoExit;
 Begin
   If Valid Then
-    Case AxisType Of
-    atXAxis: FEdit.Text := FormatCoordinate(DecimalToSexagesimalCoordinate(Coordinate), soEastWestSuffix);
-    atYAxis: FEdit.Text := FormatCoordinate(DecimalToSexagesimalCoordinate(Coordinate), soNorthSouthSuffix);
-    atZAxis: FEdit.Text := FormatCoordinateWithUnits(Coordinate, 'm');
+    Case TCoordinatesEntryPanel(Parent).CoordinateType Of
+    ctGeocentric:
+      Case AxisType Of
+      atXAxis: FEdit.Text := FormatCoordinateWithUnits(Coordinate, 'm');
+      atYAxis: FEdit.Text := FormatCoordinateWithUnits(Coordinate, 'm');
+      atZAxis: FEdit.Text := FormatCoordinateWithUnits(Coordinate, 'm');
+      End;
+    ctGeodetic:
+      Case AxisType Of
+      atXAxis: FEdit.Text := FormatCoordinate(DecimalToSexagesimalCoordinate(Coordinate), soEastWestSuffix);
+      atYAxis: FEdit.Text := FormatCoordinate(DecimalToSexagesimalCoordinate(Coordinate), soNorthSouthSuffix);
+      atZAxis: FEdit.Text := FormatCoordinateWithUnits(Coordinate, 'm');
+      End;
+    ctCartesian:
+      Case AxisType Of
+      atXAxis: FEdit.Text := FormatCoordinate(Coordinate);
+      atYAxis: FEdit.Text := FormatCoordinate(Coordinate);
+      atZAxis: FEdit.Text := FormatCoordinate(Coordinate);
+      End;
+    Else
+      FValid := False;
     End;
   Inherited DoExit;
 End;
@@ -255,15 +290,73 @@ Begin
   FComboBox.ItemIndex := -1;
 End;
 
+Procedure TCoordinatesEntryPanel.SetLocked(Value: Boolean);
+Begin
+  If FLocked<>Value Then
+    Begin
+      FLocked := Value;
+      FFirstCoordinatePanel.FEdit.ReadOnly := Value;
+      FSecondCoordinatePanel.FEdit.ReadOnly := Value;
+      FThirdCoordinatePanel.FEdit.ReadOnly := Value;
+      FFirstCoordinatePanel.FEdit.TabStop := Not Value;
+      FSecondCoordinatePanel.FEdit.TabStop := Not Value;
+      FThirdCoordinatePanel.FEdit.TabStop := Not Value;
+    End;
+End;
+
 Procedure TCoordinateSystemPanel.DoOnChange(Sender: TObject);
 Var
   Index: Integer;
   CoordinateSystem: TCoordinateSystem;
+  Coordinates: TCoordinates;
 Begin
   Index := FComboBox.ItemIndex;
   CoordinateSystem := CoordinateSystems.Items(Index);
   TCoordinatesEntryPanel(Parent).Clear;
+  TCoordinatesEntryPanel(Parent).Locked := (Index=-1) Or (TCoordinatesEntryPanel(Parent).FPanelType=ptOutput);
   FComboBox.ItemIndex := Index;
+  With TCoordinatesEntryPanel(Parent) Do
+    Begin
+      CoordinateType := CoordinateSystem.CoordinateType;
+      Case CoordinateSystem.CoordinateType Of
+      ctGeocentric:
+        Begin
+          FFirstCoordinatePanel.FLabel.Caption := 'X: ';
+          FSecondCoordinatePanel.FLabel.Caption := 'Y: ';
+          FThirdCoordinatePanel.FLabel.Caption := 'Z: ';
+        End;
+      ctGeodetic:
+        Begin
+          FFirstCoordinatePanel.FLabel.Caption := 'Latitude: ';
+          FSecondCoordinatePanel.FLabel.Caption := 'Longitude: ';
+          FThirdCoordinatePanel.FLabel.Caption := 'Altitude: ';
+        End;
+      ctCartesian:
+        Begin
+          FFirstCoordinatePanel.FLabel.Caption := 'Easting: ';
+          FSecondCoordinatePanel.FLabel.Caption := 'Northing: ';
+          FThirdCoordinatePanel.FLabel.Caption := 'Elevation: ';
+        End;
+      End;
+    Case CoordinateSystem.AxisOrder Of
+    aoXYZ:
+      Begin
+        FFirstCoordinatePanel.AxisType := atXAxis;
+        FSecondCoordinatePanel.AxisType := atYAxis;
+        FThirdCoordinatePanel.AxisType := atZAxis;
+      End;
+    aoYXZ:
+      Begin
+        FFirstCoordinatePanel.AxisType := atYAxis;
+        FSecondCoordinatePanel.AxisType := atXAxis;
+        FThirdCoordinatePanel.AxisType := atZAxis;
+      End;
+    End;
+  End;
+  If TCoordinatesEntryPanel(Parent).FPanelType=ptOutput Then
+    With TCoordinatesEntryPanel(Parent) Do
+      If Assigned(OnChangeSystem) Then
+        OnChangeSystem(Self);
 End;
 
 Procedure TCoordinateSystemPanel.DoOnResize;
@@ -282,16 +375,18 @@ Begin
   AutoSize := True;
   ThisPanel := Self;
   { The child controls are created in reverse order so that Align=alTop orders them correctly. }
-  FThirdCoordinatePanel := TCoordinatePanel.Create(TheOwner, 'Altitude:', atZAxis, (PanelType=ptOutput));
+  FThirdCoordinatePanel := TCoordinatePanel.Create(TheOwner, 'Altitude:', atZAxis, True);
   FThirdCoordinatePanel.Parent := ThisPanel;
   FThirdCoordinatePanel.OnValid := @DoCoordinateValid;
-  FSecondCoordinatePanel := TCoordinatePanel.Create(TheOwner, 'Longitude:', atXAxis, (PanelType=ptOutput));
+  FSecondCoordinatePanel := TCoordinatePanel.Create(TheOwner, 'Longitude:', atXAxis, True);
   FSecondCoordinatePanel.Parent := ThisPanel;
   FSecondCoordinatePanel.OnValid := @DoCoordinateValid;
-  FFirstCoordinatePanel := TCoordinatePanel.Create(TheOwner, 'Latitude:', atYAxis, (PanelType=ptOutput));
+  FFirstCoordinatePanel := TCoordinatePanel.Create(TheOwner, 'Latitude:', atYAxis, True);
   FFirstCoordinatePanel.Parent := ThisPanel;
   FFirstCoordinatePanel.OnValid := @DoCoordinateValid;
+  Locked := True;
   FPanelType := PanelType;
+  FCoordinateType := ctGeodetic;
   Case PanelType Of
   ptInput: NewCaption := 'Input System:';
   ptOutput: NewCaption := 'Output System:';
@@ -354,12 +449,38 @@ Begin
       OnValid(Self);
 End;
 
+Procedure TCoordinatesEntryPanel.SetCoordinates(Value: TCoordinates);
+  Procedure SetCoordinateForAxis(Coordinates: TCoordinates; Edit: TEdit; AxisType: TAxisType);
+  Begin
+    Case AxisType Of
+    atXAxis: Edit.Text := FormatCoordinate(Coordinates.X);
+    atYAxis: Edit.Text := FormatCoordinate(Coordinates.Y);
+    atZAxis: Edit.Text := FormatCoordinate(Coordinates.Z);
+    End;
+  End;
+Begin
+  With FFirstCoordinatePanel Do
+    SetCoordinateForAxis(Value, FEdit, AxisType);
+  With FSecondCoordinatePanel Do
+    SetCoordinateForAxis(Value, FEdit, AxisType);
+  With FThirdCoordinatePanel Do
+    SetCoordinateForAxis(Value, FEdit, AxisType);
+End;
+
 Procedure TCoordinatesEntryPanel.Clear;
 Begin
   FCoordinateSystemPanel.Clear;
   FFirstCoordinatePanel.Clear;
   FSecondCoordinatePanel.Clear;
   FThirdCoordinatePanel.Clear;
+End;
+
+Function TCoordinatesEntryPanel.CoordinateSystemSelected: Boolean;
+Var
+  Index: Integer;
+  CoordinateSystem: TCoordinateSystem;
+Begin
+  Result := (FCoordinateSystemPanel.FComboBox.ItemIndex<>-1);
 End;
 
 Procedure Register;

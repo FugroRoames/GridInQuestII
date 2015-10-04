@@ -279,11 +279,14 @@ Begin
   SuffixLength := Length(UnitSuffix);
   Text := UpperCase(Trim(Text));
   TextLength := Length(Text);
-  { Remove any unit suffix. }
-  If Copy(Text, 1+TextLength-SuffixLength, SuffixLength)=UpperCase(UnitSuffix) Then
-    SetLength(Text, TextLength-SuffixLength);
-  { Atempt to convert the remainder to a valid value. }
-  Result := TryStrToFloat(Text, Value);
+  If TextLength>0 Then
+    Begin
+      { Remove any unit suffix. }
+      If Copy(Text, 1+TextLength-SuffixLength, SuffixLength)=UpperCase(UnitSuffix) Then
+        SetLength(Text, TextLength-SuffixLength);
+      { Atempt to convert the remainder to a valid value. }
+      Result := TryStrToFloat(Text, Value);
+    End;
 End;
 
 Function TryCartesianTextToCoordinate(Text: String; Var Value: TCoordinate; AxisType: TAxisType; UnitSuffix: String): Boolean;
@@ -298,24 +301,27 @@ Begin
   SuffixLength := Length(UnitSuffix);
   Text := UpperCase(Trim(Text));
   TextLength := Length(Text);
-  { Remove any unit suffix. }
-  If Copy(Text, 1+TextLength-SuffixLength, SuffixLength)=UpperCase(UnitSuffix) Then
-    SetLength(Text, TextLength-SuffixLength);
-  { Validate any axis type suffix. }
-  TextLength := Length(Text);
-  AxisSuffix := Text[TextLength];
-  HasAxisSuffix := False;
-  If Not (AxisSuffix In ['0'..'9']) Then
-    HasAxisSuffix := ((AxisSuffix='E') And (AxisType=atXAxis)) Or
-                     ((AxisSuffix='N') And (AxisType=atYAxis));
-  { Remove any axis type suffix. }
-  If HasAxisSuffix Then
-    SetLength(Text, TextLength-1);
-  { Atempt to convert the remainder to a valid value. }
-  Result := TryStrToFloat(Text, Value);
-  { Treat negative values for an X or Y axis as invalid. }
-  If Value<0 Then
-    Result := (AxisType=atZAxis);
+  If TextLength>0 Then
+    Begin
+      { Remove any unit suffix. }
+      If Copy(Text, 1+TextLength-SuffixLength, SuffixLength)=UpperCase(UnitSuffix) Then
+        SetLength(Text, TextLength-SuffixLength);
+      { Validate any axis type suffix. }
+      TextLength := Length(Text);
+      AxisSuffix := Text[TextLength];
+      HasAxisSuffix := False;
+      If Not (AxisSuffix In ['0'..'9']) Then
+        HasAxisSuffix := ((AxisSuffix='E') And (AxisType=atXAxis)) Or
+                         ((AxisSuffix='N') And (AxisType=atYAxis));
+      { Remove any axis type suffix. }
+      If HasAxisSuffix Then
+        SetLength(Text, TextLength-1);
+      { Atempt to convert the remainder to a valid value. }
+      Result := TryStrToFloat(Text, Value);
+      { Treat negative values for an X or Y axis as invalid. }
+      If Value<0 Then
+        Result := (AxisType=atZAxis);
+    End;
 End;
 
 End.
