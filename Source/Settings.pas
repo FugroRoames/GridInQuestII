@@ -28,21 +28,29 @@ Uses
 Type
   TSettingsForm = Class(TForm)
     BottomPanel: TPanel;
-    Button1: TButton;
+    TextDelimiterComboBox: TComboBox;
+    TextDelimiterLabel: TLabel;
+    FixedColumnBreaksEdit: TEdit;
+    FixedColumnBreaksLabel: TLabel;
     ErrorHandlingComboBox: TComboBox;
-    InputSystemComboBox: TComboBox;
     ErrorHandlingLabel: TLabel;
+    ColumnDelimiterComboBox: TComboBox;
+    ColumnDelimiterLabel: TLabel;
     FirstColumnComboBox: TComboBox;
-    HeaderRowCheckBox: TCheckBox;
-    InputSystemComboBox1: TComboBox;
-    Label1: TLabel;
-    Label2: TLabel;
+    InputFileGroupBox: TGroupBox;
+    FileFormatLabel: TLabel;
+    InputSystemComboBox: TComboBox;
+    OuputDataGroupBox: TGroupBox;
+    InputDataGroupBox: TGroupBox;
     OKButton: TButton;
     CancelButton: TButton;
-    Panel1: TPanel;
     SecondColumnComboBox: TComboBox;
+    FileFormatComboBox: TComboBox;
     StartRowEdit: TEdit;
+    EndRowEdit: TEdit;
     StartRowLabel: TLabel;
+    EndRowLabel: TLabel;
+    InputSystemLabel: TLabel;
     ThirdColumnComboBox: TComboBox;
     Procedure FirstColumnComboBoxChange(Sender: TObject);
     Procedure SecondColumnComboBoxChange(Sender: TObject);

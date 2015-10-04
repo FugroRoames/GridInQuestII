@@ -1,26 +1,26 @@
 object SettingsForm: TSettingsForm
   Left = 482
-  Height = 359
+  Height = 459
   Top = 220
-  Width = 520
+  Width = 539
   BorderStyle = bsDialog
   Caption = 'Data Settings'
-  ClientHeight = 359
-  ClientWidth = 520
+  ClientHeight = 459
+  ClientWidth = 539
   Position = poScreenCenter
   LCLVersion = '1.5'
   object BottomPanel: TPanel
     Left = 0
     Height = 40
-    Top = 319
-    Width = 520
+    Top = 419
+    Width = 539
     Align = alBottom
     BevelOuter = bvNone
     ClientHeight = 40
-    ClientWidth = 520
+    ClientWidth = 539
     TabOrder = 0
     object OKButton: TButton
-      Left = 310
+      Left = 329
       Height = 30
       Top = 5
       Width = 100
@@ -32,7 +32,7 @@ object SettingsForm: TSettingsForm
       TabOrder = 0
     end
     object CancelButton: TButton
-      Left = 415
+      Left = 434
       Height = 30
       Top = 5
       Width = 100
@@ -44,143 +44,253 @@ object SettingsForm: TSettingsForm
       TabOrder = 1
     end
   end
-  object HeaderRowCheckBox: TCheckBox
-    Left = 32
-    Height = 22
-    Top = 256
-    Width = 156
-    Caption = 'First Row is Header'
-    Checked = True
-    Font.Name = 'Arial'
-    ParentFont = False
-    State = cbChecked
+  object InputFileGroupBox: TGroupBox
+    Left = 5
+    Height = 75
+    Top = 5
+    Width = 529
+    Align = alTop
+    BorderSpacing.Around = 5
+    Caption = 'Input File Details'
+    ChildSizing.TopBottomSpacing = 5
+    ChildSizing.HorizontalSpacing = 5
+    ChildSizing.VerticalSpacing = 5
+    ChildSizing.Layout = cclLeftToRightThenTopToBottom
+    ChildSizing.ControlsPerLine = 4
+    ClientHeight = 57
+    ClientWidth = 525
+    ParentColor = False
     TabOrder = 1
+    object FileFormatLabel: TLabel
+      Left = 5
+      Height = 21
+      Top = 5
+      Width = 103
+      AutoSize = False
+      BorderSpacing.Around = 5
+      Caption = 'File Format:'
+      Layout = tlCenter
+      ParentColor = False
+    end
+    object FileFormatComboBox: TComboBox
+      Left = 113
+      Height = 21
+      Top = 5
+      Width = 100
+      ItemHeight = 13
+      Items.Strings = (
+        'Character Delimited Text'
+        'Fixed Width Text'
+      )
+      Style = csDropDownList
+      TabOrder = 0
+    end
+    object ColumnDelimiterLabel: TLabel
+      Left = 218
+      Height = 21
+      Top = 5
+      Width = 83
+      AutoSize = False
+      BorderSpacing.Around = 5
+      Caption = 'Column Delimiter:'
+      Layout = tlCenter
+      ParentColor = False
+    end
+    object ColumnDelimiterComboBox: TComboBox
+      Left = 306
+      Height = 21
+      Top = 5
+      Width = 100
+      ItemHeight = 13
+      Items.Strings = (
+        'Comma'
+        'Semicolon'
+        'Tab'
+        'Custom'
+      )
+      Style = csDropDownList
+      TabOrder = 1
+    end
+    object FixedColumnBreaksLabel: TLabel
+      Left = 5
+      Height = 21
+      Top = 31
+      Width = 103
+      AutoSize = False
+      BorderSpacing.Around = 5
+      Caption = 'Fixed Column Breaks:'
+      Layout = tlCenter
+      ParentColor = False
+    end
+    object FixedColumnBreaksEdit: TEdit
+      Left = 113
+      Height = 21
+      Top = 31
+      Width = 80
+      BorderSpacing.CellAlignHorizontal = ccaLeftTop
+      TabOrder = 2
+    end
+    object TextDelimiterLabel: TLabel
+      Left = 218
+      Height = 21
+      Top = 31
+      Width = 83
+      AutoSize = False
+      BorderSpacing.Around = 5
+      Caption = 'Text Delimiter:'
+      Layout = tlCenter
+      ParentColor = False
+    end
+    object TextDelimiterComboBox: TComboBox
+      Left = 306
+      Height = 21
+      Top = 31
+      Width = 100
+      ItemHeight = 13
+      Items.Strings = (
+        'Comma'
+        'Semicolon'
+        'Tab'
+        'Custom'
+      )
+      Style = csDropDownList
+      TabOrder = 3
+    end
   end
-  object StartRowLabel: TLabel
-    Left = 264
-    Height = 13
-    Top = 257
-    Width = 74
-    Caption = 'Data Start Row'
+  object OuputDataGroupBox: TGroupBox
+    Left = 5
+    Height = 56
+    Top = 213
+    Width = 529
+    Align = alTop
+    BorderSpacing.Around = 5
+    Caption = 'Ouput Data Settings'
+    ClientHeight = 38
+    ClientWidth = 525
     ParentColor = False
-  end
-  object StartRowEdit: TEdit
-    Left = 432
-    Height = 21
-    Top = 248
-    Width = 64
-    NumbersOnly = True
     TabOrder = 2
-    Text = '2'
+    object ErrorHandlingLabel: TLabel
+      Left = 8
+      Height = 13
+      Top = 25
+      Width = 72
+      AutoSize = False
+      Caption = 'Error Handling:'
+      Layout = tlCenter
+      ParentColor = False
+    end
+    object ErrorHandlingComboBox: TComboBox
+      Left = 144
+      Height = 21
+      Top = 17
+      Width = 159
+      ItemHeight = 13
+      ItemIndex = 0
+      Items.Strings = (
+        'Skip Records'
+        'Abort Conversion'
+      )
+      Style = csDropDownList
+      TabOrder = 0
+      Text = 'Skip Records'
+    end
   end
-  object FirstColumnComboBox: TComboBox
-    Left = 24
-    Height = 21
-    Top = 136
-    Width = 153
-    ItemHeight = 13
-    OnChange = FirstColumnComboBoxChange
-    Style = csDropDownList
+  object InputDataGroupBox: TGroupBox
+    Left = 5
+    Height = 123
+    Top = 85
+    Width = 529
+    Align = alTop
+    BorderSpacing.Around = 5
+    Caption = 'Input Data Settings'
+    ChildSizing.ControlsPerLine = 3
+    ClientHeight = 105
+    ClientWidth = 525
+    ParentColor = False
     TabOrder = 3
-  end
-  object SecondColumnComboBox: TComboBox
-    Left = 184
-    Height = 21
-    Top = 136
-    Width = 151
-    ItemHeight = 13
-    OnChange = SecondColumnComboBoxChange
-    Style = csDropDownList
-    TabOrder = 4
-  end
-  object ThirdColumnComboBox: TComboBox
-    Left = 345
-    Height = 21
-    Top = 136
-    Width = 151
-    ItemHeight = 13
-    Style = csDropDownList
-    TabOrder = 5
-  end
-  object ErrorHandlingLabel: TLabel
-    Left = 16
-    Height = 13
-    Top = 187
-    Width = 72
-    Caption = 'Error Handling:'
-    ParentColor = False
-  end
-  object Button1: TButton
-    Left = 344
-    Height = 38
-    Top = 179
-    Width = 152
-    Caption = 'Con&vert'
-    TabOrder = 6
-  end
-  object ErrorHandlingComboBox: TComboBox
-    Left = 152
-    Height = 21
-    Top = 184
-    Width = 159
-    ItemHeight = 13
-    ItemIndex = 0
-    Items.Strings = (
-      'Skip Records'
-      'Abort Conversion'
-    )
-    Style = csDropDownList
-    TabOrder = 7
-    Text = 'Skip Records'
-  end
-  object InputSystemComboBox: TComboBox
-    Left = 192
-    Height = 21
-    Top = 96
-    Width = 303
-    ItemHeight = 13
-    Style = csDropDownList
-    TabOrder = 8
-  end
-  object Label1: TLabel
-    Left = 0
-    Height = 13
-    Top = 0
-    Width = 520
-    Align = alTop
-    Caption = 'File Format'
-    ParentColor = False
-  end
-  object Panel1: TPanel
-    Left = 0
-    Height = 50
-    Top = 13
-    Width = 520
-    Align = alTop
-    ClientHeight = 50
-    ClientWidth = 520
-    TabOrder = 9
-    object InputSystemComboBox1: TComboBox
-      Left = 392
+    object InputSystemComboBox: TComboBox
+      Left = 168
       Height = 21
       Top = 0
       Width = 100
-      BorderSpacing.Left = 400
-      BorderSpacing.Around = 5
       ItemHeight = 13
       Style = csDropDownList
       TabOrder = 0
     end
-    object Label2: TLabel
-      Left = 1
-      Height = 24
-      Top = 1
-      Width = 318
-      Align = alTop
+    object FirstColumnComboBox: TComboBox
+      Left = 112
+      Height = 21
+      Top = 32
+      Width = 100
+      ItemHeight = 13
+      OnChange = FirstColumnComboBoxChange
+      Style = csDropDownList
+      TabOrder = 1
+    end
+    object SecondColumnComboBox: TComboBox
+      Left = 288
+      Height = 21
+      Top = 32
+      Width = 84
+      ItemHeight = 13
+      OnChange = SecondColumnComboBoxChange
+      Style = csDropDownList
+      TabOrder = 2
+    end
+    object ThirdColumnComboBox: TComboBox
+      Left = 384
+      Height = 21
+      Top = 32
+      Width = 100
+      ItemHeight = 13
+      Style = csDropDownList
+      TabOrder = 3
+    end
+    object StartRowLabel: TLabel
+      Left = 16
+      Height = 21
+      Top = 80
+      Width = 100
       AutoSize = False
-      BorderSpacing.Right = 200
-      Caption = 'Label2'
-      FocusControl = InputSystemComboBox1
+      Caption = 'Data Start Row:'
+      Layout = tlCenter
+      ParentColor = False
+    end
+    object StartRowEdit: TEdit
+      Left = 128
+      Height = 21
+      Top = 80
+      Width = 124
+      NumbersOnly = True
+      TabOrder = 4
+      Text = '2'
+    end
+    object EndRowLabel: TLabel
+      Left = 264
+      Height = 21
+      Top = 80
+      Width = 100
+      AutoSize = False
+      Caption = 'Data End Row:'
+      Layout = tlCenter
+      ParentColor = False
+    end
+    object EndRowEdit: TEdit
+      Left = 376
+      Height = 21
+      Top = 80
+      Width = 100
+      NumbersOnly = True
+      TabOrder = 5
+    end
+    object InputSystemLabel: TLabel
+      Left = 24
+      Height = 21
+      Top = 0
+      Width = 124
+      AutoSize = False
+      Caption = 'Input Coordinate System:'
+      Layout = tlCenter
       ParentColor = False
     end
   end
