@@ -28,12 +28,26 @@ Uses
 Type
   TSettingsForm = Class(TForm)
     BottomPanel: TPanel;
+    CheckBox1: TCheckBox;
+    CheckBox2: TCheckBox;
+    CheckBox3: TCheckBox;
+    EndRowEdit: TEdit;
+    ErrorHandlingComboBox: TComboBox;
+    ErrorHandlingLabel: TLabel;
+    HeaderRowEdit: TEdit;
+    EndRowLabel: TLabel;
+    EndRowLabel1: TLabel;
+    FirstFieldLabel: TLabel;
+    OutputSystemComboBox: TComboBox;
+    OutputSystemLabel: TLabel;
+    SecondFieldLabel: TLabel;
+    StartRowEdit: TEdit;
+    StartRowLabel: TLabel;
+    ThirdFieldLabel: TLabel;
     TextDelimiterComboBox: TComboBox;
     TextDelimiterLabel: TLabel;
     FixedColumnBreaksEdit: TEdit;
     FixedColumnBreaksLabel: TLabel;
-    ErrorHandlingComboBox: TComboBox;
-    ErrorHandlingLabel: TLabel;
     ColumnDelimiterComboBox: TComboBox;
     ColumnDelimiterLabel: TLabel;
     FirstColumnComboBox: TComboBox;
@@ -46,10 +60,6 @@ Type
     CancelButton: TButton;
     SecondColumnComboBox: TComboBox;
     FileFormatComboBox: TComboBox;
-    StartRowEdit: TEdit;
-    EndRowEdit: TEdit;
-    StartRowLabel: TLabel;
-    EndRowLabel: TLabel;
     InputSystemLabel: TLabel;
     ThirdColumnComboBox: TComboBox;
     Procedure FirstColumnComboBoxChange(Sender: TObject);
