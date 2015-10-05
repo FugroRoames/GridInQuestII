@@ -107,6 +107,7 @@ Type TCoordinateSystemPointer = ^TCoordinateSystem;
 Type TCoordinateSystems = Object
     Count: Integer;
     Function AvailableSystemsList(OmitIndex: Integer = -1): String;
+    Function FindByDescription(Const Description: String): Integer;
     Function FindEPSGNumber(Const Number: Integer): Integer;
     Function IndexOf(Const CoordinateSystem: TCoordinateSystem): Integer;
     Function Items(Index: Integer): TCoordinateSystem;
@@ -182,12 +183,29 @@ Begin
   FirstIndex := Low(CoordinateSystemsList);
   LastIndex := High(CoordinateSystemsList);
   For Index := FirstIndex To LastIndex Do
-    Begin
-      If Index<>OmitIndex Then
+    If Index<>OmitIndex Then
+      Begin
         Result := Result+CoordinateSystemsList[Index]^.Description;
-      If Index<>LastIndex Then
-        Result := Result+LineEnding;
-    End;
+        If Index<>LastIndex Then
+          Result := Result+LineEnding;
+      End;
+End;
+
+Function TCoordinateSystems.FindByDescription(Const Description: String): Integer;
+Var
+  FirstIndex: Integer;
+  LastIndex: Integer;
+  Index: Integer;
+Begin
+  FirstIndex := Low(CoordinateSystemsList);
+  LastIndex := High(CoordinateSystemsList);
+  For Index := FirstIndex To LastIndex Do
+    If Description=CoordinateSystemsList[Index]^.Description Then
+      Begin
+        Result := Index;
+        Exit;
+      End;
+  Result := -1;
 End;
 
 Function TCoordinateSystems.FindEPSGNumber(Const Number: Integer): Integer;
@@ -199,7 +217,7 @@ Begin
   FirstIndex := Low(CoordinateSystemsList);
   LastIndex := High(CoordinateSystemsList);
   For Index := FirstIndex To LastIndex Do
-    If Numberr=CoordinateSystemsList[Index]^.EPSGNumber Then
+    If Number=CoordinateSystemsList[Index]^.EPSGNumber Then
       Begin
         Result := Index;
         Exit;
