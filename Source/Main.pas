@@ -23,8 +23,8 @@ Interface
 
 Uses
   Classes, SysUtils, FileUtil, LCLIntf, Forms, Controls, Graphics, Dialogs,
-  ExtCtrls, Menus, ActnList, StdCtrls, Grids, Clipbrd, Geometry, Geodesy,
-  GlobeCtrl, CoordCtrls, DataStreams, Progress, Settings, Options, About;
+  ExtCtrls, Menus, ActnList, StdCtrls, Grids, Clipbrd, GlobeCtrl, CoordCtrls,
+  DataStreams, Progress, Settings, Options, About, Geometry, Geodesy;
 
 Type
   TMainForm = Class(TForm)
@@ -262,13 +262,51 @@ Begin
 End;
 
 Procedure TMainForm.TransformActionExecute(Sender: TObject);
+Var
+  RecordIndex, LastRecordIndex: Integer;
+  InputCoordinates: TCoordinates;
+  GeocentricCoordinates: TCoordinates;
+  OutputCoordinates: TCoordinates;
 Begin
-  Screen.Cursor := crHourglass;
-  ProgressDisplay.Show('Transforming Data');
-  // TODO: Batch transform loaded file data.
-  Sleep(1000);
-  ProgressDisplay.Hide;
-  Screen.Cursor := crDefault;
+  If DataLoaded Then
+    Begin
+      If InputSystemIndex=-1 Then
+        Begin
+          ShowMessage('There is no input coordinate system selected.');
+          Exit;
+        End;
+      If (InputLatIndex=-1) Or (InputLonIndex=-1) Then
+        Begin
+          ShowMessage('There are no input coordinate fields selected.');
+          Exit;
+        End;
+      If OutputSystemIndex=-1 Then
+        Begin
+          ShowMessage('There is no output coordinate system selected.');
+          Exit;
+        End;
+      Screen.Cursor := crHourglass;
+      ProgressDisplay.Show('Transforming Data');
+      // Construct output array.
+      LastRecordIndex := InputData.RecordCount-1;
+      For RecordIndex := 0 To LastRecordIndex Do
+        Begin
+          { Construct Input coordinate. }
+          InputCoordinates.X := 0;
+          InputCoordinates.Y := 0;
+          InputCoordinates.Z := 0;
+          { Transform to Geocentric coordinates. }
+          GeocentricCoordinates := CoordinateSystems.Items(InputSystemIndex).ConvertToGeocentric(InputCoordinates);
+          { Transform to Output coordinates. }
+          OutputCoordinates := CoordinateSystems.Items(OutputSystemIndex).ConvertToGeocentric(GeocentricCoordinates);
+          { Store result in output array. }
+
+          { Update progress display. }
+          ProgressDisplay.Progress := Integer(Int64(100*RecordIndex) Div LastRecordIndex);
+        End;
+      ProgressDisplay.Hide;
+      Screen.Cursor := crDefault;
+    End;
 End;
 
 Procedure TMainForm.UnloadActionExecute(Sender: TObject);
