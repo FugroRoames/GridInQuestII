@@ -357,18 +357,13 @@ Function TDataStream.GetNamesList: String;
 Var
   Index, LastIndex: Integer;
 Begin
-  If FNames.Count>0 Then
-    Result := FNames.Text
-  Else
+  Result := EmptyStr;
+  LastIndex := FieldCount-1;
+  For Index := 0 To LastIndex Do
     Begin
-      Result := EmptyStr;
-      LastIndex := FieldCount-1;
-      For Index := 0 To LastIndex Do
-        Begin
-          Result := Result+GetName(Index);
-          If Index<LastIndex Then
-            Result := Result+LineEnding;
-        End;
+      Result := Result+GetName(Index);
+      If Index<LastIndex Then
+        Result := Result+LineEnding;
     End;
 End;
 
