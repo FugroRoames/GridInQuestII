@@ -258,8 +258,8 @@ Begin
   If FFirstRow<>Value Then
     Begin
       FFirstRow := Value;
-      { Remove any named row setting if after new first row. }
-      If FNameRow>FFirstRow Then
+      { Remove any named row setting if at or after the new first row. }
+      If FNameRow>=FFirstRow Then
         FNameRow := -1;
     End;
 End;
