@@ -119,8 +119,10 @@ Type
     Procedure DoParseProgress(Sender: TObject; Progress: Integer);
   Public
     { Public declarations. }
+    // TODO: Need to store more comprehensive transform settings.
     InputLatIndex: Integer;
     InputLonIndex: Integer;
+    InputAltIndex: Integer;
   End;
 
 Var
@@ -158,6 +160,7 @@ Begin
   InputData := Nil;
   InputLatIndex := -1;
   InputLonIndex := -1;
+  InputAltIndex := -1;
 End;
 
 Procedure TMainForm.FormDestroy(Sender: TObject);
