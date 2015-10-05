@@ -28,6 +28,9 @@ Uses
 
 Type
   TMainForm = Class(TForm)
+    DataBreak: TMenuItem;
+    TransformMenuItem: TMenuItem;
+    TransformAction: TAction;
     DataSettingsAction: TAction;
     ClearAction: TAction;
     CopyBreak: TMenuItem;
@@ -99,6 +102,7 @@ Type
     Procedure DataDrawGridSelection(Sender: TObject; aCol, aRow: Integer);
     Procedure ReCenterActionExecute(Sender: TObject);
     Procedure SaveActionExecute(Sender: TObject);
+    Procedure TransformActionExecute(Sender: TObject);
     Procedure UnloadActionExecute(Sender: TObject);
     Procedure ZoomInActionExecute(Sender: TObject);
     Procedure ZoomOutActionExecute(Sender: TObject);
@@ -257,6 +261,16 @@ Begin
     End;
 End;
 
+Procedure TMainForm.TransformActionExecute(Sender: TObject);
+Begin
+  Screen.Cursor := crHourglass;
+  ProgressDisplay.Show('Transforming Data');
+  // TODO: Batch transform loaded file data.
+  Sleep(1000);
+  ProgressDisplay.Hide;
+  Screen.Cursor := crDefault;
+End;
+
 Procedure TMainForm.UnloadActionExecute(Sender: TObject);
 Begin
   DataDrawGrid.Hide;
@@ -281,6 +295,7 @@ Begin
   SaveAction.Enabled := DataLoaded;
   UnloadAction.Enabled := DataLoaded;
   DataSettingsAction.Enabled := DataLoaded;
+  TransformAction.Enabled := DataLoaded;
 End;
 
 Procedure TMainForm.EditMenuItemClick(Sender: TObject);

@@ -471,8 +471,14 @@ object MainForm: TMainForm
       object UnloadMenuItem: TMenuItem
         Action = UnloadAction
       end
+      object DataBreak: TMenuItem
+        Caption = '-'
+      end
       object DataSettingsMenuItem: TMenuItem
         Action = DataSettingsAction
+      end
+      object TransformMenuItem: TMenuItem
+        Action = TransformAction
       end
       object ExitBreak: TMenuItem
         Caption = '-'
@@ -563,6 +569,18 @@ object MainForm: TMainForm
       Enabled = False
       OnExecute = UnloadActionExecute
     end
+    object DataSettingsAction: TAction
+      Caption = '&Data Settings'
+      Enabled = False
+      OnExecute = DataSettingsActionExecute
+      ShortCut = 16452
+    end
+    object TransformAction: TAction
+      Caption = '&Transform Data'
+      Enabled = False
+      OnExecute = TransformActionExecute
+      ShortCut = 16468
+    end
     object ExitAction: TAction
       Caption = 'E&xit'
       OnExecute = ExitActionExecute
@@ -625,12 +643,6 @@ object MainForm: TMainForm
       Caption = '&About'
       OnExecute = AboutActionExecute
       ShortCut = 16449
-    end
-    object DataSettingsAction: TAction
-      Caption = '&Data Settings'
-      Enabled = False
-      OnExecute = DataSettingsActionExecute
-      ShortCut = 16452
     end
   end
   object OpenPointsDialog: TOpenDialog
