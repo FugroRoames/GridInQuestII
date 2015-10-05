@@ -107,8 +107,10 @@ Type TCoordinateSystemPointer = ^TCoordinateSystem;
 Type TCoordinateSystems = Object
     Count: Integer;
     Function AvailableSystemsList(OmitIndex: Integer = -1): String;
+    Function FindEPSGNumber(Const Number: Integer): Integer;
     Function IndexOf(Const CoordinateSystem: TCoordinateSystem): Integer;
     Function Items(Index: Integer): TCoordinateSystem;
+    Function Pointers(Index: Integer): TCoordinateSystemPointer;
     Procedure Register(Const CoordinateSystem: TCoordinateSystem);
   End;
 
@@ -188,7 +190,7 @@ Begin
     End;
 End;
 
-Function TCoordinateSystems.IndexOf(Const CoordinateSystem: TCoordinateSystem): Integer;
+Function TCoordinateSystems.FindEPSGNumber(Const Number: Integer): Integer;
 Var
   FirstIndex: Integer;
   LastIndex: Integer;
@@ -197,7 +199,7 @@ Begin
   FirstIndex := Low(CoordinateSystemsList);
   LastIndex := High(CoordinateSystemsList);
   For Index := FirstIndex To LastIndex Do
-    If CoordinateSystem.EPSGNumber=CoordinateSystemsList[Index]^.EPSGNumber Then
+    If Numberr=CoordinateSystemsList[Index]^.EPSGNumber Then
       Begin
         Result := Index;
         Exit;
@@ -205,9 +207,19 @@ Begin
   Result := -1;
 End;
 
+Function TCoordinateSystems.IndexOf(Const CoordinateSystem: TCoordinateSystem): Integer;
+Begin
+  Result := FindEPSGNumber(CoordinateSystem.EPSGNumber);
+End;
+
 Function TCoordinateSystems.Items(Index: Integer): TCoordinateSystem;
 Begin
   Result := CoordinateSystemsList[Index]^;
+End;
+
+Function TCoordinateSystems.Pointers(Index: Integer): TCoordinateSystemPointer;
+Begin
+  Result := CoordinateSystemsList[Index];
 End;
 
 Procedure TCoordinateSystems.Register(Const CoordinateSystem: TCoordinateSystem);
