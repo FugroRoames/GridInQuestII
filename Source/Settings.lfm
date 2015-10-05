@@ -104,6 +104,7 @@ object SettingsForm: TSettingsForm
       BorderSpacing.CellAlignHorizontal = ccaLeftTop
       Enabled = False
       OnEditingDone = FixedColumnBreaksEditEditingDone
+      OnKeyPress = FixedColumnBreaksEditKeyPress
       TabOrder = 2
     end
     object TextDelimiterCheckBox: TCheckBox

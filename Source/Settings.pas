@@ -67,6 +67,7 @@ Type
     Procedure FileFormatComboBoxChange(Sender: TObject);
     Procedure FirstColumnComboBoxChange(Sender: TObject);
     Procedure FixedColumnBreaksEditEditingDone(Sender: TObject);
+    Procedure FixedColumnBreaksEditKeyPress(Sender: TObject; Var Key: char);
     Procedure HeaderRowCheckBoxChange(Sender: TObject);
     Procedure HeaderRowEditEditingDone(Sender: TObject);
     Procedure InputSystemComboBoxChange(Sender: TObject);
@@ -80,7 +81,22 @@ Type
   Private
     { Private declarations. }
     Data: TDataStream;
+    OldFormatType: TFormatType;
+    OldFieldTerminator: Char;
+    OldBreaksList: String;
+    OldTextDelimiter: Char;
+    OldNameRow: Integer;
+    OldFirstRow: Integer;
+    OldLastRow: Integer;
+    OldInputSystemIndex: Integer;
+    OldFirstFieldIndex: Integer;
+    OldSecondFieldIndex: Integer;
+    OldThirdFieldIndex: Integer;
+    OldOutputSystemIndex: Integer;
     Procedure DisplayDataInformation;
+    Procedure SaveSettings;
+    Procedure RestoreSettings;
+    Procedure ParseBreaksList(BreaksText: String);
   End;
 
 Function ShowSettingsForm(NewData: TDataStream): Boolean;
@@ -98,7 +114,11 @@ Begin
     Begin
       Data := NewData;
       DisplayDataInformation;
+      SaveSettings;
       Result := (ShowModal=mrOK);
+      { Restore original settings if cancel is pressed. }
+      If Not Result Then
+        RestoreSettings;
       Free;
     End;
 End;
@@ -165,6 +185,10 @@ Begin
   Else
     HeaderRowEdit.Text := IntToStr(Data.NameRow+1);
   InputSystemComboBox.Items.Text := CoordinateSystems.AvailableSystemsList();
+  If MainForm.InputSystemIndex=-1 Then
+    InputSystemComboBox.Text := EmptyStr
+  Else
+    InputSystemComboBox.Text := CoordinateSystems.Items(MainForm.InputSystemIndex).Description;
   StartRowEdit.Text := IntToStr(Data.FirstRow+1);
   If Data.LastRow=-1 Then
     EndRowEdit.Text := EmptyStr
@@ -174,9 +198,70 @@ Begin
   FirstColumnComboBox.ItemIndex := MainForm.InputLatIndex;
   SecondColumnComboBox.Items.Text := Data.NamesList;
   SecondColumnComboBox.ItemIndex := MainForm.InputLonIndex;
+  VirticalDataCheckBox.Checked := (MainForm.InputAltIndex<>-1);
   ThirdColumnComboBox.Items.Text := Data.NamesList;
   ThirdColumnComboBox.ItemIndex := MainForm.InputAltIndex;
-  OutputSystemComboBox.Items.Text := CoordinateSystems.AvailableSystemsList();
+  OutputSystemComboBox.Items.Text := CoordinateSystems.AvailableSystemsList(InputSystemComboBox.ItemIndex);
+  If (MainForm.OutputSystemIndex=-1) Or (MainForm.OutputSystemIndex=MainForm.InputSystemIndex) Then
+    OutputSystemComboBox.Text := EmptyStr
+  Else
+    OutputSystemComboBox.Text := CoordinateSystems.Items(MainForm.OutputSystemIndex).Description;
+  MainForm.SetupDataGrid;
+End;
+
+Procedure TSettingsForm.SaveSettings;
+Begin
+  OldFormatType := Data.FormatType;
+  OldFieldTerminator := Data.FieldTerminator;
+  OldBreaksList := FixedColumnBreaksEdit.Text;
+  OldTextDelimiter := Data.TextDelimiter;
+  OldNameRow := Data.NameRow;
+  OldFirstRow := Data.FirstRow;
+  OldLastRow := Data.LastRow;
+  OldInputSystemIndex := MainForm.InputSystemIndex;
+  OldFirstFieldIndex := MainForm.InputLatIndex;
+  OldSecondFieldIndex := MainForm.InputLonIndex;
+  OldThirdFieldIndex := MainForm.InputAltIndex;
+  OldOutputSystemIndex := MainForm.OutputSystemIndex;
+End;
+
+Procedure TSettingsForm.RestoreSettings;
+Begin
+  Data.FormatType := OldFormatType;
+  Data.FieldTerminator := OldFieldTerminator;
+  ParseBreaksList(OldBreaksList);
+  Data.TextDelimiter := OldTextDelimiter;
+  Data.NameRow := OldNameRow;
+  Data.FirstRow := OldFirstRow;
+  Data.LastRow := OldLastRow;
+  MainForm.InputSystemIndex := OldInputSystemIndex;
+  MainForm.InputLatIndex := OldFirstFieldIndex;
+  MainForm.InputLonIndex := OldSecondFieldIndex;
+  MainForm.InputAltIndex := OldThirdFieldIndex;
+  MainForm.OutputSystemIndex := OldOutputSystemIndex;
+  MainForm.SetupDataGrid;
+End;
+
+Procedure TSettingsForm.ParseBreaksList(BreaksText: String);
+Var
+  BreaksList: TStringList;
+  Index, LastIndex: Integer;
+Begin
+  If Data.FormatType=ftFixed Then
+    Begin
+      BreaksList := TStringList.Create;
+      BreaksList.CommaText := BreaksText;
+      Data.FieldCount := BreaksList.Count;
+      LastIndex := Data.FieldCount-1;
+      For Index := 0 To LastIndex Do
+        Begin
+          Data.FieldStarts[Index] := StrToInt(BreaksList[Index]);
+          If Index>0 Then
+            Data.FieldLengths[Index-1] := 1+Data.FieldStarts[Index]-Data.FieldStarts[Index-1];
+        End;
+      Data.FieldLengths[LastIndex] := 1+Data.RowLength(Data.FirstRow)-Data.FieldStarts[LastIndex];
+      BreaksList.Free;
+    End;
 End;
 
 Procedure TSettingsForm.FileFormatComboBoxChange(Sender: TObject);
@@ -207,8 +292,15 @@ End;
 
 Procedure TSettingsForm.FixedColumnBreaksEditEditingDone(Sender: TObject);
 Begin
-  // TODO: Parse column breaks.
+  ParseBreaksList(FixedColumnBreaksEdit.Text);
   DisplayDataInformation;
+End;
+
+Procedure TSettingsForm.FixedColumnBreaksEditKeyPress(Sender: TObject; Var Key: char);
+Begin
+  { Only preserve backspace, numbers, spaces and commas. }
+  If Not (Key In [#8, '0'..'9',' ',',']) Then
+    Key := #0;
 End;
 
 Procedure TSettingsForm.TextDelimiterCheckBoxChange(Sender: TObject);
@@ -264,7 +356,7 @@ End;
 
 Procedure TSettingsForm.InputSystemComboBoxChange(Sender: TObject);
 Begin
-  // TODO: Record output coordinate system.
+  MainForm.InputSystemIndex := CoordinateSystems.FindByDescription(InputSystemComboBox.Text);
   DisplayDataInformation;
 End;
 
@@ -298,7 +390,7 @@ End;
 
 Procedure TSettingsForm.OutputSystemComboBoxChange(Sender: TObject);
 Begin
-  // TODO: Record output coordinate system.
+  MainForm.OutputSystemIndex := CoordinateSystems.FindByDescription(OutputSystemComboBox.Text);
   DisplayDataInformation;
 End;
 
