@@ -82,6 +82,7 @@ Type
     Procedure Last;
     Procedure Next;
     Procedure Prior;
+    Function RowLength(RowIndex: Integer): Integer;
     Property BOF: Boolean Read FBOF;
     Property EOF: Boolean Read FEOF;
     Property FieldCount: Integer Read FFieldCount Write SetFieldCount;
@@ -228,6 +229,11 @@ End;
 Procedure TDataStream.Prior;
 Begin
   SetRecordNumber(RecordNumber-1);
+End;
+
+Function TDataStream.RowLength(RowIndex: Integer): Integer;
+Begin
+  Result := FRows[RowIndex+1]-FRows[RowIndex]
 End;
 
 Procedure TDataStream.SetFieldLengths(Index: Integer; Value: Integer);
@@ -408,12 +414,12 @@ Begin
           While CurrentPointer^=' ' Do
             Inc(CurrentPointer);
           { If a text delimiter is set, skip any delimited data. }
-          If (TextDelimiter<>#0) And (FieldPointer^=TextDelimiter) Then
+          If (TextDelimiter<>#0) And (CurrentPointer^=TextDelimiter) Then
             Begin
               { Find the start of the delimited text. }
               Inc(CurrentPointer);
               FieldPointer := CurrentPointer;
-              While Not (CurrentPointer^=TextDelimiter) Do
+              While CurrentPointer^<>TextDelimiter Do
                 Inc(CurrentPointer);
             End
           Else
