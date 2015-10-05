@@ -195,12 +195,12 @@ Begin
   Else
     EndRowEdit.Text := IntToStr(Data.LastRow+1);
   FirstColumnComboBox.Items.Text := Data.NamesList;
-  FirstColumnComboBox.ItemIndex := MainForm.InputLatIndex;
+  FirstColumnComboBox.ItemIndex := MainForm.InputFirstFieldIndex;
   SecondColumnComboBox.Items.Text := Data.NamesList;
-  SecondColumnComboBox.ItemIndex := MainForm.InputLonIndex;
-  VirticalDataCheckBox.Checked := (MainForm.InputAltIndex<>-1);
+  SecondColumnComboBox.ItemIndex := MainForm.InputSecondFieldIndex;
+  VirticalDataCheckBox.Checked := (MainForm.InputThirdFieldIndex<>-1);
   ThirdColumnComboBox.Items.Text := Data.NamesList;
-  ThirdColumnComboBox.ItemIndex := MainForm.InputAltIndex;
+  ThirdColumnComboBox.ItemIndex := MainForm.InputThirdFieldIndex;
   OutputSystemComboBox.Items.Text := CoordinateSystems.AvailableSystemsList(InputSystemComboBox.ItemIndex);
   If (MainForm.OutputSystemIndex=-1) Or (MainForm.OutputSystemIndex=MainForm.InputSystemIndex) Then
     OutputSystemComboBox.Text := EmptyStr
@@ -219,9 +219,9 @@ Begin
   OldFirstRow := Data.FirstRow;
   OldLastRow := Data.LastRow;
   OldInputSystemIndex := MainForm.InputSystemIndex;
-  OldFirstFieldIndex := MainForm.InputLatIndex;
-  OldSecondFieldIndex := MainForm.InputLonIndex;
-  OldThirdFieldIndex := MainForm.InputAltIndex;
+  OldFirstFieldIndex := MainForm.InputFirstFieldIndex;
+  OldSecondFieldIndex := MainForm.InputSecondFieldIndex;
+  OldThirdFieldIndex := MainForm.InputThirdFieldIndex;
   OldOutputSystemIndex := MainForm.OutputSystemIndex;
 End;
 
@@ -235,9 +235,9 @@ Begin
   Data.FirstRow := OldFirstRow;
   Data.LastRow := OldLastRow;
   MainForm.InputSystemIndex := OldInputSystemIndex;
-  MainForm.InputLatIndex := OldFirstFieldIndex;
-  MainForm.InputLonIndex := OldSecondFieldIndex;
-  MainForm.InputAltIndex := OldThirdFieldIndex;
+  MainForm.InputFirstFieldIndex := OldFirstFieldIndex;
+  MainForm.InputSecondFieldIndex := OldSecondFieldIndex;
+  MainForm.InputThirdFieldIndex := OldThirdFieldIndex;
   MainForm.OutputSystemIndex := OldOutputSystemIndex;
   MainForm.SetupDataGrid;
 End;
@@ -362,13 +362,13 @@ End;
 
 Procedure TSettingsForm.FirstColumnComboBoxChange(Sender: TObject);
 Begin
-  MainForm.InputLatIndex := FirstColumnComboBox.ItemIndex;
+  MainForm.InputFirstFieldIndex := FirstColumnComboBox.ItemIndex;
   DisplayDataInformation;
 End;
 
 Procedure TSettingsForm.SecondColumnComboBoxChange(Sender: TObject);
 Begin
-  MainForm.InputLonIndex := SecondColumnComboBox.ItemIndex;
+  MainForm.InputSecondFieldIndex := SecondColumnComboBox.ItemIndex;
   DisplayDataInformation;
 End;
 
@@ -377,14 +377,14 @@ Begin
   ThirdColumnComboBox.Enabled := VirticalDataCheckBox.Checked;
   If Not ThirdColumnComboBox.Enabled Then
     Begin
-      MainForm.InputAltIndex := -1;
+      MainForm.InputThirdFieldIndex := -1;
       DisplayDataInformation;
     End;
 End;
 
 Procedure TSettingsForm.ThirdColumnComboBoxChange(Sender: TObject);
 Begin
-  MainForm.InputAltIndex := ThirdColumnComboBox.ItemIndex;
+  MainForm.InputThirdFieldIndex := ThirdColumnComboBox.ItemIndex;
   DisplayDataInformation;
 End;
 

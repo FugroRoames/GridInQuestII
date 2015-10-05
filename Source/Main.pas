@@ -24,7 +24,8 @@ Interface
 Uses
   Classes, SysUtils, FileUtil, LCLIntf, Forms, Controls, Graphics, Dialogs,
   ExtCtrls, Menus, ActnList, StdCtrls, Grids, Clipbrd, GlobeCtrl, CoordCtrls,
-  DataStreams, Progress, Settings, Options, About, Geometry, Geodesy;
+  DataStreams, Progress, Settings, Options, About, Geometry, Geodesy,
+  GeomUtils, GeodUtils;
 
 Type
   TMainForm = Class(TForm)
@@ -123,10 +124,11 @@ Type
   Public
     { Public declarations. }
     InputSystemIndex: Integer;
-    InputLatIndex: Integer;
-    InputLonIndex: Integer;
-    InputAltIndex: Integer;
+    InputFirstFieldIndex: Integer;
+    InputSecondFieldIndex: Integer;
+    InputThirdFieldIndex: Integer;
     OutputSystemIndex: Integer;
+    OutputCoordinates: Array Of TCoordinates;
     Procedure SetupDataGrid;
   End;
 
@@ -164,9 +166,9 @@ Begin
   OutputPanel.OnChangeSystem := @DoOutputChangeSystem;
   InputData := Nil;
   InputSystemIndex := -1;
-  InputLatIndex := -1;
-  InputLonIndex := -1;
-  InputAltIndex := -1;
+  InputFirstFieldIndex := -1;
+  InputSecondFieldIndex := -1;
+  InputThirdFieldIndex := -1;
   OutputSystemIndex := -1;
 End;
 
@@ -233,7 +235,15 @@ Begin
   Else
     If aCol>0 Then
       Begin
-        CellText := InputData.Values[aRow-1, aCol-1];
+        If aCol<=InputData.FieldCount Then
+          CellText := InputData.Values[aRow-1, aCol-1]
+        Else If aCol=InputData.FieldCount+1 Then
+          // TODO: adjust columns for correct axis order and format for correct system type.
+          CellText := FormatCoordinate(OutputCoordinates[aRow-1].X)
+        Else If aCol=InputData.FieldCount+2 Then
+          CellText := FormatCoordinate(OutputCoordinates[aRow-1].Y)
+        Else If aCol=InputData.FieldCount+3 Then
+          CellText := FormatCoordinate(OutputCoordinates[aRow-1].Z);
         TOverrideGrid(DataDrawGrid).DrawCellText(aCol, aRow, aRect, aState, CellText);
       End;
 End;
@@ -242,12 +252,12 @@ Procedure TMainForm.DataDrawGridSelection(Sender: TObject; aCol, aRow: Integer);
 Begin
   MainGlobe.ShowMarker := False;
   If DataLoaded Then
-    If (InputLatIndex<>-1) And (InputLonIndex<>-1) Then
+    If (InputFirstFieldIndex<>-1) And (InputSecondFieldIndex<>-1) Then
       If (aRow<>-1) And (aCol<InputData.FieldCount) Then
         Begin
           InputData.RecordNumber := aRow-1;
-          MainGlobe.Marker.Lat := StrToFloatDef(InputData.Fields[InputLatIndex], 0);
-          MainGlobe.Marker.Lon := StrToFloatDef(InputData.Fields[InputLonIndex], 0);
+          MainGlobe.Marker.Lat := StrToFloatDef(InputData.Fields[InputFirstFieldIndex], 0);
+          MainGlobe.Marker.Lon := StrToFloatDef(InputData.Fields[InputSecondFieldIndex], 0);
           MainGlobe.ShowMarker := True;
           MainGlobe.Refresh;
         End;
@@ -266,7 +276,7 @@ Var
   RecordIndex, LastRecordIndex: Integer;
   InputCoordinates: TCoordinates;
   GeocentricCoordinates: TCoordinates;
-  OutputCoordinates: TCoordinates;
+
 Begin
   If DataLoaded Then
     Begin
@@ -275,7 +285,7 @@ Begin
           ShowMessage('There is no input coordinate system selected.');
           Exit;
         End;
-      If (InputLatIndex=-1) Or (InputLonIndex=-1) Then
+      If (InputFirstFieldIndex=-1) Or (InputSecondFieldIndex=-1) Then
         Begin
           ShowMessage('There are no input coordinate fields selected.');
           Exit;
@@ -287,7 +297,7 @@ Begin
         End;
       Screen.Cursor := crHourglass;
       ProgressDisplay.Show('Transforming Data');
-      // Construct output array.
+      SetLength(OutputCoordinates, InputData.RecordCount);
       LastRecordIndex := InputData.RecordCount-1;
       For RecordIndex := 0 To LastRecordIndex Do
         Begin
@@ -298,13 +308,12 @@ Begin
           { Transform to Geocentric coordinates. }
           GeocentricCoordinates := CoordinateSystems.Items(InputSystemIndex).ConvertToGeocentric(InputCoordinates);
           { Transform to Output coordinates. }
-          OutputCoordinates := CoordinateSystems.Items(OutputSystemIndex).ConvertToGeocentric(GeocentricCoordinates);
-          { Store result in output array. }
-
+          OutputCoordinates[RecordIndex] := CoordinateSystems.Items(OutputSystemIndex).ConvertToGeocentric(GeocentricCoordinates);
           { Update progress display. }
           ProgressDisplay.Progress := Integer(Int64(100*RecordIndex) Div LastRecordIndex);
         End;
       ProgressDisplay.Hide;
+      SetupDataGrid;
       Screen.Cursor := crDefault;
     End;
 End;
@@ -318,8 +327,9 @@ Begin
   SaveAction.Enabled := False;
   UnloadAction.Enabled := False;
   FreeAndNil(InputData);
-  InputLatIndex := -1;
-  InputLonIndex := -1;
+  InputFirstFieldIndex := -1;
+  InputSecondFieldIndex := -1;
+  SetLength(OutputCoordinates, 0);
 End;
 
 Procedure TMainForm.ExitActionExecute(Sender: TObject);
@@ -468,6 +478,30 @@ Begin
         Else
           Width := NewWidth;
       End;
+  { If output coodinates have been generated. }
+  If Length(OutputCoordinates)>0 Then
+    Begin
+      { Calculate the width of a 10 character column. }
+      NewWidth := Canvas.TextWidth('0123456789');
+      // TODO: Assign correct field names. EPSG-AxisName
+      With DataDrawGrid.Columns.Add Do
+        Begin
+          Title.Caption := 'EPSG-X';
+          Width := NewWidth;
+        End;
+      With DataDrawGrid.Columns.Add Do
+        Begin
+          Title.Caption := 'EPSG-Y';
+          Width := NewWidth;
+        End;
+      { Add an elevation column if required. }
+      If InputThirdFieldIndex<>-1 Then
+        With DataDrawGrid.Columns.Add Do
+          Begin
+            Title.Caption := 'EPSG-Z';
+            Width := NewWidth;
+          End;
+    End;
   DataDrawGrid.Show;
   DataDrawGrid.EndUpdate;
 End;
