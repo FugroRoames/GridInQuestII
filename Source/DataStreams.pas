@@ -40,8 +40,10 @@ Type
     FFieldLengths: TFPList;
     FFieldStarts: TFPList;
     FFieldTerminator: Char;
+    FFileName: String;
     FFirstRow: Integer;
     FFormatType: TFormatType;
+    FLastRow: Integer;
     FNameRow: Integer;
     FNames: TStringList;
     FOnLoadProgress: TOnProgressEvent;
@@ -61,6 +63,7 @@ Type
     Procedure SetFieldStarts(Index: Integer; Value: Integer);
     Procedure SetFieldTerminator(Value: Char);
     Procedure SetFirstRow(Value: Integer);
+    Procedure SetLastRow(Value: Integer);
     Procedure SetNameRow(Value: Integer);
     Procedure SetRecordNumber(Const Value: Integer);
   Protected
@@ -88,9 +91,11 @@ Type
     Property FieldTerminator: Char Read FFieldTerminator Write SetFieldTerminator;
     Property FirstRow: Integer Read FFirstRow Write SetFirstRow;
     Property FormatType: TFormatType Read FFormatType Write FFormatType;
+    Property LastRow: Integer Read FLastRow Write SetLastRow;
     Property NameRow: Integer Read FNameRow Write SetNameRow;
     Property Names[Index: Integer]: String Read GetName;
     Property NamesList: String Read GetNamesList;
+    Property OriginalFileName: String Read FFileName;
     Property RecordCount: Integer Read FRecordCount;
     Property RecordNumber: Integer Read FRecordNumber Write SetRecordNumber;
     Property TextDelimiter: Char Read FTextDelimiter Write FTextDelimiter;
@@ -118,6 +123,7 @@ Begin
   FFieldLengths := TFPList.Create;
   FNameRow := 0;
   FFirstRow := 1;
+  FLastRow := -1; { Unlimited flag. }
   FFormatType := ftDelimited;
   FieldTerminator := CommaTerminator;
   RecordTerminators := StandardRecordTerminators;
@@ -197,6 +203,8 @@ Procedure TDataStream.LoadFromFile(FileName: String);
 Var
   FileStream: TFileStream;
 Begin
+  FFileName := FileName;
+  // TODO: attempt to auto-set the data settings from the file ext/contents?
   FileStream := TFileStream.Create(FileName, fmOpenRead);
   LoadFromStream(FileStream);
   FileStream.Free;
@@ -254,6 +262,22 @@ Begin
       If FNameRow>FFirstRow Then
         FNameRow := -1;
     End;
+End;
+
+Procedure TDataStream.SetLastRow(Value: Integer);
+Begin
+  If FLastRow<>Value Then
+    If Value=-1 Then { Treat -1 as a flag for unlimited. }
+      FLastRow := Value
+    Else
+      Begin
+        If (Value<0) Or (Value>=FRows.Count) Then
+          Value := FRows.Count-1;
+        FLastRow := Value;
+        { If Last row is before the first row, make them equal. }
+        If FLastRow<FFirstRow Then
+          FLastRow := FFirstRow;
+      End;
 End;
 
 Procedure TDataStream.SetNameRow(Value: Integer);
@@ -514,8 +538,11 @@ Begin
         { Setup the field names list. }
         ParseRow(FNames, NameRow);
       End;
-  { Set the found record count. }
+  { Set the found record count, or truncate to the last row if one given. }
   FRecordCount := FRows.Count-FirstRow-1;
+  If LastRow<>-1 Then
+    If 1+LastRow-FirstRow<FRecordCount Then
+      FRecordCount := 1+LastRow-FirstRow;
   { Setup the first record if there are records. }
   If FRecordCount>0 Then
     Begin
