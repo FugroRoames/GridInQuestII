@@ -203,9 +203,14 @@ End;
 Procedure TDataStream.LoadFromFile(FileName: String);
 Var
   FileStream: TFileStream;
+  Extension: String;
 Begin
   FFileName := FileName;
-  // TODO: attempt to auto-set the data settings from the file ext/contents?
+  Extension := UpperCase(ExtractFileExt(FileName));
+  If Extension='.TAB' Then
+    FieldTerminator := #9;
+  If Extension='.CSV' Then
+    TextDelimiter := '"';
   FileStream := TFileStream.Create(FileName, fmOpenRead);
   LoadFromStream(FileStream);
   FileStream.Free;
@@ -369,7 +374,6 @@ End;
 
 Function TDataStream.GetValue(RecordIndex, FieldIndex: Integer): String;
 Begin
-//  WriteLn('GetValue ', RecordIndex, ' ', FieldIndex);
   SetRecordNumber(RecordIndex);
   Result := GetField(FieldIndex);
 End;
