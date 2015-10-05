@@ -114,15 +114,16 @@ Type
     Procedure ClearDataGrid;
     Procedure DoInputValid(Sender: TObject);
     Procedure DoOutputChangeSystem(Sender: TObject);
-    Procedure SetupDataGrid;
     Procedure DoLoadProgress(Sender: TObject; Progress: Integer);
     Procedure DoParseProgress(Sender: TObject; Progress: Integer);
   Public
     { Public declarations. }
-    // TODO: Need to store more comprehensive transform settings.
+    InputSystemIndex: Integer;
     InputLatIndex: Integer;
     InputLonIndex: Integer;
     InputAltIndex: Integer;
+    OutputSystemIndex: Integer;
+    Procedure SetupDataGrid;
   End;
 
 Var
@@ -158,9 +159,11 @@ Begin
   InputPanel.OnValid := @DoInputValid;
   OutputPanel.OnChangeSystem := @DoOutputChangeSystem;
   InputData := Nil;
+  InputSystemIndex := -1;
   InputLatIndex := -1;
   InputLonIndex := -1;
   InputAltIndex := -1;
+  OutputSystemIndex := -1;
 End;
 
 Procedure TMainForm.FormDestroy(Sender: TObject);
