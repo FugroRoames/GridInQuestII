@@ -150,6 +150,7 @@ Begin
       FixedColumnBreaksEdit.Enabled := True;
     End;
   End;
+  ColumnDelimiterComboBox.Items[3] := 'Custom';
   Case Data.FieldTerminator Of
   ',':
     ColumnDelimiterComboBox.ItemIndex := 0;
@@ -159,6 +160,7 @@ Begin
     ColumnDelimiterComboBox.ItemIndex := 2;
   Else { Custom }
     ColumnDelimiterComboBox.ItemIndex := 3;
+    ColumnDelimiterComboBox.Items[3] := 'Custom: '+Data.FieldTerminator;
   End;
   If FixedColumnBreaksEdit.Enabled Then
     Begin
@@ -176,6 +178,7 @@ Begin
     FixedColumnBreaksEdit.Text := '';
   TextDelimiterCheckBox.Checked := (Data.TextDelimiter<>#0);
   TextDelimiterComboBox.Enabled := (Data.TextDelimiter<>#0);
+  TextDelimiterComboBox.Items[2] := 'Custom';
   Case Data.TextDelimiter Of
   #0:
     TextDelimiterComboBox.ItemIndex := -1;
@@ -185,6 +188,7 @@ Begin
     TextDelimiterComboBox.ItemIndex := 1;
   Else
     TextDelimiterComboBox.ItemIndex := 2;
+    TextDelimiterComboBox.Items[2] := 'Custom: '+Data.TextDelimiter;
   End;
   HeaderRowCheckBox.Checked := (Data.NameRow<>-1);
   HeaderRowEdit.Enabled := (Data.NameRow<>-1);
@@ -291,6 +295,8 @@ Begin
 End;
 
 Procedure TSettingsForm.ColumnDelimiterComboBoxChange(Sender: TObject);
+Var
+  InputText: String;
 Begin
   Case ColumnDelimiterComboBox.ItemIndex Of
   0: { Comma }
@@ -300,7 +306,13 @@ Begin
   2: { Tab }
     Data.FieldTerminator := #9;
   3: { Custom }
-    Data.FieldTerminator := #0; //TODO?
+    Begin
+      InputText := InputBox('Input Settings', 'Enter Custom Terminator Character:', Data.FieldTerminator);
+      If InputText=EmptyStr Then
+        Data.FieldTerminator := #0
+      Else
+        Data.FieldTerminator := InputText[1];
+    End;
   End;
   DisplayDataInformation;
 End;
@@ -329,6 +341,8 @@ Begin
 End;
 
 Procedure TSettingsForm.TextDelimiterComboBoxChange(Sender: TObject);
+Var
+  InputText: String;
 Begin
   Case TextDelimiterComboBox.ItemIndex Of
   0: { Comma }
@@ -336,7 +350,13 @@ Begin
   1: { Semicolon }
     Data.TextDelimiter := '"';
   2: { Custom }
-    Data.TextDelimiter := #0; //TODO?
+    Begin
+      InputText := InputBox('Input Settings', 'Enter Custom Terminator Character:', Data.TextDelimiter);
+      If InputText=EmptyStr Then
+        Data.TextDelimiter := #0
+      Else
+        Data.TextDelimiter := InputText[1];
+    End;
   End;
   DisplayDataInformation;
 End;
