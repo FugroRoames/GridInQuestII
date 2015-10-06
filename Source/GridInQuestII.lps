@@ -18,17 +18,20 @@
         <ComponentName Value="MainForm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <CursorPos X="71" Y="12"/>
+        <TopLine Value="240"/>
+        <CursorPos X="8" Y="257"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
       </Unit1>
       <Unit2>
         <Filename Value="Geodesy.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="14"/>
-        <TopLine Value="127"/>
-        <CursorPos X="21" Y="153"/>
+        <TopLine Value="275"/>
+        <CursorPos Y="289"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
       </Unit2>
@@ -56,10 +59,9 @@
         <ComponentName Value="SettingsForm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="2"/>
-        <TopLine Value="173"/>
-        <CursorPos X="52" Y="200"/>
+        <TopLine Value="132"/>
+        <CursorPos Y="144"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -100,7 +102,7 @@
         <Filename Value="GeomUtils.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="196"/>
+        <UsageCount Value="200"/>
       </Unit10>
       <Unit11>
         <Filename Value="ETRS.pas"/>
@@ -108,7 +110,7 @@
         <EditorIndex Value="11"/>
         <TopLine Value="38"/>
         <CursorPos X="7" Y="101"/>
-        <UsageCount Value="87"/>
+        <UsageCount Value="91"/>
         <Loaded Value="True"/>
       </Unit11>
       <Unit12>
@@ -148,7 +150,7 @@
       <Unit18>
         <Filename Value="WKT.pas"/>
         <EditorIndex Value="5"/>
-        <CursorPos X="21" Y="61"/>
+        <CursorPos X="31" Y="8"/>
         <UsageCount Value="102"/>
         <Loaded Value="True"/>
       </Unit18>
@@ -248,7 +250,7 @@
         <EditorIndex Value="3"/>
         <TopLine Value="85"/>
         <CursorPos Y="89"/>
-        <UsageCount Value="94"/>
+        <UsageCount Value="96"/>
         <Loaded Value="True"/>
       </Unit32>
       <Unit33>
@@ -375,7 +377,7 @@
         <EditorIndex Value="12"/>
         <TopLine Value="55"/>
         <CursorPos X="5" Y="62"/>
-        <UsageCount Value="14"/>
+        <UsageCount Value="16"/>
         <Loaded Value="True"/>
       </Unit49>
       <Unit50>
@@ -388,17 +390,16 @@
       <Unit51>
         <Filename Value="CoordCtrls.pas"/>
         <EditorIndex Value="7"/>
-        <TopLine Value="358"/>
-        <CursorPos X="75" Y="365"/>
-        <UsageCount Value="97"/>
+        <TopLine Value="399"/>
+        <CursorPos X="3" Y="420"/>
+        <UsageCount Value="99"/>
         <Loaded Value="True"/>
       </Unit51>
       <Unit52>
         <Filename Value="GeodUtils.pas"/>
         <EditorIndex Value="8"/>
-        <TopLine Value="17"/>
         <CursorPos X="56" Y="21"/>
-        <UsageCount Value="38"/>
+        <UsageCount Value="40"/>
         <Loaded Value="True"/>
       </Unit52>
       <Unit53>
@@ -493,7 +494,7 @@
         <EditorIndex Value="10"/>
         <TopLine Value="16"/>
         <CursorPos Y="22"/>
-        <UsageCount Value="45"/>
+        <UsageCount Value="47"/>
         <Loaded Value="True"/>
       </Unit65>
       <Unit66>
@@ -529,123 +530,122 @@
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="CoordCtrls.pas"/>
-        <Caret Line="341" Column="36" TopLine="328"/>
-      </Position1>
-      <Position2>
-        <Filename Value="CoordCtrls.pas"/>
-        <Caret Line="35" Column="20" TopLine="22"/>
-      </Position2>
-      <Position3>
-        <Filename Value="Geodesy.pas"/>
-        <Caret Line="99" Column="20" TopLine="83"/>
-      </Position3>
-      <Position4>
-        <Filename Value="Geodesy.pas"/>
-        <Caret Line="151" Column="9" TopLine="140"/>
-      </Position4>
-      <Position5>
-        <Filename Value="Settings.pas"/>
-        <Caret Line="206" TopLine="189"/>
-      </Position5>
-      <Position6>
-        <Filename Value="Settings.pas"/>
-        <Caret Line="133" Column="5" TopLine="119"/>
-      </Position6>
-      <Position7>
-        <Filename Value="Settings.pas"/>
-        <Caret Line="132" Column="23" TopLine="119"/>
-      </Position7>
-      <Position8>
-        <Filename Value="Geodesy.pas"/>
-        <Caret Line="99" Column="80" TopLine="85"/>
-      </Position8>
-      <Position9>
-        <Filename Value="Settings.pas"/>
-        <Caret Line="132" Column="23" TopLine="119"/>
-      </Position9>
-      <Position10>
-        <Filename Value="CoordCtrls.pas"/>
-        <Caret Line="332" Column="12" TopLine="310"/>
-      </Position10>
-      <Position11>
-        <Filename Value="CoordCtrls.pas"/>
-        <Caret Line="100" Column="28" TopLine="87"/>
-      </Position11>
-      <Position12>
-        <Filename Value="CoordCtrls.pas"/>
-      </Position12>
-      <Position13>
-        <Filename Value="CoordCtrls.pas"/>
-        <Caret Line="86" Column="37" TopLine="62"/>
-      </Position13>
-      <Position14>
-        <Filename Value="CoordCtrls.pas"/>
-        <Caret Line="100" Column="88" TopLine="77"/>
-      </Position14>
-      <Position15>
-        <Filename Value="CoordCtrls.pas"/>
-        <Caret Line="167" Column="53" TopLine="143"/>
-      </Position15>
-      <Position16>
-        <Filename Value="CoordCtrls.pas"/>
-        <Caret Line="193" Column="55" TopLine="169"/>
-      </Position16>
-      <Position17>
-        <Filename Value="CoordCtrls.pas"/>
-        <Caret Line="333" Column="33" TopLine="323"/>
-      </Position17>
-      <Position18>
-        <Filename Value="CoordCtrls.pas"/>
-        <Caret Line="331" Column="36" TopLine="316"/>
-      </Position18>
-      <Position19>
-        <Filename Value="CoordCtrls.pas"/>
-        <Caret Line="79" Column="44" TopLine="65"/>
-      </Position19>
-      <Position20>
-        <Filename Value="CoordCtrls.pas"/>
-        <Caret Line="312" TopLine="307"/>
-      </Position20>
-      <Position21>
-        <Filename Value="CoordCtrls.pas"/>
-        <Caret Line="313" TopLine="307"/>
-      </Position21>
-      <Position22>
-        <Filename Value="CoordCtrls.pas"/>
-        <Caret Line="314" TopLine="307"/>
-      </Position22>
-      <Position23>
-        <Filename Value="Geodesy.pas"/>
-        <Caret Line="142" TopLine="127"/>
-      </Position23>
-      <Position24>
-        <Filename Value="Geodesy.pas"/>
-        <Caret Line="153" Column="21" TopLine="127"/>
-      </Position24>
-      <Position25>
-        <Filename Value="Settings.pas"/>
-        <Caret Line="205" TopLine="180"/>
-      </Position25>
-      <Position26>
-        <Filename Value="Settings.pas"/>
-        <Caret Line="296" TopLine="287"/>
-      </Position26>
-      <Position27>
         <Filename Value="Settings.pas"/>
         <Caret Line="355" TopLine="334"/>
-      </Position27>
-      <Position28>
+      </Position1>
+      <Position2>
         <Filename Value="Settings.pas"/>
         <Caret Line="357" Column="9" TopLine="334"/>
-      </Position28>
-      <Position29>
+      </Position2>
+      <Position3>
         <Filename Value="Settings.pas"/>
         <Caret Line="191" Column="73" TopLine="173"/>
-      </Position29>
-      <Position30>
+      </Position3>
+      <Position4>
         <Filename Value="Settings.pas"/>
         <Caret Line="153" Column="35" TopLine="139"/>
+      </Position4>
+      <Position5>
+        <Filename Value="Main.pas"/>
+        <Caret Line="12" Column="71"/>
+      </Position5>
+      <Position6>
+        <Filename Value="Main.pas"/>
+        <Caret Line="358" Column="46" TopLine="349"/>
+      </Position6>
+      <Position7>
+        <Filename Value="CoordCtrls.pas"/>
+        <Caret Line="102" Column="39" TopLine="89"/>
+      </Position7>
+      <Position8>
+        <Filename Value="Main.pas"/>
+        <Caret Line="358" Column="46" TopLine="349"/>
+      </Position8>
+      <Position9>
+        <Filename Value="Main.pas"/>
+        <Caret Line="395" Column="15" TopLine="393"/>
+      </Position9>
+      <Position10>
+        <Filename Value="Main.pas"/>
+      </Position10>
+      <Position11>
+        <Filename Value="Main.pas"/>
+        <Caret Line="487" Column="20" TopLine="483"/>
+      </Position11>
+      <Position12>
+        <Filename Value="Geodesy.pas"/>
+        <Caret Line="114" Column="36" TopLine="93"/>
+      </Position12>
+      <Position13>
+        <Filename Value="Main.pas"/>
+        <Caret Line="483" Column="30" TopLine="478"/>
+      </Position13>
+      <Position14>
+        <Filename Value="Main.pas"/>
+      </Position14>
+      <Position15>
+        <Filename Value="Main.pas"/>
+        <Caret Line="131" Column="22" TopLine="108"/>
+      </Position15>
+      <Position16>
+        <Filename Value="Main.pas"/>
+        <Caret Line="242" Column="57" TopLine="218"/>
+      </Position16>
+      <Position17>
+        <Filename Value="Main.pas"/>
+        <Caret Line="244" Column="57" TopLine="220"/>
+      </Position17>
+      <Position18>
+        <Filename Value="Main.pas"/>
+        <Caret Line="246" Column="57" TopLine="222"/>
+      </Position18>
+      <Position19>
+        <Filename Value="Main.pas"/>
+        <Caret Line="300" Column="34" TopLine="277"/>
+      </Position19>
+      <Position20>
+        <Filename Value="Main.pas"/>
+        <Caret Line="311" Column="28" TopLine="288"/>
+      </Position20>
+      <Position21>
+        <Filename Value="Settings.pas"/>
+        <Caret Line="212" Column="60" TopLine="199"/>
+      </Position21>
+      <Position22>
+        <Filename Value="Geodesy.pas"/>
+        <Caret Line="119" Column="30" TopLine="109"/>
+      </Position22>
+      <Position23>
+        <Filename Value="Settings.pas"/>
+        <Caret Line="3" Column="16" TopLine="2"/>
+      </Position23>
+      <Position24>
+        <Filename Value="Main.pas"/>
+        <Caret Line="112" Column="46" TopLine="100"/>
+      </Position24>
+      <Position25>
+        <Filename Value="Main.pas"/>
+        <Caret Line="488" Column="66" TopLine="488"/>
+      </Position25>
+      <Position26>
+        <Filename Value="Main.pas"/>
+        <Caret Line="230" Column="43" TopLine="229"/>
+      </Position26>
+      <Position27>
+        <Filename Value="Main.pas"/>
+        <Caret Line="252" Column="43" TopLine="224"/>
+      </Position27>
+      <Position28>
+        <Filename Value="Main.pas"/>
+        <Caret Line="253" Column="43" TopLine="241"/>
+      </Position28>
+      <Position29>
+        <Filename Value="Geodesy.pas"/>
+        <Caret Line="289" TopLine="275"/>
+      </Position29>
+      <Position30>
+        <Filename Value="WKT.pas"/>
+        <Caret Line="8" Column="31"/>
       </Position30>
     </JumpHistory>
   </ProjectSession>

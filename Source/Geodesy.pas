@@ -42,6 +42,9 @@ Type
     X: String;
     Y: String;
     Z: String;
+    ShortX: String;
+    ShortY: String;
+    ShortZ: String;
   End;
 
 Type
@@ -103,9 +106,12 @@ Function SexagesimalToDecimalCoordinates(Const Coordinates: TSexagesimalCoordina
 Function DecimalToSexagesimalCoordinates(Const Coordinates: TCoordinates): TSexagesimalCoordinates;
 
 Const
-  GeocentricAxisNames: TAxisNames = (X: 'X Coordinate'; Y: 'Y Coordinate'; Z: 'Z Coordinate');
-  GeodeticAxisNames: TAxisNames = (X: 'Longitude'; Y: 'Latitude'; Z: 'Altitude');
-  CartesianAxisNames: TAxisNames = (X: 'Easting'; Y: 'Northing'; Z: 'Elevation');
+  GeocentricAxisNames: TAxisNames = (X: 'X Coordinate'; Y: 'Y Coordinate'; Z: 'Z Coordinate';
+                                     ShortX: 'X'; ShortY: 'Y'; ShortZ: 'Z');
+  GeodeticAxisNames: TAxisNames = (X: 'Longitude'; Y: 'Latitude'; Z: 'Altitude';
+                                   ShortX: 'Long'; ShortY: 'Lat'; ShortZ: 'Alt');
+  CartesianAxisNames: TAxisNames = (X: 'Easting'; Y: 'Northing'; Z: 'Elevation';
+                                    ShortX: 'East'; ShortY: 'North'; ShortZ: 'Height');
 
 Type TCoordinateSystem = Object
     Abbreviation: String;

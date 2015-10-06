@@ -116,8 +116,14 @@ Begin
       DisplayDataInformation;
       SaveSettings;
       Result := (ShowModal=mrOK);
-      { Restore original settings if cancel is pressed. }
-      If Not Result Then
+      { Clear any prior transform on ok or restore original settings if cancel is pressed. }
+      If Result Then
+        With MainForm Do
+          Begin
+            SetLength(OutputCoordinates, 0);
+            SetupDataGrid;
+          End
+      Else
         RestoreSettings;
       Free;
     End;
@@ -206,6 +212,16 @@ Begin
         SetAxisCaption(FirstFieldLabel, 0, AxisOrder, AxisNames);
         SetAxisCaption(SecondFieldLabel, 1, AxisOrder, AxisNames);
         SetAxisCaption(ThirdFieldLabel, 2, AxisOrder, AxisNames);
+        If CoordinateType=ctGeocentric Then
+          Begin
+            VirticalDataCheckBox.Checked := True;
+            VirticalDataCheckBox.Enabled := False;
+          End
+        Else
+          Begin
+            VirticalDataCheckBox.Checked := (MainForm.InputThirdFieldIndex<>-1);
+            VirticalDataCheckBox.Enabled := True;
+          End;
       End;
   StartRowEdit.Text := IntToStr(Data.FirstRow+1);
   If Data.LastRow=-1 Then
@@ -216,7 +232,6 @@ Begin
   FirstColumnComboBox.ItemIndex := MainForm.InputFirstFieldIndex;
   SecondColumnComboBox.Items.Text := Data.NamesList;
   SecondColumnComboBox.ItemIndex := MainForm.InputSecondFieldIndex;
-  VirticalDataCheckBox.Checked := (MainForm.InputThirdFieldIndex<>-1);
   ThirdColumnComboBox.Items.Text := Data.NamesList;
   ThirdColumnComboBox.ItemIndex := MainForm.InputThirdFieldIndex;
   OutputSystemComboBox.Items.Text := CoordinateSystems.AvailableSystemsList(InputSystemComboBox.ItemIndex);

@@ -229,6 +229,14 @@ End;
 Procedure TMainForm.DataDrawGridDrawCell(Sender: TObject; aCol, aRow: Integer; aRect: TRect; aState: TGridDrawState);
 Var
   CellText: String;
+  Function AxisColumnValue(Index: Integer; AxisOrder: TAxisOrder): String;
+  Begin
+    Case AxisTypeFromIndex(Index, AxisOrder) Of
+    atXAxis: Result := FormatCoordinate(OutputCoordinates[aRow-1].X);
+    atYAxis: Result := FormatCoordinate(OutputCoordinates[aRow-1].Y);
+    atZAxis: Result := FormatCoordinate(OutputCoordinates[aRow-1].Z);
+    End;
+  End;
 Begin
   If aRow=0 Then
     DataDrawGrid.DefaultDrawCell(aCol, aRow, aRect, aState)
@@ -237,13 +245,14 @@ Begin
       Begin
         If aCol<=InputData.FieldCount Then
           CellText := InputData.Values[aRow-1, aCol-1]
-        Else If aCol=InputData.FieldCount+1 Then
-          // TODO: adjust columns for correct axis order and format for correct system type.
-          CellText := FormatCoordinate(OutputCoordinates[aRow-1].X)
-        Else If aCol=InputData.FieldCount+2 Then
-          CellText := FormatCoordinate(OutputCoordinates[aRow-1].Y)
-        Else If aCol=InputData.FieldCount+3 Then
-          CellText := FormatCoordinate(OutputCoordinates[aRow-1].Z);
+        Else
+          With CoordinateSystems.Items(OutputSystemIndex) Do
+            If aCol=InputData.FieldCount+1 Then
+              CellText := AxisColumnValue(0, AxisOrder)
+            Else If aCol=InputData.FieldCount+2 Then
+              CellText := AxisColumnValue(1, AxisOrder)
+            Else If aCol=InputData.FieldCount+3 Then
+              CellText := AxisColumnValue(2, AxisOrder);
         TOverrideGrid(DataDrawGrid).DrawCellText(aCol, aRow, aRect, aState, CellText);
       End;
 End;
@@ -458,6 +467,16 @@ Procedure TMainForm.SetupDataGrid;
 Var
   Col, LastCol: Integer;
   NewWidth, AlternativeWidth: Integer;
+  EPSGText: String;
+  Function AxisColumnShortName(Index: Integer): String;
+  Begin
+    With CoordinateSystems.Items(OutputSystemIndex) Do
+      Case AxisTypeFromIndex(Index, AxisOrder) Of
+      atXAxis: Result := AxisNames.ShortX;
+      atYAxis: Result := AxisNames.ShortY;
+      atZAxis: Result := AxisNames.ShortZ;
+      End;
+  End;
 Begin
   DataDrawGrid.BeginUpdate;
   ClearDataGrid;
@@ -480,28 +499,29 @@ Begin
       End;
   { If output coodinates have been generated. }
   If Length(OutputCoordinates)>0 Then
-    Begin
-      { Calculate the width of a 10 character column. }
-      NewWidth := Canvas.TextWidth('0123456789');
-      // TODO: Assign correct field names. EPSG-AxisName
-      With DataDrawGrid.Columns.Add Do
-        Begin
-          Title.Caption := 'EPSG-X';
-          Width := NewWidth;
-        End;
-      With DataDrawGrid.Columns.Add Do
-        Begin
-          Title.Caption := 'EPSG-Y';
-          Width := NewWidth;
-        End;
-      { Add an elevation column if required. }
-      If InputThirdFieldIndex<>-1 Then
+    With CoordinateSystems.Items(OutputSystemIndex) Do
+      Begin
+        { Calculate the width of a 10 character column. }
+        NewWidth := Canvas.TextWidth('0123456789');
+        EPSGText := IntToStr(EPSGNumber);
         With DataDrawGrid.Columns.Add Do
           Begin
-            Title.Caption := 'EPSG-Z';
+            Title.Caption := EPSGText+'-'+AxisColumnShortName(0);
             Width := NewWidth;
           End;
-    End;
+        With DataDrawGrid.Columns.Add Do
+          Begin
+            Title.Caption := EPSGText+'-'+AxisColumnShortName(1);
+            Width := NewWidth;
+          End;
+        { Add an elevation column if required. }
+        If (InputThirdFieldIndex<>-1) Or (CoordinateType=ctGeocentric) Then
+          With DataDrawGrid.Columns.Add Do
+            Begin
+              Title.Caption := EPSGText+'-'+AxisColumnShortName(2);
+              Width := NewWidth;
+            End;
+      End;
   DataDrawGrid.Show;
   DataDrawGrid.EndUpdate;
 End;
