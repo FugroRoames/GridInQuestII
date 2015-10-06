@@ -310,7 +310,7 @@ Begin
           { Transform to Output coordinates. }
           OutputCoordinates[RecordIndex] := CoordinateSystems.Items(OutputSystemIndex).ConvertToGeocentric(GeocentricCoordinates);
           { Update progress display. }
-          ProgressDisplay.Progress := Integer(Int64(100*RecordIndex) Div LastRecordIndex);
+          ProgressDisplay.Progress := Integer(Int64(100*Int64(RecordIndex)) Div LastRecordIndex);
         End;
       ProgressDisplay.Hide;
       SetupDataGrid;

@@ -127,6 +127,14 @@ Procedure TSettingsForm.DisplayDataInformation;
 Var
   Index, LastIndex: Integer;
   BreaksListText: String;
+  Procedure SetAxisCaption(FieldLabel: TLabel; Index: Integer; AxisOrder: TAxisOrder; AxisNames: TAxisNames);
+  Begin
+    Case AxisTypeFromIndex(Index, AxisOrder) Of
+    atXAxis: FieldLabel.Caption := AxisNames.X+':';
+    atYAxis: FieldLabel.Caption := AxisNames.Y+':';
+    atZAxis: FieldLabel.Caption := AxisNames.Z+':';
+    End;
+  End;
 Begin
   Case Data.FormatType Of
   ftDelimited:
@@ -188,7 +196,13 @@ Begin
   If MainForm.InputSystemIndex=-1 Then
     InputSystemComboBox.Text := EmptyStr
   Else
-    InputSystemComboBox.Text := CoordinateSystems.Items(MainForm.InputSystemIndex).Description;
+    With CoordinateSystems.Items(MainForm.InputSystemIndex) Do
+      Begin
+        InputSystemComboBox.Text := Description;
+        SetAxisCaption(FirstFieldLabel, 0, AxisOrder, AxisNames);
+        SetAxisCaption(SecondFieldLabel, 1, AxisOrder, AxisNames);
+        SetAxisCaption(ThirdFieldLabel, 2, AxisOrder, AxisNames);
+      End;
   StartRowEdit.Text := IntToStr(Data.FirstRow+1);
   If Data.LastRow=-1 Then
     EndRowEdit.Text := EmptyStr
@@ -205,7 +219,8 @@ Begin
   If (MainForm.OutputSystemIndex=-1) Or (MainForm.OutputSystemIndex=MainForm.InputSystemIndex) Then
     OutputSystemComboBox.Text := EmptyStr
   Else
-    OutputSystemComboBox.Text := CoordinateSystems.Items(MainForm.OutputSystemIndex).Description;
+    With CoordinateSystems.Items(MainForm.OutputSystemIndex) Do
+      OutputSystemComboBox.Text := Description;
   MainForm.SetupDataGrid;
 End;
 

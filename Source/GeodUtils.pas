@@ -29,9 +29,6 @@ Uses
   Classes, SysUtils, StrUtils, Math, Geometry, Geodesy, GeomUtils;
 
 Type
-  TAxisType = (atXAxis, atYAxis, atZAxis);
-
-Type
   TSexagesimalOption = (soPlusMinusPrefix, soNorthSouthPrefix, soEastWestPrefix, soNorthSouthSuffix, soEastWestSuffix);
 
 Const

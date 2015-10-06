@@ -1,7 +1,7 @@
 object SettingsForm: TSettingsForm
-  Left = 490
+  Left = 456
   Height = 354
-  Top = 177
+  Top = 185
   Width = 514
   BorderStyle = bsDialog
   Caption = 'Data Settings'
@@ -262,10 +262,10 @@ object SettingsForm: TSettingsForm
       TabOrder = 0
     end
     object FirstFieldLabel: TLabel
-      Left = 59
+      Left = 36
       Height = 20
       Top = 24
-      Width = 88
+      Width = 111
       Alignment = taRightJustify
       AutoSize = False
       Caption = 'First Field:'
@@ -285,10 +285,10 @@ object SettingsForm: TSettingsForm
       TabOrder = 1
     end
     object SecondFieldLabel: TLabel
-      Left = 291
+      Left = 272
       Height = 20
       Top = 24
-      Width = 88
+      Width = 107
       Alignment = taRightJustify
       AutoSize = False
       Caption = 'Second Field:'
@@ -317,10 +317,10 @@ object SettingsForm: TSettingsForm
       TabOrder = 4
     end
     object ThirdFieldLabel: TLabel
-      Left = 291
+      Left = 272
       Height = 21
       Top = 48
-      Width = 88
+      Width = 107
       Alignment = taRightJustify
       AutoSize = False
       Caption = 'Third Field:'

@@ -309,6 +309,15 @@ Var
   Index: Integer;
   CoordinateSystem: TCoordinateSystem;
   Coordinates: TCoordinates;
+  Procedure SetAxisCaptionAndType(CoordinatePanel: TCoordinatePanel; Index: Integer; AxisOrder: TAxisOrder; AxisNames: TAxisNames);
+  Begin
+    CoordinatePanel.AxisType := AxisTypeFromIndex(Index, AxisOrder);
+    Case CoordinatePanel.AxisType Of
+    atXAxis: CoordinatePanel.FLabel.Caption := AxisNames.X+':';
+    atYAxis: CoordinatePanel.FLabel.Caption := AxisNames.Y+':';
+    atZAxis: CoordinatePanel.FLabel.Caption := AxisNames.Z+':';
+    End;
+  End;
 Begin
   Index := FComboBox.ItemIndex;
   CoordinateSystem := CoordinateSystems.Items(Index);
@@ -318,41 +327,13 @@ Begin
   With TCoordinatesEntryPanel(Parent) Do
     Begin
       CoordinateType := CoordinateSystem.CoordinateType;
-      Case CoordinateSystem.CoordinateType Of
-      ctGeocentric:
+      With CoordinateSystem Do
         Begin
-          FFirstCoordinatePanel.FLabel.Caption := 'X: ';
-          FSecondCoordinatePanel.FLabel.Caption := 'Y: ';
-          FThirdCoordinatePanel.FLabel.Caption := 'Z: ';
+          SetAxisCaptionAndType(FFirstCoordinatePanel, 0, AxisOrder, AxisNames);
+          SetAxisCaptionAndType(FSecondCoordinatePanel, 1, AxisOrder, AxisNames);
+          SetAxisCaptionAndType(FThirdCoordinatePanel, 2, AxisOrder, AxisNames);
         End;
-      ctGeodetic:
-        Begin
-          FFirstCoordinatePanel.FLabel.Caption := 'Latitude: ';
-          FSecondCoordinatePanel.FLabel.Caption := 'Longitude: ';
-          FThirdCoordinatePanel.FLabel.Caption := 'Altitude: ';
-        End;
-      ctCartesian:
-        Begin
-          FFirstCoordinatePanel.FLabel.Caption := 'Easting: ';
-          FSecondCoordinatePanel.FLabel.Caption := 'Northing: ';
-          FThirdCoordinatePanel.FLabel.Caption := 'Elevation: ';
-        End;
-      End;
-    Case CoordinateSystem.AxisOrder Of
-    aoXYZ:
-      Begin
-        FFirstCoordinatePanel.AxisType := atXAxis;
-        FSecondCoordinatePanel.AxisType := atYAxis;
-        FThirdCoordinatePanel.AxisType := atZAxis;
-      End;
-    aoYXZ:
-      Begin
-        FFirstCoordinatePanel.AxisType := atYAxis;
-        FSecondCoordinatePanel.AxisType := atXAxis;
-        FThirdCoordinatePanel.AxisType := atZAxis;
-      End;
     End;
-  End;
   If TCoordinatesEntryPanel(Parent).FPanelType=ptOutput Then
     With TCoordinatesEntryPanel(Parent) Do
       If Assigned(OnChangeSystem) Then
@@ -375,13 +356,13 @@ Begin
   AutoSize := True;
   ThisPanel := Self;
   { The child controls are created in reverse order so that Align=alTop orders them correctly. }
-  FThirdCoordinatePanel := TCoordinatePanel.Create(TheOwner, 'Altitude:', atZAxis, True);
+  FThirdCoordinatePanel := TCoordinatePanel.Create(TheOwner, 'Z coordinate:', atZAxis, True);
   FThirdCoordinatePanel.Parent := ThisPanel;
   FThirdCoordinatePanel.OnValid := @DoCoordinateValid;
-  FSecondCoordinatePanel := TCoordinatePanel.Create(TheOwner, 'Longitude:', atXAxis, True);
+  FSecondCoordinatePanel := TCoordinatePanel.Create(TheOwner, 'Y Coordinate:', atYAxis, True);
   FSecondCoordinatePanel.Parent := ThisPanel;
   FSecondCoordinatePanel.OnValid := @DoCoordinateValid;
-  FFirstCoordinatePanel := TCoordinatePanel.Create(TheOwner, 'Latitude:', atYAxis, True);
+  FFirstCoordinatePanel := TCoordinatePanel.Create(TheOwner, 'X Coordinate:', atXAxis, True);
   FFirstCoordinatePanel.Parent := ThisPanel;
   FFirstCoordinatePanel.OnValid := @DoCoordinateValid;
   Locked := True;

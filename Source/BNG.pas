@@ -19,8 +19,6 @@ Unit BNG;
   {$LONGSTRINGS ON}
 {$ENDIF}
 
-// TODO: Is there an 'OSGB36 Geocentric (OSNET)' or is this just 'ETRS89 Geocentric'?
-
 Interface
 
 Uses

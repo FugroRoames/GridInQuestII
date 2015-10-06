@@ -59,7 +59,7 @@ Var
   {$IFDEF Windows}
   MemoryStatus: TMemoryStatus;
   {$ENDIF}
-  HeapStatus: TFPCHeapStatus;
+  //HeapStatus: TFPCHeapStatus;
 Begin
   With TAboutForm.Create(Application.MainForm) Do
     Begin

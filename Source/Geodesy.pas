@@ -35,6 +35,16 @@ Type
   TAxisOrder = (aoXYZ, aoYXZ);
 
 Type
+  TAxisType = (atXAxis, atYAxis, atZAxis);
+
+Type
+  TAxisNames = Packed Record
+    X: String;
+    Y: String;
+    Z: String;
+  End;
+
+Type
   TPlanarCoordinates = Packed Object(Geometry.T2DCoordinates)
     Property Easting: TCoordinate Read X Write X;
     Property Northing: TCoordinate Read Y Write y;
@@ -86,10 +96,16 @@ Const
   OneOverSixtySquared: TCoordinate = 1/(60*60);
   NullCoordinates: TCoordinates = (X: 0; Y: 0; Z: 0);
 
+Function AxisTypeFromIndex(Index: Integer; AxisOrder: TAxisOrder = aoXYZ): TAxisType;
 Function SexagesimalToDecimalCoordinate(Coordinate: TSexagesimalCoordinate): TCoordinate;
 Function DecimalToSexagesimalCoordinate(Coordinate: TCoordinate): TSexagesimalCoordinate;
 Function SexagesimalToDecimalCoordinates(Const Coordinates: TSexagesimalCoordinates): TCoordinates;
 Function DecimalToSexagesimalCoordinates(Const Coordinates: TCoordinates): TSexagesimalCoordinates;
+
+Const
+  GeocentricAxisNames: TAxisNames = (X: 'X Coordinate'; Y: 'Y Coordinate'; Z: 'Z Coordinate');
+  GeodeticAxisNames: TAxisNames = (X: 'Longitude'; Y: 'Latitude'; Z: 'Altitude');
+  CartesianAxisNames: TAxisNames = (X: 'Easting'; Y: 'Northing'; Z: 'Elevation');
 
 Type TCoordinateSystem = Object
     Abbreviation: String;
@@ -98,6 +114,7 @@ Type TCoordinateSystem = Object
     Description: String;
     EPSGNumber: Integer;
     Name: String;
+    Function AxisNames: TAxisNames;
     Function ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates;
     Function ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates;
   End;
@@ -119,6 +136,24 @@ Var
   CoordinateSystems: TCoordinateSystems;
 
 Implementation
+
+Function AxisTypeFromIndex(Index: Integer; AxisOrder: TAxisOrder): TAxisType;
+Begin
+  Case AxisOrder Of
+  aoXYZ:
+    Case Index Of
+    0: Result := atXAxis;
+    1: Result := atYAxis;
+    2: Result := atZAxis;
+    End;
+  aoYXZ:
+    Case Index Of
+    0: Result := atYAxis;
+    1: Result := atXAxis;
+    2: Result := atZAxis;
+    End;
+  End;
+End;
 
 Function SexagesimalToDecimalCoordinate(Coordinate: TSexagesimalCoordinate): TCoordinate;
 Begin;
@@ -157,6 +192,19 @@ Begin
       Longitude := DecimalToSexagesimalCoordinate(Coordinates.Longitude);
       Altitude := Coordinates.Altitude;
     End;
+End;
+
+Function TCoordinateSystem.AxisNames: TAxisNames;
+Begin
+  Case CoordinateType Of
+  ctGeocentric:
+    Result := GeocentricAxisNames;
+  ctGeodetic:
+    Result := GeodeticAxisNames;
+  ctCartesian:
+    Result := CartesianAxisNames;
+  End;
+
 End;
 
 Function TCoordinateSystem.ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates;
