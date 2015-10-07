@@ -94,7 +94,7 @@ Type
     { Public declarations. }
     Constructor Create(TheOwner: TComponent; PanelType: TPanelType); Virtual;
     Procedure Clear;
-    Function CoordinateSystemSelected: Boolean;
+    Function SelectedCoordinateSystemIndex: Integer;
     Property Coordinates: TCoordinates Read GetCoordinates Write SetCoordinates;
     Property CoordinatesAsText: String Read GetCoordinatesAsText;
     Property CoordinateType: TCoordinateType Read FCoordinateType Write FCoordinateType;
@@ -456,12 +456,9 @@ Begin
   FThirdCoordinatePanel.Clear;
 End;
 
-Function TCoordinatesEntryPanel.CoordinateSystemSelected: Boolean;
-Var
-  Index: Integer;
-  CoordinateSystem: TCoordinateSystem;
+Function TCoordinatesEntryPanel.SelectedCoordinateSystemIndex: Integer;
 Begin
-  Result := (FCoordinateSystemPanel.FComboBox.ItemIndex<>-1);
+  Result := CoordinateSystems.FindByDescription(FCoordinateSystemPanel.FComboBox.Text);
 End;
 
 Procedure Register;

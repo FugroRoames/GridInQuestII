@@ -25,36 +25,20 @@ Uses
   Math, Geometry, Geodesy;
 
 Type TBNGCoordinateSystem02 = Object(TCoordinateSystem)
-    Function ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates;
-    Function ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates;
+    Function ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
+    Function ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
   End;
 
 Var
-  BNGCoordinateSystem02: TBNGCoordinateSystem02 =
-    (
-      Abbreviation: 'OSGB36';
-      AxisOrder: aoXYZ;
-      CoordinateType: ctCartesian;
-      Description: 'OSGB36 / British National Grid (BNG/GM02)';
-      EPSGNumber: 27700;
-      Name: 'British National Grid (2002)';
-    );
+  BNGCoordinateSystem02: TBNGCoordinateSystem02;
 
 Type TBNGCoordinateSystem10 = Object(TCoordinateSystem)
-    Function ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates;
-    Function ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates;
+    Function ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
+    Function ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
   End;
 
 Var
-  BNGCoordinateSystem10: TBNGCoordinateSystem10 =
-    (
-      Abbreviation: 'OSGB36';
-      AxisOrder: aoXYZ;
-      CoordinateType: ctCartesian;
-      Description: 'OSGB36 / British National Grid (BNG/VRF10)';
-      EPSGNumber: 27700;
-      Name: 'British National Grid (2010)';
-    );
+  BNGCoordinateSystem10: TBNGCoordinateSystem10;
 
 Implementation
 
@@ -80,6 +64,10 @@ End;
 
 Initialization
 
+BNGCoordinateSystem02.Initialize('British National Grid (2002)', 'OSGB36',
+                                 'OSGB36 / British National Grid (BNG/GM02)', 27700, ctCartesian, aoXYZ);
+BNGCoordinateSystem10.Initialize('British National Grid (2010)', 'OSGB36',
+                                 'OSGB36 / British National Grid (BNG/VRF10)', 27700, ctCartesian, aoXYZ);
 CoordinateSystems.Register(BNGCoordinateSystem02);
 CoordinateSystems.Register(BNGCoordinateSystem10);
 

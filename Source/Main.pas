@@ -390,8 +390,16 @@ Begin
 End;
 
 Procedure TMainForm.PasteActionExecute(Sender: TObject);
+Var
+  RawText: String;
+  Index: Integer;
 Begin
-  TEdit(Screen.ActiveControl).SelText := Clipboard.AsText;
+  { Strip out control and extended characters from the clipboard text. }
+  RawText := Clipboard.AsText;
+  For Index := 1 To Length(RawText) Do
+    If (RawText[Index]<' ') Or (RawText[Index]>#127) Then
+      RawText[Index] := ' ';
+  TEdit(Screen.ActiveControl).SelText := RawText;
 End;
 
 Procedure TMainForm.CopyInputActionExecute(Sender: TObject);
@@ -444,7 +452,7 @@ Begin
   With MainGlobe Do
     Begin
       { If there is an output coordinate system selected, perform the conversion. }
-      If OutputPanel.CoordinateSystemSelected Then
+      If OutputPanel.SelectedCoordinateSystemIndex<>-1 Then
         DoOutputChangeSystem(Self);
       // TODO: Need to perform conversion here for non-geodetic coordinates.
       Marker.Lat := InputPanel.Coordinates.Latitude;
@@ -455,11 +463,23 @@ Begin
 End;
 
 Procedure TMainForm.DoOutputChangeSystem(Sender: TObject);
+Var
+  InputIndex: Integer;
+  OutputIndex: Integer;
+  Coordinates: TCoordinates;
 Begin
-  If InputPanel.Valid Then
+  InputIndex := InputPanel.SelectedCoordinateSystemIndex;
+  OutputIndex := OutputPanel.SelectedCoordinateSystemIndex;
+  If InputPanel.Valid And (InputIndex<>-1) And (OutputIndex<>-1) Then
     Begin
-      // TODO: Perform conversion.
-      OutputPanel.Coordinates := InputPanel.Coordinates;
+      Coordinates := InputPanel.Coordinates;
+      If CoordinateSystems.Items(InputIndex).CoordinateType=ctGeodetic Then
+        Coordinates := GeodeticDegToRad(Coordinates);
+      Coordinates := CoordinateSystems.Items(InputIndex).ConvertToGeocentric(Coordinates);
+      Coordinates := CoordinateSystems.Items(OutputIndex).ConvertFromGeocentric(Coordinates);
+      If CoordinateSystems.Items(OutputIndex).CoordinateType=ctGeodetic Then
+        Coordinates := GeodeticRadToDeg(Coordinates);
+      OutputPanel.Coordinates := Coordinates;
     End;
 End;
 

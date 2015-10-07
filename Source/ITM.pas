@@ -25,20 +25,12 @@ Uses
   Math, Geometry, Geodesy;
 
 Type TITMCoordinateSystem95 = Object(TCoordinateSystem)
-    Function ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates;
-    Function ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates;
+    Function ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
+    Function ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
   End;
 
 Var
-  ITMCoordinateSystem95: TITMCoordinateSystem95 =
-    (
-      Abbreviation: 'IRENET95';
-      AxisOrder: aoXYZ;
-      CoordinateType: ctCartesian;
-      Description: 'IRENET95 / Irish Transverse Mercator (ITM/VRF10)';
-      EPSGNumber: 2157;
-      Name: 'Irish Transverse Mercator';
-    );
+  ITMCoordinateSystem95: TITMCoordinateSystem95;
 
 Implementation
 
@@ -54,6 +46,9 @@ End;
 
 Initialization
 
+ITMCoordinateSystem95.Initialize('Irish Transverse Mercator', 'IRENET95',
+                                 'IRENET95 / Irish Transverse Mercator (ITM/VRF10)',
+                                  2157, ctCartesian, aoXYZ);
 CoordinateSystems.Register(ITMCoordinateSystem95);
 
 End.

@@ -94,10 +94,27 @@ Type TSexagesimalCoordinates = Packed Object
     Altitude: TCoordinate;
   End;
 
-Type THelmertTransformParameters = Packed Record
+Type THelmertTransformParameters = Packed Object
     Translation: TCoordinates;
     Rotation: TCoordinates;
     Scale: TCoordinate;
+  End;
+
+Type TEllipsoid = Packed Object
+    SemiMajorAxis: TCoordinate;
+    SemiMinorAxis: TCoordinate;
+    SemiMajorAxisSquared: TCoordinate;
+    SemiMinorAxisSquared: TCoordinate;
+    Eccentricity: TCoordinate;
+    EccentricitySquared: TCoordinate;
+    Constructor Initialize(NewSemiMajorAxis, NewSemiMinorAxis: TCoordinate);
+  End;
+
+Type TProjection = Packed Object
+    Ellipsoid: TEllipsoid;
+    OriginOffset: TCoordinates;
+    MeridianScaleFactor: TCoordinate;
+    TrueOrigin: TCoordinates;
   End;
 
 Const
@@ -105,11 +122,17 @@ Const
   OneOverSixtySquared: TCoordinate = 1/(60*60);
   NullCoordinates: TCoordinates = (X: 0; Y: 0; Z: 0);
 
+Function GeodeticDegToRad(Const Coordinates: TCoordinates): TCoordinates;
+Function GeodeticRadToDeg(Const Coordinates: TCoordinates): TCoordinates;
 Function AxisTypeFromIndex(Index: Integer; AxisOrder: TAxisOrder = aoXYZ): TAxisType;
-Function SexagesimalToDecimalCoordinate(Coordinate: TSexagesimalCoordinate): TCoordinate;
-Function DecimalToSexagesimalCoordinate(Coordinate: TCoordinate): TSexagesimalCoordinate;
+Function SexagesimalToDecimalCoordinate(Const Coordinate: TSexagesimalCoordinate): TCoordinate;
+Function DecimalToSexagesimalCoordinate(Const Coordinate: TCoordinate): TSexagesimalCoordinate;
 Function SexagesimalToDecimalCoordinates(Const Coordinates: TSexagesimalCoordinates): TCoordinates;
 Function DecimalToSexagesimalCoordinates(Const Coordinates: TCoordinates): TSexagesimalCoordinates;
+Function GeodeticToCartesian(Const Coordinates: TCoordinates; Const Ellipsoid: TEllipsoid):TCoordinates;
+Function CartesianToGeodetic(Const Coordinates: TCoordinates; Const Ellipsoid: TEllipsoid):TCoordinates;
+Function HelmertTransform(Const Coordinates: TCoordinates; Const HelmertTransformParameters: THelmertTransformParameters): TCoordinates;
+Function TransverseMercatorProjection(Const Coordinates: TCoordinates; Const Projection: TProjection): TCoordinates;
 
 Const
   GeocentricAxisNames: TAxisNames = (LongX: 'X Coordinate'; LongY: 'Y Coordinate'; LongZ: 'Z Coordinate';
@@ -126,9 +149,11 @@ Type TCoordinateSystem = Object
     Description: String;
     EPSGNumber: Integer;
     Name: String;
+    Constructor Initialize(NewName: String; NewAbbreviation: String; NewDescription: String;
+                         NewEPSGNumber: Integer; NewCoordinateType: TCoordinateType; NewAxisOrder: TAxisOrder);
     Function AxisNames: TAxisNames;
-    Function ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates;
-    Function ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates;
+    Function ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
+    Function ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
   End;
 
 Type TCoordinateSystemPointer = ^TCoordinateSystem;
@@ -149,6 +174,18 @@ Var
 
 Implementation
 
+Function GeodeticDegToRad(Const Coordinates: TCoordinates): TCoordinates;
+Begin
+  Result.Latitude := DegToRad(Coordinates.Latitude);
+  Result.Longitude := DegToRad(Coordinates.Longitude);
+End;
+
+Function GeodeticRadToDeg(Const Coordinates: TCoordinates): TCoordinates;
+Begin
+  Result.Latitude := RadToDeg(Coordinates.Latitude);
+  Result.Longitude := RadToDeg(Coordinates.Longitude);
+End;
+
 Function AxisTypeFromIndex(Index: Integer; AxisOrder: TAxisOrder): TAxisType;
 Begin
   Case AxisOrder Of
@@ -167,22 +204,24 @@ Begin
   End;
 End;
 
-Function SexagesimalToDecimalCoordinate(Coordinate: TSexagesimalCoordinate): TCoordinate;
+Function SexagesimalToDecimalCoordinate(Const Coordinate: TSexagesimalCoordinate): TCoordinate;
 Begin;
   With Coordinate Do
     Result := Sign*(Degrees+Minutes*OneOverSixty+Seconds*OneOverSixtySquared);
 End;
 
-Function DecimalToSexagesimalCoordinate(Coordinate: TCoordinate): TSexagesimalCoordinate;
+Function DecimalToSexagesimalCoordinate(Const Coordinate: TCoordinate): TSexagesimalCoordinate;
+Var
+  Value: TCoordinate;
 Begin
   With Result Do
     Begin
       Sign := Math.Sign(Coordinate);
-      Coordinate := Abs(Coordinate);
-      Degrees := Int(Coordinate);
-      Coordinate := Frac(Coordinate)*60;
-      Minutes := Int(Coordinate);
-      Seconds := Frac(Coordinate)*60;
+      Value := Abs(Coordinate);
+      Degrees := Int(Value);
+      Value := Frac(Value)*60;
+      Minutes := Int(Value);
+      Seconds := Frac(Value)*60;
     End;
 End;
 
@@ -206,6 +245,161 @@ Begin
     End;
 End;
 
+Function GeodeticToCartesian(Const Coordinates: TCoordinates; Const Ellipsoid: TEllipsoid):TCoordinates;
+Var
+  Height: TCoordinate;
+  SinLat, CosLat: Extended;
+  SinLon, CosLon: Extended;
+Begin
+  With Coordinates, Ellipsoid Do
+    Begin
+      SinCos(Latitude, SinLat, CosLat);
+      SinCos(Longitude, SinLon, CosLon);
+      Height := SemiMajorAxis/Sqrt(1-(EccentricitySquared*SinLat*SinLat));
+      Result.X := (Height+Altitude)*CosLat*CosLon;
+      Result.Y := (Height+Altitude)*CosLat*SinLon;
+      Result.Z := ((1-EccentricitySquared)*Height+Altitude)*SinLat;
+    End;
+End;
+
+Function CartesianToGeodetic(Const Coordinates: TCoordinates; Const Ellipsoid: TEllipsoid): TCoordinates;
+Var
+  Param: TCoordinate;
+  Height: TCoordinate;
+  LatValue, LastLatValue: TCoordinate;
+  SinLat: TCoordinate;
+Const
+  Epsilon = 1E-14;
+Begin
+  With Coordinates, Ellipsoid Do
+    Begin
+      Result.Longitude := ArcTan(Y/X);
+      Param := Sqrt(X*X+Y*Y);
+      LastLatValue := 0;
+      LatValue := ArcTan(Z/(Param*(1-EccentricitySquared)));
+      While Abs(LatValue-LastLatValue)>Epsilon Do
+        Begin
+          SinLat := Sin(LatValue);
+          Height := SemiMajorAxis/Sqrt(1-(EccentricitySquared*SinLat*SinLat));
+          LatValue := ArcTan((Z+(EccentricitySquared*Height*SinLat))/Param);
+          LastLatValue := LatValue;
+        End;
+      Result.Latitude := LatValue;
+      Result.Altitude := (Param/Cos(LatValue))-Height;
+    End;
+End;
+
+Function HelmertTransform(Const Coordinates: TCoordinates; Const HelmertTransformParameters: THelmertTransformParameters): TCoordinates;
+Var
+  ScalePlusOne: TCoordinate;
+Begin
+  With HelmertTransformParameters Do
+    Begin
+      ScalePlusOne := Scale+1;
+      Result.X := Translation.X+(Coordinates.X*ScalePlusOne-Coordinates.Y*Rotation.Z+Coordinates.Z*Rotation.Y);
+      Result.Y := Translation.Y+(Coordinates.X*Rotation.Z+Coordinates.Y*ScalePlusOne-Coordinates.Z*Rotation.X);
+      Result.Z := Translation.Z+(-Coordinates.X*Rotation.Y+Coordinates.Y*Rotation.X+Coordinates.Z*ScalePlusOne);
+    End;
+End;
+
+Function TransverseMercatorProjection(Const Coordinates: TCoordinates; Const Projection: TProjection): TCoordinates;
+Var
+  SinLatitude: TCoordinate;
+  SinLatitudePow2: TCoordinate;
+  CosLatitude: TCoordinate;
+  CosLatitudePow2: TCoordinate;
+  CosLatitudePow3: TCoordinate;
+  CosLatitudePow5: TCoordinate;
+  TanLatitude: TCoordinate;
+  TanLatitudePow2: TCoordinate;
+  TanLatitudePow3: TCoordinate;
+  TanLatitudePow4: TCoordinate;
+  n, n2, n3, o: TCoordinate;
+  Nu: TCoordinate;
+  Rho: TCoordinate;
+  NetaSquared: TCoordinate;
+  M: TCoordinate;
+  I: TCoordinate;
+  II: TCoordinate;
+  III: TCoordinate;
+  IIIA: TCoordinate;
+  IV: TCoordinate;
+  V: TCoordinate;
+  VI: TCoordinate;
+  LatitudeDelta: TCoordinate;
+  LatitudeSum: TCoordinate;
+  Term1: TCoordinate;
+  Term2: TCoordinate;
+  Term3: TCoordinate;
+  Term4: TCoordinate;
+  L, L2, L3, L4, L5, L6: TCoordinate;
+Begin
+  With Coordinates, Projection, Projection.Ellipsoid Do
+    Begin
+      SinLatitude := Sin(Latitude);
+      SinLatitudePow2 := SinLatitude*SinLatitude;
+      CosLatitude := Cos(Latitude);
+      CosLatitudePow2 := CosLatitude*CosLatitude;
+      CosLatitudePow3 := CosLatitudePow2*CosLatitude;
+      CosLatitudePow5 := CosLatitudePow3*CosLatitudePow2;
+      TanLatitude := SinLatitude/CosLatitude;
+      TanLatitudePow2 := TanLatitude*TanLatitude;
+      TanLatitudePow3 := TanLatitudePow2*TanLatitude;
+      TanLatitudePow4 := TanLatitudePow3*TanLatitude;
+      n := (SemiMajorAxis-SemiMinorAxis)/(SemiMajorAxis+SemiMinorAxis);
+      n2 := n*n;
+      n3 := n2*n;
+      o := 1-EccentricitySquared*SinLatitudePow2;
+      Nu := SemiMajorAxis*MeridianScaleFactor*Power(o, -0.5);
+      Rho := SemiMajorAxis*MeridianScaleFactor*(1-EccentricitySquared)*Power(o, -1.5);
+      NetaSquared := (Nu/rho)-1.0;
+      LatitudeDelta := Latitude-TrueOrigin.Latitude;
+      LatitudeSum := Latitude+TrueOrigin.Latitude;
+      Term1 := (1.0+n+5.0/4.0*(n2+n3))*LatitudeDelta;// TODO: Possible removal of division here?
+      Term2 := (3.0*(n+n2)+21.0/8.0*n3)*Sin(LatitudeDelta)*Cos(LatitudeSum);
+      Term3 := 15.0/8.0*(n2+n3)*Sin(2.0*LatitudeDelta)*Cos(2.0*LatitudeSum);
+      Term4 := 35.0/24.0*n3*Sin(3.0*LatitudeDelta)*Cos(3.0*LatitudeSum);
+      M := SemiMinorAxis*MeridianScaleFactor*(Term1-Term2+Term3-Term4);
+      I := M+OriginOffset.Northing;
+      II := (Nu/2.0)*SinLatitude*CosLatitude;
+      III := (Nu/24.0)*SinLatitude*CosLatitudePow3*(5.0-TanLatitudePow2+9.0*NetaSquared);
+      IIIA := (Nu/720.0)*SinLatitude*CosLatitudePow5*(61.0-58.0*TanLatitudePow2+TanLatitudePow4);
+      IV := Nu*CosLatitude;
+      V := (Nu/6.0)*CosLatitudePow3*(Nu/rho-TanLatitudePow2);
+      VI := (Nu/120.0)*CosLatitudePow5*(5.0-18.0*TanLatitudePow2+TanLatitudePow4+14.0*NetaSquared-58.0*TanLatitudePow2*NetaSquared);
+      L := TrueOrigin.Longitude+Longitude;
+      L2 := L*L;
+      L3 := L2*L;
+      L4 := L3*L;
+      L5 := L4*L;
+      L6 := L5*L;
+      Result.Northing := I+II*L2+III*L4+IIIA*L6;
+      Result.Easting := OriginOffset.Easting-(IV*L+V*L3+VI*L5);
+      Result.Elevation := Altitude; { Preserve any altitude information. }
+    End;
+End;
+
+Constructor TEllipsoid.Initialize(NewSemiMajorAxis, NewSemiMinorAxis: TCoordinate);
+Begin
+  SemiMajorAxis := NewSemiMajorAxis;
+  SemiMinorAxis := NewSemiMinorAxis;
+  SemiMajorAxisSquared := SemiMajorAxis*SemiMajorAxis;
+  SemiMinorAxisSquared := SemiMinorAxis*SemiMinorAxis;
+  Eccentricity := (SemiMajorAxis-SemiMinorAxis)/SemiMajorAxis;
+  EccentricitySquared := (SemiMajorAxisSquared-SemiMinorAxisSquared)/SemiMajorAxisSquared;
+End;
+
+Constructor TCoordinateSystem.Initialize(NewName: String; NewAbbreviation: String; NewDescription: String;
+                            NewEPSGNumber: Integer; NewCoordinateType: TCoordinateType; NewAxisOrder: TAxisOrder);
+Begin
+  Name := NewName;
+  Abbreviation := NewAbbreviation;
+  Description := NewDescription;
+  EPSGNumber := NewEPSGNumber;
+  CoordinateType := NewCoordinateType;
+  AxisOrder := NewAxisOrder;
+End;
+
 Function TCoordinateSystem.AxisNames: TAxisNames;
 Begin
   Case CoordinateType Of
@@ -216,7 +410,6 @@ Begin
   ctCartesian:
     Result := CartesianAxisNames;
   End;
-
 End;
 
 Function TCoordinateSystem.ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates;

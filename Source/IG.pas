@@ -25,20 +25,12 @@ Uses
   Math, Geometry, Geodesy;
 
 Type TIGCoordinateSystem75 = Object(TCoordinateSystem)
-    Function ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates;
-    Function ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates;
+    Function ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
+    Function ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
   End;
 
 Var
-  IGCoordinateSystem75: TIGCoordinateSystem75 =
-    (
-      Abbreviation: 'TM75IG';
-      AxisOrder: aoXYZ;
-      CoordinateType: ctCartesian;
-      Description: 'TM75 / Irish Grid (IG)';
-      EPSGNumber: 29903;
-      Name: 'Irish Grid (1975)';
-    );
+  IGCoordinateSystem75: TIGCoordinateSystem75;
 
 Implementation
 
@@ -54,6 +46,8 @@ End;
 
 Initialization
 
+IGCoordinateSystem75.Initialize('Irish Grid (1975)', 'TM75IG', 'TM75 / Irish Grid (IG)',
+                                29903, ctCartesian, aoXYZ);
 CoordinateSystems.Register(IGCoordinateSystem75);
 
 End.
