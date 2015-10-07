@@ -39,9 +39,9 @@ Type
 
 Type
   TAxisNames = Packed Record
-    X: String;
-    Y: String;
-    Z: String;
+    LongX: String;
+    LongY: String;
+    LongZ: String;
     ShortX: String;
     ShortY: String;
     ShortZ: String;
@@ -94,6 +94,12 @@ Type TSexagesimalCoordinates = Packed Object
     Altitude: TCoordinate;
   End;
 
+Type THelmertTransformParameters = Packed Record
+    Translation: TCoordinates;
+    Rotation: TCoordinates;
+    Scale: TCoordinate;
+  End;
+
 Const
   OneOverSixty: TCoordinate = 1/60;
   OneOverSixtySquared: TCoordinate = 1/(60*60);
@@ -106,11 +112,11 @@ Function SexagesimalToDecimalCoordinates(Const Coordinates: TSexagesimalCoordina
 Function DecimalToSexagesimalCoordinates(Const Coordinates: TCoordinates): TSexagesimalCoordinates;
 
 Const
-  GeocentricAxisNames: TAxisNames = (X: 'X Coordinate'; Y: 'Y Coordinate'; Z: 'Z Coordinate';
+  GeocentricAxisNames: TAxisNames = (LongX: 'X Coordinate'; LongY: 'Y Coordinate'; LongZ: 'Z Coordinate';
                                      ShortX: 'X'; ShortY: 'Y'; ShortZ: 'Z');
-  GeodeticAxisNames: TAxisNames = (X: 'Longitude'; Y: 'Latitude'; Z: 'Altitude';
+  GeodeticAxisNames: TAxisNames = (LongX: 'Longitude'; LongY: 'Latitude'; LongZ: 'Altitude';
                                    ShortX: 'Long'; ShortY: 'Lat'; ShortZ: 'Alt');
-  CartesianAxisNames: TAxisNames = (X: 'Easting'; Y: 'Northing'; Z: 'Elevation';
+  CartesianAxisNames: TAxisNames = (LongX: 'Easting'; LongY: 'Northing'; LongZ: 'Elevation';
                                     ShortX: 'East'; ShortY: 'North'; ShortZ: 'Height');
 
 Type TCoordinateSystem = Object

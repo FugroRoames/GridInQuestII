@@ -313,9 +313,9 @@ Var
   Begin
     CoordinatePanel.AxisType := AxisTypeFromIndex(Index, AxisOrder);
     Case CoordinatePanel.AxisType Of
-    atXAxis: CoordinatePanel.FLabel.Caption := AxisNames.X+':';
-    atYAxis: CoordinatePanel.FLabel.Caption := AxisNames.Y+':';
-    atZAxis: CoordinatePanel.FLabel.Caption := AxisNames.Z+':';
+    atXAxis: CoordinatePanel.FLabel.Caption := AxisNames.LongX+':';
+    atYAxis: CoordinatePanel.FLabel.Caption := AxisNames.LongY+':';
+    atZAxis: CoordinatePanel.FLabel.Caption := AxisNames.LongZ+':';
     End;
   End;
 Begin

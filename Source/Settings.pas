@@ -136,9 +136,9 @@ Var
   Procedure SetAxisCaption(FieldLabel: TLabel; Index: Integer; AxisOrder: TAxisOrder; AxisNames: TAxisNames);
   Begin
     Case AxisTypeFromIndex(Index, AxisOrder) Of
-    atXAxis: FieldLabel.Caption := AxisNames.X+':';
-    atYAxis: FieldLabel.Caption := AxisNames.Y+':';
-    atZAxis: FieldLabel.Caption := AxisNames.Z+':';
+    atXAxis: FieldLabel.Caption := AxisNames.LongX+':';
+    atYAxis: FieldLabel.Caption := AxisNames.LongY+':';
+    atZAxis: FieldLabel.Caption := AxisNames.LongZ+':';
     End;
   End;
 Begin
