@@ -115,6 +115,7 @@ Type TProjection = Packed Object
     OriginOffset: TCoordinates;
     MeridianScaleFactor: TCoordinate;
     TrueOrigin: TCoordinates;
+    Constructor Initialize(NewMeridianScaleFactor, NewTrueOriginLatitude, NewTrueOriginLongitude, NewOriginOffsetEasting, NewOriginOffsetNorthing: TCoordinate; NewEllipsoid: TEllipsoid);
   End;
 
 Const
@@ -129,8 +130,8 @@ Function SexagesimalToDecimalCoordinate(Const Coordinate: TSexagesimalCoordinate
 Function DecimalToSexagesimalCoordinate(Const Coordinate: TCoordinate): TSexagesimalCoordinate;
 Function SexagesimalToDecimalCoordinates(Const Coordinates: TSexagesimalCoordinates): TCoordinates;
 Function DecimalToSexagesimalCoordinates(Const Coordinates: TCoordinates): TSexagesimalCoordinates;
-Function GeodeticToCartesian(Const Coordinates: TCoordinates; Const Ellipsoid: TEllipsoid):TCoordinates;
-Function CartesianToGeodetic(Const Coordinates: TCoordinates; Const Ellipsoid: TEllipsoid):TCoordinates;
+Function GeodeticToGeocentric(Const Coordinates: TCoordinates; Const Ellipsoid: TEllipsoid):TCoordinates;
+Function GeocentricToGeodetic(Const Coordinates: TCoordinates; Const Ellipsoid: TEllipsoid):TCoordinates;
 Function HelmertTransform(Const Coordinates: TCoordinates; Const HelmertTransformParameters: THelmertTransformParameters): TCoordinates;
 Function TransverseMercatorProjection(Const Coordinates: TCoordinates; Const Projection: TProjection): TCoordinates;
 
@@ -245,7 +246,7 @@ Begin
     End;
 End;
 
-Function GeodeticToCartesian(Const Coordinates: TCoordinates; Const Ellipsoid: TEllipsoid):TCoordinates;
+Function GeodeticToGeocentric(Const Coordinates: TCoordinates; Const Ellipsoid: TEllipsoid):TCoordinates;
 Var
   Height: TCoordinate;
   SinLat, CosLat: Extended;
@@ -262,7 +263,7 @@ Begin
     End;
 End;
 
-Function CartesianToGeodetic(Const Coordinates: TCoordinates; Const Ellipsoid: TEllipsoid): TCoordinates;
+Function GeocentricToGeodetic(Const Coordinates: TCoordinates; Const Ellipsoid: TEllipsoid): TCoordinates;
 Var
   Param: TCoordinate;
   Height: TCoordinate;
@@ -377,6 +378,18 @@ Begin
       Result.Easting := OriginOffset.Easting-(IV*L+V*L3+VI*L5);
       Result.Elevation := Altitude; { Preserve any altitude information. }
     End;
+End;
+
+Constructor TProjection.Initialize(NewMeridianScaleFactor, NewTrueOriginLatitude,
+                                   NewTrueOriginLongitude, NewOriginOffsetEasting,
+                                   NewOriginOffsetNorthing: TCoordinate; NewEllipsoid: TEllipsoid);
+Begin
+  MeridianScaleFactor := NewMeridianScaleFactor;
+  TrueOrigin.Latitude := NewTrueOriginLatitude;
+  TrueOrigin.Longitude := NewTrueOriginLongitude;
+  OriginOffset.Easting := NewOriginOffsetEasting;
+  OriginOffset.Northing := NewOriginOffsetNorthing;
+  Ellipsoid := NewEllipsoid;
 End;
 
 Constructor TEllipsoid.Initialize(NewSemiMajorAxis, NewSemiMinorAxis: TCoordinate);
