@@ -125,6 +125,8 @@ Const
 
 Function GeodeticDegToRad(Const Coordinates: TCoordinates): TCoordinates;
 Function GeodeticRadToDeg(Const Coordinates: TCoordinates): TCoordinates;
+Function NormalizeLatitude(Angle: TCoordinate): TCoordinate;
+Function NormalizeLongitude(Angle: TCoordinate): TCoordinate;
 Function AxisTypeFromIndex(Index: Integer; AxisOrder: TAxisOrder = aoXYZ): TAxisType;
 Function SexagesimalToDecimalCoordinate(Const Coordinate: TSexagesimalCoordinate): TCoordinate;
 Function DecimalToSexagesimalCoordinate(Const Coordinate: TCoordinate): TSexagesimalCoordinate;
@@ -134,6 +136,7 @@ Function GeodeticToGeocentric(Const Coordinates: TCoordinates; Const Ellipsoid: 
 Function GeocentricToGeodetic(Const Coordinates: TCoordinates; Const Ellipsoid: TEllipsoid):TCoordinates;
 Function HelmertTransform(Const Coordinates: TCoordinates; Const HelmertTransformParameters: THelmertTransformParameters): TCoordinates;
 Function TransverseMercatorProjection(Const Coordinates: TCoordinates; Const Projection: TProjection): TCoordinates;
+Function InverseTransverseMercatorProjection(Const Coordinates: TCoordinates; Const Projection: TProjection): TCoordinates;
 
 Const
   GeocentricAxisNames: TAxisNames = (LongX: 'X Coordinate'; LongY: 'Y Coordinate'; LongZ: 'Z Coordinate';
@@ -185,6 +188,24 @@ Function GeodeticRadToDeg(Const Coordinates: TCoordinates): TCoordinates;
 Begin
   Result.Latitude := RadToDeg(Coordinates.Latitude);
   Result.Longitude := RadToDeg(Coordinates.Longitude);
+End;
+
+Function NormalizeLatitude(Angle: TCoordinate): TCoordinate;
+Begin
+  Result := Angle;
+  While Result>HalfPi Do
+    Result -= PI;
+  While Result<-HalfPi Do
+    Result += PI;
+End;
+
+Function NormalizeLongitude(Angle: TCoordinate): TCoordinate;
+Begin
+  Result := Angle;
+  While Result>Pi Do
+    Result -= TwoPI;
+  While Result<-Pi Do
+    Result += TwoPI;
 End;
 
 Function AxisTypeFromIndex(Index: Integer; AxisOrder: TAxisOrder): TAxisType;
@@ -378,6 +399,11 @@ Begin
       Result.Easting := OriginOffset.Easting-(IV*L+V*L3+VI*L5);
       Result.Elevation := Altitude; { Preserve any altitude information. }
     End;
+End;
+
+Function InverseTransverseMercatorProjection(Const Coordinates: TCoordinates; Const Projection: TProjection): TCoordinates;
+Begin
+
 End;
 
 Constructor TProjection.Initialize(NewMeridianScaleFactor, NewTrueOriginLatitude,

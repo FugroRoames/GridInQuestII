@@ -112,6 +112,11 @@ Const
   OneOverOneMillion: TCoordinate = 1/1000000;
   ConvergenceThreshold: TCoordinate = 0.00001;
   NullCoordinates: TCoordinates = (X: 0; Y: 0; Z: 0);
+  TwoPI: TCoordinate = 2*Pi;
+  HalfPi: TCoordinate = Pi/2;
+
+{ General functions. }
+Function NormalizeAngle(Angle: TCoordinate): TCoordinate;
 
 { Coordinates operator overloads. }
 Operator = (A, B: T2DCoordinates): Boolean;
@@ -141,6 +146,15 @@ End;
 Function Format3DCoordinates(Point: T3DCoordinates): String;
 Begin
   Result := FormatFloat('0', Point.X)+','+FormatFloat('0', Point.Y)+','+FormatFloat('0', Point.Z);
+End;
+
+Function NormalizeAngle(Angle: TCoordinate): TCoordinate;
+Begin
+  Result := Angle;
+  While Result>TwoPI Do
+    Result -= TwoPI;
+  While Result<0 Do
+    Result += TwoPI;
 End;
 
 End.
