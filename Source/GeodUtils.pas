@@ -314,7 +314,7 @@ Begin
       If HasAxisSuffix Then
         SetLength(Text, TextLength-1);
       { Atempt to convert the remainder to a valid value. }
-      Result := TryStrToFloat(Text, Value);
+      Result := TryStrToFloat(Trim(Text), Value);
       { Treat negative values for an X or Y axis as invalid. }
       If Value<0 Then
         Result := (AxisType=atZAxis);

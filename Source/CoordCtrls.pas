@@ -40,6 +40,7 @@ Type
     FOnValid: TNotifyEvent;
     Procedure DoOnChange(Sender: TObject);
     Procedure DoOnUTF8KeyPress(Sender: TObject; Var UTF8Key: TUTF8Char);
+    Procedure Format(Tidy: Boolean = False);
     Procedure Validate;
   Protected
     { Protected declarations. }
@@ -162,6 +163,39 @@ Begin
   FValid := False;
 End;
 
+Procedure TCoordinatePanel.Format(Tidy: Boolean = False);
+Begin
+  If FEdit.ReadOnly Then
+    FEdit.Font.Color := clBlue
+  Else
+    If Valid Or (FEdit.Text=EmptyStr) Then
+      FEdit.Font.Color := clBlack
+    Else
+      FEdit.Font.Color := clRed;
+  If Tidy Then
+    Case TCoordinatesEntryPanel(Parent).CoordinateType Of
+    ctGeocentric:
+      Case AxisType Of
+      atXAxis: FEdit.Text := FormatCoordinateWithUnits(Coordinate, 'm', 2);
+      atYAxis: FEdit.Text := FormatCoordinateWithUnits(Coordinate, 'm', 2);
+      atZAxis: FEdit.Text := FormatCoordinateWithUnits(Coordinate, 'm', 2);
+      End;
+    ctGeodetic:
+      Case AxisType Of
+      atXAxis: FEdit.Text := FormatCoordinate(DecimalToSexagesimalCoordinate(Coordinate), soEastWestSuffix);
+      atYAxis: FEdit.Text := FormatCoordinate(DecimalToSexagesimalCoordinate(Coordinate), soNorthSouthSuffix);
+      atZAxis: FEdit.Text := FormatCoordinateWithUnits(Coordinate, 'm', 2);
+      End;
+    ctCartesian:
+      Case AxisType Of
+      atXAxis: FEdit.Text := FormatCoordinate(Coordinate, 2, True)+' E';
+      atYAxis: FEdit.Text := FormatCoordinate(Coordinate, 2, True)+' N';
+      atZAxis: FEdit.Text := FormatCoordinateWithUnits(Coordinate, 'm', 2);
+      End;
+    End;
+End;
+
+
 Procedure TCoordinatePanel.Validate;
 Begin
   Case TCoordinatesEntryPanel(Parent).CoordinateType Of
@@ -174,44 +208,12 @@ Begin
   Else
     FValid := False;
   End;
-  If FEdit.ReadOnly Then
-    FEdit.Font.Color := clBlue
-  Else
-    If Valid Or (FEdit.Text=EmptyStr) Then
-      Begin
-        FEdit.Font.Color := clBlack;
-      End
-    Else
-      Begin
-        FEdit.Font.Color := clRed;
-      End;
+  Format;
 End;
 
 Procedure TCoordinatePanel.DoExit;
 Begin
-  If Valid Then
-    Case TCoordinatesEntryPanel(Parent).CoordinateType Of
-    ctGeocentric:
-      Case AxisType Of
-      atXAxis: FEdit.Text := FormatCoordinateWithUnits(Coordinate, 'm');
-      atYAxis: FEdit.Text := FormatCoordinateWithUnits(Coordinate, 'm');
-      atZAxis: FEdit.Text := FormatCoordinateWithUnits(Coordinate, 'm');
-      End;
-    ctGeodetic:
-      Case AxisType Of
-      atXAxis: FEdit.Text := FormatCoordinate(DecimalToSexagesimalCoordinate(Coordinate), soEastWestSuffix);
-      atYAxis: FEdit.Text := FormatCoordinate(DecimalToSexagesimalCoordinate(Coordinate), soNorthSouthSuffix);
-      atZAxis: FEdit.Text := FormatCoordinateWithUnits(Coordinate, 'm');
-      End;
-    ctCartesian:
-      Case AxisType Of
-      atXAxis: FEdit.Text := FormatCoordinate(Coordinate);
-      atYAxis: FEdit.Text := FormatCoordinate(Coordinate);
-      atZAxis: FEdit.Text := FormatCoordinate(Coordinate);
-      End;
-    Else
-      FValid := False;
-    End;
+  Format(True);
   Inherited DoExit;
 End;
 
@@ -441,11 +443,20 @@ Procedure TCoordinatesEntryPanel.SetCoordinates(Value: TCoordinates);
   End;
 Begin
   With FFirstCoordinatePanel Do
-    SetCoordinateForAxis(Value, FEdit, AxisType);
+    Begin
+      SetCoordinateForAxis(Value, FEdit, AxisType);
+      Format(True);
+    End;
   With FSecondCoordinatePanel Do
-    SetCoordinateForAxis(Value, FEdit, AxisType);
+    Begin
+      SetCoordinateForAxis(Value, FEdit, AxisType);
+      Format(True);
+    End;
   With FThirdCoordinatePanel Do
-    SetCoordinateForAxis(Value, FEdit, AxisType);
+    Begin
+      SetCoordinateForAxis(Value, FEdit, AxisType);
+      Format(True);
+    End;
 End;
 
 Procedure TCoordinatesEntryPanel.Clear;
