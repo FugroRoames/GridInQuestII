@@ -182,12 +182,14 @@ Function GeodeticDegToRad(Const Coordinates: TCoordinates): TCoordinates;
 Begin
   Result.Latitude := DegToRad(Coordinates.Latitude);
   Result.Longitude := DegToRad(Coordinates.Longitude);
+  Result.Altitude := Coordinates.Altitude;
 End;
 
 Function GeodeticRadToDeg(Const Coordinates: TCoordinates): TCoordinates;
 Begin
   Result.Latitude := RadToDeg(Coordinates.Latitude);
   Result.Longitude := RadToDeg(Coordinates.Longitude);
+  Result.Altitude := Coordinates.Altitude;
 End;
 
 Function NormalizeLatitude(Angle: TCoordinate): TCoordinate;
@@ -339,7 +341,7 @@ Var
   n, n2, n3, o: TCoordinate;
   Nu: TCoordinate;
   Rho: TCoordinate;
-  NetaSquared: TCoordinate;
+  EtaSquared: TCoordinate;
   M: TCoordinate;
   I: TCoordinate;
   II: TCoordinate;
@@ -356,11 +358,11 @@ Var
   Term4: TCoordinate;
   L, L2, L3, L4, L5, L6: TCoordinate;
 Begin
-  With Coordinates, Projection, Projection.Ellipsoid Do
+  With Projection, Projection.Ellipsoid Do
     Begin
-      SinLatitude := Sin(Latitude);
+      SinLatitude := Sin(Coordinates.Latitude);
       SinLatitudePow2 := SinLatitude*SinLatitude;
-      CosLatitude := Cos(Latitude);
+      CosLatitude := Cos(Coordinates.Latitude);
       CosLatitudePow2 := CosLatitude*CosLatitude;
       CosLatitudePow3 := CosLatitudePow2*CosLatitude;
       CosLatitudePow5 := CosLatitudePow3*CosLatitudePow2;
@@ -374,9 +376,9 @@ Begin
       o := 1-EccentricitySquared*SinLatitudePow2;
       Nu := SemiMajorAxis*MeridianScaleFactor*Power(o, -0.5);
       Rho := SemiMajorAxis*MeridianScaleFactor*(1-EccentricitySquared)*Power(o, -1.5);
-      NetaSquared := (Nu/rho)-1.0;
-      LatitudeDelta := Latitude-TrueOrigin.Latitude;
-      LatitudeSum := Latitude+TrueOrigin.Latitude;
+      EtaSquared := (Nu/rho)-1.0;
+      LatitudeDelta := Coordinates.Latitude-TrueOrigin.Latitude;
+      LatitudeSum := Coordinates.Latitude+TrueOrigin.Latitude;
       Term1 := (1.0+n+5.0/4.0*(n2+n3))*LatitudeDelta;// TODO: Possible removal of divisions here?
       Term2 := (3.0*(n+n2)+21.0/8.0*n3)*Sin(LatitudeDelta)*Cos(LatitudeSum);
       Term3 := 15.0/8.0*(n2+n3)*Sin(2.0*LatitudeDelta)*Cos(2.0*LatitudeSum);
@@ -384,20 +386,20 @@ Begin
       M := SemiMinorAxis*MeridianScaleFactor*(Term1-Term2+Term3-Term4);
       I := M+OriginOffset.Northing;
       II := (Nu/2.0)*SinLatitude*CosLatitude;
-      III := (Nu/24.0)*SinLatitude*CosLatitudePow3*(5.0-TanLatitudePow2+9.0*NetaSquared);
+      III := (Nu/24.0)*SinLatitude*CosLatitudePow3*(5.0-TanLatitudePow2+9.0*EtaSquared);
       IIIA := (Nu/720.0)*SinLatitude*CosLatitudePow5*(61.0-58.0*TanLatitudePow2+TanLatitudePow4);
       IV := Nu*CosLatitude;
       V := (Nu/6.0)*CosLatitudePow3*(Nu/Rho-TanLatitudePow2);
-      VI := (Nu/120.0)*CosLatitudePow5*(5.0-18.0*TanLatitudePow2+TanLatitudePow4+14.0*NetaSquared-58.0*TanLatitudePow2*NetaSquared);
-      L := TrueOrigin.Longitude+Longitude;
+      VI := (Nu/120.0)*CosLatitudePow5*(5.0-18.0*TanLatitudePow2+TanLatitudePow4+14.0*EtaSquared-58.0*TanLatitudePow2*EtaSquared);
+      L := Coordinates.Longitude-TrueOrigin.Longitude;
       L2 := L*L;
       L3 := L2*L;
       L4 := L3*L;
       L5 := L4*L;
       L6 := L5*L;
       Result.Northing := I+II*L2+III*L4+IIIA*L6;
-      Result.Easting := OriginOffset.Easting-(IV*L+V*L3+VI*L5);
-      Result.Elevation := Altitude; { Preserve any altitude information. }
+      Result.Easting := OriginOffset.Easting+IV*L+V*L3+VI*L5;
+      Result.Elevation := Coordinates.Altitude; { Preserve any altitude information. }
     End;
 End;
 
@@ -423,7 +425,7 @@ Var
   VII: TCoordinate;
   VIII: TCoordinate;
   IX: TCoordinate;
-  IXI: TCoordinate;
+  X: TCoordinate;
   XI: TCoordinate;
   XII: TCoordinate;
   XIIA: TCoordinate;
@@ -438,7 +440,7 @@ Const
   IterationLimit = 6;
   Epsilon = 0.01;
 Begin
-  With Coordinates, Projection, Projection.Ellipsoid Do
+  With Projection, Projection.Ellipsoid Do
     Begin
       n := (SemiMajorAxis-SemiMinorAxis)/(SemiMajorAxis+SemiMinorAxis);
       n2 := n*n;
@@ -447,10 +449,10 @@ Begin
       CurrentLat := TrueOrigin.Latitude;
       For Iteration := 1 To IterationLimit Do
         Begin
-          CurrentLat := ((Northing-OriginOffset.Northing-M)/(SemiMajorAxis*MeridianScaleFactor))+CurrentLat;
-          If (Northing-OriginOffset.Northing-M)<Epsilon Then
+          CurrentLat := ((Coordinates.Northing-OriginOffset.Northing-M)/(SemiMajorAxis*MeridianScaleFactor))+CurrentLat;
+          If (Coordinates.Northing-OriginOffset.Northing-M)<Epsilon Then
             Begin
-              SinLatitude := Sin(Latitude);
+              SinLatitude := Sin(CurrentLat);
               SinLatitudePow2 := SinLatitude*SinLatitude;
               o := 1-EccentricitySquared*SinLatitudePow2;
               Nu := SemiMajorAxis*MeridianScaleFactor*Power(o, -0.5);
@@ -460,11 +462,11 @@ Begin
               VII := TanLat/(2*Rho*Nu);
               VIII :=TanLat/(24*Rho*Nu*Nu*Nu)*(5+3*TanLat*TanLat+NetaSquared-9*TanLat*TanLat*NetaSquared);
               IX :=TanLat/(720*Rho*Nu*Nu*Nu*Nu*Nu)*(61+90*TanLat*TanLat+45*TanLat*TanLat*TanLat*TanLat);
-              IXI := Sec(CurrentLat)/Nu;
+              X := Sec(CurrentLat)/Nu;
               XI :=Sec(CurrentLat)/(6*Nu*Nu*Nu)*(Nu/Rho+2*TanLat*TanLat);
               XII :=Sec(CurrentLat)/(120*Nu*Nu*Nu*Nu*Nu)*(5+28*TanLat*TanLat+24*TanLat*TanLat*TanLat*TanLat);
               XIIA :=Sec(CurrentLat)/(5040*Nu*Nu*Nu*Nu*Nu*Nu*Nu)*(61+662*TanLat*TanLat+1320*TanLat*TanLat*TanLat*TanLat+720*TanLat*TanLat*TanLat*TanLat*TanLat*TanLat);
-              EastDelta := (Easting-TrueOrigin.Easting);
+              EastDelta := (Coordinates.Easting-TrueOrigin.Easting);
               EastDelta2 := EastDelta*EastDelta;
               EastDelta3 := EastDelta2*EastDelta;
               EastDelta4 := EastDelta3*EastDelta;
@@ -472,8 +474,8 @@ Begin
               EastDelta6 := EastDelta5*EastDelta;
               EastDelta7 := EastDelta6*EastDelta;
               Result.Latitude := CurrentLat-VII*EastDelta2+VIII*EastDelta4-IX*EastDelta6;
-              Result.Longitude := TrueOrigin.Longitude+IXI*EastDelta-XI*EastDelta3+XII*EastDelta5-XIIA*EastDelta7;
-              Result.Altitude := Elevation;
+              Result.Longitude := TrueOrigin.Longitude+X*EastDelta-XI*EastDelta3+XII*EastDelta5-XIIA*EastDelta7;
+              Result.Altitude := Coordinates.Elevation;
               Exit;
             End;
           LatitudeDelta := CurrentLat-TrueOrigin.Latitude;
