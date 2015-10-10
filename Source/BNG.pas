@@ -45,7 +45,6 @@ Uses
   {$ENDIF}
 {$ENDIF}
 
-
 Type TBNGCoordinateSystem02 = Object(TCoordinateSystem)
     Function ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
     Function ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
@@ -63,12 +62,14 @@ Var
   BNGCoordinateSystem02: TBNGCoordinateSystem02;
   BNGCoordinateSystem10: TBNGCoordinateSystem10;
 
-Function WGS84CoordinatesToOSTN02Coordinates(Const Coordinates: TCoordinates): TCoordinates;
-Function OSTN02CoordinatesToWGS84Coordinates(Const Coordinates: TCoordinates): TCoordinates;
+Type TVerticalDatumModel = (OSGM02, OSVRF10);
+
+Function WGS84CoordinatesToBNGCoordinates(Const Coordinates: TCoordinates; DatumModel: TVerticalDatumModel = OSVRF10): TCoordinates;
+Function BNGCoordinatesToWGS84Coordinates(Const Coordinates: TCoordinates; DatumModel: TVerticalDatumModel = OSVRF10): TCoordinates;
 
 Implementation
 
-Function WGS84CoordinatesToOSTN02Coordinates(Const Coordinates: TCoordinates): TCoordinates;
+Function WGS84CoordinatesToBNGCoordinates(Const Coordinates: TCoordinates; DatumModel: TVerticalDatumModel = OSVRF10): TCoordinates;
 {$IFDEF OSTNO2TABLEUSED}
 Var
   ActualEastOffset: TCoordinate;
@@ -175,15 +176,18 @@ Begin
 {$ENDIF}
 End;
 
-Function OSTN02CoordinatesToWGS84Coordinates(Const Coordinates: TCoordinates): TCoordinates;
+Function BNGCoordinatesToWGS84Coordinates(Const Coordinates: TCoordinates; DatumModel: TVerticalDatumModel = OSVRF10): TCoordinates;
 Begin
   //TODO: Implement me!
   Result := Coordinates;
 End;
 
 Function TBNGCoordinateSystem02.ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates;
+Var
+  GeodeticCoordinates: TCoordinates;
 Begin
-  Result := NullCoordinates;
+  GeodeticCoordinates := BNGCoordinatesToWGS84Coordinates(GeodeticCoordinates);
+  Result := GeodeticToGeocentric(GeodeticCoordinates, GRS80Ellipsoid);
 End;
 
 Function TBNGCoordinateSystem02.ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates;
@@ -191,12 +195,15 @@ Var
   GeodeticCoordinates: TCoordinates;
 Begin
   GeodeticCoordinates := GeocentricToGeodetic(Coordinates, GRS80Ellipsoid);
-  Result := WGS84CoordinatesToOSTN02Coordinates(GeodeticCoordinates);
+  Result := WGS84CoordinatesToBNGCoordinates(GeodeticCoordinates);
 End;
 
 Function TBNGCoordinateSystem10.ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates;
+Var
+  GeodeticCoordinates: TCoordinates;
 Begin
-  Result := NullCoordinates;
+  GeodeticCoordinates := BNGCoordinatesToWGS84Coordinates(GeodeticCoordinates);
+  Result := GeodeticToGeocentric(GeodeticCoordinates, GRS80Ellipsoid);
 End;
 
 Function TBNGCoordinateSystem10.ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates;
@@ -204,7 +211,7 @@ Var
   GeodeticCoordinates: TCoordinates;
 Begin
   GeodeticCoordinates := GeocentricToGeodetic(Coordinates, GRS80Ellipsoid);
-  Result := WGS84CoordinatesToOSTN02Coordinates(GeodeticCoordinates);
+  Result := WGS84CoordinatesToBNGCoordinates(GeodeticCoordinates);
 End;
 
 Initialization

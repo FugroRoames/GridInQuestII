@@ -109,9 +109,9 @@
         <Filename Value="ETRS.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="14"/>
-        <TopLine Value="70"/>
-        <CursorPos Y="84"/>
-        <UsageCount Value="145"/>
+        <TopLine Value="80"/>
+        <CursorPos Y="94"/>
+        <UsageCount Value="147"/>
         <Loaded Value="True"/>
       </Unit11>
       <Unit12>
@@ -275,7 +275,7 @@
         <EditorIndex Value="15"/>
         <TopLine Value="55"/>
         <CursorPos X="5" Y="62"/>
-        <UsageCount Value="42"/>
+        <UsageCount Value="43"/>
         <Loaded Value="True"/>
       </Unit34>
       <Unit35>
@@ -291,7 +291,7 @@
         <EditorIndex Value="9"/>
         <TopLine Value="296"/>
         <CursorPos X="41" Y="317"/>
-        <UsageCount Value="66"/>
+        <UsageCount Value="67"/>
         <Loaded Value="True"/>
       </Unit36>
       <Unit37>
@@ -328,9 +328,9 @@
         <Filename Value="BNG.pas"/>
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="11"/>
-        <TopLine Value="178"/>
-        <CursorPos X="3" Y="180"/>
-        <UsageCount Value="73"/>
+        <TopLine Value="179"/>
+        <CursorPos X="117" Y="179"/>
+        <UsageCount Value="74"/>
         <Loaded Value="True"/>
       </Unit41>
       <Unit42>
@@ -368,7 +368,7 @@
         <EditorIndex Value="19"/>
         <TopLine Value="64"/>
         <CursorPos Y="71"/>
-        <UsageCount Value="36"/>
+        <UsageCount Value="37"/>
         <Loaded Value="True"/>
       </Unit46>
       <Unit47>
@@ -376,14 +376,14 @@
         <EditorIndex Value="12"/>
         <TopLine Value="27"/>
         <CursorPos X="11" Y="52"/>
-        <UsageCount Value="31"/>
+        <UsageCount Value="32"/>
         <Loaded Value="True"/>
       </Unit47>
       <Unit48>
         <Filename Value="IG.pas"/>
         <EditorIndex Value="13"/>
         <CursorPos X="86" Y="29"/>
-        <UsageCount Value="31"/>
+        <UsageCount Value="32"/>
         <Loaded Value="True"/>
       </Unit48>
       <Unit49>
@@ -411,7 +411,7 @@
         <EditorIndex Value="18"/>
         <TopLine Value="1090"/>
         <CursorPos X="77" Y="1114"/>
-        <UsageCount Value="11"/>
+        <UsageCount Value="12"/>
         <Loaded Value="True"/>
       </Unit52>
       <Unit53>
@@ -432,123 +432,123 @@
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="Geodesy.pas"/>
-        <Caret Line="383" TopLine="365"/>
+        <Caret Line="386" TopLine="371"/>
       </Position1>
       <Position2>
         <Filename Value="Geodesy.pas"/>
-        <Caret Line="384" TopLine="365"/>
+        <Caret Line="387" TopLine="371"/>
       </Position2>
       <Position3>
         <Filename Value="Geodesy.pas"/>
-        <Caret Line="359" TopLine="345"/>
+        <Caret Line="388" TopLine="371"/>
       </Position3>
       <Position4>
         <Filename Value="Geodesy.pas"/>
-        <Caret Line="384" TopLine="370"/>
+        <Caret Line="389" TopLine="371"/>
       </Position4>
       <Position5>
         <Filename Value="Geodesy.pas"/>
-        <Caret Line="359" TopLine="345"/>
+        <Caret Line="390" TopLine="371"/>
       </Position5>
       <Position6>
         <Filename Value="Geodesy.pas"/>
-        <Caret Line="385" TopLine="371"/>
+        <Caret Line="391" TopLine="371"/>
       </Position6>
       <Position7>
         <Filename Value="Geodesy.pas"/>
-        <Caret Line="386" TopLine="371"/>
+        <Caret Line="392" Column="63" TopLine="371"/>
       </Position7>
       <Position8>
         <Filename Value="Geodesy.pas"/>
-        <Caret Line="387" TopLine="371"/>
+        <Caret Line="359" TopLine="345"/>
       </Position8>
       <Position9>
         <Filename Value="Geodesy.pas"/>
-        <Caret Line="388" TopLine="371"/>
+        <Caret Line="392" TopLine="378"/>
       </Position9>
       <Position10>
         <Filename Value="Geodesy.pas"/>
-        <Caret Line="389" TopLine="371"/>
+        <Caret Line="393" TopLine="378"/>
       </Position10>
       <Position11>
         <Filename Value="Geodesy.pas"/>
-        <Caret Line="390" TopLine="371"/>
+        <Caret Line="394" TopLine="378"/>
       </Position11>
       <Position12>
         <Filename Value="Geodesy.pas"/>
-        <Caret Line="391" TopLine="371"/>
+        <Caret Line="395" TopLine="378"/>
       </Position12>
       <Position13>
         <Filename Value="Geodesy.pas"/>
-        <Caret Line="392" Column="63" TopLine="371"/>
+        <Caret Line="396" TopLine="378"/>
       </Position13>
       <Position14>
         <Filename Value="Geodesy.pas"/>
-        <Caret Line="359" TopLine="345"/>
+        <Caret Line="397" TopLine="378"/>
       </Position14>
       <Position15>
         <Filename Value="Geodesy.pas"/>
-        <Caret Line="392" TopLine="378"/>
+        <Caret Line="398" TopLine="378"/>
       </Position15>
       <Position16>
         <Filename Value="Geodesy.pas"/>
-        <Caret Line="393" TopLine="378"/>
+        <Caret Line="359" TopLine="345"/>
       </Position16>
       <Position17>
         <Filename Value="Geodesy.pas"/>
-        <Caret Line="394" TopLine="378"/>
+        <Caret Line="396" Column="46" TopLine="385"/>
       </Position17>
       <Position18>
-        <Filename Value="Geodesy.pas"/>
-        <Caret Line="395" TopLine="378"/>
+        <Filename Value="BNG.pas"/>
+        <Caret Line="71" Column="45" TopLine="57"/>
       </Position18>
       <Position19>
         <Filename Value="Geodesy.pas"/>
-        <Caret Line="396" TopLine="378"/>
+        <Caret Line="183" Column="25" TopLine="181"/>
       </Position19>
       <Position20>
-        <Filename Value="Geodesy.pas"/>
-        <Caret Line="397" TopLine="378"/>
+        <Filename Value="Geometry.pas"/>
+        <Caret Line="116" Column="29" TopLine="100"/>
       </Position20>
       <Position21>
         <Filename Value="Geodesy.pas"/>
-        <Caret Line="398" TopLine="378"/>
+        <Caret Line="300" TopLine="286"/>
       </Position21>
       <Position22>
-        <Filename Value="Geodesy.pas"/>
-        <Caret Line="359" TopLine="345"/>
-      </Position22>
-      <Position23>
-        <Filename Value="Geodesy.pas"/>
-        <Caret Line="396" Column="46" TopLine="385"/>
-      </Position23>
-      <Position24>
-        <Filename Value="BNG.pas"/>
-        <Caret Line="71" Column="45" TopLine="57"/>
-      </Position24>
-      <Position25>
-        <Filename Value="Geodesy.pas"/>
-        <Caret Line="183" Column="25" TopLine="181"/>
-      </Position25>
-      <Position26>
-        <Filename Value="Geometry.pas"/>
-        <Caret Line="116" Column="29" TopLine="100"/>
-      </Position26>
-      <Position27>
-        <Filename Value="Geodesy.pas"/>
-        <Caret Line="300" TopLine="286"/>
-      </Position27>
-      <Position28>
         <Filename Value="ETRS.pas"/>
         <Caret Line="84" TopLine="70"/>
-      </Position28>
-      <Position29>
+      </Position22>
+      <Position23>
         <Filename Value="Main.pas"/>
         <Caret Line="479" TopLine="460"/>
-      </Position29>
-      <Position30>
+      </Position23>
+      <Position24>
         <Filename Value="CoordCtrls.pas"/>
         <Caret Line="342" TopLine="329"/>
+      </Position24>
+      <Position25>
+        <Filename Value="BNG.pas"/>
+        <Caret Line="67" Column="121" TopLine="48"/>
+      </Position25>
+      <Position26>
+        <Filename Value="BNG.pas"/>
+        <Caret Line="68" Column="86" TopLine="51"/>
+      </Position26>
+      <Position27>
+        <Filename Value="BNG.pas"/>
+        <Caret Line="67" Column="80" TopLine="54"/>
+      </Position27>
+      <Position28>
+        <Filename Value="BNG.pas"/>
+        <Caret Line="68" Column="107" TopLine="53"/>
+      </Position28>
+      <Position29>
+        <Filename Value="BNG.pas"/>
+        <Caret Line="67" Column="90" TopLine="54"/>
+      </Position29>
+      <Position30>
+        <Filename Value="BNG.pas"/>
+        <Caret Line="68" Column="117" TopLine="53"/>
       </Position30>
     </JumpHistory>
   </ProjectSession>
