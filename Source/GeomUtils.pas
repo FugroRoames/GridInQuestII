@@ -154,6 +154,9 @@ Begin
       Else
         PlaceText := StringOfChar('#', DecimalPlaces);
       Result := FormatFloat('0.'+PlaceText, Value);
+      { Prevent the '-0.00' type output for very small negative values. }
+      If (StrToFloat(Result)=0) And (Result[1]='-') Then
+        Result := Copy(Result, 2, Length(Result));
     End;
 End;
 
