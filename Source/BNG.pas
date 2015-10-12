@@ -69,59 +69,58 @@ Function BNGCoordinatesToWGS84Coordinates(Const Coordinates: TCoordinates; Datum
 
 Implementation
 
-Function WGS84CoordinatesToBNGCoordinates(Const Coordinates: TCoordinates; DatumModel: TVerticalDatumModel = OSVRF10): TCoordinates;
 {$IFDEF OSTNO2TABLEUSED}
+Procedure BilinearInterpolate(Const Coordinates: TCoordinates; Const GridScale: TCoordinate; Var EastOffset, NorthOffset, GeoidHeight: TCoordinate);
 Var
-  ActualEastOffset: TCoordinate;
-  ActualNorthOffset: TCoordinate;
-  ActualGeoidHeight: TCoordinate;
-  Procedure BilinearInterpolate(GridScale: TCoordinate);
-  Var
-    InvGridScale: TCoordinate;
-    X1, X2, Y1, Y2: Integer;
-    SE0, SE1, SE2, SE3: TCoordinate;
-    SN0, SN1, SN2, SN3: TCoordinate;
-    SG0, SG1, SG2, SG3: TCoordinate;
-    T, TI, U, UI: TCoordinate;
-  Begin
-    InvGridScale := 1/GridScale;
-    X1 := Trunc(Result.Easting*InvGridScale);
-    Y1 := Trunc(Result.Northing*InvGridScale);
-    X2 := X1+1;
-    Y2 := Y1+1;
-    With OSTN02Data[X1, Y1] Do
-      Begin
-        SE0 := Easting;
-        SN0 := Northing;
-        SG0 := Elevation;
-      End;
-    With OSTN02Data[X2, Y1] Do
-      Begin
-        SE1 := Easting;
-        SN1 := Northing;
-        SG1 := Elevation;
-      End;
-    With OSTN02Data[X2, Y2] Do
-      Begin
-        SE2 := Easting;
-        SN2 := Northing;
-        SG2 := Elevation;
-      End;
-    With OSTN02Data[X1, Y2] Do
-      Begin
-        SE3 := Easting;
-        SN3 := Northing;
-        SG3 := Elevation;
-      End;
-    T := (Result.Easting-(X1*GridScale))*InvGridScale;
-    TI := (1-T);
-    U := (Result.Northing-(Y1*GridScale))*InvGridScale;
-    UI := (1-U);
-    ActualEastOffset := (TI*UI*SE0)+(T*UI*SE1)+(T*U*SE2)+(TI*U*SE3);
-    ActualNorthOffset := (TI*UI*SN0)+(T*UI*SN1)+(T*U*SN2)+(TI*U*SN3);
-    ActualGeoidHeight := (TI*UI*SG0)+(T*UI*SG1)+(T*U*SG2)+(TI*U*SG3);
-  End;
+  InvGridScale: TCoordinate;
+  X1, X2, Y1, Y2: Integer;
+  SE0, SE1, SE2, SE3: TCoordinate;
+  SN0, SN1, SN2, SN3: TCoordinate;
+  SG0, SG1, SG2, SG3: TCoordinate;
+  T, TI, U, UI: TCoordinate;
+Begin
+  InvGridScale := 1/GridScale;
+  X1 := Trunc(Coordinates.Easting*InvGridScale);
+  Y1 := Trunc(Coordinates.Northing*InvGridScale);
+  X2 := X1+1;
+  Y2 := Y1+1;
+  With OSTN02Data[X1, Y1] Do
+    Begin
+      SE0 := Easting;
+      SN0 := Northing;
+      SG0 := Elevation;
+    End;
+  With OSTN02Data[X2, Y1] Do
+    Begin
+      SE1 := Easting;
+      SN1 := Northing;
+      SG1 := Elevation;
+    End;
+  With OSTN02Data[X2, Y2] Do
+    Begin
+      SE2 := Easting;
+      SN2 := Northing;
+      SG2 := Elevation;
+    End;
+  With OSTN02Data[X1, Y2] Do
+    Begin
+      SE3 := Easting;
+      SN3 := Northing;
+      SG3 := Elevation;
+    End;
+  T := (Coordinates.Easting-(X1*GridScale))*InvGridScale;
+  TI := (1-T);
+  U := (Coordinates.Northing-(Y1*GridScale))*InvGridScale;
+  UI := (1-U);
+  EastOffset := (TI*UI*SE0)+(T*UI*SE1)+(T*U*SE2)+(TI*U*SE3);
+  NorthOffset := (TI*UI*SN0)+(T*UI*SN1)+(T*U*SN2)+(TI*U*SN3);
+  GeoidHeight := (TI*UI*SG0)+(T*UI*SG1)+(T*U*SG2)+(TI*U*SG3);
+End;
 {$ENDIF}
+
+Function WGS84CoordinatesToBNGCoordinates(Const Coordinates: TCoordinates; DatumModel: TVerticalDatumModel = OSVRF10): TCoordinates;
+Var
+  EastOffset, NorthOffset, GeoidHeight: TCoordinate;
 Begin
   { Full transformation of GRS80/WGS84/ETRS89 value to OSGB36 easting and northing as per OS method. }
   { 1. Perform transverse Mercator projection of initial ellipsoid using OS grid but WGS84 ellipsiod parameters, Lat/Lon MUST be in radians. }
@@ -130,34 +129,34 @@ Begin
 {$IFDEF OSTNO2RES_1KM}
   { Perform full kilometer resolution polynomial correction. }
   { This is the intrinsic conversion as defined by TN02 but requires a 20Mb data table. }
-  BilinearInterpolate(1000);
+  BilinearInterpolate(Result, 1000, EastOffset, NorthOffset, GeoidHeight);
   With Result Do
     Begin
-      Easting := Easting+ActualEastOffset;
-      Northing := Northing+ActualNorthOffset;
-      Elevation := Elevation-ActualGeoidHeight; { Geoid height is subtracted. }
+      Easting := Easting+EastOffset;
+      Northing := Northing+NorthOffset;
+      Elevation := Elevation-GeoidHeight; { Geoid height is subtracted. }
     End;
 {$ENDIF}
 {$IFDEF OSTNO2RES_10KM}
   { Perform 10 kilometer resolution polynomial correction. }
   { Max Easting Error: 0.371 Max Northing Error: 0.375 Max Geoid Height Error: 0.554 }
-  BilinearInterpolate(10000);
+  BilinearInterpolate(Result, 10000, EastOffset, NorthOffset, GeoidHeight);
   With Result Do
     Begin
-      Easting := Easting+ActualEastOffset;
-      Northing := Northing+ActualNorthOffset;
-      Elevation := Elevation-ActualGeoidHeight;  { Geoid height is subtracted. }
+      Easting := Easting+EastOffset;
+      Northing := Northing+NorthOffset;
+      Elevation := Elevation-GeoidHeight;  { Geoid height is subtracted. }
     End;
 {$ENDIF}
 {$IFDEF OSTNO2RES_100KM}
   { Perform 100 kilometer resolution polynomial correction. }
   { Max Easting Error: 2.790 Max Northing Error: 2.784 Max Geoid Height Error: 2.389 }
-  BilinearInterpolate(100000);
+  BilinearInterpolate(Result, 100000, EastOffset, NorthOffset, GeoidHeight);
   With Result Do
     Begin
-      Easting := Easting+ActualEastOffset;
-      Northing := Northing+ActualNorthOffset;
-      Elevation := Elevation-ActualGeoidHeight; { Geoid height is subtracted. }
+      Easting := Easting+EastOffset;
+      Northing := Northing+NorthOffset;
+      Elevation := Elevation-GeoidHeight; { Geoid height is subtracted. }
     End;
 {$ENDIF}
 {$IFNDEF OSTNO2TABLEUSED}
@@ -177,9 +176,57 @@ Begin
 End;
 
 Function BNGCoordinatesToWGS84Coordinates(Const Coordinates: TCoordinates; DatumModel: TVerticalDatumModel = OSVRF10): TCoordinates;
+Var
+  EastOffset, NorthOffset, GeoidHeight: TCoordinate;
 Begin
-  //TODO: Implement me!
   Result := Coordinates;
+  {$IFDEF OSTNO2RES_1KM}
+    { Perform full kilometer resolution polynomial correction. }
+    { This is the intrinsic conversion as defined by TN02 but requires a 20Mb data table. }
+    BilinearInterpolate(Result, 1000, EastOffset, NorthOffset, GeoidHeight);
+    With Result Do
+      Begin
+        Easting := Easting-EastOffset;
+        Northing := Northing-NorthOffset;
+        Elevation := Elevation+GeoidHeight;
+      End;
+  {$ENDIF}
+  {$IFDEF OSTNO2RES_10KM}
+    { Perform 10 kilometer resolution polynomial correction. }
+    { Max Easting Error: 0.371 Max Northing Error: 0.375 Max Geoid Height Error: 0.554 }
+    BilinearInterpolate(Result, 10000, EastOffset, NorthOffset, GeoidHeight);
+    With Result Do
+      Begin
+        Easting := Easting-EastOffset;
+        Northing := Northing-NorthOffset;
+        Elevation := Elevation+GeoidHeight;
+      End;
+  {$ENDIF}
+  {$IFDEF OSTNO2RES_100KM}
+    { Perform 100 kilometer resolution polynomial correction. }
+    { Max Easting Error: 2.790 Max Northing Error: 2.784 Max Geoid Height Error: 2.389 }
+    BilinearInterpolate(Result, 100000, EastOffset, NorthOffset, GeoidHeight);
+    With Result Do
+      Begin
+        Easting := Easting-EastOffset;
+        Northing := Northing-NorthOffset;
+        Elevation := Elevation+GeoidHeight;
+      End;
+  {$ENDIF}
+  {$IFNDEF OSTNO2TABLEUSED}
+    { Instead of a polynomial correction, apply mean deltas which yeild a standard deviation of less than 10m in all directions. }
+    {           Easting Shift  Northing Shift  Geoid Height  }
+    { Min.          86.27         -81.60          43.98      }
+    { Mean          96.04         -68.87          51.16      }
+    { Max.         103.44         -50.16          57.66      }
+    { St. Dev.       3.29           9.45           3.47      }
+    With Result Do
+      Begin
+        Easting := Easting-96.04;
+        Northing := Northing+68.87;
+        Elevation := Elevation+51.16; { Geoid height is subtracted. }
+      End;
+  {$ENDIF}
 End;
 
 Function TBNGCoordinateSystem02.ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates;

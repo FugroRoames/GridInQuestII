@@ -3,7 +3,7 @@
   <ProjectSession>
     <Version Value="9"/>
     <BuildModes Active="Debug"/>
-    <Units Count="49">
+    <Units Count="50">
       <Unit0>
         <Filename Value="GridInQuestII.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -19,15 +19,15 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="467"/>
-        <CursorPos X="3" Y="469"/>
+        <TopLine Value="464"/>
+        <CursorPos Y="469"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
       </Unit1>
       <Unit2>
         <Filename Value="Geodesy.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="16"/>
+        <EditorIndex Value="17"/>
         <TopLine Value="124"/>
         <CursorPos X="35" Y="139"/>
         <UsageCount Value="201"/>
@@ -36,7 +36,7 @@
       <Unit3>
         <Filename Value="Geometry.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="15"/>
+        <EditorIndex Value="16"/>
         <TopLine Value="20"/>
         <CursorPos X="29" Y="116"/>
         <UsageCount Value="201"/>
@@ -107,10 +107,10 @@
       <Unit11>
         <Filename Value="ETRS.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="13"/>
+        <EditorIndex Value="14"/>
         <TopLine Value="130"/>
         <CursorPos X="18" Y="135"/>
-        <UsageCount Value="183"/>
+        <UsageCount Value="184"/>
         <Loaded Value="True"/>
       </Unit11>
       <Unit12>
@@ -254,15 +254,14 @@
         <ComponentName Value="AboutForm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="14"/>
+        <EditorIndex Value="15"/>
         <TopLine Value="55"/>
         <CursorPos X="5" Y="62"/>
-        <UsageCount Value="61"/>
+        <UsageCount Value="62"/>
         <Loaded Value="True"/>
       </Unit31>
       <Unit32>
         <Filename Value="CoordCtrls.pas"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="7"/>
         <TopLine Value="324"/>
         <CursorPos X="5" Y="334"/>
@@ -293,10 +292,11 @@
       </Unit35>
       <Unit36>
         <Filename Value="BNG.pas"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="10"/>
-        <TopLine Value="202"/>
-        <CursorPos Y="222"/>
-        <UsageCount Value="92"/>
+        <TopLine Value="176"/>
+        <CursorPos Y="181"/>
+        <UsageCount Value="93"/>
         <Loaded Value="True"/>
       </Unit36>
       <Unit37>
@@ -316,25 +316,25 @@
       </Unit38>
       <Unit39>
         <Filename Value="../../../GISUtils.pas"/>
-        <EditorIndex Value="17"/>
+        <EditorIndex Value="18"/>
         <TopLine Value="64"/>
         <CursorPos Y="71"/>
-        <UsageCount Value="55"/>
+        <UsageCount Value="56"/>
         <Loaded Value="True"/>
       </Unit39>
       <Unit40>
         <Filename Value="ITM.pas"/>
-        <EditorIndex Value="11"/>
+        <EditorIndex Value="12"/>
         <TopLine Value="27"/>
         <CursorPos X="11" Y="52"/>
-        <UsageCount Value="50"/>
+        <UsageCount Value="51"/>
         <Loaded Value="True"/>
       </Unit40>
       <Unit41>
         <Filename Value="IG.pas"/>
-        <EditorIndex Value="12"/>
+        <EditorIndex Value="13"/>
         <CursorPos X="86" Y="29"/>
-        <UsageCount Value="50"/>
+        <UsageCount Value="51"/>
         <Loaded Value="True"/>
       </Unit41>
       <Unit42>
@@ -373,9 +373,9 @@
       </Unit46>
       <Unit47>
         <Filename Value="GridUtils.pas"/>
-        <EditorIndex Value="18"/>
+        <EditorIndex Value="19"/>
         <CursorPos X="62" Y="3"/>
-        <UsageCount Value="28"/>
+        <UsageCount Value="29"/>
         <Loaded Value="True"/>
       </Unit47>
       <Unit48>
@@ -386,8 +386,15 @@
         <CursorPos X="14" Y="932"/>
         <UsageCount Value="7"/>
       </Unit48>
+      <Unit49>
+        <Filename Value="OSTN02R1K.inc"/>
+        <EditorIndex Value="11"/>
+        <CursorPos X="4" Y="2"/>
+        <UsageCount Value="11"/>
+        <Loaded Value="True"/>
+      </Unit49>
     </Units>
-    <JumpHistory Count="20" HistoryIndex="19">
+    <JumpHistory Count="24" HistoryIndex="23">
       <Position1>
         <Filename Value="Geodesy.pas"/>
         <Caret Line="447" TopLine="439"/>
@@ -468,17 +475,22 @@
         <Filename Value="CoordCtrls.pas"/>
         <Caret Line="339" TopLine="324"/>
       </Position20>
+      <Position21>
+        <Filename Value="CoordCtrls.pas"/>
+        <Caret Line="334" Column="5" TopLine="324"/>
+      </Position21>
+      <Position22>
+        <Filename Value="BNG.pas"/>
+        <Caret Line="91" Column="13" TopLine="68"/>
+      </Position22>
+      <Position23>
+        <Filename Value="BNG.pas"/>
+        <Caret Line="182" TopLine="116"/>
+      </Position23>
+      <Position24>
+        <Filename Value="BNG.pas"/>
+        <Caret Line="211" Column="32" TopLine="133"/>
+      </Position24>
     </JumpHistory>
   </ProjectSession>
-  <Debugging>
-    <BreakPoints Count="1">
-      <Item1>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsLocal"/>
-        <WatchKind Value="wpkWrite"/>
-        <Source Value="Main.pas"/>
-        <Line Value="469"/>
-      </Item1>
-    </BreakPoints>
-  </Debugging>
 </CONFIG>
