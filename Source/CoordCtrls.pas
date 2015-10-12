@@ -188,8 +188,8 @@ Begin
       End;
     ctCartesian:
       Case AxisType Of
-      atXAxis: FEdit.Text := FormatCoordinate(Coordinate, 2, True)+' E';
-      atYAxis: FEdit.Text := FormatCoordinate(Coordinate, 2, True)+' N';
+      atXAxis: FEdit.Text := FormatCoordinate(Coordinate, 3, True)+' E';
+      atYAxis: FEdit.Text := FormatCoordinate(Coordinate, 3, True)+' N';
       atZAxis: FEdit.Text := FormatCoordinateWithUnits(Coordinate, 'm', 2);
       End;
     End;
@@ -336,10 +336,9 @@ Begin
           SetAxisCaptionAndType(FThirdCoordinatePanel, 2, AxisOrder, AxisNames);
         End;
     End;
-  If TCoordinatesEntryPanel(Parent).FPanelType=ptOutput Then
-    With TCoordinatesEntryPanel(Parent) Do
-      If Assigned(OnChangeSystem) Then
-        OnChangeSystem(Self);
+  With TCoordinatesEntryPanel(Parent) Do
+    If Assigned(OnChangeSystem) Then
+      OnChangeSystem(Self);
 End;
 
 Procedure TCoordinateSystemPanel.DoOnResize;

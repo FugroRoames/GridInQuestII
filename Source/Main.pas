@@ -118,6 +118,7 @@ Type
     Function DataLoaded: Boolean;
     Procedure ClearDataGrid;
     Procedure DoInputValid(Sender: TObject);
+    Procedure DoInputChangeSystem(Sender: TObject);
     Procedure DoOutputChangeSystem(Sender: TObject);
     Procedure DoLoadProgress(Sender: TObject; Progress: Integer);
     Procedure DoParseProgress(Sender: TObject; Progress: Integer);
@@ -163,6 +164,7 @@ Begin
   InputPanel.TabOrder := 0;
   OutputPanel.TabOrder := 1;
   InputPanel.OnValid := @DoInputValid;
+  InputPanel.OnChangeSystem := @DoInputChangeSystem;
   OutputPanel.OnChangeSystem := @DoOutputChangeSystem;
   InputData := Nil;
   InputSystemIndex := -1;
@@ -460,6 +462,11 @@ Begin
       ShowMarker := True;
       Refresh;
     End;
+End;
+
+Procedure TMainForm.DoInputChangeSystem(Sender: TObject);
+Begin
+  OutputPanel.Clear;
 End;
 
 Procedure TMainForm.DoOutputChangeSystem(Sender: TObject);
