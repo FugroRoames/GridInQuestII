@@ -420,7 +420,7 @@ Var
   o: TCoordinate;
   Nu: TCoordinate;
   Rho: TCoordinate;
-  NetaSquared: TCoordinate;
+  EtaSquared: TCoordinate;
   TanLat: TCoordinate;
   VII: TCoordinate;
   VIII: TCoordinate;
@@ -429,16 +429,17 @@ Var
   XI: TCoordinate;
   XII: TCoordinate;
   XIIA: TCoordinate;
-  EastDelta: TCoordinate;
+  EastDelta: Extended;
   EastDelta2: TCoordinate;
   EastDelta3: TCoordinate;
   EastDelta4: TCoordinate;
   EastDelta5: TCoordinate;
   EastDelta6: TCoordinate;
   EastDelta7: TCoordinate;
+  V: Extended;
 Const
   IterationLimit = 6;
-  Epsilon = 0.01;
+  Epsilon = 0.00001;
 Begin
   With Projection, Projection.Ellipsoid Do
     Begin
@@ -450,6 +451,13 @@ Begin
       For Iteration := 1 To IterationLimit Do
         Begin
           CurrentLat := ((Coordinates.Northing-OriginOffset.Northing-M)/(SemiMajorAxis*MeridianScaleFactor))+CurrentLat;
+          LatitudeDelta := CurrentLat-TrueOrigin.Latitude;
+          LatitudeSum := CurrentLat+TrueOrigin.Latitude;
+          Term1 := (1.0+n+5.0/4.0*(n2+n3))*LatitudeDelta;// TODO: Possible removal of divisions here?
+          Term2 := (3.0*(n+n2)+21.0/8.0*n3)*Sin(LatitudeDelta)*Cos(LatitudeSum);
+          Term3 := 15.0/8.0*(n2+n3)*Sin(2.0*LatitudeDelta)*Cos(2.0*LatitudeSum);
+          Term4 := 35.0/24.0*n3*Sin(3.0*LatitudeDelta)*Cos(3.0*LatitudeSum);
+          M := SemiMinorAxis*MeridianScaleFactor*(Term1-Term2+Term3-Term4);
           If (Coordinates.Northing-OriginOffset.Northing-M)<Epsilon Then
             Begin
               SinLatitude := Sin(CurrentLat);
@@ -457,16 +465,16 @@ Begin
               o := 1-EccentricitySquared*SinLatitudePow2;
               Nu := SemiMajorAxis*MeridianScaleFactor*Power(o, -0.5);
               Rho := SemiMajorAxis*MeridianScaleFactor*(1-EccentricitySquared)*Power(o, -1.5);
-              NetaSquared := (Nu/rho)-1.0;
+              EtaSquared := (Nu/rho)-1.0;
               TanLat := Tan(CurrentLat);
               VII := TanLat/(2*Rho*Nu);
-              VIII :=TanLat/(24*Rho*Nu*Nu*Nu)*(5+3*TanLat*TanLat+NetaSquared-9*TanLat*TanLat*NetaSquared);
+              VIII :=TanLat/(24*Rho*Nu*Nu*Nu)*(5+3*TanLat*TanLat+EtaSquared-9*TanLat*TanLat*EtaSquared);
               IX :=TanLat/(720*Rho*Nu*Nu*Nu*Nu*Nu)*(61+90*TanLat*TanLat+45*TanLat*TanLat*TanLat*TanLat);
               X := Sec(CurrentLat)/Nu;
               XI :=Sec(CurrentLat)/(6*Nu*Nu*Nu)*(Nu/Rho+2*TanLat*TanLat);
               XII :=Sec(CurrentLat)/(120*Nu*Nu*Nu*Nu*Nu)*(5+28*TanLat*TanLat+24*TanLat*TanLat*TanLat*TanLat);
               XIIA :=Sec(CurrentLat)/(5040*Nu*Nu*Nu*Nu*Nu*Nu*Nu)*(61+662*TanLat*TanLat+1320*TanLat*TanLat*TanLat*TanLat+720*TanLat*TanLat*TanLat*TanLat*TanLat*TanLat);
-              EastDelta := (Coordinates.Easting-TrueOrigin.Easting);
+              EastDelta := (Coordinates.Easting-OriginOffset.Easting);
               EastDelta2 := EastDelta*EastDelta;
               EastDelta3 := EastDelta2*EastDelta;
               EastDelta4 := EastDelta3*EastDelta;
@@ -478,80 +486,10 @@ Begin
               Result.Altitude := Coordinates.Elevation;
               Exit;
             End;
-          LatitudeDelta := CurrentLat-TrueOrigin.Latitude;
-          LatitudeSum := CurrentLat+TrueOrigin.Latitude;
-          Term1 := (1.0+n+5.0/4.0*(n2+n3))*LatitudeDelta;// TODO: Possible removal of divisions here?
-          Term2 := (3.0*(n+n2)+21.0/8.0*n3)*Sin(LatitudeDelta)*Cos(LatitudeSum);
-          Term3 := 15.0/8.0*(n2+n3)*Sin(2.0*LatitudeDelta)*Cos(2.0*LatitudeSum);
-          Term4 := 35.0/24.0*n3*Sin(3.0*LatitudeDelta)*Cos(3.0*LatitudeSum);
-          M := SemiMinorAxis*MeridianScaleFactor*(Term1-Term2+Term3-Term4);
         End;
     End;
-  Raise Exception.Create('Inverse UTM Latitude failed to converge.');
-(*
-//double adjust_lon(double x);
-//* Function to adjust longitude to -180 - 180
-con, phi, //* temporary angles
-delta_phi, //* difference between longitudes
-sin_phi, cos_phi, tan_phi, //* sin cos and tangent values
-c, cs, t, ts, n, r, d, ds, //* temporary variables
-f, h, g, temp: double; //* temporary variables
-i: Integer; //* counter variable
-max_iter: Integer; //* maximun number of iterations
-{double asinz(double con);}
-
-max_iter := 6;
-  x := x - false_easting;
-  y := y - false_northing;
-
-  con := (ml0 + y / scale_factor) / r_major;
-  phi := con;
-  for i := 0 to max_iter + 1 do
-    begin
-      delta_phi := ((con + e1 * sin(2.0 * phi) - e2 * sin(4.0 * phi) +
-        e3 * sin(6.0 * phi))
-        / e0) - phi;
-  {  delta_phi = ((con + e1 * sin(2.0*phi) - e2 * sin(4.0*phi)) / e0) - phi;}
-
-      phi := phi + delta_phi;
-      if (abs(delta_phi) <= EPSLN) then
-        Begin
-          if (abs(phi) < HALF_PI) then
-            begin
-              sin_phi := Sin(phi);
-              cos_phi := Cos(phi);
-              {sincos(phi, sin_phi, cos_phi);}
-              tan_phi := tan(phi);
-              c := esp * Sqr(cos_phi);
-              cs := Sqr(c);
-              t := Sqr(tan_phi);
-              ts := Sqr(t);
-              con := 1.0 - es * Sqr(sin_phi);
-              n := r_major / sqrt(con);
-              r := n * (1.0 - es) / con;
-              d := x / (n * scale_factor);
-              ds := Sqr(d);
-              lat := phi - (n * tan_phi * ds / r) * (0.5 - ds / 24.0 * (5.0 +
-                3.0 * t +
-                10.0 * c - 4.0 * cs - 9.0 * esp - ds / 30.0 * (61.0 + 90.0 * t
-                  +
-                298.0 * c + 45.0 * ts - 252.0 * esp - 3.0 * cs)));
-              lon := AdjustLon(lon_center + (d * (1.0 - ds / 6.0 * (1.0 + 2.0 *
-                t +
-                c - ds / 20.0 * (5.0 - 2.0 * c + 28.0 * t - 3.0 * cs + 8.0 * esp
-                  +
-                24.0 * ts))) / cos_phi));
-            end
-          else
-            begin
-              lat := HALF_PI * sign(y);
-              lon := lon_center;
-            end;
-
-        End;
-    end;
-  Raise PError('Latitude failed to converge.', 'TMI Error');
-*)End;
+  Raise Exception.Create('Inverse Transverse Mercator Latitude failed to converge.');
+End;
 
 Constructor TProjection.Initialize(NewMeridianScaleFactor, NewTrueOriginLatitude,
                                    NewTrueOriginLongitude, NewOriginOffsetEasting,
