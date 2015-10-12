@@ -27,7 +27,7 @@
       <Unit2>
         <Filename Value="Geodesy.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="17"/>
+        <EditorIndex Value="18"/>
         <TopLine Value="124"/>
         <CursorPos X="35" Y="139"/>
         <UsageCount Value="201"/>
@@ -36,7 +36,7 @@
       <Unit3>
         <Filename Value="Geometry.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="16"/>
+        <EditorIndex Value="17"/>
         <TopLine Value="20"/>
         <CursorPos X="29" Y="116"/>
         <UsageCount Value="201"/>
@@ -107,7 +107,7 @@
       <Unit11>
         <Filename Value="ETRS.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="14"/>
+        <EditorIndex Value="15"/>
         <TopLine Value="130"/>
         <CursorPos X="18" Y="135"/>
         <UsageCount Value="184"/>
@@ -254,7 +254,7 @@
         <ComponentName Value="AboutForm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="15"/>
+        <EditorIndex Value="16"/>
         <TopLine Value="55"/>
         <CursorPos X="5" Y="62"/>
         <UsageCount Value="62"/>
@@ -270,9 +270,12 @@
       </Unit32>
       <Unit33>
         <Filename Value="GeodUtils.pas"/>
-        <EditorIndex Value="-1"/>
-        <CursorPos X="23" Y="283"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="11"/>
+        <TopLine Value="31"/>
+        <CursorPos X="40" Y="36"/>
         <UsageCount Value="85"/>
+        <Loaded Value="True"/>
       </Unit33>
       <Unit34>
         <Filename Value="../../FreePascal/Lazarus/lcl/forms.pp"/>
@@ -292,7 +295,6 @@
       </Unit35>
       <Unit36>
         <Filename Value="BNG.pas"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="10"/>
         <TopLine Value="176"/>
         <CursorPos Y="181"/>
@@ -316,7 +318,7 @@
       </Unit38>
       <Unit39>
         <Filename Value="../../../GISUtils.pas"/>
-        <EditorIndex Value="18"/>
+        <EditorIndex Value="19"/>
         <TopLine Value="64"/>
         <CursorPos Y="71"/>
         <UsageCount Value="56"/>
@@ -324,7 +326,7 @@
       </Unit39>
       <Unit40>
         <Filename Value="ITM.pas"/>
-        <EditorIndex Value="12"/>
+        <EditorIndex Value="13"/>
         <TopLine Value="27"/>
         <CursorPos X="11" Y="52"/>
         <UsageCount Value="51"/>
@@ -332,7 +334,7 @@
       </Unit40>
       <Unit41>
         <Filename Value="IG.pas"/>
-        <EditorIndex Value="13"/>
+        <EditorIndex Value="14"/>
         <CursorPos X="86" Y="29"/>
         <UsageCount Value="51"/>
         <Loaded Value="True"/>
@@ -373,7 +375,7 @@
       </Unit46>
       <Unit47>
         <Filename Value="GridUtils.pas"/>
-        <EditorIndex Value="19"/>
+        <EditorIndex Value="20"/>
         <CursorPos X="62" Y="3"/>
         <UsageCount Value="29"/>
         <Loaded Value="True"/>
@@ -388,7 +390,7 @@
       </Unit48>
       <Unit49>
         <Filename Value="OSTN02R1K.inc"/>
-        <EditorIndex Value="11"/>
+        <EditorIndex Value="12"/>
         <CursorPos X="4" Y="2"/>
         <UsageCount Value="11"/>
         <Loaded Value="True"/>

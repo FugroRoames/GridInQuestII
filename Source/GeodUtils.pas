@@ -33,7 +33,7 @@ Type
 
 Const
   SexigesimalDelims = [#0..' '];
-  SexagesimalFormat = '%.0F° %.0F'' %.3F" ';
+  SexagesimalFormat = '%.0F° %.0F'' %.4F" ';
   CompactSexagesimalFormat = '%.0FD%.0FM%.3FS';
 
 Function FormatCoordinate(Const Coordinate: TSexagesimalCoordinate; Option: TSexagesimalOption = soPlusMinusPrefix; FormatPattern: String = SexagesimalFormat): String; Overload;
