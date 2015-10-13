@@ -24,7 +24,7 @@ Interface
 Uses
   Classes, SysUtils, FileUtil, LCLIntf, Forms, Controls, Graphics, Dialogs,
   ExtCtrls, Menus, ActnList, StdCtrls, Grids, Clipbrd, GlobeCtrl, CoordCtrls,
-  DataStreams, Progress, Settings, Options, About, Geometry, Geodesy,
+  DataStreams, Progress, Settings, Options, About, Math, Geometry, Geodesy,
   GeomUtils, GeodUtils;
 
 Type
@@ -115,8 +115,11 @@ Type
     OutputPanel: TCoordinatesEntryPanel;
     InputData: TDataStream;
     ProgressDisplay: TProgressDisplay;
+    Function DataDrawGridCoordinates(Row: Integer): TCoordinates;
     Function DataLoaded: Boolean;
+    Function TransformCoordinates(Const Coordinates: TCoordinates; InputIndex, OutputIndex: Integer): TCoordinates;
     Procedure ClearDataGrid;
+    Procedure LocateOnMap(Const Coordinates: TCoordinates; CoordinateSystemIndex: Integer);
     Procedure DoInputValid(Sender: TObject);
     Procedure DoInputChangeSystem(Sender: TObject);
     Procedure DoOutputChangeSystem(Sender: TObject);
@@ -124,6 +127,7 @@ Type
     Procedure DoParseProgress(Sender: TObject; Progress: Integer);
   Public
     { Public declarations. }
+    GlobeSystemIndex: Integer;
     InputSystemIndex: Integer;
     InputFirstFieldIndex: Integer;
     InputSecondFieldIndex: Integer;
@@ -172,6 +176,7 @@ Begin
   InputSecondFieldIndex := -1;
   InputThirdFieldIndex := -1;
   OutputSystemIndex := -1;
+  GlobeSystemIndex := CoordinateSystems.FindEPSGNumber(4937); { Globe uses WGS84/ETRS89. }
 End;
 
 Procedure TMainForm.FormDestroy(Sender: TObject);
@@ -265,13 +270,7 @@ Begin
   If DataLoaded Then
     If (InputFirstFieldIndex<>-1) And (InputSecondFieldIndex<>-1) Then
       If (aRow<>-1) And (aCol<InputData.FieldCount) Then
-        Begin
-          InputData.RecordNumber := aRow-1;
-          MainGlobe.Marker.Lat := StrToFloatDef(InputData.Fields[InputFirstFieldIndex], 0);
-          MainGlobe.Marker.Lon := StrToFloatDef(InputData.Fields[InputSecondFieldIndex], 0);
-          MainGlobe.ShowMarker := True;
-          MainGlobe.Refresh;
-        End;
+        LocateOnMap(DataDrawGridCoordinates(aRow), InputSystemIndex);
 End;
 
 Procedure TMainForm.SaveActionExecute(Sender: TObject);
@@ -286,8 +285,6 @@ Procedure TMainForm.TransformActionExecute(Sender: TObject);
 Var
   RecordIndex, LastRecordIndex: Integer;
   InputCoordinates: TCoordinates;
-  GeocentricCoordinates: TCoordinates;
-
 Begin
   If DataLoaded Then
     Begin
@@ -312,14 +309,10 @@ Begin
       LastRecordIndex := InputData.RecordCount-1;
       For RecordIndex := 0 To LastRecordIndex Do
         Begin
-          { Construct Input coordinate. }
-          InputCoordinates.X := 0;
-          InputCoordinates.Y := 0;
-          InputCoordinates.Z := 0;
-          { Transform to Geocentric coordinates. }
-          GeocentricCoordinates := CoordinateSystems.Items(InputSystemIndex).ConvertToGeocentric(InputCoordinates);
-          { Transform to Output coordinates. }
-          OutputCoordinates[RecordIndex] := CoordinateSystems.Items(OutputSystemIndex).ConvertToGeocentric(GeocentricCoordinates);
+          { Construct Input coordinates. }
+          InputCoordinates := DataDrawGridCoordinates(RecordIndex+1);
+          { Calculate the output coordinates}
+          OutputCoordinates[RecordIndex] := TransformCoordinates(InputCoordinates, InputSystemIndex, OutputSystemIndex);
           { Update progress display. }
           ProgressDisplay.Progress := Integer(Int64(100*Int64(RecordIndex)) Div LastRecordIndex);
         End;
@@ -434,6 +427,26 @@ Begin
   ShowAboutForm();
 End;
 
+Function TMainForm.DataDrawGridCoordinates(Row: Integer): TCoordinates;
+Begin
+  InputData.RecordNumber := Row-1;
+  { Construct Input coordinate. }
+  Case CoordinateSystems.Items(InputSystemIndex).AxisOrder Of
+  aoXYZ:
+    Begin
+      Result.X := StrToFloatDef(InputData.Fields[InputFirstFieldIndex], 0);
+      Result.Y:= StrToFloatDef(InputData.Fields[InputSecondFieldIndex], 0);
+      Result.Z := 0;
+    End;
+  aoYXZ:
+    Begin
+      Result.Y := StrToFloatDef(InputData.Fields[InputFirstFieldIndex], 0);
+      Result.X := StrToFloatDef(InputData.Fields[InputSecondFieldIndex], 0);
+      Result.Z := 0;
+    End;
+  End;
+End;
+
 Function TMainForm.DataLoaded: Boolean;
 Begin
   Result := Assigned(InputData);
@@ -449,19 +462,51 @@ Begin
   DataDrawGrid.Col := 0;
 End;
 
+Function TMainForm.TransformCoordinates(Const Coordinates: TCoordinates; InputIndex, OutputIndex: Integer): TCoordinates;
+Var
+  InputCoordinates, GeocentricCoordinates: TCoordinates;
+Begin
+  If (InputIndex<>-1) And (OutputIndex<>-1) Then
+    Begin
+       If CoordinateSystems.Items(InputIndex).CoordinateType=ctGeodetic Then
+         InputCoordinates := GeodeticDegToRad(Coordinates)
+       Else
+         InputCoordinates := Coordinates;
+      GeocentricCoordinates := CoordinateSystems.Items(InputIndex).ConvertToGeocentric(InputCoordinates);
+      Result := CoordinateSystems.Items(OutputIndex).ConvertFromGeocentric(GeocentricCoordinates);
+      If CoordinateSystems.Items(OutputIndex).CoordinateType=ctGeodetic Then
+        Result := GeodeticRadToDeg(Result);
+    End;
+End;
+
+Procedure TMainForm.LocateOnMap(Const Coordinates: TCoordinates; CoordinateSystemIndex: Integer);
+  Procedure SetMapLocation(Const Coordinates: TCoordinates);
+  Begin
+    With MainGlobe Do
+      Begin
+        Marker.Lat := Coordinates.Latitude;
+        Marker.Lon := Coordinates.Longitude;
+        ShowMarker := True;
+        Refresh;
+      End;
+  End;
+Begin
+  { No trasformation is required if the input coordinate system is already in ETRS89 geodetic. }
+  If CoordinateSystemIndex=GlobeSystemIndex Then
+    SetMapLocation(Coordinates)
+  Else
+    { If there is an input coordinate system selected, calculate the required transformation. }
+    If CoordinateSystemIndex<>-1 Then
+      SetMapLocation(TransformCoordinates(Coordinates, CoordinateSystemIndex, GlobeSystemIndex));
+End;
+
 Procedure TMainForm.DoInputValid(Sender: TObject);
 Begin
-  With MainGlobe Do
-    Begin
-      { If there is an output coordinate system selected, perform the conversion. }
-      If OutputPanel.SelectedCoordinateSystemIndex<>-1 Then
-        DoOutputChangeSystem(Self);
-      // TODO: Need to perform conversion here for non-geodetic coordinates.
-      Marker.Lat := InputPanel.Coordinates.Latitude;
-      Marker.Lon := InputPanel.Coordinates.Longitude;
-      ShowMarker := True;
-      Refresh;
-    End;
+  { If there is an output coordinate system selected, perform the conversion. }
+  If OutputPanel.SelectedCoordinateSystemIndex<>-1 Then
+    DoOutputChangeSystem(Self);
+  { Display map preview location.}
+  LocateOnMap(InputPanel.Coordinates, InputPanel.SelectedCoordinateSystemIndex);
 End;
 
 Procedure TMainForm.DoInputChangeSystem(Sender: TObject);
@@ -473,20 +518,12 @@ Procedure TMainForm.DoOutputChangeSystem(Sender: TObject);
 Var
   InputIndex: Integer;
   OutputIndex: Integer;
-  Coordinates: TCoordinates;
 Begin
-  InputIndex := InputPanel.SelectedCoordinateSystemIndex;
-  OutputIndex := OutputPanel.SelectedCoordinateSystemIndex;
-  If InputPanel.Valid And (InputIndex<>-1) And (OutputIndex<>-1) Then
+  If InputPanel.Valid Then
     Begin
-      Coordinates := InputPanel.Coordinates;
-      If CoordinateSystems.Items(InputIndex).CoordinateType=ctGeodetic Then
-        Coordinates := GeodeticDegToRad(Coordinates);
-      Coordinates := CoordinateSystems.Items(InputIndex).ConvertToGeocentric(Coordinates);
-      Coordinates := CoordinateSystems.Items(OutputIndex).ConvertFromGeocentric(Coordinates);
-      If CoordinateSystems.Items(OutputIndex).CoordinateType=ctGeodetic Then
-        Coordinates := GeodeticRadToDeg(Coordinates);
-      OutputPanel.Coordinates := Coordinates;
+      InputIndex := InputPanel.SelectedCoordinateSystemIndex;
+      OutputIndex := OutputPanel.SelectedCoordinateSystemIndex;
+      OutputPanel.Coordinates := TransformCoordinates(InputPanel.Coordinates, InputIndex, OutputIndex);
     End;
 End;
 
