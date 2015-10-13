@@ -82,6 +82,8 @@ Type
     Procedure Last;
     Procedure Next;
     Procedure Prior;
+    Function NamesAsText(OutputFieldTerminator: Char; TextDelimiter: Char = #0): String;
+    Function RecordAsText(OutputFieldTerminator: Char; TextDelimiter: Char = #0): String;
     Function RowLength(RowIndex: Integer): Integer;
     Property BOF: Boolean Read FBOF;
     Property EOF: Boolean Read FEOF;
@@ -234,6 +236,40 @@ End;
 Procedure TDataStream.Prior;
 Begin
   SetRecordNumber(RecordNumber-1);
+End;
+
+Function TDataStream.NamesAsText(OutputFieldTerminator: Char; TextDelimiter: Char = #0): String;
+Var
+  Index, LastIndex: Integer;
+Begin
+  Result := EmptyStr;
+  LastIndex := FieldCount-1;
+  For Index := 0 To LastIndex Do
+    Begin
+      If TextDelimiter=#0 Then
+        Result := Result+GetName(Index)
+      Else
+        Result := Result+TextDelimiter+GetName(Index)+TextDelimiter;
+      If Index<LastIndex Then
+        Result := Result+OutputFieldTerminator;
+    End;
+End;
+
+Function TDataStream.RecordAsText(OutputFieldTerminator: Char; TextDelimiter: Char = #0): String;
+Var
+  Index, LastIndex: Integer;
+Begin
+  Result := EmptyStr;
+  LastIndex := FieldCount-1;
+  For Index := 0 To LastIndex Do
+    Begin
+      If TextDelimiter=#0 Then
+        Result := Result+Fields[Index]
+      Else
+        Result := Result+TextDelimiter+Fields[Index]+TextDelimiter;
+      If Index<LastIndex Then
+        Result := Result+OutputFieldTerminator;
+    End;
 End;
 
 Function TDataStream.RowLength(RowIndex: Integer): Integer;

@@ -659,7 +659,7 @@ object MainForm: TMainForm
     Height = 28
     Title = 'Save Data Points File'
     DefaultExt = '.csv'
-    Filter = 'Comma Separated Text|*.csv|Tab Delimited Text|*.tab|General Text|*.txt'
+    Filter = 'Comma Separated Text|*.csv|Tab Delimited Text|*.tab|General Text|*.txt|All Files|*.*'
     left = 1072
     top = 8
   end

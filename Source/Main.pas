@@ -274,10 +274,45 @@ Begin
 End;
 
 Procedure TMainForm.SaveActionExecute(Sender: TObject);
+Var
+  OutputFile: TFileStream;
+  RecordIndex, LastRecordIndex: Integer;
 Begin
-  If SavePointsDialog.Execute Then
+  If Length(OutputCoordinates)=0 Then
     Begin
-      // TODO: Save data and transformation results.
+      ShowMessage('There is no transformed data to save.');
+      Exit;
+    End;
+  If SavePointsDialog.Execute Then
+    Try
+      { Warn the user if the file already exists. }
+      If FileExists(SavePointsDialog.FileName) Then
+        If MessageDlg('This file already exists! Do you want to overwrite it?', mtWarning, [mbYes, mbNo],0) = mrNo Then
+          Exit;
+      Screen.Cursor := crHourglass;
+      Try
+        OutputFile := TFileStream.Create(SavePointsDialog.FileName, fmCreate);
+        ProgressDisplay.Show('Saving Data');
+        { Write the header line for the output file. }
+        OutputFile.WriteAnsiString(InputData.NamesAsText(','));//+DataDrawGrid.Columns.Items[10].Title
+        LastRecordIndex := InputData.RecordCount-1;
+        For RecordIndex := 0 To LastRecordIndex Do
+          Begin
+            { Write the output line for the current record. }
+            InputData.RecordNumber := RecordIndex;
+            OutputFile.WriteAnsiString(InputData.RecordAsText(','));
+//            OutputCoordinates[RecordIndex];
+            { Update progress display. }
+            ProgressDisplay.Progress := Integer(Int64(100*Int64(RecordIndex)) Div LastRecordIndex);
+          End;
+      Except
+        On E:Exception Do
+          ShowMessage('Insufficient memory to save data.');
+      End;
+    Finally
+      OutputFile.Free;
+      ProgressDisplay.Hide;
+      Screen.Cursor := crDefault;
     End;
 End;
 
