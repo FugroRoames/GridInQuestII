@@ -276,6 +276,7 @@ End;
 Procedure TMainForm.SaveActionExecute(Sender: TObject);
 Var
   OutputFile: TFileStream;
+  OutputText: String;
   RecordIndex, LastRecordIndex: Integer;
 Begin
   If Length(OutputCoordinates)=0 Then
@@ -294,14 +295,15 @@ Begin
         OutputFile := TFileStream.Create(SavePointsDialog.FileName, fmCreate);
         ProgressDisplay.Show('Saving Data');
         { Write the header line for the output file. }
-        OutputFile.WriteAnsiString(InputData.NamesAsText(','));//+DataDrawGrid.Columns.Items[10].Title
+        OutputText := InputData.NamesAsText(',','"')+LineEnding;
+        OutputFile.Write(OutputText[1], Length(OutputText));
         LastRecordIndex := InputData.RecordCount-1;
         For RecordIndex := 0 To LastRecordIndex Do
           Begin
             { Write the output line for the current record. }
             InputData.RecordNumber := RecordIndex;
-            OutputFile.WriteAnsiString(InputData.RecordAsText(','));
-//            OutputCoordinates[RecordIndex];
+            OutputText := InputData.RecordAsText(',','"')+LineEnding;
+            OutputFile.Write(OutputText[1], Length(OutputText));
             { Update progress display. }
             ProgressDisplay.Progress := Integer(Int64(100*Int64(RecordIndex)) Div LastRecordIndex);
           End;
