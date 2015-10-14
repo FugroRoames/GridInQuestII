@@ -30,22 +30,32 @@ Type TIGCoordinateSystem75 = Object(TCoordinateSystem)
   End;
 
 Var
+  Airy1830ModifiedEllipsoid: TEllipsoid;
+  IrishGridProjection: TProjection;
   IGCoordinateSystem75: TIGCoordinateSystem75;
 
 Implementation
 
 Function TIGCoordinateSystem75.ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates;
+Var
+  GeodeticCoordinates: TCoordinates;
 Begin
-  Result := NullCoordinates;
+  GeodeticCoordinates := InverseTransverseMercator(Coordinates, IrishGridProjection);
+  Result := GeodeticToGeocentric(GeodeticCoordinates, Airy1830ModifiedEllipsoid);
 End;
 
 Function TIGCoordinateSystem75.ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates;
+Var
+  GeodeticCoordinates: TCoordinates;
 Begin
-  Result := NullCoordinates;
+  GeodeticCoordinates := GeocentricToGeodetic(Coordinates, Airy1830ModifiedEllipsoid);
+  Result := TransverseMercator(GeodeticCoordinates, IrishGridProjection);
 End;
 
 Initialization
 
+Airy1830ModifiedEllipsoid.Initialize(6377340.1890, 6356034.4470);
+IrishGridProjection.Initialize(1.000035, DegToRad(53.5), DegToRad(-8), 200000, 250000, Airy1830ModifiedEllipsoid);
 IGCoordinateSystem75.Initialize('Irish Grid (1975)', 'TM75IG', 'TM75 / Irish Grid (IG)',
                                 29903, ctCartesian, aoXYZ);
 CoordinateSystems.Register(IGCoordinateSystem75);

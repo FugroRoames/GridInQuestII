@@ -24,9 +24,6 @@ Interface
 Uses
   Math, Geometry, Geodesy;
 
-Var
-  GRS80Ellipsoid: TEllipsoid;
-
 Type TETRS89CoordinateSystemGC = Object(TCoordinateSystem)
     Function ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
     Function ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
@@ -53,14 +50,15 @@ Type TETRS89CoordinateSystem31N = Object(TCoordinateSystem)
   End;
 
 Var
+  GRS80Ellipsoid: TEllipsoid;
+  UTMZone29Projection: TProjection;
+  UTMZone30Projection: TProjection;
+  UTMZone31Projection: TProjection;
   ETRS89CoordinateSystemGC: TETRS89CoordinateSystemGC;
   ETRS89CoordinateSystemGD: TETRS89CoordinateSystemGD;
   ETRS89CoordinateSystem29N: TETRS89CoordinateSystem29N;
   ETRS89CoordinateSystem30N: TETRS89CoordinateSystem30N;
   ETRS89CoordinateSystem31N: TETRS89CoordinateSystem31N;
-  UTMZone29Projection: TProjection;
-  UTMZone30Projection: TProjection;
-  UTMZone31Projection: TProjection;
 
 Implementation
 
