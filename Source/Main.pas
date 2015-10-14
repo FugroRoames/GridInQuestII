@@ -115,8 +115,10 @@ Type
     OutputPanel: TCoordinatesEntryPanel;
     InputData: TDataStream;
     ProgressDisplay: TProgressDisplay;
+    Function AxisShortName(SystemIndex, AxisIndex: Integer): String;
     Function DataDrawGridCoordinates(Row: Integer): TCoordinates;
     Function DataLoaded: Boolean;
+    Function RecordOutputCoordinateText(RecordNumber, AxisIndex: Integer; AxisOrder: TAxisOrder): String;
     Function TransformCoordinates(Const Coordinates: TCoordinates; InputIndex, OutputIndex: Integer): TCoordinates;
     Procedure ClearDataGrid;
     Procedure LocateOnMap(Const Coordinates: TCoordinates; CoordinateSystemIndex: Integer);
@@ -134,6 +136,8 @@ Type
     InputThirdFieldIndex: Integer;
     OutputSystemIndex: Integer;
     OutputCoordinates: Array Of TCoordinates;
+    OutputFieldTerminator: Char;
+    OutputTextDelimiter: Char;
     Procedure SetupDataGrid;
   End;
 
@@ -176,6 +180,8 @@ Begin
   InputSecondFieldIndex := -1;
   InputThirdFieldIndex := -1;
   OutputSystemIndex := -1;
+  OutputFieldTerminator := ',';
+  OutputTextDelimiter := '"';
   GlobeSystemIndex := CoordinateSystems.FindEPSGNumber(4937); { Globe uses WGS84/ETRS89. }
 End;
 
@@ -236,14 +242,6 @@ End;
 Procedure TMainForm.DataDrawGridDrawCell(Sender: TObject; aCol, aRow: Integer; aRect: TRect; aState: TGridDrawState);
 Var
   CellText: String;
-  Function AxisColumnValue(Index: Integer; AxisOrder: TAxisOrder): String;
-  Begin
-    Case AxisTypeFromIndex(Index, AxisOrder) Of
-    atXAxis: Result := FormatCoordinate(OutputCoordinates[aRow-1].X);
-    atYAxis: Result := FormatCoordinate(OutputCoordinates[aRow-1].Y);
-    atZAxis: Result := FormatCoordinate(OutputCoordinates[aRow-1].Z);
-    End;
-  End;
 Begin
   If aRow=0 Then
     DataDrawGrid.DefaultDrawCell(aCol, aRow, aRect, aState)
@@ -255,11 +253,11 @@ Begin
         Else
           With CoordinateSystems.Items(OutputSystemIndex) Do
             If aCol=InputData.FieldCount+1 Then
-              CellText := AxisColumnValue(0, AxisOrder)
+              CellText := RecordOutputCoordinateText(aRow-1, 0, AxisOrder)
             Else If aCol=InputData.FieldCount+2 Then
-              CellText := AxisColumnValue(1, AxisOrder)
+              CellText := RecordOutputCoordinateText(aRow-1, 1, AxisOrder)
             Else If aCol=InputData.FieldCount+3 Then
-              CellText := AxisColumnValue(2, AxisOrder);
+              CellText := RecordOutputCoordinateText(aRow-1, 2, AxisOrder);
         TOverrideGrid(DataDrawGrid).DrawCellText(aCol, aRow, aRect, aState, CellText);
       End;
 End;
@@ -277,7 +275,15 @@ Procedure TMainForm.SaveActionExecute(Sender: TObject);
 Var
   OutputFile: TFileStream;
   OutputText: String;
+  EPSGText: String;
   RecordIndex, LastRecordIndex: Integer;
+  Function AddDelimiters(Text: String): String;
+  Begin
+    If OutputTextDelimiter=#0 Then
+      Result := Text
+    Else
+      Result := OutputTextDelimiter+Text+OutputTextDelimiter;
+  End;
 Begin
   If Length(OutputCoordinates)=0 Then
     Begin
@@ -295,14 +301,43 @@ Begin
         OutputFile := TFileStream.Create(SavePointsDialog.FileName, fmCreate);
         ProgressDisplay.Show('Saving Data');
         { Write the header line for the output file. }
-        OutputText := InputData.NamesAsText(',','"')+LineEnding;
+        OutputText := InputData.NamesAsText(OutputFieldTerminator, OutputTextDelimiter);
+        With CoordinateSystems.Items(OutputSystemIndex) Do
+          Begin
+            EPSGText := IntToStr(EPSGNumber);
+            OutputText := OutputText+OutputFieldTerminator;
+            OutputText := OutputText+AddDelimiters(EPSGText+'-'+AxisShortName(OutputSystemIndex, 0));
+            OutputText := OutputText+OutputFieldTerminator;
+            OutputText := OutputText+AddDelimiters(EPSGText+'-'+AxisShortName(OutputSystemIndex, 1));
+            { Output the third coordinate name if needed. }
+            If (InputThirdFieldIndex<>-1) Or (CoordinateType=ctGeocentric) Then
+              Begin
+                OutputText := OutputText+OutputFieldTerminator;
+                OutputText := OutputText+AddDelimiters(EPSGText+'-'+AxisShortName(OutputSystemIndex, 2));
+              End;
+            OutputText := OutputText+LineEnding;
+          End;
         OutputFile.Write(OutputText[1], Length(OutputText));
         LastRecordIndex := InputData.RecordCount-1;
         For RecordIndex := 0 To LastRecordIndex Do
           Begin
             { Write the output line for the current record. }
             InputData.RecordNumber := RecordIndex;
-            OutputText := InputData.RecordAsText(',','"')+LineEnding;
+            OutputText := InputData.RecordAsText(OutputFieldTerminator, OutputTextDelimiter);
+            With CoordinateSystems.Items(OutputSystemIndex) Do
+              Begin
+                OutputText := OutputText+OutputFieldTerminator;
+                OutputText := OutputText+AddDelimiters(RecordOutputCoordinateText(RecordIndex, 0, AxisOrder));
+                OutputText := OutputText+OutputFieldTerminator;
+                OutputText := OutputText+AddDelimiters(RecordOutputCoordinateText(RecordIndex, 1, AxisOrder));
+                { Output the third coordinate if needed. }
+                If (InputThirdFieldIndex<>-1) Or (CoordinateType=ctGeocentric) Then
+                  Begin
+                    OutputText := OutputText+OutputFieldTerminator;
+                    OutputText := OutputText+AddDelimiters(RecordOutputCoordinateText(RecordIndex, 2, AxisOrder));
+                  End;
+                OutputText := OutputText+LineEnding;
+              End;
             OutputFile.Write(OutputText[1], Length(OutputText));
             { Update progress display. }
             ProgressDisplay.Progress := Integer(Int64(100*Int64(RecordIndex)) Div LastRecordIndex);
@@ -464,6 +499,16 @@ Begin
   ShowAboutForm();
 End;
 
+Function TMainForm.AxisShortName(SystemIndex, AxisIndex: Integer): String;
+Begin
+  With CoordinateSystems.Items(SystemIndex) Do
+    Case AxisTypeFromIndex(AxisIndex, AxisOrder) Of
+    atXAxis: Result := AxisNames.ShortX;
+    atYAxis: Result := AxisNames.ShortY;
+    atZAxis: Result := AxisNames.ShortZ;
+    End;
+End;
+
 Function TMainForm.DataDrawGridCoordinates(Row: Integer): TCoordinates;
 Begin
   InputData.RecordNumber := Row-1;
@@ -489,14 +534,13 @@ Begin
   Result := Assigned(InputData);
 End;
 
-Procedure TMainForm.ClearDataGrid;
+Function TMainForm.RecordOutputCoordinateText(RecordNumber, AxisIndex: Integer; AxisOrder: TAxisOrder): String;
 Begin
-  DataDrawGrid.Columns.Clear;
-  DataDrawGrid.RowCount := 1;
-  DataDrawGrid.FixedRows := 1;
-  DataDrawGrid.FixedCols := 1;
-  DataDrawGrid.Row := 0;
-  DataDrawGrid.Col := 0;
+  Case AxisTypeFromIndex(AxisIndex, AxisOrder) Of
+  atXAxis: Result := FormatCoordinate(OutputCoordinates[RecordNumber].X);
+  atYAxis: Result := FormatCoordinate(OutputCoordinates[RecordNumber].Y);
+  atZAxis: Result := FormatCoordinate(OutputCoordinates[RecordNumber].Z);
+  End;
 End;
 
 Function TMainForm.TransformCoordinates(Const Coordinates: TCoordinates; InputIndex, OutputIndex: Integer): TCoordinates;
@@ -514,6 +558,16 @@ Begin
       If CoordinateSystems.Items(OutputIndex).CoordinateType=ctGeodetic Then
         Result := GeodeticRadToDeg(Result);
     End;
+End;
+
+Procedure TMainForm.ClearDataGrid;
+Begin
+  DataDrawGrid.Columns.Clear;
+  DataDrawGrid.RowCount := 1;
+  DataDrawGrid.FixedRows := 1;
+  DataDrawGrid.FixedCols := 1;
+  DataDrawGrid.Row := 0;
+  DataDrawGrid.Col := 0;
 End;
 
 Procedure TMainForm.LocateOnMap(Const Coordinates: TCoordinates; CoordinateSystemIndex: Integer);
@@ -569,15 +623,6 @@ Var
   Col, LastCol: Integer;
   NewWidth, AlternativeWidth: Integer;
   EPSGText: String;
-  Function AxisColumnShortName(Index: Integer): String;
-  Begin
-    With CoordinateSystems.Items(OutputSystemIndex) Do
-      Case AxisTypeFromIndex(Index, AxisOrder) Of
-      atXAxis: Result := AxisNames.ShortX;
-      atYAxis: Result := AxisNames.ShortY;
-      atZAxis: Result := AxisNames.ShortZ;
-      End;
-  End;
 Begin
   DataDrawGrid.BeginUpdate;
   ClearDataGrid;
@@ -607,19 +652,19 @@ Begin
         EPSGText := IntToStr(EPSGNumber);
         With DataDrawGrid.Columns.Add Do
           Begin
-            Title.Caption := EPSGText+'-'+AxisColumnShortName(0);
+            Title.Caption := EPSGText+'-'+AxisShortName(OutputSystemIndex, 0);
             Width := NewWidth;
           End;
         With DataDrawGrid.Columns.Add Do
           Begin
-            Title.Caption := EPSGText+'-'+AxisColumnShortName(1);
+            Title.Caption := EPSGText+'-'+AxisShortName(OutputSystemIndex, 1);
             Width := NewWidth;
           End;
         { Add an elevation column if required. }
         If (InputThirdFieldIndex<>-1) Or (CoordinateType=ctGeocentric) Then
           With DataDrawGrid.Columns.Add Do
             Begin
-              Title.Caption := EPSGText+'-'+AxisColumnShortName(2);
+              Title.Caption := EPSGText+'-'+AxisShortName(OutputSystemIndex, 2);
               Width := NewWidth;
             End;
       End;
