@@ -267,6 +267,7 @@ Begin
   With FComboBox Do
     Begin
       Align := alClient;
+      DropDownCount := 9;
       Items.Text := CoordinateSystems.AvailableSystemsList;
       Parent := ThisPanel;
       Style := csDropDownList;
