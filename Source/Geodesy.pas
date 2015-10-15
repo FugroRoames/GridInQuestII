@@ -436,7 +436,6 @@ Var
   EastDelta5: TCoordinate;
   EastDelta6: TCoordinate;
   EastDelta7: TCoordinate;
-  V: Extended;
 Const
   IterationLimit = 6;
   Epsilon = 0.00001;
@@ -557,6 +556,7 @@ Var
   LastIndex: Integer;
   Index: Integer;
 Begin
+  Result := EmptyStr;
   FirstIndex := Low(CoordinateSystemsList);
   LastIndex := High(CoordinateSystemsList);
   For Index := FirstIndex To LastIndex Do
