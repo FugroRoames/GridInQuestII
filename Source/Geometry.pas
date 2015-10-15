@@ -30,7 +30,7 @@ Unit Geometry;
 Interface
 
 Uses
-  SysUtils, Math;
+  Math;
 
 {$IFDEF SINGLE_GEOMETRY}
   Type
@@ -115,16 +115,17 @@ Const
   TwoPI: TCoordinate = 2*Pi;
   HalfPi: TCoordinate = Pi/2;
 
-{ General functions. }
-Function NormalizeAngle(Angle: TCoordinate): TCoordinate;
-
 { Coordinates operator overloads. }
 Operator = (A, B: T2DCoordinates): Boolean;
 Operator = (A, B: T3DCoordinates): Boolean;
+Operator := (A: T2DCoordinates): T3DCoordinates;
+Operator + (A, B: T2DCoordinates): T2DCoordinates;
+Operator + (A, B: T3DCoordinates): T3DCoordinates;
+Operator - (A, B: T2DCoordinates): T2DCoordinates;
+Operator - (A, B: T3DCoordinates): T3DCoordinates;
 
-{ Coordinate formatting routines. }
-Function Format2DCoordinates(Point: T2DCoordinates): String;
-Function Format3DCoordinates(Point: T3DCoordinates): String;
+{ Geometry functions. }
+Function NormalizeAngle(Angle: TCoordinate): TCoordinate;
 
 Implementation
 
@@ -138,14 +139,37 @@ Begin
   Result := (A.X=B.X) And (A.Y=B.Y) And (A.Z=B.Z);
 End;
 
-Function Format2DCoordinates(Point: T2DCoordinates): String;
+Operator := (A: T2DCoordinates): T3DCoordinates;
 Begin
-  Result := FormatFloat('0', Point.X)+','+FormatFloat('0', Point.Y);
+  Result.X := A.X;
+  Result.Y := A.Y;
+  Result.Z := 0.0;
 End;
 
-Function Format3DCoordinates(Point: T3DCoordinates): String;
+Operator+(A, B: T2DCoordinates): T2DCoordinates;
 Begin
-  Result := FormatFloat('0', Point.X)+','+FormatFloat('0', Point.Y)+','+FormatFloat('0', Point.Z);
+  Result.X := A.X+B.X;
+  Result.Y := A.Y+B.Y;
+End;
+
+Operator+(A, B: T3DCoordinates): T3DCoordinates;
+Begin
+  Result.X := A.X+B.X;
+  Result.Y := A.Y+B.Y;
+  Result.Z := A.Z+B.Z;
+End;
+
+Operator-(A, B: T2DCoordinates): T2DCoordinates;
+Begin
+  Result.X := A.X-B.X;
+  Result.Y := A.Y-B.Y;
+End;
+
+Operator-(A, B: T3DCoordinates): T3DCoordinates;
+Begin
+  Result.X := A.X-B.X;
+  Result.Y := A.Y-B.Y;
+  Result.Z := A.Z-B.Z;
 End;
 
 Function NormalizeAngle(Angle: TCoordinate): TCoordinate;

@@ -26,7 +26,7 @@ Unit Geodesy;
 Interface
 
 Uses
-  Sysutils, Math, Geometry;
+  Math, Geometry;
 
 Type
   TCoordinateType = (ctGeocentric, ctGeodetic, ctCartesian);
@@ -123,6 +123,14 @@ Const
   OneOverSixtySquared: TCoordinate = 1/(60*60);
   NullCoordinates: TCoordinates = (X: 0; Y: 0; Z: 0);
 
+{ Coordinates operator overloads. }
+Operator := (A: TPlanarCoordinates): TCoordinates;
+Operator + (A, B: TPlanarCoordinates): TPlanarCoordinates;
+Operator + (A, B: TCoordinates): TCoordinates;
+Operator - (A, B: TPlanarCoordinates): TPlanarCoordinates;
+Operator - (A, B: TCoordinates): TCoordinates;
+
+{ Geodesy functions. }
 Function GeodeticDegToRad(Const Coordinates: TCoordinates): TCoordinates;
 Function GeodeticRadToDeg(Const Coordinates: TCoordinates): TCoordinates;
 Function NormalizeLatitude(Angle: TCoordinate): TCoordinate;
@@ -177,6 +185,33 @@ Var
   CoordinateSystems: TCoordinateSystems;
 
 Implementation
+
+Operator:=(A: TPlanarCoordinates): TCoordinates;
+Begin
+  Result.Easting := A.Easting;
+  Result.Northing := A.Northing;
+  Result.Elevation := 0;
+End;
+
+Operator+(A, B: TPlanarCoordinates): TPlanarCoordinates;
+Begin
+  Result := TPlanarCoordinates(T2DCoordinates(A)+T2DCoordinates(B));
+End;
+
+Operator+(A, B: TCoordinates): TCoordinates;
+Begin
+  Result := TCoordinates(T3DCoordinates(A)+T3DCoordinates(B));
+End;
+
+Operator-(A, B: TPlanarCoordinates): TPlanarCoordinates;
+Begin
+  Result := TPlanarCoordinates(T2DCoordinates(A)-T2DCoordinates(B));
+End;
+
+Operator-(A, B: TCoordinates): TCoordinates;
+Begin
+  Result := TCoordinates(T3DCoordinates(A)-T3DCoordinates(B));
+End;
 
 Function GeodeticDegToRad(Const Coordinates: TCoordinates): TCoordinates;
 Begin
@@ -487,7 +522,7 @@ Begin
             End;
         End;
     End;
-  Raise Exception.Create('Inverse Transverse Mercator Latitude failed to converge.');
+  Result := NullCoordinates;
 End;
 
 Constructor TProjection.Initialize(NewMeridianScaleFactor, NewTrueOriginLatitude,
@@ -556,7 +591,7 @@ Var
   LastIndex: Integer;
   Index: Integer;
 Begin
-  Result := EmptyStr;
+  Result := '';
   FirstIndex := Low(CoordinateSystemsList);
   LastIndex := High(CoordinateSystemsList);
   For Index := FirstIndex To LastIndex Do
