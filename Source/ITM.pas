@@ -22,7 +22,7 @@ Unit ITM;
 Interface
 
 Uses
-  Math, Geometry, Geodesy;
+  Math, Geometry, Geodesy, OSMod;
 
 Type TITMCoordinateSystem95 = Object(TCoordinateSystem)
     Function ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;

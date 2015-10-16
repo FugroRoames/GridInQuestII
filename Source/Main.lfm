@@ -1,7 +1,7 @@
 object MainForm: TMainForm
-  Left = 295
+  Left = 519
   Height = 661
-  Top = 118
+  Top = 107
   Width = 1190
   Caption = 'Grid InQuest II'
   ClientHeight = 641
