@@ -42,6 +42,7 @@ Var
 Begin
   GeodeticCoordinates := InverseTransverseMercator(Coordinates, ITMProjection);
   Result := GeodeticToGeocentric(GeodeticCoordinates, GRS80Ellipsoid);
+  // Add height from GM02/VRF10
 End;
 
 Function TITMCoordinateSystem95.ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates;
@@ -50,6 +51,7 @@ Var
 Begin
   GeodeticCoordinates := GeocentricToGeodetic(Coordinates, GRS80Ellipsoid);
   Result := TransverseMercator(GeodeticCoordinates, ITMProjection);
+  // Add height from GM02/VRF10
 End;
 
 Initialization
@@ -57,8 +59,7 @@ Initialization
 GRS80Ellipsoid.Initialize(6378137.0000, 6356752.314140);
 ITMProjection.Initialize(0.99982, DegToRad(53.5), DegToRad(-8), 600000, 750000, GRS80Ellipsoid);
 ITMCoordinateSystem95.Initialize('Irish Transverse Mercator', 'IRENET95',
-                                 'IRENET95 / Irish Transverse Mercator (ITM/VRF10)',
-                                  2157, ctCartesian, aoXYZ);
+                                 'IRENET95 / Irish Transverse Mercator (ITM/VRF10)', 2157, ctCartesian, aoXYZ);
 CoordinateSystems.Register(ITMCoordinateSystem95);
 
 End.
