@@ -39,7 +39,11 @@ Type
     FValid: Boolean;
     FOnValid: TNotifyEvent;
     Procedure DoOnChange(Sender: TObject);
+    {$IFDEF Darwin}
+    Procedure DoOnKeyPress(Sender: TObject; Var Key: Char);
+    {$ELSE}
     Procedure DoOnUTF8KeyPress(Sender: TObject; Var UTF8Key: TUTF8Char);
+    {$ENDIF}
     Procedure Format(Tidy: Boolean = False);
     Procedure Validate;
   Protected
@@ -87,17 +91,19 @@ Type
     FCoordinateType: TCoordinateType;
     Function GetCoordinates: TCoordinates;
     Function GetCoordinatesAsText: String;
+    Function GetCoordinateSystemIndex: Integer;
     Function GetValid: Boolean;
     Procedure DoCoordinateValid(Sender: TObject);
     Procedure SetCoordinates(Value: TCoordinates);
+    Procedure SetCoordinateSystemIndex(Value: Integer);
     Procedure SetLocked(Value: Boolean);
   Public
     { Public declarations. }
     Constructor Create(TheOwner: TComponent; PanelType: TPanelType); Virtual;
     Procedure Clear;
-    Function SelectedCoordinateSystemIndex: Integer;
     Property Coordinates: TCoordinates Read GetCoordinates Write SetCoordinates;
     Property CoordinatesAsText: String Read GetCoordinatesAsText;
+    Property CoordinateSystemIndex: Integer Read GetCoordinateSystemIndex Write SetCoordinateSystemIndex;
     Property CoordinateType: TCoordinateType Read FCoordinateType Write FCoordinateType;
     Property Locked: Boolean Read FLocked Write SetLocked;
     Property Valid: Boolean Read GetValid;
@@ -136,7 +142,11 @@ Begin
       Align := alClient;
       Parent := ThisPanel;
       OnChange := @DoOnChange;
+      {$IFDEF Darwin}
+      OnKeyPress := @DoOnKeyPress;
+      {$ELSE}
       OnUTF8KeyPress := @DoOnUTF8KeyPress;
+      {$ENDIF}
       ReadOnly := Locked;
       TabStop := Not Locked;
     End;
@@ -172,7 +182,7 @@ Begin
       FEdit.Font.Color := clBlack
     Else
       FEdit.Font.Color := clRed;
-  If Tidy Then
+  If Valid And Tidy Then
     Case TCoordinatesEntryPanel(Parent).CoordinateType Of
     ctGeocentric:
       Case AxisType Of
@@ -225,27 +235,19 @@ Begin
       OnValid(Self);
 End;
 
-Procedure TCoordinatePanel.DoOnUTF8KeyPress(Sender: TObject; Var UTF8Key: TUTF8Char);
-Var
-  PartText: String;
+{$IFDEF Darwin}
+Procedure TCoordinatePanel.DoOnKeyPress(Sender: TObject; Var Key: Char);
 Begin
-  { Substitute reverse dash for degree symbol. }
-  {$IFDEF Darwin}
-  If UTF8Key='`' Then
-    Begin
-      UTF8Key := #0; { remove the reverse dash character. }
-      With FEdit Do
-        Begin
-          PartText := UTF8Copy(Text, 1, SelStart)+'°';
-          Text := PartText+UTF8Copy(Text, SelStart+SelLength+1, MaxInt);
-          SelStart := UTF8Length(PartText);
-        End;
-    End;
-  {$ELSE}
+  If Key='`' Then
+    Key := #176; { ANSI code for '°' character. }
+End;
+{$ELSE}
+Procedure TCoordinatePanel.DoOnUTF8KeyPress(Sender: TObject; Var UTF8Key: TUTF8Char);
+Begin
   If UTF8Key='`' Then
     UTF8Key := #$C2#$B0; { UTF8 code for '°' character. }
-  {$ENDIF}
 End;
+{$ENDIF}
 
 Procedure TCoordinatePanel.DoOnResize;
 Begin
@@ -417,6 +419,11 @@ Begin
     Result := EmptyStr;
 End;
 
+Function TCoordinatesEntryPanel.GetCoordinateSystemIndex: Integer;
+Begin
+  Result := CoordinateSystems.FindByDescription(FCoordinateSystemPanel.FComboBox.Text);
+End;
+
 Function TCoordinatesEntryPanel.GetValid: Boolean;
 Begin
   Result := FFirstCoordinatePanel.Valid And
@@ -459,17 +466,18 @@ Begin
     End;
 End;
 
+Procedure TCoordinatesEntryPanel.SetCoordinateSystemIndex(Value: Integer);
+Begin
+  FCoordinateSystemPanel.FComboBox.Text := CoordinateSystems.Items(Value).Description;
+  FCoordinateSystemPanel.DoOnChange(Self);
+End;
+
 Procedure TCoordinatesEntryPanel.Clear;
 Begin
   FCoordinateSystemPanel.Clear;
   FFirstCoordinatePanel.Clear;
   FSecondCoordinatePanel.Clear;
   FThirdCoordinatePanel.Clear;
-End;
-
-Function TCoordinatesEntryPanel.SelectedCoordinateSystemIndex: Integer;
-Begin
-  Result := CoordinateSystems.FindByDescription(FCoordinateSystemPanel.FComboBox.Text);
 End;
 
 Procedure Register;
