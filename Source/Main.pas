@@ -452,6 +452,7 @@ Procedure TMainForm.ClearActionExecute(Sender: TObject);
 Begin
   InputPanel.Clear;
   OutputPanel.Clear;
+  MainGlobe.ShowMarker := False;
   Application.ProcessMessages;
 End;
 

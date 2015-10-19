@@ -18,9 +18,10 @@
         <ComponentName Value="MainForm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="475"/>
-        <CursorPos X="7" Y="500"/>
+        <TopLine Value="451"/>
+        <CursorPos X="24" Y="455"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -28,7 +29,6 @@
       <Unit2>
         <Filename Value="Geodesy.pas"/>
         <IsPartOfProject Value="True"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="18"/>
         <TopLine Value="275"/>
         <CursorPos X="74" Y="276"/>
@@ -120,7 +120,7 @@
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="11"/>
         <CursorPos X="62" Y="3"/>
-        <UsageCount Value="58"/>
+        <UsageCount Value="59"/>
         <Loaded Value="True"/>
       </Unit12>
       <Unit13>
@@ -253,7 +253,7 @@
         <EditorIndex Value="16"/>
         <TopLine Value="55"/>
         <CursorPos X="5" Y="62"/>
-        <UsageCount Value="94"/>
+        <UsageCount Value="95"/>
         <Loaded Value="True"/>
       </Unit30>
       <Unit31>
@@ -267,7 +267,6 @@
       <Unit32>
         <Filename Value="GeodUtils.pas"/>
         <EditorIndex Value="12"/>
-        <TopLine Value="89"/>
         <CursorPos X="70" Y="94"/>
         <UsageCount Value="100"/>
         <Loaded Value="True"/>
@@ -308,15 +307,14 @@
         <EditorIndex Value="19"/>
         <TopLine Value="64"/>
         <CursorPos Y="71"/>
-        <UsageCount Value="88"/>
+        <UsageCount Value="89"/>
         <Loaded Value="True"/>
       </Unit37>
       <Unit38>
         <Filename Value="ITM.pas"/>
         <EditorIndex Value="13"/>
-        <TopLine Value="40"/>
         <CursorPos X="3" Y="52"/>
-        <UsageCount Value="83"/>
+        <UsageCount Value="84"/>
         <Loaded Value="True"/>
       </Unit38>
       <Unit39>
@@ -324,7 +322,7 @@
         <EditorIndex Value="14"/>
         <TopLine Value="29"/>
         <CursorPos X="22" Y="39"/>
-        <UsageCount Value="83"/>
+        <UsageCount Value="84"/>
         <Loaded Value="True"/>
       </Unit39>
       <Unit40>
@@ -352,7 +350,7 @@
         <Filename Value="GridUtils.pas"/>
         <EditorIndex Value="20"/>
         <CursorPos X="62" Y="3"/>
-        <UsageCount Value="61"/>
+        <UsageCount Value="62"/>
         <Loaded Value="True"/>
       </Unit43>
       <Unit44>
