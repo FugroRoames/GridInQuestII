@@ -1,7 +1,7 @@
 object MainForm: TMainForm
-  Left = 519
+  Left = 423
   Height = 661
-  Top = 107
+  Top = 56
   Width = 1190
   Caption = 'Grid InQuest II'
   ClientHeight = 641
@@ -643,6 +643,11 @@ object MainForm: TMainForm
       Caption = '&About'
       OnExecute = AboutActionExecute
       ShortCut = 16449
+    end
+    object ExchangeAction: TAction
+      Caption = 'Exchange Input and Output'
+      OnExecute = ExchangeActionExecute
+      ShortCut = 49240
     end
   end
   object OpenPointsDialog: TOpenDialog

@@ -29,6 +29,7 @@ Uses
 
 Type
   TMainForm = Class(TForm)
+    ExchangeAction: TAction;
     DataBreak: TMenuItem;
     TransformMenuItem: TMenuItem;
     TransformAction: TAction;
@@ -91,6 +92,7 @@ Type
     Procedure CutActionExecute(Sender: TObject);
     Procedure DataSettingsActionExecute(Sender: TObject);
     Procedure EditMenuItemClick(Sender: TObject);
+    Procedure ExchangeActionExecute(Sender: TObject);
     Procedure ExitActionExecute(Sender: TObject);
     Procedure FileMenuItemClick(Sender: TObject);
     Procedure FormCreate(Sender: TObject);
@@ -434,10 +436,23 @@ Begin
   CopyOutputAction.Enabled := OutputPanel.Valid;
 End;
 
+Procedure TMainForm.ExchangeActionExecute(Sender: TObject);
+Var
+  SystemIndex: Integer;
+  Coordinates: TCoordinates;
+Begin
+  SystemIndex := OutputPanel.CoordinateSystemIndex;
+  Coordinates := OutputPanel.Coordinates;
+  ClearAction.Execute;
+  InputPanel.CoordinateSystemIndex := SystemIndex;
+  InputPanel.Coordinates := Coordinates;
+End;
+
 Procedure TMainForm.ClearActionExecute(Sender: TObject);
 Begin
   InputPanel.Clear;
   OutputPanel.Clear;
+  Application.ProcessMessages;
 End;
 
 Procedure TMainForm.CutActionExecute(Sender: TObject);
@@ -461,11 +476,25 @@ Var
   RawText: String;
   Index: Integer;
 Begin
-  { Strip out control and extended characters from the clipboard text. }
+  { Strip out control and extended characters from the clipboard text }
+  { except for #194,#176 which is the byte sequence for the UTF8 degree symbol }
+  { and #176 which is the ANSI degree symbol in most ISO/IEC 8859 standard codepages. }
   RawText := Clipboard.AsText;
   For Index := 1 To Length(RawText) Do
-    If (RawText[Index]<' ') Or (RawText[Index]>#127) Then
-      RawText[Index] := ' ';
+    If RawText[Index]=#194 Then
+      Begin
+        If Index=Length(RawText) Then
+          RawText[Index] := ' '
+        Else
+          If RawText[Index+1]<>#176 Then
+            Begin
+              RawText[Index] := ' ';
+              RawText[Index+1] := ' ';
+            End;
+      End
+    Else
+      If Not (RawText[Index] In [' '..#127, #176]) Then
+        RawText[Index] := ' ';
   TEdit(Screen.ActiveControl).SelText := RawText;
 End;
 
@@ -594,10 +623,10 @@ End;
 Procedure TMainForm.DoInputValid(Sender: TObject);
 Begin
   { If there is an output coordinate system selected, perform the conversion. }
-  If OutputPanel.SelectedCoordinateSystemIndex<>-1 Then
+  If OutputPanel.CoordinateSystemIndex<>-1 Then
     DoOutputChangeSystem(Self);
   { Display map preview location.}
-  LocateOnMap(InputPanel.Coordinates, InputPanel.SelectedCoordinateSystemIndex);
+  LocateOnMap(InputPanel.Coordinates, InputPanel.CoordinateSystemIndex);
 End;
 
 Procedure TMainForm.DoInputChangeSystem(Sender: TObject);
@@ -612,8 +641,8 @@ Var
 Begin
   If InputPanel.Valid Then
     Begin
-      InputIndex := InputPanel.SelectedCoordinateSystemIndex;
-      OutputIndex := OutputPanel.SelectedCoordinateSystemIndex;
+      InputIndex := InputPanel.CoordinateSystemIndex;
+      OutputIndex := OutputPanel.CoordinateSystemIndex;
       OutputPanel.Coordinates := TransformCoordinates(InputPanel.Coordinates, InputIndex, OutputIndex);
     End;
 End;
