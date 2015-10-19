@@ -116,7 +116,8 @@ Begin
   { Prepare the text for parsing. }
   SuffixLength := Length(UnitSuffix);
   Text := UpperCase(Trim(Text));
-  Text := StringReplace(Text, '°', 'D', [rfReplaceAll]);
+  Text := StringReplace(Text, '°', 'D', [rfReplaceAll]); { UTF8 Degree symbol. }
+  Text := StringReplace(Text, #176, 'D', [rfReplaceAll]); { ANSI Degree symbol. }
   Text := StringReplace(Text, '''', 'M', [rfReplaceAll]);
   Text := StringReplace(Text, '"', 'S', [rfReplaceAll]);
   { Quit if the text is empty. }
