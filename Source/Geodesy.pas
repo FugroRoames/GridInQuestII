@@ -272,15 +272,29 @@ End;
 Function DecimalToSexagesimalCoordinate(Const Coordinate: TCoordinate): TSexagesimalCoordinate;
 Var
   Value: TCoordinate;
+Const
+  Epsilon: TCoordinate = 1E-10; { Threshold for PLOS error compensation. }
 Begin
   With Result Do
     Begin
       Sign := Math.Sign(Coordinate);
       Value := Abs(Coordinate);
-      Degrees := Int(Value);
-      Value := Frac(Value)*60;
-      Minutes := Int(Value);
-      Seconds := Frac(Value)*60;
+      Degrees := Int(Value+Epsilon);
+      Value := (Value-Degrees)*60;
+      If Value<0 Then
+        Begin
+          Minutes := 0;
+          Seconds := 0;
+        End
+      Else
+        Begin
+          Minutes := Int(Value+Epsilon);
+          Value := (Value-Minutes)*60;
+          If Value<0 Then
+            Seconds := 0
+          Else
+            Seconds := Value;
+        End;
     End;
 End;
 
