@@ -127,8 +127,9 @@ Const
 Operator := (A: TPlanarCoordinates): TCoordinates;
 Operator + (A, B: TPlanarCoordinates): TPlanarCoordinates;
 Operator + (A, B: TCoordinates): TCoordinates;
-Operator - (A, B: TPlanarCoordinates): TPlanarCoordinates;
-Operator - (A, B: TCoordinates): TCoordinates;
+Operator + (A: TCoordinates; B: TPlanarCoordinates): TCoordinates;
+//Operator - (A, B: TPlanarCoordinates): TPlanarCoordinates;
+//Operator - (A, B: TCoordinates): TCoordinates;
 
 { Geodesy functions. }
 Function GeodeticDegToRad(Const Coordinates: TCoordinates): TCoordinates;
@@ -203,7 +204,14 @@ Begin
   Result := TCoordinates(T3DCoordinates(A)+T3DCoordinates(B));
 End;
 
-Operator-(A, B: TPlanarCoordinates): TPlanarCoordinates;
+Operator+(A: TCoordinates; B: TPlanarCoordinates): TCoordinates;
+Begin
+  Result.X := A.X+B.X;
+  Result.Y := A.Y+B.Y;
+  Result.Z := A.Z;
+End;
+
+{Operator-(A, B: TPlanarCoordinates): TPlanarCoordinates;
 Begin
   Result := TPlanarCoordinates(T2DCoordinates(A)-T2DCoordinates(B));
 End;
@@ -211,6 +219,13 @@ End;
 Operator-(A, B: TCoordinates): TCoordinates;
 Begin
   Result := TCoordinates(T3DCoordinates(A)-T3DCoordinates(B));
+End;  }
+
+Operator-(A: TCoordinates; B: TPlanarCoordinates): TCoordinates;
+Begin
+  Result.X := A.X-B.X;
+  Result.Y := A.Y-B.Y;
+  Result.Z := A.Z;
 End;
 
 Function GeodeticDegToRad(Const Coordinates: TCoordinates): TCoordinates;
@@ -452,91 +467,102 @@ Begin
     End;
 End;
 
-Function InverseTransverseMercator(Const Coordinates: TCoordinates; Const Projection: TProjection): TCoordinates;
+Function MeridionalArcLength(ScaledMajorAxis, ScaledMinorAxis, CentralLatitude, Latitude: TCoordinate): TCoordinate; Inline;
 Var
-  n, n2, n3: TCoordinate;
-  M: TCoordinate;
-  Iteration: Integer;
-  CurrentLat: TCoordinate;
   LatitudeDelta: TCoordinate;
   LatitudeSum: TCoordinate;
-  Term1: TCoordinate;
-  Term2: TCoordinate;
-  Term3: TCoordinate;
-  Term4: TCoordinate;
-  SinLatitude: TCoordinate;
-  SinLatitudePow2: TCoordinate;
-  o: TCoordinate;
-  Nu: TCoordinate;
-  Rho: TCoordinate;
-  EtaSquared: TCoordinate;
-  TanLat: TCoordinate;
-  VII: TCoordinate;
-  VIII: TCoordinate;
-  IX: TCoordinate;
-  X: TCoordinate;
-  XI: TCoordinate;
-  XII: TCoordinate;
-  XIIA: TCoordinate;
-  EastDelta: Extended;
-  EastDelta2: TCoordinate;
-  EastDelta3: TCoordinate;
-  EastDelta4: TCoordinate;
-  EastDelta5: TCoordinate;
-  EastDelta6: TCoordinate;
-  EastDelta7: TCoordinate;
+  n, n2, n3: TCoordinate;
+  Term1, Term2, Term3, Term4: TCoordinate;
+Begin
+  n := (ScaledMajorAxis-ScaledMinorAxis)/(ScaledMajorAxis+ScaledMinorAxis);
+  n2 := n*n;
+  n3 := n2*n;
+  LatitudeDelta := Latitude-CentralLatitude;
+  LatitudeSum := Latitude+CentralLatitude;
+  Term1 := (1+n+5/4*(n2+n3))*LatitudeDelta;
+  Term2 := (3*(n+n2)+21/8*n3)*Sin(LatitudeDelta)*Cos(LatitudeSum);
+  Term3 := 15/8*(n2+n3)*Sin(2*LatitudeDelta)*Cos(2*LatitudeSum);
+  Term4 := 35/24*n3*Sin(3*LatitudeDelta)*Cos(3*LatitudeSum);
+  Result := ScaledMinorAxis*(Term1-Term2+Term3-Term4);
+End;
+
+Function CentralMeridianLatitude(ScaledMajorAxis, ScaledMinorAxis, MeridianScaleFactor, Northing, CentralNorthing, CentralLatitude: TCoordinate): TCoordinate; Inline;
+Var
+  Latitude: TCoordinate;
+  PriorLatitude: TCoordinate;
+  ArcLength: TCoordinate;
+  NorthDelta: TCoordinate;
+  Iteration: Integer;
 Const
   IterationLimit = 6;
   Epsilon = 0.00001;
 Begin
+  PriorLatitude := CentralLatitude;
+  ArcLength := 0;
+  NorthDelta := Northing-CentralNorthing;
+  For Iteration := 1 To IterationLimit Do
+    Begin
+      Latitude := ((NorthDelta-ArcLength)/ScaledMajorAxis)+PriorLatitude;
+      ArcLength := MeridionalArcLength(ScaledMajorAxis, ScaledMinorAxis, CentralLatitude, Latitude);
+      If Abs(NorthDelta-ArcLength)<Epsilon Then
+        Break;
+      PriorLatitude := Latitude;
+    End;
+  Result := Latitude;
+End;
+
+Function InverseTransverseMercator(Const Coordinates: TCoordinates; Const Projection: TProjection): TCoordinates;
+Var
+  ScaledMajorAxis: TCoordinate;
+  ScaledMinorAxis: TCoordinate;
+  InitialLatitude: TCoordinate;
+  SinLatitude: TCoordinate;
+  SinLatitude2: TCoordinate;
+  Nu, Rho, EtaSquared: TCoordinate;
+  TanLat, TanLat2, TanLat4, TanLat6: TCoordinate;
+  SubExpression: TCoordinate;
+  Nu2, Nu3, Nu5, Nu7: TCoordinate;
+  VII, VIII, IX, X, XI, XII, XIIA: TCoordinate;
+  SecLatitude: TCoordinate;
+  EastDelta, EastDelta2, EastDelta3, EastDelta4, EastDelta5, EastDelta6, EastDelta7: TCoordinate;
+Begin
   With Projection, Projection.Ellipsoid Do
     Begin
-      n := (SemiMajorAxis-SemiMinorAxis)/(SemiMajorAxis+SemiMinorAxis);
-      n2 := n*n;
-      n3 := n2*n;
-      M := 0;
-      CurrentLat := TrueOrigin.Latitude;
-      For Iteration := 1 To IterationLimit Do
-        Begin
-          CurrentLat := ((Coordinates.Northing-OriginOffset.Northing-M)/(SemiMajorAxis*MeridianScaleFactor))+CurrentLat;
-          LatitudeDelta := CurrentLat-TrueOrigin.Latitude;
-          LatitudeSum := CurrentLat+TrueOrigin.Latitude;
-          Term1 := (1.0+n+5.0/4.0*(n2+n3))*LatitudeDelta;// TODO: Possible removal of divisions here?
-          Term2 := (3.0*(n+n2)+21.0/8.0*n3)*Sin(LatitudeDelta)*Cos(LatitudeSum);
-          Term3 := 15.0/8.0*(n2+n3)*Sin(2.0*LatitudeDelta)*Cos(2.0*LatitudeSum);
-          Term4 := 35.0/24.0*n3*Sin(3.0*LatitudeDelta)*Cos(3.0*LatitudeSum);
-          M := SemiMinorAxis*MeridianScaleFactor*(Term1-Term2+Term3-Term4);
-          If (Coordinates.Northing-OriginOffset.Northing-M)<Epsilon Then
-            Begin
-              SinLatitude := Sin(CurrentLat);
-              SinLatitudePow2 := SinLatitude*SinLatitude;
-              o := 1-EccentricitySquared*SinLatitudePow2;
-              Nu := SemiMajorAxis*MeridianScaleFactor*Power(o, -0.5);
-              Rho := SemiMajorAxis*MeridianScaleFactor*(1-EccentricitySquared)*Power(o, -1.5);
-              EtaSquared := (Nu/rho)-1.0;
-              TanLat := Tan(CurrentLat);
-              VII := TanLat/(2*Rho*Nu);
-              VIII :=TanLat/(24*Rho*Nu*Nu*Nu)*(5+3*TanLat*TanLat+EtaSquared-9*TanLat*TanLat*EtaSquared);
-              IX :=TanLat/(720*Rho*Nu*Nu*Nu*Nu*Nu)*(61+90*TanLat*TanLat+45*TanLat*TanLat*TanLat*TanLat);
-              X := Sec(CurrentLat)/Nu;
-              XI :=Sec(CurrentLat)/(6*Nu*Nu*Nu)*(Nu/Rho+2*TanLat*TanLat);
-              XII :=Sec(CurrentLat)/(120*Nu*Nu*Nu*Nu*Nu)*(5+28*TanLat*TanLat+24*TanLat*TanLat*TanLat*TanLat);
-              XIIA :=Sec(CurrentLat)/(5040*Nu*Nu*Nu*Nu*Nu*Nu*Nu)*(61+662*TanLat*TanLat+1320*TanLat*TanLat*TanLat*TanLat+720*TanLat*TanLat*TanLat*TanLat*TanLat*TanLat);
-              EastDelta := (Coordinates.Easting-OriginOffset.Easting);
-              EastDelta2 := EastDelta*EastDelta;
-              EastDelta3 := EastDelta2*EastDelta;
-              EastDelta4 := EastDelta3*EastDelta;
-              EastDelta5 := EastDelta4*EastDelta;
-              EastDelta6 := EastDelta5*EastDelta;
-              EastDelta7 := EastDelta6*EastDelta;
-              Result.Latitude := CurrentLat-VII*EastDelta2+VIII*EastDelta4-IX*EastDelta6;
-              Result.Longitude := TrueOrigin.Longitude+X*EastDelta-XI*EastDelta3+XII*EastDelta5-XIIA*EastDelta7;
-              Result.Altitude := Coordinates.Elevation;
-              Exit;
-            End;
-        End;
+      ScaledMajorAxis := SemiMajorAxis*MeridianScaleFactor;
+      ScaledMinorAxis := SemiMinorAxis*MeridianScaleFactor;
+      InitialLatitude := CentralMeridianLatitude(ScaledMajorAxis, ScaledMinorAxis, MeridianScaleFactor, Coordinates.Northing, OriginOffset.Northing, TrueOrigin.Latitude);
+      SinLatitude := Sin(InitialLatitude);
+      SinLatitude2 := SinLatitude*SinLatitude;
+      SubExpression := 1-EccentricitySquared*SinLatitude2;
+      Nu := ScaledMajorAxis*Power(SubExpression, -0.5);
+      Rho := ScaledMajorAxis*(1-EccentricitySquared)*Power(SubExpression, -1.5);
+      EtaSquared := (Nu/Rho)-1;
+      TanLat := Tan(InitialLatitude);
+      TanLat2 := TanLat*TanLat;
+      TanLat4 := TanLat2*TanLat2;
+      TanLat6 := TanLat4*TanLat2;
+      Nu2 := Nu*Nu;
+      Nu3 := Nu2*Nu;
+      Nu5 := Nu3*Nu2;
+      Nu7 := Nu5*Nu2;
+      VII := TanLat/(2*Rho*Nu);
+      VIII := (TanLat/(24*Rho*Nu3))*(5+3*TanLat2+EtaSquared-9*TanLat2*EtaSquared);
+      IX := (TanLat/(720*Rho*Nu5))*(61+90*TanLat2+45*TanLat4);
+      SecLatitude := Sec(InitialLatitude);
+      X := SecLatitude/Nu;
+      XI := SecLatitude/(6*Nu3)*(Nu/Rho+2*TanLat2);
+      XII := SecLatitude/(120*Nu5)*(5+28*TanLat2+24*TanLat4);
+      XIIA := SecLatitude/(5040*Nu7)*(61+662*TanLat2+1320*TanLat4+720*TanLat6);
+      EastDelta := (Coordinates.Easting-OriginOffset.Easting);
+      EastDelta2 := EastDelta*EastDelta;
+      EastDelta3 := EastDelta2*EastDelta;
+      EastDelta4 := EastDelta3*EastDelta;
+      EastDelta5 := EastDelta4*EastDelta;
+      EastDelta6 := EastDelta5*EastDelta;
+      EastDelta7 := EastDelta6*EastDelta;
+      Result.Latitude := InitialLatitude-VII*EastDelta2+VIII*EastDelta4-IX*EastDelta6;
+      Result.Longitude := TrueOrigin.Longitude+X*EastDelta-XI*EastDelta3+XII*EastDelta5-XIIA*EastDelta7;
     End;
-  Result := NullCoordinates;
 End;
 
 Constructor TProjection.Initialize(NewMeridianScaleFactor, NewTrueOriginLatitude,

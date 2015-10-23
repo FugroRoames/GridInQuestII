@@ -20,7 +20,7 @@
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
       <MinorVersionNr Value="1"/>
-      <BuildNr Value="234"/>
+      <BuildNr Value="249"/>
       <Language Value="0809"/>
       <Attributes pvaPreRelease="True"/>
       <StringTable Comments="Developed for the three Ordnance Surveys of Britain and Ireland." CompanyName="Michell Computing" FileDescription="Coordinate Transformation Program" LegalCopyright="(c) 2015 Michell Computing" ProductName="Grid InQuest II" ProductVersion="0.10A"/>
@@ -75,7 +75,7 @@
         <PackageName Value="LCL"/>
       </Item1>
     </RequiredPackages>
-    <Units Count="13">
+    <Units Count="14">
       <Unit0>
         <Filename Value="GridInQuestII.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -132,9 +132,14 @@
         <IsPartOfProject Value="True"/>
       </Unit11>
       <Unit12>
-        <Filename Value="OSMod.pas"/>
+        <Filename Value="ostab.pas"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="OSTab"/>
       </Unit12>
+      <Unit13>
+        <Filename Value="OSTab.inc"/>
+        <IsPartOfProject Value="True"/>
+      </Unit13>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

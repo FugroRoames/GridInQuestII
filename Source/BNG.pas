@@ -19,12 +19,12 @@ Unit BNG;
   {$LONGSTRINGS ON}
 {$ENDIF}
 
-{$INCLUDE OSMod.inc}
+{$INCLUDE OSTab.inc}
 
 Interface
 
 Uses
-  SysUtils, Math, Geometry, Geodesy, OSMod;
+  SysUtils, Math, Geometry, Geodesy, OSTab;
 
 Type TBNGCoordinateSystem02 = Object(TCoordinateSystem)
     Function ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
