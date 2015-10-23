@@ -19,6 +19,8 @@ Unit BNG;
   {$LONGSTRINGS ON}
 {$ENDIF}
 
+{$INCLUDE OSMod.inc}
+
 Interface
 
 Uses
