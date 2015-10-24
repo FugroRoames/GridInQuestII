@@ -562,6 +562,7 @@ Begin
       EastDelta7 := EastDelta6*EastDelta;
       Result.Latitude := InitialLatitude-VII*EastDelta2+VIII*EastDelta4-IX*EastDelta6;
       Result.Longitude := TrueOrigin.Longitude+X*EastDelta-XI*EastDelta3+XII*EastDelta5-XIIA*EastDelta7;
+      Result.Altitude := Coordinates.Elevation;
     End;
 End;
 
