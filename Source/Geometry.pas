@@ -121,8 +121,8 @@ Operator = (A, B: T3DCoordinates): Boolean;
 Operator := (A: T2DCoordinates): T3DCoordinates;
 Operator + (A, B: T2DCoordinates): T2DCoordinates;
 Operator + (A, B: T3DCoordinates): T3DCoordinates;
-//Operator - (A, B: T2DCoordinates): T2DCoordinates;
-//Operator - (A, B: T3DCoordinates): T3DCoordinates;
+Operator - (A, B: T2DCoordinates): T2DCoordinates;
+Operator - (A, B: T3DCoordinates): T3DCoordinates;
 
 { Geometry functions. }
 Function NormalizeAngle(Angle: TCoordinate): TCoordinate;

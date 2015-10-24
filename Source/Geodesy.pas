@@ -128,8 +128,9 @@ Operator := (A: TPlanarCoordinates): TCoordinates;
 Operator + (A, B: TPlanarCoordinates): TPlanarCoordinates;
 Operator + (A, B: TCoordinates): TCoordinates;
 Operator + (A: TCoordinates; B: TPlanarCoordinates): TCoordinates;
-//Operator - (A, B: TPlanarCoordinates): TPlanarCoordinates;
-//Operator - (A, B: TCoordinates): TCoordinates;
+Operator - (A, B: TPlanarCoordinates): TPlanarCoordinates;
+Operator - (A, B: TCoordinates): TCoordinates;
+Operator - (A: TCoordinates; B: TPlanarCoordinates): TCoordinates;
 
 { Geodesy functions. }
 Function GeodeticDegToRad(Const Coordinates: TCoordinates): TCoordinates;
@@ -211,7 +212,7 @@ Begin
   Result.Z := A.Z;
 End;
 
-{Operator-(A, B: TPlanarCoordinates): TPlanarCoordinates;
+Operator-(A, B: TPlanarCoordinates): TPlanarCoordinates;
 Begin
   Result := TPlanarCoordinates(T2DCoordinates(A)-T2DCoordinates(B));
 End;
@@ -219,7 +220,7 @@ End;
 Operator-(A, B: TCoordinates): TCoordinates;
 Begin
   Result := TCoordinates(T3DCoordinates(A)-T3DCoordinates(B));
-End;  }
+End;
 
 Operator-(A: TCoordinates; B: TPlanarCoordinates): TCoordinates;
 Begin

@@ -142,7 +142,7 @@ Var
   {$ENDIF}
 Begin
   {$IFDEF LEVEL1}
-//TODO:  GridCoordinates := Coordinates-MeanGridOffset;
+  GridCoordinates := Coordinates-MeanGridOffset;
   {$ENDIF}
   {$IFDEF LEVEL2}
   Shift := IGToETRSShift(Coordinates);
