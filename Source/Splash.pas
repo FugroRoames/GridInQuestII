@@ -107,8 +107,6 @@ Begin
               Font.Size := 9;
               Font.Style:= [fsBold];
               Font.Quality := fqCleartypeNatural;
-              //Height := 50;
-              //Layout := tlCenter;
               Parent := SplashForm;
               With VersionInfo Do
                 Begin

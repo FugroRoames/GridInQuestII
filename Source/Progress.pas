@@ -36,11 +36,6 @@ Type
     FProgressRect: TRect;
     Procedure DoPaint(Sender: TObject);
     Procedure SetProgress(Value: Integer);
-    //CaptionLabel: TLabel;
-    //ProgressPanel: TPanel;
-    //BorderShape: TShape;
-    //ProgressBar: TProgressBar;
-    //Procedure FormClose(Sender: TObject; Var CloseAction: TCloseAction);
   Public
     Constructor Create;
     Destructor Free;
