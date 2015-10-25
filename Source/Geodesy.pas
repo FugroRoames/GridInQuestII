@@ -72,7 +72,8 @@ Type
     Property Measure: TCoordinate Read M Write M;
   End;
 
-Type TExtents = Packed Object
+Type
+  TExtents = Packed Object
     P1, P2: TCoordinates;
     Property Min: TCoordinates Read P1 Write P1;
     Property Max: TCoordinates Read P2 Write P2;
@@ -89,18 +90,21 @@ Type
       Degrees, Minutes, Seconds, Sign: TCoordinate;
   End;
 
-Type TSexagesimalCoordinates = Packed Object
+Type
+  TSexagesimalCoordinates = Packed Object
     Latitude, Longitude: TSexagesimalCoordinate;
     Altitude: TCoordinate;
   End;
 
-Type THelmertTransformParameters = Packed Object
+Type
+  THelmertTransformParameters = Packed Object
     Translation: TCoordinates;
     Rotation: TCoordinates;
     Scale: TCoordinate;
   End;
 
-Type TEllipsoid = Packed Object
+Type
+  TEllipsoid = Packed Object
     SemiMajorAxis: TCoordinate;
     SemiMinorAxis: TCoordinate;
     SemiMajorAxisSquared: TCoordinate;
@@ -110,7 +114,8 @@ Type TEllipsoid = Packed Object
     Constructor Initialize(NewSemiMajorAxis, NewSemiMinorAxis: TCoordinate);
   End;
 
-Type TProjection = Packed Object
+Type
+  TProjection = Packed Object
     Ellipsoid: TEllipsoid;
     OriginOffset: TCoordinates;
     MeridianScaleFactor: TCoordinate;
@@ -156,7 +161,8 @@ Const
   CartesianAxisNames: TAxisNames = (LongX: 'Easting'; LongY: 'Northing'; LongZ: 'Elevation';
                                     ShortX: 'East'; ShortY: 'North'; ShortZ: 'Height');
 
-Type TCoordinateSystem = Object
+Type
+  TCoordinateSystem = Object
     Abbreviation: String;
     AxisOrder: TAxisOrder;
     CoordinateType: TCoordinateType;
@@ -169,10 +175,10 @@ Type TCoordinateSystem = Object
     Function ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
     Function ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
   End;
+  TCoordinateSystemPointer = ^TCoordinateSystem;
 
-Type TCoordinateSystemPointer = ^TCoordinateSystem;
-
-Type TCoordinateSystems = Object
+Type
+  TCoordinateSystems = Object
     Count: Integer;
     Function AvailableSystemsList(OmitIndex: Integer = -1): String;
     Function FindByDescription(Const Description: String): Integer;

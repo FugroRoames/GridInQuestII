@@ -24,27 +24,32 @@ Interface
 Uses
   Math, Geometry, Geodesy;
 
-Type TETRS89CoordinateSystemGC = Object(TCoordinateSystem)
+Type
+  TETRS89CoordinateSystemGC = Object(TCoordinateSystem)
     Function ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
     Function ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
   End;
 
-Type TETRS89CoordinateSystemGD = Object(TCoordinateSystem)
+Type
+  TETRS89CoordinateSystemGD = Object(TCoordinateSystem)
     Function ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
     Function ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
   End;
 
-Type TETRS89CoordinateSystem29N = Object(TCoordinateSystem)
+Type
+  TETRS89CoordinateSystem29N = Object(TCoordinateSystem)
     Function ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
     Function ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
   End;
 
-Type TETRS89CoordinateSystem30N = Object(TCoordinateSystem)
+Type
+  TETRS89CoordinateSystem30N = Object(TCoordinateSystem)
     Function ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
     Function ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
   End;
 
-Type TETRS89CoordinateSystem31N = Object(TCoordinateSystem)
+Type
+  TETRS89CoordinateSystem31N = Object(TCoordinateSystem)
     Function ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
     Function ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
   End;

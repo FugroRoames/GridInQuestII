@@ -24,7 +24,8 @@ Interface
 Uses
   Math, Geometry, Geodesy, OSTab;
 
-Type TITMCoordinateSystem95 = Object(TCoordinateSystem)
+Type
+  TITMCoordinateSystem95 = Object(TCoordinateSystem)
     Function ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
     Function ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
   End;

@@ -33,30 +33,30 @@ Uses
   Math;
 
 {$IFDEF SINGLE_GEOMETRY}
-  Type
-    TCoordinate = Single;
+Type
+  TCoordinate = Single;
 
-  Const
-    MinCoordinate = MinSingle;
-    MaxCoordinate = MaxSingle;
+Const
+  MinCoordinate = MinSingle;
+  MaxCoordinate = MaxSingle;
 {$ENDIF}
 
 {$IFDEF DOUBLE_GEOMETRY}
-  Type
-    TCoordinate = Double;
+Type
+  TCoordinate = Double;
 
-  Const
-    MinCoordinate = MinDouble;
-    MaxCoordinate = MaxDouble;
+Const
+  MinCoordinate = MinDouble;
+  MaxCoordinate = MaxDouble;
 {$ENDIF}
 
 {$IFDEF EXTENDED_GEOMETRY}
-  Type
-    TCoordinate = Double;
+Type
+  TCoordinate = Double;
 
-  Const
-    MinCoordinate = MinExtended;
-    MaxCoordinate = MaxExtended;
+Const
+  MinCoordinate = MinExtended;
+  MaxCoordinate = MaxExtended;
 {$ENDIF}
 
 Type
@@ -83,8 +83,8 @@ Type
 
 Type
   TLine = Packed Record
-      P1, P2: TCoordinates;
-    End;
+    P1, P2: TCoordinates;
+  End;
 
 Type
   TPolyLine = Array Of TCoordinates;
@@ -98,7 +98,8 @@ Type
 Type
   TMultiPolygon = Array Of TPolygon;
 
-Type TExtents = Packed Object
+Type
+  TExtents = Packed Object
     P1, P2: TCoordinates;
     Property Min: TCoordinates Read P1 Write P1;
     Property Max: TCoordinates Read P2 Write P2;

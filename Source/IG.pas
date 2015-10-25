@@ -31,7 +31,8 @@ Uses
 { Define to uses inline optimisation. }
 {$DEFINE USE_INLINE}
 
-Type TIGCoordinateSystem75 = Object(TCoordinateSystem)
+Type
+  TIGCoordinateSystem75 = Object(TCoordinateSystem)
     Function ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
     Function ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
   End;

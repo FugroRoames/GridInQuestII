@@ -26,12 +26,14 @@ Interface
 Uses
   SysUtils, Math, Geometry, Geodesy, OSTab;
 
-Type TBNGCoordinateSystem02 = Object(TCoordinateSystem)
+Type
+  TBNGCoordinateSystem02 = Object(TCoordinateSystem)
     Function ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
     Function ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
   End;
 
-Type TBNGCoordinateSystem10 = Object(TCoordinateSystem)
+Type
+  TBNGCoordinateSystem10 = Object(TCoordinateSystem)
     Function ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
     Function ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
   End;
