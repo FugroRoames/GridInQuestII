@@ -269,7 +269,7 @@ Begin
   MainGlobe.ShowMarker := False;
   If DataLoaded Then
     If (InputFirstFieldIndex<>-1) And (InputSecondFieldIndex<>-1) Then
-      If (aRow<>-1) And (aCol<InputData.FieldCount) Then
+      If (aRow<>-1) Then
         LocateOnMap(DataDrawGridCoordinates(aRow), InputSystemIndex);
 End;
 
