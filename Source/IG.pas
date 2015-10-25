@@ -25,8 +25,11 @@ Uses
   Math, Geometry, Geodesy, OSTab;
 
 { Define Irish Grid accuracy level. }
-{$DEFINE LEVEL1}  { 2m horizontal accuracy. }
-//{$DEFINE LEVEL2} { 0.4m horizontal accuracy. }
+//{$DEFINE LEVEL1}  { 2m horizontal accuracy using mean offset adjustments. }
+{$DEFINE LEVEL2} { 0.4m horizontal accuracy using the OSi/OSNI polynomial transformation. }
+
+{ Define to uses inline optimisation. }
+{$DEFINE USE_INLINE}
 
 Type TIGCoordinateSystem75 = Object(TCoordinateSystem)
     Function ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
@@ -34,9 +37,9 @@ Type TIGCoordinateSystem75 = Object(TCoordinateSystem)
   End;
 
 Var
+  Airy1830ModifiedEllipsoid: TEllipsoid;
   GRS80Ellipsoid: TEllipsoid;
-//  Airy1830ModifiedEllipsoid: TEllipsoid;
-//  IrishGridProjection: TProjection;
+  IrishGridProjection: TProjection;
   IrishGPSGridProjection: TProjection;
   IGCoordinateSystem75: TIGCoordinateSystem75;
 
@@ -60,7 +63,8 @@ Const
 {$ENDIF}
 
 {$IFDEF LEVEL2}
-Function IGToETRSShift(Coordinates: TCoordinates): TCoordinates; Inline;
+Function IGToETRSGeodeticShift(Const Coordinates: TCoordinates): TCoordinates; {$IFDEF USE_INLINE}Inline;{$ENDIF}
+Function ETRSToIGGeodeticShift(Const Coordinates: TCoordinates): TCoordinates; {$IFDEF USE_INLINE}Inline;{$ENDIF}
 {$ENDIF}
 Function WGS84CoordinatesToIGCoordinates(Const Coordinates: TCoordinates; DatumModel: TVerticalDatumModel = OSVRF10): TCoordinates;
 Function IGCoordinatesToWGS84Coordinates(Const Coordinates: TCoordinates; DatumModel: TVerticalDatumModel = OSVRF10): TCoordinates;
@@ -84,17 +88,20 @@ Begin
 End;
 
 {$IFDEF LEVEL2}
-Function IGToETRSShift(Coordinates: TCoordinates): TCoordinates; Inline;
+Function IGToETRSGeodeticShift(Const Coordinates: TCoordinates): TCoordinates; {$IFDEF USE_INLINE}Inline;{$ENDIF}
 Var
  U, U2, U3, V, V2, V3: TCoordinate;
  UV, U2V, UV2, U2V2, U3V: TCoordinate;
  UV3, U3V2, U2V3, U3V3: TCoordinate;
- Delta: TCoordinates;
+Const
+  ScaleFactor = 0.1;
+  MeanLatitude = 53.5;
+  MeanLongitude = -7.7;
 Begin
-   U :=osik0*(RadToDeg(Coordinates.Latitude)-osilatm);
+   U :=ScaleFactor*(RadToDeg(Coordinates.Latitude)-MeanLatitude);
    U2 := U*U;
    U3 := U2*U;
-   V :=osik0*(RadToDeg(Coordinates.Longitude)-osilonm);
+   V :=ScaleFactor*(RadToDeg(Coordinates.Longitude)-MeanLongitude);
    V2 := V*V;
    V3 := V2*V;
    UV := U*V;
@@ -106,77 +113,81 @@ Begin
    U3V2 := U3*V2;
    U2V3 := U2*V3;
    U3V3 := U3*V3;
-   Delta.Latitude := (A00+A10*U+A01*V+A11*UV+A20*U2+A02*V2+A21*U2V+
+   Result.Latitude := DegToRad((A00+A10*U+A01*V+A11*UV+A20*U2+A02*V2+A21*U2V+
                       A12*UV2+A22*U2V2+A30*U3+A03*V3+A31*U3V+A13*UV3+
-                      A32*U3V2+A23*U2V3+A33*U3V3)/3600;
-   Delta.Longitude := (B00+B10*U+B01*V+B11*UV+B20*U2+B02*V2+B21*U2V+
+                      A32*U3V2+A23*U2V3+A33*U3V3)/3600);
+   Result.Longitude := DegToRad((B00+B10*U+B01*V+B11*UV+B20*U2+B02*V2+B21*U2V+
                        B12*UV2+B22*U2V2+A30*U3+B03*V3+B31*U3V+B13*UV3+
-                       B32*U3V2+B23*U2V3+B33*U3V3)/3600;
-  Result := DegToRad(Delta);
+                       B32*U3V2+B23*U2V3+B33*U3V3)/3600);
+   Result.Altitude := Coordinates.Altitude;
+End;
+
+Function ETRSToIGGeodeticShift(Const Coordinates: TCoordinates): TCoordinates; {$IFDEF USE_INLINE}Inline;{$ENDIF}
+Var
+  DeltaCoordinates: TCoordinates;
+  DeltaError: TCoordinates;
+  Iteration: Integer;
+Const
+  IterationLimit = 10;
+  Epsilon = 0.00000001;
+Begin
+  Result := Coordinates;
+  For Iteration := 1 To IterationLimit Do
+    Begin
+      DeltaCoordinates := IGToETRSGeodeticShift(Result);
+      DeltaError := Result+DeltaCoordinates-Coordinates;
+      If (Abs(DeltaError.Latitude)<Epsilon) And (Abs(DeltaError.Longitude)<Epsilon) Then
+      	Break;
+      Result := Result-DeltaError;
+    End;
 End;
 {$ENDIF}
 
 Function WGS84CoordinatesToIGCoordinates(Const Coordinates: TCoordinates; DatumModel: TVerticalDatumModel = OSVRF10): TCoordinates;
 Var
+  {$IFDEF LEVEL1}
   GridCoordinates: TCoordinates;
+  {$ENDIF}
   {$IFDEF LEVEL2}
-  Shift: TCoordinates;
+  GeodeticCoordinates: TCoordinates;
   {$ENDIF}
 Begin
-  GridCoordinates := TransverseMercator(Coordinates, IrishGPSGridProjection);
   {$IFDEF LEVEL1}
+  GridCoordinates := TransverseMercator(Coordinates, IrishGPSGridProjection);
   Result := GridCoordinates+MeanGridOffset;
   {$ENDIF}
   {$IFDEF LEVEL2}
-  Shift := IGToETRSShift(Coordinates);
-  //Result := GridCoordinates+Shift;
+  GeodeticCoordinates := ETRSToIGGeodeticShift(Coordinates);
+  Result := TransverseMercator(GeodeticCoordinates, IrishGridProjection);
   {$ENDIF}
   // Add height from GM02/VRF10
 End;
 
 Function IGCoordinatesToWGS84Coordinates(Const Coordinates: TCoordinates; DatumModel: TVerticalDatumModel = OSVRF10): TCoordinates;
 Var
+  {$IFDEF LEVEL1}
   GridCoordinates: TCoordinates;
+  {$ENDIF}
   {$IFDEF LEVEL2}
-  Shift: TCoordinates;
+  GeodeticCoordinates: TCoordinates;
   {$ENDIF}
 Begin
   {$IFDEF LEVEL1}
   GridCoordinates := Coordinates-MeanGridOffset;
-  {$ENDIF}
-  {$IFDEF LEVEL2}
-  Shift := IGToETRSShift(Coordinates);
-  //GridCoordinates := Coordinates-Shift;
-  {$ENDIF}
-  {$IFDEF LEVEL2}
-{
-Shift, PriorShift: TCoordinates;
-Iteration: Integer;
-Const
-IterationLimit = 10;
-Epsilon: TCoordinate = 1E-6;
-
-ShiftCoordinates := Coordinates;
-  For Iteration := 1 To IterationLimit Do
-     Begin
-       ShiftCoordinates := OSIShift(Coordinates);
-       If (Math.abs(shifty.longitude-oldshifty.longitude<Epsilon)
-         && Math.abs(shifty.latitude-oldshifty.latitude<Epsilon)) Then
-           Exit;
-       Result := Coordinates-Shift;
-       PriorShift := Shift;
-     End;      }
-  {$ENDIF}
-
   Result := InverseTransverseMercator(GridCoordinates, IrishGPSGridProjection);
+  {$ENDIF}
+  {$IFDEF LEVEL2}
+  GeodeticCoordinates := InverseTransverseMercator(Coordinates, IrishGridProjection);
+  Result := GeodeticCoordinates+IGToETRSGeodeticShift(GeodeticCoordinates);
+  {$ENDIF}
   // Add height from GM02/VRF10
 End;
 
 Initialization
 
+Airy1830ModifiedEllipsoid.Initialize(6377340.1890, 6356034.4470);
 GRS80Ellipsoid.Initialize(6378137.0000, 6356752.314140);
-//Airy1830ModifiedEllipsoid.Initialize(6377340.1890, 6356034.4470);
-//IrishGridProjection.Initialize(1.000035, DegToRad(53.5), DegToRad(-8), 200000, 250000, Airy1830ModifiedEllipsoid);
+IrishGridProjection.Initialize(1.000035, DegToRad(53.5), DegToRad(-8), 200000, 250000, Airy1830ModifiedEllipsoid);
 IrishGPSGridProjection.Initialize(1.000035, DegToRad(53.5), DegToRad(-8), 200000, 250000, GRS80Ellipsoid);
 IGCoordinateSystem75.Initialize('Irish Grid (1975)', 'TM75IG', 'TM75 / Irish Grid (IG)', 29903, ctCartesian, aoXYZ);
 CoordinateSystems.Register(IGCoordinateSystem75);
