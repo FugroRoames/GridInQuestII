@@ -300,8 +300,9 @@ Procedure TDataStream.SetFirstRow(Value: Integer);
 Begin
   If Value<0 Then
     Value := 0;
-  If Value>=FRows.Count Then
-    Value := FRows.Count-1;
+  If FRows.Count>0 Then
+    If Value>=FRows.Count Then
+      Value := FRows.Count-1;
   If FFirstRow<>Value Then
     Begin
       FFirstRow := Value;
@@ -366,7 +367,6 @@ End;
 
 Function TDataStream.GetField(Index: Integer): String;
 Begin
-//  WriteLn('GetField ', Index);
   If Index<FCurrentRow.Count Then
     Result := FCurrentRow[Index]
   Else
@@ -504,7 +504,6 @@ Var
   BufferPointer: PChar;
   BufferStartPointer: PChar;
   BufferEndPointer: PChar;
-  RowIndex: Integer;
   FoundFields: Integer;
   Progress, LastProgress: Integer;
   Procedure FindNextRecord;
@@ -514,7 +513,17 @@ Var
     If BufferPointer<BufferEndPointer Then
       While BufferPointer^ In RecordTerminators Do
         Inc(BufferPointer);
-    Inc(RowIndex);
+  End;
+  Function CountRowFields(RowIndex: Integer): Integer;
+  Begin
+    Result := 1;
+    BufferPointer := FRows[RowIndex];
+    While BufferPointer<FRows[RowIndex+1] Do
+      Begin
+        If BufferPointer^=FieldTerminator Then
+           Inc(Result);
+        Inc(BufferPointer);
+      End;
   End;
 Begin
   { If parse progress events are required, send the first event. }
@@ -567,17 +576,24 @@ Begin
     If NameRow<>-1 Then
       Begin
         { Calculate the number of fields from the header field count. }
-        FoundFields := 1;
-        BufferPointer := FRows[NameRow];
-        While BufferPointer<FRows[NameRow+1] Do
-          Begin
-            If BufferPointer^=FieldTerminator Then
-              Inc(FoundFields);
-            Inc(BufferPointer);
-          End;
+        FoundFields := CountRowFields(NameRow);
         SetFieldCount(FoundFields);
         { Setup the field names list. }
         ParseRow(FNames, NameRow);
+      End
+    Else
+      Begin
+        { Otherwise count the fields in the first row. }
+        FoundFields := CountRowFields(FirstRow);
+        SetFieldCount(FoundFields);
+        { If the last row is known. }
+        If LastRow<>-1 Then
+          Begin
+            { Double check by counting the fields in the last row and use that if greater. }
+            FoundFields := CountRowFields(LastRow);
+            If FoundFields>FieldCount Then
+              SetFieldCount(FoundFields);
+          End;
       End;
   { Set the found record count, or truncate to the last row if one given. }
   FRecordCount := FRows.Count-FirstRow-1;
