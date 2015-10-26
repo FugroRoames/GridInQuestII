@@ -132,9 +132,8 @@
         <IsPartOfProject Value="True"/>
       </Unit11>
       <Unit12>
-        <Filename Value="ostab.pas"/>
+        <Filename Value="OSTab.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="OSTab"/>
       </Unit12>
       <Unit13>
         <Filename Value="OSTab.inc"/>

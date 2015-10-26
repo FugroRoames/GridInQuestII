@@ -22,7 +22,7 @@ Unit DataStreams;
 Interface
 
 Uses
-  Classes, RtlConsts, SysUtils, Strings;
+  Classes, SysUtils, RtlConsts, Strings;
 
 Type
   TFormatType = (ftDelimited, ftFixed);
