@@ -129,8 +129,8 @@ Var
   DeltaError: TCoordinates;
   Iteration: Integer;
 Const
-  IterationLimit = 10;
-  Epsilon = 0.00000001;
+  IterationLimit = 15;
+  Epsilon = 0.0000000000000001;
 Begin
   Result := Coordinates;
   For Iteration := 1 To IterationLimit Do
