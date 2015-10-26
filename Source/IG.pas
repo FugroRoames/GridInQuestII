@@ -29,7 +29,7 @@ Uses
 {$DEFINE LEVEL2} { 0.4m horizontal accuracy using the OSi/OSNI polynomial transformation. }
 
 { Define to uses inline optimisation. }
-{$DEFINE USE_INLINE}
+//{$DEFINE USE_INLINE}
 
 Type
   TIGCoordinateSystem75 = Object(TCoordinateSystem)
@@ -118,7 +118,7 @@ Begin
                       A12*UV2+A22*U2V2+A30*U3+A03*V3+A31*U3V+A13*UV3+
                       A32*U3V2+A23*U2V3+A33*U3V3)/3600);
    Result.Longitude := DegToRad((B00+B10*U+B01*V+B11*UV+B20*U2+B02*V2+B21*U2V+
-                       B12*UV2+B22*U2V2+A30*U3+B03*V3+B31*U3V+B13*UV3+
+                       B12*UV2+B22*U2V2+B30*U3+B03*V3+B31*U3V+B13*UV3+
                        B32*U3V2+B23*U2V3+B33*U3V3)/3600);
    Result.Altitude := Coordinates.Altitude;
 End;
