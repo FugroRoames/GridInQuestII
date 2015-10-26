@@ -71,6 +71,7 @@ Type
     RecordTerminators: TSysCharSet;
     Procedure ParseRow(Const Data: TStringList; Const RowIndex: Integer);
     Procedure ParseRows;
+    Procedure ParseFields;
   Public
     Constructor Create;
     Constructor Create(InputStream: TStream);
@@ -293,6 +294,7 @@ Begin
     Begin
       FFieldTerminator := Value;
       FieldTerminators := StandardRecordTerminators+[Value];
+      ParseFields;
     End;
 End;
 
@@ -340,6 +342,7 @@ Begin
       { Force any invalid first row value to the next row after the named row. }
       If FFirstRow<=FNameRow Then
         FFirstRow := FNameRow+1;
+      ParseFields;
     End;
 End;
 
@@ -423,6 +426,7 @@ Begin
       FFieldCount := Value;
       FFieldStarts.Count := Value;
       FFieldLengths.Count := Value;
+      ParseFields;
     End;
 End;
 
@@ -504,7 +508,6 @@ Var
   BufferPointer: PChar;
   BufferStartPointer: PChar;
   BufferEndPointer: PChar;
-  FoundFields: Integer;
   Progress, LastProgress: Integer;
   Procedure FindNextRecord;
   Begin
@@ -513,17 +516,6 @@ Var
     If BufferPointer<BufferEndPointer Then
       While BufferPointer^ In RecordTerminators Do
         Inc(BufferPointer);
-  End;
-  Function CountRowFields(RowIndex: Integer): Integer;
-  Begin
-    Result := 1;
-    BufferPointer := FRows[RowIndex];
-    While BufferPointer<FRows[RowIndex+1] Do
-      Begin
-        If BufferPointer^=FieldTerminator Then
-           Inc(Result);
-        Inc(BufferPointer);
-      End;
   End;
 Begin
   { If parse progress events are required, send the first event. }
@@ -571,35 +563,13 @@ Begin
       End;
   { Add a row record for the end of the buffer. }
   FRows.Add(BufferEndPointer);
-  { For delimited files with a named row. }
-  If FormatType=ftDelimited Then
-    If NameRow<>-1 Then
-      Begin
-        { Calculate the number of fields from the header field count. }
-        FoundFields := CountRowFields(NameRow);
-        SetFieldCount(FoundFields);
-        { Setup the field names list. }
-        ParseRow(FNames, NameRow);
-      End
-    Else
-      Begin
-        { Otherwise count the fields in the first row. }
-        FoundFields := CountRowFields(FirstRow);
-        SetFieldCount(FoundFields);
-        { If the last row is known. }
-        If LastRow<>-1 Then
-          Begin
-            { Double check by counting the fields in the last row and use that if greater. }
-            FoundFields := CountRowFields(LastRow);
-            If FoundFields>FieldCount Then
-              SetFieldCount(FoundFields);
-          End;
-      End;
   { Set the found record count, or truncate to the last row if one given. }
   FRecordCount := FRows.Count-FirstRow-1;
   If LastRow<>-1 Then
     If 1+LastRow-FirstRow<FRecordCount Then
       FRecordCount := 1+LastRow-FirstRow;
+  { Analyse the field structure. }
+  ParseFields;
   { Setup the first record if there are records. }
   If FRecordCount>0 Then
     Begin
@@ -616,6 +586,59 @@ Begin
   If Assigned(FOnParseProgress) Then
     If Size>MinProgressSize Then
       FOnParseProgress(Self, 100);
+End;
+
+Procedure  TDataStream.ParseFields;
+Var
+  FoundFields: Integer;
+  Function CountRowFields(RowIndex: Integer): Integer;
+  Var
+    BufferPointer: PChar;
+  Begin
+    Result := 1;
+    BufferPointer := FRows[RowIndex];
+    While BufferPointer<FRows[RowIndex+1] Do
+      Begin
+        If BufferPointer^=FieldTerminator Then
+           Inc(Result);
+        Inc(BufferPointer);
+      End;
+  End;
+  Procedure UpdateFieldCount(NewCount: Integer);
+  Begin
+    If NewCount<1 Then
+      NewCount := 1;
+    FFieldCount := NewCount;
+    FFieldStarts.Count := NewCount;
+    FFieldLengths.Count := NewCount;
+  End;
+Begin
+  { If there is loaded data. }
+  If FRecordCount>0 Then
+    { For delimited files with a named row. }
+    If FormatType=ftDelimited Then
+      If NameRow<>-1 Then
+        Begin
+          { Calculate the number of fields from the header field count. }
+          FoundFields := CountRowFields(NameRow);
+          UpdateFieldCount(FoundFields);
+          { Setup the field names list. }
+          ParseRow(FNames, NameRow);
+        End
+      Else
+        Begin
+          { Otherwise count the fields in the first row. }
+          FoundFields := CountRowFields(FirstRow);
+          UpdateFieldCount(FoundFields);
+          { If the last row is known. }
+          If LastRow<>-1 Then
+            Begin
+              { Double check by counting the fields in the last row and use that if greater. }
+              FoundFields := CountRowFields(LastRow);
+              If FoundFields>FieldCount Then
+                UpdateFieldCount(FoundFields);
+            End;
+        End;
 End;
 
 End.
