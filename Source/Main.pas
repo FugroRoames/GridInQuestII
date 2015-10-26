@@ -120,7 +120,7 @@ Type
     Function AxisShortName(SystemIndex, AxisIndex: Integer): String;
     Function DataDrawGridCoordinates(Row: Integer): TCoordinates;
     Function DataLoaded: Boolean;
-    Function RecordOutputCoordinateText(RecordNumber, AxisIndex: Integer; AxisOrder: TAxisOrder): String;
+    Function RecordOutputCoordinateText(RecordNumber, AxisIndex: Integer; AxisOrder: TAxisOrder; CoordinateType: TCoordinateType): String;
     Function TransformCoordinates(Const Coordinates: TCoordinates; InputIndex, OutputIndex: Integer): TCoordinates;
     Procedure ClearDataGrid;
     Procedure LocateOnMap(Const Coordinates: TCoordinates; CoordinateSystemIndex: Integer);
@@ -255,11 +255,11 @@ Begin
         Else
           With CoordinateSystems.Items(OutputSystemIndex) Do
             If aCol=InputData.FieldCount+1 Then
-              CellText := RecordOutputCoordinateText(aRow-1, 0, AxisOrder)
+              CellText := RecordOutputCoordinateText(aRow-1, 0, AxisOrder, CoordinateType)
             Else If aCol=InputData.FieldCount+2 Then
-              CellText := RecordOutputCoordinateText(aRow-1, 1, AxisOrder)
+              CellText := RecordOutputCoordinateText(aRow-1, 1, AxisOrder, CoordinateType)
             Else If aCol=InputData.FieldCount+3 Then
-              CellText := RecordOutputCoordinateText(aRow-1, 2, AxisOrder);
+              CellText := RecordOutputCoordinateText(aRow-1, 2, AxisOrder, CoordinateType);
         TOverrideGrid(DataDrawGrid).DrawCellText(aCol, aRow, aRect, aState, CellText);
       End;
 End;
@@ -329,14 +329,14 @@ Begin
             With CoordinateSystems.Items(OutputSystemIndex) Do
               Begin
                 OutputText := OutputText+OutputFieldTerminator;
-                OutputText := OutputText+AddDelimiters(RecordOutputCoordinateText(RecordIndex, 0, AxisOrder));
+                OutputText := OutputText+AddDelimiters(RecordOutputCoordinateText(RecordIndex, 0, AxisOrder, CoordinateType));
                 OutputText := OutputText+OutputFieldTerminator;
-                OutputText := OutputText+AddDelimiters(RecordOutputCoordinateText(RecordIndex, 1, AxisOrder));
+                OutputText := OutputText+AddDelimiters(RecordOutputCoordinateText(RecordIndex, 1, AxisOrder, CoordinateType));
                 { Output the third coordinate if needed. }
                 If (InputThirdFieldIndex<>-1) Or (CoordinateType=ctGeocentric) Then
                   Begin
                     OutputText := OutputText+OutputFieldTerminator;
-                    OutputText := OutputText+AddDelimiters(RecordOutputCoordinateText(RecordIndex, 2, AxisOrder));
+                    OutputText := OutputText+AddDelimiters(RecordOutputCoordinateText(RecordIndex, 2, AxisOrder, CoordinateType));
                   End;
                 OutputText := OutputText+LineEnding;
               End;
@@ -564,12 +564,27 @@ Begin
   Result := Assigned(InputData);
 End;
 
-Function TMainForm.RecordOutputCoordinateText(RecordNumber, AxisIndex: Integer; AxisOrder: TAxisOrder): String;
+Function TMainForm.RecordOutputCoordinateText(RecordNumber, AxisIndex: Integer; AxisOrder: TAxisOrder; CoordinateType: TCoordinateType): String;
 Begin
-  Case AxisTypeFromIndex(AxisIndex, AxisOrder) Of
-  atXAxis: Result := FormatCoordinate(OutputCoordinates[RecordNumber].X);
-  atYAxis: Result := FormatCoordinate(OutputCoordinates[RecordNumber].Y);
-  atZAxis: Result := FormatCoordinate(OutputCoordinates[RecordNumber].Z);
+  Case CoordinateType Of
+  ctGeocentric:
+    Case AxisTypeFromIndex(AxisIndex, AxisOrder) Of
+    atXAxis: Result := FormatCoordinateWithUnits(OutputCoordinates[RecordNumber].X, 'm', 2);
+    atYAxis: Result := FormatCoordinateWithUnits(OutputCoordinates[RecordNumber].Y, 'm', 2);
+    atZAxis: Result := FormatCoordinateWithUnits(OutputCoordinates[RecordNumber].Z, 'm', 2);
+    End;
+  ctGeodetic:
+    Case AxisTypeFromIndex(AxisIndex, AxisOrder) Of
+    atXAxis: Result := FormatCoordinate(DecimalToSexagesimalCoordinate(OutputCoordinates[RecordNumber].X), soEastWestSuffix);
+    atYAxis: Result := FormatCoordinate(DecimalToSexagesimalCoordinate(OutputCoordinates[RecordNumber].Y), soNorthSouthSuffix);
+    atZAxis: Result := FormatCoordinateWithUnits(OutputCoordinates[RecordNumber].Z, 'm', 3);
+    End;
+  ctCartesian:
+    Case AxisTypeFromIndex(AxisIndex, AxisOrder) Of
+    atXAxis: Result := FormatCoordinate(OutputCoordinates[RecordNumber].X, 3, True)+' E';
+    atYAxis: Result := FormatCoordinate(OutputCoordinates[RecordNumber].Y, 3, True)+' N';
+    atZAxis: Result := FormatCoordinateWithUnits(OutputCoordinates[RecordNumber].Z, 'm', 3);
+    End;
   End;
 End;
 
