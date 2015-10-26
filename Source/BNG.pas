@@ -58,6 +58,8 @@ Begin
   { Full transformation of GRS80/WGS84/ETRS89 value to OSGB36 easting and northing as per OS method. }
   { 1. Perform transverse Mercator projection of initial ellipsoid using OS grid but WGS84 ellipsiod parameters, Lat/Lon MUST be in radians. }
   Result := TransverseMercator(Coordinates, OSTN02GridProjection);
+  EXIT; //REMOVE!
+
   { 2. Perform bi-linear interpolation of coordinate deltas from OSTN02 and OSGM02 reference table. }
 {$IFDEF OSTNO2RES_1KM}
   { Perform full kilometer resolution polynomial correction. }
@@ -120,6 +122,7 @@ Const
 {$ENDIF}
 Begin
   Result := Coordinates;
+  EXIT; //REMOVE!
   {$IFDEF OSTNO2TABLEUSED}
   PriorResult := NullCoordinates;
   For Iteration := 1 To IterationLimit Do
@@ -217,8 +220,8 @@ End;
 
 Initialization
 
-GM02GBData.LoadFromFile('L:\Projects\GridInQuestII\Source\GM02GB.dat');
-TN02GBData.LoadFromFile('L:\Projects\GridInQuestII\Source\TN02GB.dat');
+//GM02GBData.LoadFromFile('L:\Projects\GridInQuestII\Source\GM02GB.dat');
+//TN02GBData.LoadFromFile('L:\Projects\GridInQuestII\Source\TN02GB.dat');
 GRS80Ellipsoid.Initialize(6378137.0000, 6356752.314140);
 OSTN02GridProjection.Initialize(0.9996012717, DegToRad(49), DegToRad(-2), 400000, -100000, GRS80Ellipsoid);
 BNGCoordinateSystem02.Initialize('British National Grid (2002)', 'OSGB36',
