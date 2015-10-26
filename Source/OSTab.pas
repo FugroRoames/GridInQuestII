@@ -24,17 +24,17 @@ Unit OSTab;
 Interface
 
 Uses
-  Math, Geometry, Geodesy;
+  Classes, Math, Geometry, Geodesy;
 
 { Include required TN02 array data. }
 {$IFDEF OSTNO2RES_1KM}
-  {$INCLUDE OSTN02R1K.inc}
+  { $INCLUDE OSTN02R1K.inc}
 {$ENDIF}
 {$IFDEF OSTNO2RES_10KM}
-  {$INCLUDE OSTN02R10K.inc}
+  { $INCLUDE OSTN02R10K.inc}
 {$ENDIF}
 {$IFDEF OSTNO2RES_100KM}
-  {$INCLUDE OSTN02R100K.inc}
+  { $INCLUDE OSTN02R100K.inc}
 {$ENDIF}
 
 Type
@@ -51,27 +51,35 @@ Type
   End;
 
 Type
+  TDataHeader = Packed Record
+    Origin: TCoordinates;
+    Step: TCoordinates;
+    RowCount: Integer;
+    ColumnCount: Integer;
+  End;
   THorizontalRecord = Packed Record
     ShiftEast: TSmallCoordinate;
     ShiftNorth: TSmallCoordinate;
   End;
-  THorizontalArray = Array Of Array Of THorizontalRecord;
-  THorizontalTable = Packed Record
-    Data: THorizontalArray;
-    LastX: Integer;
-    LastY: Integer;
+  THorizontalRecordPointer = ^THorizontalRecord;
+  THorizontalTable = Packed Object
+    Header: TDataHeader;
+    Memory: Pointer;
+    Function Data(Row, Col: Integer): THorizontalRecord;
+    Procedure LoadFromFile(FileName: String);
+    Procedure LoadFromStream(Source: TStream);
   End;
-
-Type
   TVerticalRecord = Packed Record
     GeoidHeight: TSmallCoordinate;
     DatumCode: Byte;
   End;
-  TVerticalArray = Array Of Array Of TVerticalRecord;
-  TVerticalTable = Packed Record
-    Data: TVerticalArray;
-    LastX: Integer;
-    LastY: Integer;
+  TVerticalRecordPointer = ^TVerticalRecord;
+  TVerticalTable = Packed Object
+    Header: TDataHeader;
+    Memory: Pointer;
+    Function Data(Row, Col: Integer): TVerticalRecord;
+    Procedure LoadFromFile(FileName: String);
+    Procedure LoadFromStream(Source: TStream);
   End;
 
 Const
@@ -92,16 +100,11 @@ Const
     (Code: 13; Name: 'Malin Head'; Region: 'Republic of Ireland'),
     (Code: 14; Name: 'Belfast'; Region: 'Northern Ireland'));
 
-{Var
-  HorizontalArray: THorizontalArray =
-   (((ShiftEast:0; ShiftNorth:0), (ShiftEast:0; ShiftNorth:0)),
-   ((ShiftEast:0; ShiftNorth:0), (ShiftEast:0; ShiftNorth:0)));
-}
-Procedure BilinearInterpolate(Const Coordinates: TCoordinates; Const GridScale: TCoordinate; Var EastOffset, NorthOffset, GeoidHeight: TCoordinate);
+Procedure BilinearInterpolate(Const HorizontalTable: THorizontalTable; Const Coordinates: TCoordinates; Const GridScale: TCoordinate; Var EastOffset, NorthOffset, GeoidHeight: TCoordinate);
 
 Implementation
 
-Procedure BilinearInterpolate(Const Coordinates: TCoordinates; Const GridScale: TCoordinate; Var EastOffset, NorthOffset, GeoidHeight: TCoordinate);
+Procedure BilinearInterpolate(Const HorizontalTable: THorizontalTable; Const Coordinates: TCoordinates; Const GridScale: TCoordinate; Var EastOffset, NorthOffset, GeoidHeight: TCoordinate);
 Var
   InvGridScale: TCoordinate;
   X1, X2, Y1, Y2: Integer;
@@ -111,33 +114,43 @@ Var
   T, TI, U, UI: TCoordinate;
 Begin
   InvGridScale := 1/GridScale;
-  X1 := Trunc(Coordinates.Easting*InvGridScale);
-  Y1 := Trunc(Coordinates.Northing*InvGridScale);
-  X2 := X1+1;
-  Y2 := Y1+1;
-  With OSTN02Data[X1, Y1] Do
+  With HorizontalTable.Header Do
     Begin
-      SE0 := Easting;
-      SN0 := Northing;
-      SG0 := Elevation;
+      X1 := Trunc((Coordinates.Easting-Origin.Easting)*InvGridScale);
+      Y1 := Trunc((Coordinates.Northing-Origin.Northing)*InvGridScale);
+      X2 := X1+1;
+      Y2 := Y1+1;
+      If (X1<0) Or (Y1<0) Or (X2>=ColumnCount) Or (Y2>=RowCount) Then
+        Begin
+          EastOffset := 0;
+          NorthOffset := 0;
+          GeoidHeight := 0;
+          Exit;
+        End;
     End;
-  With OSTN02Data[X2, Y1] Do
+  With HorizontalTable.Data(Y1, X1) Do
     Begin
-      SE1 := Easting;
-      SN1 := Northing;
-      SG1 := Elevation;
+      SE0 := ShiftEast;
+      SN0 := ShiftNorth;
+      SG0 := 0;
     End;
-  With OSTN02Data[X2, Y2] Do
+  With HorizontalTable.Data(Y1, X2) Do
     Begin
-      SE2 := Easting;
-      SN2 := Northing;
-      SG2 := Elevation;
+      SE1 := ShiftEast;
+      SN1 := ShiftNorth;
+      SG1 := 0;
     End;
-  With OSTN02Data[X1, Y2] Do
+  With HorizontalTable.Data(Y2, X2) Do
     Begin
-      SE3 := Easting;
-      SN3 := Northing;
-      SG3 := Elevation;
+      SE2 := ShiftEast;
+      SN2 := ShiftNorth;
+      SG2 := 0;
+    End;
+  With HorizontalTable.Data(Y2, X1) Do
+    Begin
+      SE3 := ShiftEast;
+      SN3 := ShiftNorth;
+      SG3 := 0;
     End;
   T := (Coordinates.Easting-(X1*GridScale))*InvGridScale;
   TI := (1-T);
@@ -146,6 +159,64 @@ Begin
   EastOffset := (TI*UI*SE0)+(T*UI*SE1)+(T*U*SE2)+(TI*U*SE3);
   NorthOffset := (TI*UI*SN0)+(T*UI*SN1)+(T*U*SN2)+(TI*U*SN3);
   GeoidHeight := (TI*UI*SG0)+(T*UI*SG1)+(T*U*SG2)+(TI*U*SG3);
+End;
+
+Function THorizontalTable.Data(Row, Col: Integer): THorizontalRecord;
+Var
+  RecordPointer: THorizontalRecordPointer;
+Begin
+  RecordPointer := THorizontalRecordPointer(Memory);
+  Inc(RecordPointer, Col+Row*Header.ColumnCount);
+  Result := RecordPointer^;
+End;
+
+Procedure THorizontalTable.LoadFromFile(FileName: String);
+Var
+  FileStream: TFileStream;
+Begin
+  FileStream := TFileStream.Create(FileName, fmOpenRead);
+  LoadFromStream(FileStream);
+  FileStream.Free;
+End;
+
+Procedure THorizontalTable.LoadFromStream(Source: TStream);
+Var
+  DataSize: Int64;
+Begin
+  DataSize := Source.Size;
+  Source.Read(Header, SizeOf(Header));
+  DataSize := DataSize-SizeOf(Header);
+  Memory := AllocMem(DataSize);
+  Source.Read(Memory, DataSize);
+End;
+
+Function TVerticalTable.Data(Row, Col: Integer): TVerticalRecord;
+Var
+  RecordPointer: TVerticalRecordPointer;
+Begin
+  RecordPointer := TVerticalRecordPointer(Memory);
+  Inc(RecordPointer, Col+Row*Header.ColumnCount);
+  Result := RecordPointer^;
+End;
+
+Procedure TVerticalTable.LoadFromFile(FileName: String);
+Var
+  FileStream: TFileStream;
+Begin
+  FileStream := TFileStream.Create(FileName, fmOpenRead);
+  LoadFromStream(FileStream);
+  FileStream.Free;
+End;
+
+Procedure TVerticalTable.LoadFromStream(Source: TStream);
+Var
+  DataSize: Int64;
+Begin
+  DataSize := Source.Size;
+  Source.Read(Header, SizeOf(Header));
+  DataSize := DataSize-SizeOf(Header);
+  Memory := AllocMem(DataSize);
+  Source.Read(Memory, DataSize);
 End;
 
 End.

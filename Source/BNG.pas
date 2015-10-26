@@ -39,6 +39,8 @@ Type
   End;
 
 Var
+  GM02GBData: TVerticalTable;
+  TN02GBData: THorizontalTable;
   GRS80Ellipsoid: TEllipsoid;
   OSTN02GridProjection: TProjection;
   BNGCoordinateSystem02: TBNGCoordinateSystem02;
@@ -60,7 +62,7 @@ Begin
 {$IFDEF OSTNO2RES_1KM}
   { Perform full kilometer resolution polynomial correction. }
   { This is the intrinsic conversion as defined by TN02 but requires a 20Mb data table. }
-  BilinearInterpolate(Result, 1000, EastOffset, NorthOffset, GeoidHeight);
+  BilinearInterpolate(TN02GBData, Result, 1000, EastOffset, NorthOffset, GeoidHeight);
   With Result Do
     Begin
       Easting := Easting+EastOffset;
@@ -71,7 +73,7 @@ Begin
 {$IFDEF OSTNO2RES_10KM}
   { Perform 10 kilometer resolution polynomial correction. }
   { Max Easting Error: 0.371 Max Northing Error: 0.375 Max Geoid Height Error: 0.554 }
-  BilinearInterpolate(Result, 10000, EastOffset, NorthOffset, GeoidHeight);
+  BilinearInterpolate(TN02GBData, Result, 10000, EastOffset, NorthOffset, GeoidHeight);
   With Result Do
     Begin
       Easting := Easting+EastOffset;
@@ -82,7 +84,7 @@ Begin
 {$IFDEF OSTNO2RES_100KM}
   { Perform 100 kilometer resolution polynomial correction. }
   { Max Easting Error: 2.790 Max Northing Error: 2.784 Max Geoid Height Error: 2.389 }
-  BilinearInterpolate(Result, 100000, EastOffset, NorthOffset, GeoidHeight);
+  BilinearInterpolate(TN02GBData, Result, 100000, EastOffset, NorthOffset, GeoidHeight);
   With Result Do
     Begin
       Easting := Easting+EastOffset;
@@ -125,7 +127,7 @@ Begin
       {$IFDEF OSTNO2RES_1KM}
         { Perform full kilometer resolution polynomial correction. }
         { This is the intrinsic conversion as defined by TN02 but requires a 20Mb data table. }
-        BilinearInterpolate(Result, 1000, EastOffset, NorthOffset, GeoidHeight);
+        BilinearInterpolate(TN02GBData, Result, 1000, EastOffset, NorthOffset, GeoidHeight);
         With Result Do
           Begin
             Easting := Coordinates.Easting-EastOffset;
@@ -136,7 +138,7 @@ Begin
       {$IFDEF OSTNO2RES_10KM}
         { Perform 10 kilometer resolution polynomial correction. }
         { Max Easting Error: 0.371 Max Northing Error: 0.375 Max Geoid Height Error: 0.554 }
-        BilinearInterpolate(Result, 10000, EastOffset, NorthOffset, GeoidHeight);
+        BilinearInterpolate(TN02GBData, Result, 10000, EastOffset, NorthOffset, GeoidHeight);
         With Result Do
           Begin
             Easting := Coordinates.Easting-EastOffset;
@@ -147,7 +149,7 @@ Begin
       {$IFDEF OSTNO2RES_100KM}
         { Perform 100 kilometer resolution polynomial correction. }
         { Max Easting Error: 2.790 Max Northing Error: 2.784 Max Geoid Height Error: 2.389 }
-        BilinearInterpolate(Result, 100000, EastOffset, NorthOffset, GeoidHeight);
+        BilinearInterpolate(TN02GBData, Result, 100000, EastOffset, NorthOffset, GeoidHeight);
         With Result Do
           Begin
             Easting := Coordinates.Easting-EastOffset;
@@ -215,6 +217,8 @@ End;
 
 Initialization
 
+GM02GBData.LoadFromFile('L:\Projects\GridInQuestII\Source\GM02GB.dat');
+TN02GBData.LoadFromFile('L:\Projects\GridInQuestII\Source\TN02GB.dat');
 GRS80Ellipsoid.Initialize(6378137.0000, 6356752.314140);
 OSTN02GridProjection.Initialize(0.9996012717, DegToRad(49), DegToRad(-2), 400000, -100000, GRS80Ellipsoid);
 BNGCoordinateSystem02.Initialize('British National Grid (2002)', 'OSGB36',
