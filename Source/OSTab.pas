@@ -19,23 +19,10 @@ Unit OSTab;
   {$LONGSTRINGS ON}
 {$ENDIF}
 
-{$INCLUDE OSTab.inc}
-
 Interface
 
 Uses
-  Classes, Math, Geometry, Geodesy;
-
-{ Include required TN02 array data. }
-{$IFDEF OSTNO2RES_1KM}
-  { $INCLUDE OSTN02R1K.inc}
-{$ENDIF}
-{$IFDEF OSTNO2RES_10KM}
-  { $INCLUDE OSTN02R10K.inc}
-{$ENDIF}
-{$IFDEF OSTNO2RES_100KM}
-  { $INCLUDE OSTN02R100K.inc}
-{$ENDIF}
+  SysUtils, Classes, Math, Geometry, Geodesy;
 
 Type
   TVerticalDatumModel = (OSGM02, OSVRF10);
@@ -66,8 +53,8 @@ Type
     Header: TDataHeader;
     Memory: Pointer;
     Function Data(Row, Col: Integer): THorizontalRecord;
-    Procedure LoadFromFile(FileName: String);
-    Procedure LoadFromStream(Source: TStream);
+    Function LoadFromFile(FileName: String): Boolean;
+    Function LoadFromStream(Source: TStream): Boolean;
   End;
   TVerticalRecord = Packed Record
     GeoidHeight: TSmallCoordinate;
@@ -78,8 +65,8 @@ Type
     Header: TDataHeader;
     Memory: Pointer;
     Function Data(Row, Col: Integer): TVerticalRecord;
-    Procedure LoadFromFile(FileName: String);
-    Procedure LoadFromStream(Source: TStream);
+    Function LoadFromFile(FileName: String): Boolean;
+    Function LoadFromStream(Source: TStream): Boolean;
   End;
 
 Const
@@ -170,16 +157,20 @@ Begin
   Result := RecordPointer^;
 End;
 
-Procedure THorizontalTable.LoadFromFile(FileName: String);
+Function THorizontalTable.LoadFromFile(FileName: String): Boolean;
 Var
   FileStream: TFileStream;
 Begin
-  FileStream := TFileStream.Create(FileName, fmOpenRead);
-  LoadFromStream(FileStream);
-  FileStream.Free;
+  Result := FileExists(FileName);
+  If Result Then
+    Begin
+      FileStream := TFileStream.Create(FileName, fmOpenRead);
+      Result := LoadFromStream(FileStream);
+      FileStream.Free;
+    End;
 End;
 
-Procedure THorizontalTable.LoadFromStream(Source: TStream);
+Function THorizontalTable.LoadFromStream(Source: TStream): Boolean;
 Var
   DataSize: Int64;
 Begin
@@ -199,24 +190,34 @@ Begin
   Result := RecordPointer^;
 End;
 
-Procedure TVerticalTable.LoadFromFile(FileName: String);
+Function TVerticalTable.LoadFromFile(FileName: String): Boolean;
 Var
   FileStream: TFileStream;
 Begin
-  FileStream := TFileStream.Create(FileName, fmOpenRead);
-  LoadFromStream(FileStream);
-  FileStream.Free;
+  Result := FileExists(FileName);
+  If Result Then
+    Begin
+      FileStream := TFileStream.Create(FileName, fmOpenRead);
+      Result := LoadFromStream(FileStream);
+      FileStream.Free;
+    End;
 End;
 
-Procedure TVerticalTable.LoadFromStream(Source: TStream);
+Function TVerticalTable.LoadFromStream(Source: TStream): Boolean;
 Var
   DataSize: Int64;
 Begin
   DataSize := Source.Size;
-  Source.Read(Header, SizeOf(Header));
-  DataSize := DataSize-SizeOf(Header);
-  Memory := AllocMem(DataSize);
-  Source.Read(Memory, DataSize);
+  If DataSize>SizeOf(Header) Then
+    Begin
+      Source.Read(Header, SizeOf(Header));
+      DataSize := DataSize-SizeOf(Header);
+      Memory := AllocMem(DataSize);
+      Source.Read(Memory, DataSize);
+      Result := True;
+    End
+  Else
+    Result := False;
 End;
 
 End.

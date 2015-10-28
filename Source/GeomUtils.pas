@@ -1,6 +1,5 @@
 Unit GeomUtils;
 
-
 { Geometry Formatting Utilities Library.
 
   Copyright (C) 2015 Paul Michell, Michell Computing.
