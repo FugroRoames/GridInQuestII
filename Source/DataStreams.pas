@@ -267,7 +267,7 @@ Begin
       If TextDelimiter=#0 Then
         Result := Result+Fields[Index]
       Else
-        Result := Result+TextDelimiter+Fields[Index]+TextDelimiter;
+        Result := Result+TextDelimiter+StringReplace(Fields[Index], TextDelimiter, TextDelimiter+TextDelimiter, [rfReplaceAll])+TextDelimiter;
       If Index<LastIndex Then
         Result := Result+OutputFieldTerminator;
     End;
