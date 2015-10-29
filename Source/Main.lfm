@@ -4,7 +4,7 @@ object MainForm: TMainForm
   Top = 265
   Width = 1190
   Caption = 'Grid InQuest II'
-  ClientHeight = 625
+  ClientHeight = 641
   ClientWidth = 1190
   Font.Name = 'Arial'
   Font.Quality = fqCleartype
@@ -420,17 +420,17 @@ object MainForm: TMainForm
   LCLVersion = '1.5'
   object SidePanel: TPanel
     Left = 0
-    Height = 625
+    Height = 641
     Top = 0
     Width = 523
     Align = alLeft
     BevelOuter = bvNone
-    ClientHeight = 625
+    ClientHeight = 641
     ClientWidth = 523
     TabOrder = 0
     object DataDrawGrid: TDrawGrid
       Left = 0
-      Height = 625
+      Height = 641
       Top = 0
       Width = 523
       Align = alClient
@@ -450,7 +450,7 @@ object MainForm: TMainForm
   end
   object PanelSplitter: TSplitter
     Left = 523
-    Height = 625
+    Height = 641
     Top = 0
     Width = 5
     ParentColor = False
@@ -656,7 +656,7 @@ object MainForm: TMainForm
     Title = 'Open Data Points File'
     DefaultExt = '.csv'
     Filter = 'Comma Separated Text|*.csv|Tab Delimited Text|*.tab|General Text|*.txt|All Files|*.*'
-    left = 896
+    left = 872
     top = 8
   end
   object SavePointsDialog: TSaveDialog
@@ -665,7 +665,7 @@ object MainForm: TMainForm
     Title = 'Save Data Points File'
     DefaultExt = '.csv'
     Filter = 'Comma Separated Text|*.csv|Tab Delimited Text|*.tab|General Text|*.txt|All Files|*.*'
-    left = 1072
+    left = 992
     top = 8
   end
 end

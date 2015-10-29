@@ -2,8 +2,8 @@
 <CONFIG>
   <ProjectSession>
     <Version Value="9"/>
-    <BuildModes Active="Debug"/>
-    <Units Count="54">
+    <BuildModes Active="Release"/>
+    <Units Count="55">
       <Unit0>
         <Filename Value="GridInQuestII.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -17,9 +17,10 @@
         <ComponentName Value="MainForm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="142"/>
-        <CursorPos Y="664"/>
+        <TopLine Value="265"/>
+        <CursorPos Y="286"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -104,7 +105,8 @@
         <Filename Value="ETRS.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="12"/>
-        <CursorPos X="3" Y="29"/>
+        <TopLine Value="130"/>
+        <CursorPos X="66" Y="144"/>
         <UsageCount Value="202"/>
         <Loaded Value="True"/>
       </Unit11>
@@ -113,7 +115,7 @@
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="10"/>
         <CursorPos Y="21"/>
-        <UsageCount Value="151"/>
+        <UsageCount Value="152"/>
         <Loaded Value="True"/>
       </Unit12>
       <Unit13>
@@ -121,7 +123,7 @@
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
         <CursorPos Y="10"/>
-        <UsageCount Value="109"/>
+        <UsageCount Value="110"/>
       </Unit13>
       <Unit14>
         <Filename Value="TN02.pas"/>
@@ -145,7 +147,8 @@
       <Unit17>
         <Filename Value="DataStreams.pas"/>
         <EditorIndex Value="6"/>
-        <CursorPos Y="342"/>
+        <TopLine Value="257"/>
+        <CursorPos X="144" Y="270"/>
         <UsageCount Value="102"/>
         <Loaded Value="True"/>
       </Unit17>
@@ -265,9 +268,8 @@
       </Unit33>
       <Unit34>
         <Filename Value="BNG.pas"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="7"/>
-        <TopLine Value="247"/>
+        <TopLine Value="246"/>
         <CursorPos X="21" Y="204"/>
         <UsageCount Value="100"/>
         <Loaded Value="True"/>
@@ -296,14 +298,16 @@
       <Unit38>
         <Filename Value="ITM.pas"/>
         <EditorIndex Value="8"/>
-        <CursorPos X="3" Y="47"/>
+        <TopLine Value="40"/>
+        <CursorPos X="59" Y="60"/>
         <UsageCount Value="100"/>
         <Loaded Value="True"/>
       </Unit38>
       <Unit39>
         <Filename Value="IG.pas"/>
         <EditorIndex Value="9"/>
-        <CursorPos X="39" Y="24"/>
+        <TopLine Value="171"/>
+        <CursorPos X="44" Y="193"/>
         <UsageCount Value="100"/>
         <Loaded Value="True"/>
       </Unit39>
@@ -405,127 +409,134 @@
         <CursorPos X="3" Y="26"/>
         <UsageCount Value="9"/>
       </Unit53>
+      <Unit54>
+        <Filename Value="C:/Applications/FreePascal/2.6.4/source/rtl/objpas/sysutils/finah.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="11"/>
+        <CursorPos X="10" Y="24"/>
+        <UsageCount Value="10"/>
+      </Unit54>
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="BNG.pas"/>
-        <Caret Line="239" TopLine="221"/>
+        <Filename Value="DataStreams.pas"/>
+        <Caret Line="267" TopLine="257"/>
       </Position1>
       <Position2>
-        <Filename Value="BNG.pas"/>
-        <Caret Line="69" Column="45" TopLine="54"/>
+        <Filename Value="DataStreams.pas"/>
+        <Caret Line="270" TopLine="257"/>
       </Position2>
       <Position3>
-        <Filename Value="GlobeCtrl.pas"/>
-        <Caret Line="534" Column="8" TopLine="523"/>
+        <Filename Value="DataStreams.pas"/>
+        <Caret Line="271" TopLine="257"/>
       </Position3>
       <Position4>
-        <Filename Value="BNG.pas"/>
-        <Caret Line="113" TopLine="102"/>
+        <Filename Value="DataStreams.pas"/>
+        <Caret Line="272" TopLine="257"/>
       </Position4>
       <Position5>
-        <Filename Value="BNG.pas"/>
-        <Caret Line="141" TopLine="136"/>
+        <Filename Value="DataStreams.pas"/>
+        <Caret Line="265" TopLine="257"/>
       </Position5>
       <Position6>
-        <Filename Value="BNG.pas"/>
-        <Caret Line="142" TopLine="136"/>
+        <Filename Value="DataStreams.pas"/>
+        <Caret Line="267" TopLine="257"/>
       </Position6>
       <Position7>
-        <Filename Value="BNG.pas"/>
-        <Caret Line="143" TopLine="136"/>
+        <Filename Value="DataStreams.pas"/>
+        <Caret Line="270" TopLine="257"/>
       </Position7>
       <Position8>
-        <Filename Value="BNG.pas"/>
-        <Caret Line="145" TopLine="136"/>
+        <Filename Value="DataStreams.pas"/>
+        <Caret Line="271" TopLine="257"/>
       </Position8>
       <Position9>
-        <Filename Value="BNG.pas"/>
-        <Caret Line="147" TopLine="136"/>
+        <Filename Value="DataStreams.pas"/>
+        <Caret Line="272" TopLine="257"/>
       </Position9>
       <Position10>
-        <Filename Value="BNG.pas"/>
-        <Caret Line="145" TopLine="136"/>
+        <Filename Value="DataStreams.pas"/>
+        <Caret Line="265" TopLine="257"/>
       </Position10>
       <Position11>
-        <Filename Value="BNG.pas"/>
-        <Caret Line="147" TopLine="136"/>
+        <Filename Value="DataStreams.pas"/>
+        <Caret Line="267" TopLine="257"/>
       </Position11>
       <Position12>
-        <Filename Value="BNG.pas"/>
-        <Caret Line="145" TopLine="136"/>
+        <Filename Value="DataStreams.pas"/>
+        <Caret Line="270" TopLine="257"/>
       </Position12>
       <Position13>
-        <Filename Value="BNG.pas"/>
-        <Caret Line="148" TopLine="136"/>
+        <Filename Value="DataStreams.pas"/>
+        <Caret Line="271" TopLine="257"/>
       </Position13>
       <Position14>
-        <Filename Value="BNG.pas"/>
-        <Caret Line="145" TopLine="136"/>
+        <Filename Value="DataStreams.pas"/>
+        <Caret Line="272" TopLine="257"/>
       </Position14>
       <Position15>
-        <Filename Value="BNG.pas"/>
-        <Caret Line="148" TopLine="136"/>
+        <Filename Value="DataStreams.pas"/>
+        <Caret Line="265" TopLine="257"/>
       </Position15>
       <Position16>
-        <Filename Value="BNG.pas"/>
-        <Caret Line="145" TopLine="136"/>
+        <Filename Value="DataStreams.pas"/>
+        <Caret Line="267" TopLine="257"/>
       </Position16>
       <Position17>
-        <Filename Value="BNG.pas"/>
-        <Caret Line="149" TopLine="136"/>
+        <Filename Value="DataStreams.pas"/>
+        <Caret Line="270" TopLine="257"/>
       </Position17>
       <Position18>
-        <Filename Value="BNG.pas"/>
-        <Caret Line="145" TopLine="136"/>
+        <Filename Value="DataStreams.pas"/>
+        <Caret Line="271" TopLine="257"/>
       </Position18>
       <Position19>
-        <Filename Value="BNG.pas"/>
-        <Caret Line="149" TopLine="136"/>
+        <Filename Value="DataStreams.pas"/>
+        <Caret Line="272" TopLine="257"/>
       </Position19>
       <Position20>
-        <Filename Value="BNG.pas"/>
-        <Caret Line="151" TopLine="136"/>
+        <Filename Value="DataStreams.pas"/>
+        <Caret Line="265" TopLine="257"/>
       </Position20>
       <Position21>
-        <Filename Value="BNG.pas"/>
-        <Caret Line="238" TopLine="228"/>
+        <Filename Value="DataStreams.pas"/>
+        <Caret Line="267" TopLine="257"/>
       </Position21>
       <Position22>
-        <Filename Value="BNG.pas"/>
-        <Caret Line="164" TopLine="152"/>
+        <Filename Value="DataStreams.pas"/>
+        <Caret Line="270" TopLine="257"/>
       </Position22>
       <Position23>
-        <Filename Value="BNG.pas"/>
-        <Caret Line="214" TopLine="206"/>
+        <Filename Value="DataStreams.pas"/>
+        <Caret Line="271" TopLine="257"/>
       </Position23>
       <Position24>
-        <Filename Value="BNG.pas"/>
-        <Caret Line="216" TopLine="206"/>
+        <Filename Value="DataStreams.pas"/>
+        <Caret Line="272" TopLine="257"/>
       </Position24>
       <Position25>
-        <Filename Value="BNG.pas"/>
-        <Caret Line="214" TopLine="206"/>
+        <Filename Value="DataStreams.pas"/>
+        <Caret Line="265" TopLine="257"/>
       </Position25>
       <Position26>
-        <Filename Value="BNG.pas"/>
-        <Caret Line="217" TopLine="206"/>
+        <Filename Value="DataStreams.pas"/>
+        <Caret Line="267" TopLine="257"/>
       </Position26>
       <Position27>
-        <Filename Value="BNG.pas"/>
-        <Caret Line="214" TopLine="206"/>
+        <Filename Value="DataStreams.pas"/>
+        <Caret Line="270" TopLine="257"/>
       </Position27>
       <Position28>
-        <Filename Value="BNG.pas"/>
-        <Caret Line="218" TopLine="206"/>
+        <Filename Value="DataStreams.pas"/>
+        <Caret Line="271" TopLine="257"/>
       </Position28>
       <Position29>
-        <Filename Value="BNG.pas"/>
-        <Caret Line="220" TopLine="206"/>
+        <Filename Value="DataStreams.pas"/>
+        <Caret Line="265" TopLine="257"/>
       </Position29>
       <Position30>
-        <Filename Value="BNG.pas"/>
-        <Caret Line="222" TopLine="207"/>
+        <Filename Value="DataStreams.pas"/>
+        <Caret Line="274" TopLine="257"/>
       </Position30>
     </JumpHistory>
   </ProjectSession>

@@ -182,8 +182,6 @@ Begin
   InputSecondFieldIndex := -1;
   InputThirdFieldIndex := -1;
   OutputSystemIndex := -1;
-  OutputFieldTerminator := ',';
-  OutputTextDelimiter := '"';
   GlobeSystemIndex := CoordinateSystems.FindEPSGNumber(4937); { Globe uses WGS84/ETRS89. }
 End;
 
@@ -284,7 +282,7 @@ Var
     If OutputTextDelimiter=#0 Then
       Result := Text
     Else
-      Result := OutputTextDelimiter+Text+OutputTextDelimiter;
+      Result := OutputTextDelimiter+StringReplace(Text, OutputTextDelimiter, OutputTextDelimiter+OutputTextDelimiter, [rfReplaceAll])+OutputTextDelimiter;
   End;
 Begin
   If Length(OutputCoordinates)=0 Then
@@ -302,6 +300,22 @@ Begin
       Try
         OutputFile := TFileStream.Create(SavePointsDialog.FileName, fmCreate);
         ProgressDisplay.Show('Saving Data');
+        { Set delimiters as needed by output formats. }
+        Case ExtractFileExt(SavePointsDialog.FileName) Of
+        '.csv':
+          Begin
+            OutputFieldTerminator := ',';
+            OutputTextDelimiter := '"';
+          End;
+        '.tab':
+          Begin
+            OutputFieldTerminator := #9;
+            OutputTextDelimiter := #0;
+          End;
+        Else
+          OutputFieldTerminator := ',';
+          OutputTextDelimiter := #0;
+        End;
         { Write the header line for the output file. }
         OutputText := InputData.NamesAsText(OutputFieldTerminator, OutputTextDelimiter);
         With CoordinateSystems.Items(OutputSystemIndex) Do
