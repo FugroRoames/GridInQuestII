@@ -141,7 +141,7 @@ GRS80Ellipsoid.Initialize(6378137.0000, 6356752.314140);
 UTMZone29Projection.Initialize(0.9996, 0, DegToRad(-9), 500000, 0, GRS80Ellipsoid);
 UTMZone30Projection.Initialize(0.9996, 0, DegToRad(-3), 500000, 0, GRS80Ellipsoid);
 UTMZone31Projection.Initialize(0.9996, 0, DegToRad(3), 500000, 0, GRS80Ellipsoid);
-ETRS89CoordinateSystemGC.Initialize('ETRS89 Geocentric', 'ETRS89GC', 'ETRS89 Geocentric', 4936, ctGeocentric, aoXYZ);
+ETRS89CoordinateSystemGC.Initialize('ETRS89 Cartesian', 'ETRS89CT', 'ETRS89 Cartesian', 4936, ctGeocentric, aoXYZ);
 ETRS89CoordinateSystemGD.Initialize('ETRS89 Geodetic', 'ETRS89GD', 'ETRS89 Geodetic', 4937, ctGeodetic, aoYXZ);
 ETRS89CoordinateSystem31N.Initialize('ETRS89 UTM 31N', 'UTM31N', 'ETRS89 / UTM Zone 31N', 25831, ctCartesian, aoXYZ);
 ETRS89CoordinateSystem30N.Initialize('ETRS89 UTM 30N', 'UTM30N', 'ETRS89 / UTM Zone 30N', 25830, ctCartesian, aoXYZ);
