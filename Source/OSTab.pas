@@ -70,9 +70,9 @@ Type
   End;
 
 Const
-  VerticalDatums: Array [0..14] Of TDatumRecord =
-    ((Code: 0; Name: ''; Region: 'Outside Model'),
-    (Code: 1; Name: 'Newlyn'; Region: 'UK Mainland'),
+  VerticalDatums: Array [0..15] Of TDatumRecord =
+    ((Code: 0; Name: 'None'; Region: 'Outside Model'),
+    (Code: 1; Name: 'Ordnance Datum Newlyn'; Region: 'UK Mainland'),
     (Code: 2; Name: 'St Marys'; Region: 'Scilly Isles'),
     (Code: 3; Name: 'Douglas02'; Region: 'Isle of Man'),
     (Code: 4; Name: 'Stornoway'; Region: 'Outer Hebrides'),
@@ -85,7 +85,8 @@ Const
     (Code: 11; Name: 'Sule Skerry'; Region: 'Sule Skerry'),
     (Code: 12; Name: 'Foula'; Region: 'Foula'),
     (Code: 13; Name: 'Malin Head'; Region: 'Republic of Ireland'),
-    (Code: 14; Name: 'Belfast'; Region: 'Northern Ireland'));
+    (Code: 14; Name: 'Belfast'; Region: 'Northern Ireland'),
+    (Code: 15; Name: 'Ordnance Datum Newlyn (Offshore)'; Region: 'UK Offshore'));
 
 Procedure BilinearInterpolate(Const HorizontalTable: THorizontalTable; Const Coordinates: TCoordinates; Const GridScale: TCoordinate; Var EastOffset, NorthOffset, GeoidHeight: TCoordinate);
 
