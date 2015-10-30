@@ -308,8 +308,8 @@ GRS80Ellipsoid.Initialize(6378137.0000, 6356752.314140);
 OSTN02GridProjection.Initialize(0.9996012717, DegToRad(49), DegToRad(-2), 400000, -100000, GRS80Ellipsoid);
 BNGCoordinateSystem02.Initialize('British National Grid (2002)', 'OSGB36',
                                  'OSGB36 / British National Grid (TN02/GM02)', 27700, ctProjected, aoXYZ);
-BNGCoordinateSystem10.Initialize('British National Grid (2010)', 'OSGB36',
-                                 'OSGB36 / British National Grid (TN02/VRF10)', 27700, ctProjected, aoXYZ);
+BNGCoordinateSystem10.Initialize('British National Grid (2015)', 'OSGB36',
+                                 'OSGB36 / British National Grid (TN15/GM15)', 27701, ctProjected, aoXYZ);
 CoordinateSystems.Register(BNGCoordinateSystem02);
 CoordinateSystems.Register(BNGCoordinateSystem10);
 
