@@ -60,7 +60,7 @@ Initialization
 GRS80Ellipsoid.Initialize(6378137.0000, 6356752.314140);
 ITMProjection.Initialize(0.99982, DegToRad(53.5), DegToRad(-8), 600000, 750000, GRS80Ellipsoid);
 ITMCoordinateSystem95.Initialize('Irish Transverse Mercator', 'IRENET95',
-                                 'Irish Transverse Mercator (ITM)', 2157, ctCartesian, aoXYZ);
+                                 'Irish Transverse Mercator (ITM)', 2157, ctProjected, aoXYZ);
 CoordinateSystems.Register(ITMCoordinateSystem95);
 
 End.

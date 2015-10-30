@@ -190,7 +190,7 @@ Airy1830ModifiedEllipsoid.Initialize(6377340.1890, 6356034.4470);
 GRS80Ellipsoid.Initialize(6378137.0000, 6356752.314140);
 IrishGridProjection.Initialize(1.000035, DegToRad(53.5), DegToRad(-8), 200000, 250000, Airy1830ModifiedEllipsoid);
 IrishGPSGridProjection.Initialize(1.000035, DegToRad(53.5), DegToRad(-8), 200000, 250000, GRS80Ellipsoid);
-IGCoordinateSystem75.Initialize('Irish Grid', 'IG75', 'Irish Grid (IG)', 29903, ctCartesian, aoXYZ);
+IGCoordinateSystem75.Initialize('Irish Grid', 'IG75', 'Irish Grid (IG)', 29903, ctProjected, aoXYZ);
 CoordinateSystems.Register(IGCoordinateSystem75);
 
 End.

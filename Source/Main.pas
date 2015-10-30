@@ -326,7 +326,7 @@ Begin
             OutputText := OutputText+OutputFieldTerminator;
             OutputText := OutputText+AddDelimiters(EPSGText+'-'+AxisShortName(OutputSystemIndex, 1));
             { Output the third coordinate name if needed. }
-            If (InputThirdFieldIndex<>-1) Or (CoordinateType=ctGeocentric) Then
+            If (InputThirdFieldIndex<>-1) Or (CoordinateType=ctCartesian) Then
               Begin
                 OutputText := OutputText+OutputFieldTerminator;
                 OutputText := OutputText+AddDelimiters(EPSGText+'-'+AxisShortName(OutputSystemIndex, 2));
@@ -347,7 +347,7 @@ Begin
                 OutputText := OutputText+OutputFieldTerminator;
                 OutputText := OutputText+AddDelimiters(RecordOutputCoordinateText(RecordIndex, 1, AxisOrder, CoordinateType));
                 { Output the third coordinate if needed. }
-                If (InputThirdFieldIndex<>-1) Or (CoordinateType=ctGeocentric) Then
+                If (InputThirdFieldIndex<>-1) Or (CoordinateType=ctCartesian) Then
                   Begin
                     OutputText := OutputText+OutputFieldTerminator;
                     OutputText := OutputText+AddDelimiters(RecordOutputCoordinateText(RecordIndex, 2, AxisOrder, CoordinateType));
@@ -581,7 +581,7 @@ End;
 Function TMainForm.RecordOutputCoordinateText(RecordNumber, AxisIndex: Integer; AxisOrder: TAxisOrder; CoordinateType: TCoordinateType): String;
 Begin
   Case CoordinateType Of
-  ctGeocentric:
+  ctCartesian:
     Case AxisTypeFromIndex(AxisIndex, AxisOrder) Of
     atXAxis: Result := FormatCoordinateWithUnits(OutputCoordinates[RecordNumber].X, 'm', 2);
     atYAxis: Result := FormatCoordinateWithUnits(OutputCoordinates[RecordNumber].Y, 'm', 2);
@@ -593,7 +593,7 @@ Begin
     atYAxis: Result := FormatCoordinate(DecimalToSexagesimalCoordinate(OutputCoordinates[RecordNumber].Y), soNorthSouthSuffix);
     atZAxis: Result := FormatCoordinateWithUnits(OutputCoordinates[RecordNumber].Z, 'm', 3);
     End;
-  ctCartesian:
+  ctProjected:
     Case AxisTypeFromIndex(AxisIndex, AxisOrder) Of
     atXAxis: Result := FormatCoordinate(OutputCoordinates[RecordNumber].X, 3, True)+' E';
     atYAxis: Result := FormatCoordinate(OutputCoordinates[RecordNumber].Y, 3, True)+' N';
@@ -720,7 +720,7 @@ Begin
             Width := NewWidth;
           End;
         { Add an elevation column if required. }
-        If (InputThirdFieldIndex<>-1) Or (CoordinateType=ctGeocentric) Then
+        If (InputThirdFieldIndex<>-1) Or (CoordinateType=ctCartesian) Then
           With DataDrawGrid.Columns.Add Do
             Begin
               Title.Caption := EPSGText+'-'+AxisShortName(OutputSystemIndex, 2);

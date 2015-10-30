@@ -29,7 +29,7 @@ Uses
   Math, Geometry;
 
 Type
-  TCoordinateType = (ctGeocentric, ctGeodetic, ctCartesian);
+  TCoordinateType = (ctCartesian, ctGeodetic, ctProjected);
 
 Type
   TAxisOrder = (aoXYZ, aoYXZ);
@@ -609,11 +609,11 @@ End;
 Function TCoordinateSystem.AxisNames: TAxisNames;
 Begin
   Case CoordinateType Of
-  ctGeocentric:
+  ctCartesian:
     Result := GeocentricAxisNames;
   ctGeodetic:
     Result := GeodeticAxisNames;
-  ctCartesian:
+  ctProjected:
     Result := CartesianAxisNames;
   End;
 End;

@@ -184,7 +184,7 @@ Begin
       FEdit.Font.Color := clRed;
   If Valid And Tidy Then
     Case TCoordinatesEntryPanel(Parent).CoordinateType Of
-    ctGeocentric:
+    ctCartesian:
       Case AxisType Of
       atXAxis: FEdit.Text := FormatCoordinateWithUnits(Coordinate, 'm', 3);
       atYAxis: FEdit.Text := FormatCoordinateWithUnits(Coordinate, 'm', 3);
@@ -196,7 +196,7 @@ Begin
       atYAxis: FEdit.Text := FormatCoordinate(DecimalToSexagesimalCoordinate(Coordinate), soNorthSouthSuffix);
       atZAxis: FEdit.Text := FormatCoordinateWithUnits(Coordinate, 'm', 3);
       End;
-    ctCartesian:
+    ctProjected:
       Case AxisType Of
       atXAxis: FEdit.Text := FormatCoordinate(Coordinate, 4, True)+' E';
       atYAxis: FEdit.Text := FormatCoordinate(Coordinate, 4, True)+' N';
@@ -209,11 +209,11 @@ End;
 Procedure TCoordinatePanel.Validate;
 Begin
   Case TCoordinatesEntryPanel(Parent).CoordinateType Of
-  ctGeocentric:
+  ctCartesian:
     FValid := TryGeocentricTextToCoordinate(FEdit.Text, FCoordinate, FAxisType);
   ctGeodetic:
     FValid := TryGeodeticTextToCoordinate(FEdit.Text, FCoordinate, FAxisType);
-  ctCartesian:
+  ctProjected:
     FValid := TryCartesianTextToCoordinate(FEdit.Text, FCoordinate, FAxisType);
   Else
     FValid := False;

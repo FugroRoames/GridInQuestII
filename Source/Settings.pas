@@ -212,7 +212,7 @@ Begin
         SetAxisCaption(FirstFieldLabel, 0, AxisOrder, AxisNames);
         SetAxisCaption(SecondFieldLabel, 1, AxisOrder, AxisNames);
         SetAxisCaption(ThirdFieldLabel, 2, AxisOrder, AxisNames);
-        If CoordinateType=ctGeocentric Then
+        If CoordinateType=ctCartesian Then
           Begin
             VirticalDataCheckBox.Checked := True;
             VirticalDataCheckBox.Enabled := False;
