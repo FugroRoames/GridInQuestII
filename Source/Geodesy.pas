@@ -180,7 +180,8 @@ Type
 Type
   TCoordinateSystems = Object
     Count: Integer;
-    Function AvailableSystemsList(OmitIndex: Integer = -1): String;
+    Function AvailableSystemsList: String;
+    Function CompatibleSystemsList(SystemIndex: Integer): String;
     Function FindByDescription(Const Description: String): Integer;
     Function FindEPSGNumber(Const Number: Integer): Integer;
     Function IndexOf(Const CoordinateSystem: TCoordinateSystem): Integer;
@@ -633,7 +634,10 @@ End;
 Var
   CoordinateSystemsList: Array Of TCoordinateSystemPointer;
 
-Function TCoordinateSystems.AvailableSystemsList(OmitIndex: Integer = -1): String;
+Type
+  TIndexList = Set Of Byte;
+
+Function BuildCoordinateSystemsList(OmitList: TIndexList): String;
 Var
   FirstIndex: Integer;
   LastIndex: Integer;
@@ -643,12 +647,46 @@ Begin
   FirstIndex := Low(CoordinateSystemsList);
   LastIndex := High(CoordinateSystemsList);
   For Index := FirstIndex To LastIndex Do
-    If Index<>OmitIndex Then
+    If Not (Index In OmitList) Then
       Begin
         Result := Result+CoordinateSystemsList[Index]^.Description;
         If Index<>LastIndex Then
           Result := Result+LineEnding;
       End;
+End;
+
+
+Function TCoordinateSystems.AvailableSystemsList: String;
+Begin
+  Result := BuildCoordinateSystemsList([]);
+End;
+
+Function TCoordinateSystems.CompatibleSystemsList(SystemIndex: Integer): String;
+Var
+  EPSGNumber: Integer;
+Begin
+  If SystemIndex=-1 Then
+    EPSGNumber := 0
+  Else
+    EPSGNumber := CoordinateSystemsList[SystemIndex]^.EPSGNumber;
+  // TODO: UTM zones need overlap testing adding here.
+  With CoordinateSystems Do
+    Case EPSGNumber Of
+    0: { Full List }
+      Result := BuildCoordinateSystemsList([]);
+    25831:{ UTM Zone 31N }
+      Result := BuildCoordinateSystemsList([Byte(SystemIndex)]);
+    25830:{ UTM Zone 30N }
+      Result := BuildCoordinateSystemsList([Byte(SystemIndex)]);
+    25829:{ UTM Zone 29N }
+      Result := BuildCoordinateSystemsList([Byte(SystemIndex)]);
+    29903, 2157: { Irish Grid and Irish Transverse Mercator }
+      Result := BuildCoordinateSystemsList([Byte(SystemIndex), Byte(FindEPSGNumber(27700)), Byte(FindEPSGNumber(27701))]);
+    27700, 27701: { British National Grid (TN02/GM02) and (TN15/GM15) }
+      Result := BuildCoordinateSystemsList([Byte(SystemIndex), Byte(FindEPSGNumber(29903)), Byte(FindEPSGNumber(2157))]);
+    Else { Otherwsie build a full list of available systems omiting the source. }
+      Result := BuildCoordinateSystemsList([Byte(SystemIndex)]);
+    End;
 End;
 
 Function TCoordinateSystems.FindByDescription(Const Description: String): Integer;

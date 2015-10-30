@@ -234,7 +234,7 @@ Begin
   SecondColumnComboBox.ItemIndex := MainForm.InputSecondFieldIndex;
   ThirdColumnComboBox.Items.Text := Data.NamesList;
   ThirdColumnComboBox.ItemIndex := MainForm.InputThirdFieldIndex;
-  OutputSystemComboBox.Items.Text := CoordinateSystems.AvailableSystemsList(InputSystemComboBox.ItemIndex);
+  OutputSystemComboBox.Items.Text := CoordinateSystems.CompatibleSystemsList(InputSystemComboBox.ItemIndex);
   If (MainForm.OutputSystemIndex=-1) Or (MainForm.OutputSystemIndex=MainForm.InputSystemIndex) Then
     OutputSystemComboBox.Text := EmptyStr
   Else

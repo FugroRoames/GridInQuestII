@@ -661,7 +661,7 @@ End;
 
 Procedure TMainForm.DoInputChangeSystem(Sender: TObject);
 Begin
-  OutputPanel.Clear;
+  OutputPanel.Clear(InputPanel.CoordinateSystemIndex);
 End;
 
 Procedure TMainForm.DoOutputChangeSystem(Sender: TObject);

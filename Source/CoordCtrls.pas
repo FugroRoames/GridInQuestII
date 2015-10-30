@@ -73,7 +73,7 @@ Type
   Public
     { Public declarations. }
     Constructor Create(TheOwner: TComponent; NewCaption: String); Virtual;
-    Procedure Clear;
+    Procedure Clear(CompatibleIndex: Integer = -1);
   End;
 
 Type
@@ -100,7 +100,7 @@ Type
   Public
     { Public declarations. }
     Constructor Create(TheOwner: TComponent; PanelType: TPanelType); Virtual;
-    Procedure Clear;
+    Procedure Clear(CompatibleIndex: Integer = -1);
     Property Coordinates: TCoordinates Read GetCoordinates Write SetCoordinates;
     Property CoordinatesAsText: String Read GetCoordinatesAsText;
     Property CoordinateSystemIndex: Integer Read GetCoordinateSystemIndex Write SetCoordinateSystemIndex;
@@ -290,8 +290,9 @@ Begin
     Parent := TWinControl(TheOwner);
 End;
 
-Procedure TCoordinateSystemPanel.Clear;
+Procedure TCoordinateSystemPanel.Clear(CompatibleIndex: Integer = -1);
 Begin
+  FComboBox.Items.Text := CoordinateSystems.CompatibleSystemsList(CompatibleIndex);
   FComboBox.ItemIndex := -1;
 End;
 
@@ -311,7 +312,8 @@ End;
 
 Procedure TCoordinateSystemPanel.DoOnChange(Sender: TObject);
 Var
-  Index: Integer;
+  SelectedSystem: String;
+  CurrentSystemList: String;
   CoordinateSystem: TCoordinateSystem;
   Coordinates: TCoordinates;
   Procedure SetAxisCaptionAndType(CoordinatePanel: TCoordinatePanel; Index: Integer; AxisOrder: TAxisOrder; AxisNames: TAxisNames);
@@ -324,11 +326,14 @@ Var
     End;
   End;
 Begin
-  Index := FComboBox.ItemIndex;
-  CoordinateSystem := CoordinateSystems.Items(Index);
+  SelectedSystem := FComboBox.Text;
+  CurrentSystemList := FComboBox.Items.Text;
+  With CoordinateSystems Do
+    CoordinateSystem := Items(FindByDescription(SelectedSystem));
   TCoordinatesEntryPanel(Parent).Clear;
-  TCoordinatesEntryPanel(Parent).Locked := (Index=-1) Or (TCoordinatesEntryPanel(Parent).FPanelType=ptOutput);
-  FComboBox.ItemIndex := Index;
+  TCoordinatesEntryPanel(Parent).Locked := (SelectedSystem='') Or (TCoordinatesEntryPanel(Parent).FPanelType=ptOutput);
+  FComboBox.Items.Text := CurrentSystemList;
+  FComboBox.Text := SelectedSystem;
   With TCoordinatesEntryPanel(Parent) Do
     Begin
       CoordinateType := CoordinateSystem.CoordinateType;
@@ -472,9 +477,9 @@ Begin
   FCoordinateSystemPanel.DoOnChange(Self);
 End;
 
-Procedure TCoordinatesEntryPanel.Clear;
+Procedure TCoordinatesEntryPanel.Clear(CompatibleIndex: Integer = -1);
 Begin
-  FCoordinateSystemPanel.Clear;
+  FCoordinateSystemPanel.Clear(CompatibleIndex);
   FFirstCoordinatePanel.Clear;
   FSecondCoordinatePanel.Clear;
   FThirdCoordinatePanel.Clear;
