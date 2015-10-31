@@ -48,10 +48,10 @@ Type
     ShiftEast: TSmallCoordinate;
     ShiftNorth: TSmallCoordinate;
   End;
-  THorizontalRecordPointer = ^THorizontalRecord;
+  THorizontalRecordArray = Array Of THorizontalRecord;
   THorizontalTable = Packed Object
     Header: TDataHeader;
-    Memory: Pointer;
+    Records: THorizontalRecordArray;
     Function Data(Row, Col: Integer): THorizontalRecord;
     Function LoadFromFile(FileName: String): Boolean;
     Function LoadFromStream(Source: TStream): Boolean;
@@ -60,10 +60,10 @@ Type
     GeoidHeight: TSmallCoordinate;
     DatumCode: Byte;
   End;
-  TVerticalRecordPointer = ^TVerticalRecord;
+  TVerticalRecordArray = Array Of TVerticalRecord;
   TVerticalTable = Packed Object
     Header: TDataHeader;
-    Memory: Pointer;
+    Records: TVerticalRecordArray;
     Function Data(Row, Col: Integer): TVerticalRecord;
     Function LoadFromFile(FileName: String): Boolean;
     Function LoadFromStream(Source: TStream): Boolean;
@@ -140,22 +140,21 @@ Begin
       SN3 := ShiftNorth;
       SG3 := 0;
     End;
-  T := (Coordinates.Easting-(X1*GridScale))*InvGridScale;
-  TI := (1-T);
-  U := (Coordinates.Northing-(Y1*GridScale))*InvGridScale;
-  UI := (1-U);
+  With HorizontalTable.Header Do
+    Begin
+      T := (Coordinates.Easting-(X1*GridScale+Origin.Easting))*InvGridScale;
+      TI := (1-T);
+      U := (Coordinates.Northing-(Y1*GridScale+Origin.Northing))*InvGridScale;
+      UI := (1-U);
+    End;
   EastOffset := (TI*UI*SE0)+(T*UI*SE1)+(T*U*SE2)+(TI*U*SE3);
   NorthOffset := (TI*UI*SN0)+(T*UI*SN1)+(T*U*SN2)+(TI*U*SN3);
   GeoidHeight := (TI*UI*SG0)+(T*UI*SG1)+(T*U*SG2)+(TI*U*SG3);
 End;
 
 Function THorizontalTable.Data(Row, Col: Integer): THorizontalRecord;
-Var
-  RecordPointer: THorizontalRecordPointer;
 Begin
-  RecordPointer := THorizontalRecordPointer(Memory);
-  Inc(RecordPointer, Col+Row*Header.ColumnCount);
-  Result := RecordPointer^;
+  Result := Records[Col+Row*Header.ColumnCount];
 End;
 
 Function THorizontalTable.LoadFromFile(FileName: String): Boolean;
@@ -174,21 +173,25 @@ End;
 Function THorizontalTable.LoadFromStream(Source: TStream): Boolean;
 Var
   DataSize: Int64;
+  RecordCount: Integer;
 Begin
   DataSize := Source.Size;
-  Source.Read(Header, SizeOf(Header));
-  DataSize := DataSize-SizeOf(Header);
-  Memory := AllocMem(DataSize);
-  Source.Read(Memory, DataSize);
+  If DataSize>SizeOf(Header) Then
+    Begin
+      Source.Read(Header, SizeOf(Header));
+      DataSize := DataSize-SizeOf(Header);
+      RecordCount := DataSize Div SizeOf(THorizontalRecord);
+      SetLength(Records, RecordCount);
+      Source.Read(Records[0], DataSize);
+      Result := True;
+    End
+  Else
+    Result := False;
 End;
 
 Function TVerticalTable.Data(Row, Col: Integer): TVerticalRecord;
-Var
-  RecordPointer: TVerticalRecordPointer;
 Begin
-  RecordPointer := TVerticalRecordPointer(Memory);
-  Inc(RecordPointer, Col+Row*Header.ColumnCount);
-  Result := RecordPointer^;
+  Result := Records[Col+Row*Header.ColumnCount];
 End;
 
 Function TVerticalTable.LoadFromFile(FileName: String): Boolean;
@@ -207,14 +210,16 @@ End;
 Function TVerticalTable.LoadFromStream(Source: TStream): Boolean;
 Var
   DataSize: Int64;
+  RecordCount: Integer;
 Begin
   DataSize := Source.Size;
   If DataSize>SizeOf(Header) Then
     Begin
       Source.Read(Header, SizeOf(Header));
       DataSize := DataSize-SizeOf(Header);
-      Memory := AllocMem(DataSize);
-      Source.Read(Memory, DataSize);
+      RecordCount := DataSize Div SizeOf(TVerticalRecord);
+      SetLength(Records, RecordCount);
+      Source.Read(Records[0], DataSize);
       Result := True;
     End
   Else

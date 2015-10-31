@@ -25,10 +25,10 @@ Uses
   SysUtils, Math, Geometry, Geodesy, OSTab;
 
 { Define British National Grid accuracy level options. }
-{$DEFINE LEVEL1}  { 10m horizontal accuracy using mean offset adjustments. }
+//{$DEFINE LEVEL1}  { 10m horizontal accuracy using mean offset adjustments. }
 //{$DEFINE LEVEL2} { 3m horizontal accuracy using 100km grid interpolation. }
 //{$DEFINE LEVEL3} { 0.5m horizontal accuracy using 10km grid interpolation. }
-//{$DEFINE LEVEL4} { 0.1m horizontal accuracy using full 1km grid interpolation. }
+{$DEFINE LEVEL4} { 0.1m horizontal accuracy using full 1km grid interpolation. }
 
 { Define to embed the data table within the executable. }
 //{$DEFINE EMBED}
@@ -47,7 +47,9 @@ Type
 
 Var
   GM02GBData: TVerticalTable;
+  GM15GBData: TVerticalTable;
   TN02GBData: THorizontalTable;
+  TN15GBData: THorizontalTable;
   GRS80Ellipsoid: TEllipsoid;
   OSTN02GridProjection: TProjection;
   BNGCoordinateSystem02: TBNGCoordinateSystem02;
@@ -98,11 +100,13 @@ Implementation
 Var
   ProgramFolder: String;
   TN02FileName: String;
-  VRF10FileName: String;
+  TN15FileName: String;
   GM02FileName: String;
+  GM15FileName: String;
   TN02DataFound: Boolean;
-  VRF10DataFound: Boolean;
+  TN15DataFound: Boolean;
   GM02DataFound: Boolean;
+  GM15DataFound: Boolean;
 
 Function WGS84CoordinatesToBNGCoordinates(Const Coordinates: TCoordinates; DatumModel: TVerticalDatumModel = OSVRF10): TCoordinates;
 Var
@@ -181,9 +185,9 @@ Begin
   For Iteration := 1 To IterationLimit Do
     Begin
       {$IFDEF LEVEL2}
-        { Perform full kilometer resolution polynomial correction. }
-        { This is the intrinsic conversion as defined by TN02 but requires a 20Mb data table. }
-        BilinearInterpolate(TN02GBData, Result, 1000, EastOffset, NorthOffset, GeoidHeight);
+        { Perform 100 kilometer resolution polynomial correction. }
+        { Max Easting Error: 2.790 Max Northing Error: 2.784 Max Geoid Height Error: 2.389 }
+        BilinearInterpolate(TN02GBData, Result, 100000, EastOffset, NorthOffset, GeoidHeight);
       {$ENDIF}
       {$IFDEF LEVEL3}
         { Perform 10 kilometer resolution polynomial correction. }
@@ -191,9 +195,9 @@ Begin
         BilinearInterpolate(TN02GBData, Result, 10000, EastOffset, NorthOffset, GeoidHeight);
       {$ENDIF}
       {$IFDEF LEVEL4}
-        { Perform 100 kilometer resolution polynomial correction. }
-        { Max Easting Error: 2.790 Max Northing Error: 2.784 Max Geoid Height Error: 2.389 }
-        BilinearInterpolate(TN02GBData, Result, 100000, EastOffset, NorthOffset, GeoidHeight);
+        { Perform full kilometer resolution polynomial correction. }
+        { This is the intrinsic conversion as defined by TN02 but requires a 20Mb data table. }
+        BilinearInterpolate(TN02GBData, Result, 1000, EastOffset, NorthOffset, GeoidHeight);
       {$ENDIF}
       With Result Do
         Begin
@@ -278,28 +282,33 @@ Initialization
 ProgramFolder := IncludeTrailingPathDelimiter(ExtractFilePath(ParamStr(0)));
 {$IFDEF LEVEL1}
 TN02DataFound := False;
-VRF10DataFound := False;
+TN15DataFound := False;
 GM02DataFound := False;
+GM15DataFound := False;
 {$ENDIF}
 {$IFDEF LEVEL2}
 TN02FileName := ProgramFolder+'TN02GB100.dat';
-VRF10FileName := ProgramFolder+'VRF10GB100.dat';
+TN15FileName := ProgramFolder+'TN15GB100.dat';
 GM02FileName := ProgramFolder+'GM02GB100.dat';
+GM15FileName := ProgramFolder+'GM15GB100.dat';
 {$ENDIF}
 {$IFDEF LEVEL3}
 TN02FileName := ProgramFolder+'TN02GB10.dat';
-VRF10FileName := ProgramFolder+'VRF10GB10.dat';
+TN15FileName := ProgramFolder+'TN15GB10.dat';
 GM02FileName := ProgramFolder+'GM02GB10.dat';
+GM15FileName := ProgramFolder+'GM15GB10.dat';
 {$ENDIF}
 {$IFDEF LEVEL4}
-TN02FileName := ProgramFolder+'TN02GBTest.dat';
-VRF10FileName := ProgramFolder+'VRF10GBTest.dat';
-GM02FileName := ProgramFolder+'GM02GBTest.dat';
+TN02FileName := ProgramFolder+'TN02GB.dat';
+TN15FileName := ProgramFolder+'TN15GB.dat';
+GM02FileName := ProgramFolder+'GM02GB.dat';
+GM15FileName := ProgramFolder+'GM15GB.dat';
 {$ENDIF}
 {$IFNDEF LEVEL1}
 TN02DataFound := TN02GBData.LoadFromFile(TN02FileName);
-VRF10DataFound := GM02GBData.LoadFromFile(VRF10FileName);
+TN15DataFound := TN15GBData.LoadFromFile(TN15FileName);
 GM02DataFound := GM02GBData.LoadFromFile(GM02FileName);
+GM15DataFound := GM15GBData.LoadFromFile(GM15FileName);
 {$ENDIF}
 {$IFDEF EMBED}
 LoadResourceTables;
