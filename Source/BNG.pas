@@ -25,10 +25,27 @@ Uses
   SysUtils, Math, Geometry, Geodesy, OSTab;
 
 { Define British National Grid accuracy level options. }
-//{$DEFINE LEVEL1}  { 10m horizontal accuracy using mean offset adjustments. }
-//{$DEFINE LEVEL2} { 3m horizontal accuracy using 100km grid interpolation. }
-//{$DEFINE LEVEL3} { 0.5m horizontal accuracy using 10km grid interpolation. }
-{$DEFINE LEVEL4} { 0.1m horizontal accuracy using full 1km grid interpolation. }
+
+{ Level 1 simply applies mean deltas instead of using the polynomial correction. }
+{ This method yeilds a standard deviation of less than 10m in all directions. }
+{           Easting Shift  Northing Shift  Geoid Height  }
+{ Min.          86.27         -81.60          43.98      }
+{ Mean          96.04         -68.87          51.16      }
+{ Max.         103.44         -50.16          57.66      }
+{ St. Dev.       3.29           9.45           3.47      }
+//{$DEFINE LEVEL1}
+{ Level 2 performs 100 kilometer resolution polynomial correction. }
+{ This achieves better than 3m horizontal accuracy. }
+{ Max Easting Error: 2.790 Max Northing Error: 2.784 Max Geoid Height Error: 2.389 }
+//{$DEFINE LEVEL2}
+{ Level 3 performs 10 kilometer resolution polynomial correction. }
+{ This achieves better than 0.5m horizontal accuracy. }
+{ Max Easting Error: 0.371 Max Northing Error: 0.375 Max Geoid Height Error: 0.554 }
+//{$DEFINE LEVEL3}
+{ Level 4 performs full kilometer resolution polynomial correction. }
+{ This achieves better than 0.1m horizontal accuracy. }
+{ This is the published method defined by OS but requires 20Mb of additional data tables. }
+{$DEFINE LEVEL4}
 
 { Define to embed the data table within the executable. }
 //{$DEFINE EMBED}
@@ -51,9 +68,9 @@ Var
   TN02GBData: THorizontalTable;
   TN15GBData: THorizontalTable;
   GRS80Ellipsoid: TEllipsoid;
-  OSTN02GridProjection: TProjection;
-  BNGCoordinateSystem02: TBNG02CoordinateSystem;
-  BNGCoordinateSystem10: TBNG15CoordinateSystem;
+  BNGGridProjection: TProjection;
+  BNG02CoordinateSystem: TBNG02CoordinateSystem;
+  BNG15CoordinateSystem: TBNG15CoordinateSystem;
 
 Function WGS84CoordinatesToBNGCoordinates(Const Coordinates: TCoordinates; Const TNData: THorizontalTable; Const GMData: TVerticalTable): TCoordinates;
 Function BNGCoordinatesToWGS84Coordinates(Const Coordinates: TCoordinates; Const TNData: THorizontalTable; Const GMData: TVerticalTable): TCoordinates;
@@ -110,44 +127,24 @@ Var
 
 Function WGS84CoordinatesToBNGCoordinates(Const Coordinates: TCoordinates; Const TNData: THorizontalTable; Const GMData: TVerticalTable): TCoordinates;
 Var
-  Parameters: TInterpolationParameters;
+{$IFNDEF LEVEL1}Parameters: TInterpolationParameters;{$ENDIF}
   Shifts: TCoordinates;
+{$IFDEF LEVEL2}Const GridScale = 100000;{$ENDIF}
+{$IFDEF LEVEL3}Const GridScale = 10000;{$ENDIF}
+{$IFDEF LEVEL4}Const GridScale = 1000;{$ENDIF}
 Begin
   { Full transformation of GRS80/WGS84/ETRS89 value to OSGB36 easting and northing as per OS method. }
   { 1. Perform transverse Mercator projection of initial ellipsoid using OS grid but WGS84 ellipsiod parameters, Lat/Lon MUST be in radians. }
-  Result := TransverseMercator(Coordinates, OSTN02GridProjection);
-  { 2. Perform bi-linear interpolation of coordinate deltas from OSTN02 and OSGM02 reference table. }
-{$IFDEF LEVEL4}
-  { Perform full kilometer resolution polynomial correction. }
-  { This is the intrinsic conversion as defined by TN02 but requires a 20Mb data table. }
-  Parameters := BilinearGridInterpolationParameters(TNData.Header.Origin, Result, 1000);
+  Result := TransverseMercator(Coordinates, BNGGridProjection);
+  { 2. Perform coordinate corrections either from mean shift or from interpolation of the OS data tables. }
+{$IFDEF LEVEL1}
+  Shifts.Easting := 96.04;
+  Shifts.Northing := -68.87;
+  Shifts.Altitude := -51.16; { Geoid height is subtracted. }
+{$ELSE}
+  Parameters := BilinearGridInterpolationParameters(TNData.Header.Origin, Result, GridScale);
   Shifts := InterpolateHorizontalTable(TNData, Parameters);
   Shifts.Altitude := -InterpolateVerticalTable(GMData, Parameters); { Geoid is below ellipsoid. }
-{$ENDIF}
-{$IFDEF LEVEL3}
-  { Perform 10 kilometer resolution polynomial correction. }
-  { Max Easting Error: 0.371 Max Northing Error: 0.375 Max Geoid Height Error: 0.554 }
-  Parameters := BilinearGridInterpolationParameters(TN02GBData.Header.Origin, Result, 10000);
-  Shifts := InterpolateHorizontalTable(TN02GBData, Parameters);
-  Shifts.Altitude := -InterpolateVerticalTable(GM02GBData, Parameters); { Geoid height is subtracted. }
-{$ENDIF}
-{$IFDEF LEVEL2}
-  { Perform 100 kilometer resolution polynomial correction. }
-  { Max Easting Error: 2.790 Max Northing Error: 2.784 Max Geoid Height Error: 2.389 }
-  Parameters := BilinearGridInterpolationParameters(TN02GBData.Header.Origin, Result, 100000);
-  Shifts := InterpolateHorizontalTable(TN02GBData, Parameters);
-  Shifts.Altitude := -InterpolateVerticalTable(GM02GBData, Parameters); { Geoid height is subtracted. }
-{$ENDIF}
-{$IFDEF LEVEL1}
-  { Instead of a polynomial correction, apply mean deltas which yeild a standard deviation of less than 10m in all directions. }
-  {           Easting Shift  Northing Shift  Geoid Height  }
-  { Min.          86.27         -81.60          43.98      }
-  { Mean          96.04         -68.87          51.16      }
-  { Max.         103.44         -50.16          57.66      }
-  { St. Dev.       3.29           9.45           3.47      }
-  EastOffset := 96.04;
-  NorthOffset := -68.87;
-  GeoidHeight := -51.16; { Geoid height is subtracted. }
 {$ENDIF}
   Result := Result+Shifts;
 End;
@@ -163,15 +160,12 @@ Const
   IterationLimit = 6;
   Epsilon: TCoordinate = 0.0001;
 {$ENDIF}
+{$IFDEF LEVEL2}GridScale = 100000;{$ENDIF}
+{$IFDEF LEVEL3}GridScale = 10000;{$ENDIF}
+{$IFDEF LEVEL4}GridScale = 1000;{$ENDIF}
 Begin
   Result := Coordinates;
   {$IFDEF LEVEL1}
-  { Instead of a polynomial correction, apply mean deltas which yeild a standard deviation of less than 10m in all directions. }
-  {           Easting Shift  Northing Shift  Geoid Height  }
-  { Min.          86.27         -81.60          43.98      }
-  { Mean          96.04         -68.87          51.16      }
-  { Max.         103.44         -50.16          57.66      }
-  { St. Dev.       3.29           9.45           3.47      }
   With Result Do
     Begin
       Easting := Easting-96.04;
@@ -183,29 +177,15 @@ Begin
   PriorResult := NullCoordinates;
   For Iteration := 1 To IterationLimit Do
     Begin
-      {$IFDEF LEVEL2}
-        { Perform 100 kilometer resolution polynomial correction. }
-        { Max Easting Error: 2.790 Max Northing Error: 2.784 Max Geoid Height Error: 2.389 }
-        BilinearInterpolate(TN02GBData, Result, 100000, EastOffset, NorthOffset, GeoidHeight);
-      {$ENDIF}
-      {$IFDEF LEVEL3}
-        { Perform 10 kilometer resolution polynomial correction. }
-        { Max Easting Error: 0.371 Max Northing Error: 0.375 Max Geoid Height Error: 0.554 }
-        BilinearInterpolate(TN02GBData, Result, 10000, EastOffset, NorthOffset, GeoidHeight);
-      {$ENDIF}
-      {$IFDEF LEVEL4}
-        { Perform full kilometer resolution polynomial correction. }
-        { This is the intrinsic conversion as defined by TN02 but requires a 20Mb data table. }
-        Parameters := BilinearGridInterpolationParameters(TNData.Header.Origin, Result, 1000);
-        Shifts := InterpolateHorizontalTable(TNData, Parameters);
-        Shifts.Altitude := -InterpolateVerticalTable(GMData, Parameters); { Geoid is below ellipsoid. }
-      {$ENDIF}
+      Parameters := BilinearGridInterpolationParameters(TNData.Header.Origin, Result, GridScale);
+      Shifts := InterpolateHorizontalTable(TNData, Parameters);
+      Shifts.Altitude := -InterpolateVerticalTable(GMData, Parameters); { Geoid is below ellipsoid. }
       Result := Coordinates-Shifts;
       { If convergance has been reached. }
       If (Abs(Result.Easting-PriorResult.Easting)<Epsilon) And
          (Abs(Result.Northing-PriorResult.Northing)<Epsilon) Then
          Begin
-           Result := InverseTransverseMercator(Result, OSTN02GridProjection);
+           Result := InverseTransverseMercator(Result, BNGGridProjection);
            Exit;
          End;
       PriorResult := Result;
@@ -316,12 +296,12 @@ GM15DataFound := GM15GBData.LoadFromFile(GM15FileName);
 LoadResourceTables;
 {$ENDIF}
 GRS80Ellipsoid.Initialize(6378137.0000, 6356752.314140);
-OSTN02GridProjection.Initialize(0.9996012717, DegToRad(49), DegToRad(-2), 400000, -100000, GRS80Ellipsoid);
-BNGCoordinateSystem02.Initialize('British National Grid (2002)', 'OSGB36',
+BNGGridProjection.Initialize(0.9996012717, DegToRad(49), DegToRad(-2), 400000, -100000, GRS80Ellipsoid);
+BNG02CoordinateSystem.Initialize('British National Grid (2002)', 'OSGB36',
                                  'OSGB36 / British National Grid (TN02/GM02)', 27700, ctProjected, aoXYZ);
-BNGCoordinateSystem10.Initialize('British National Grid (2015)', 'OSGB36',
+BNG15CoordinateSystem.Initialize('British National Grid (2015)', 'OSGB36',
                                  'OSGB36 / British National Grid (TN15/GM15)', 27701, ctProjected, aoXYZ);
-CoordinateSystems.Register(BNGCoordinateSystem02);
-CoordinateSystems.Register(BNGCoordinateSystem10);
+CoordinateSystems.Register(BNG02CoordinateSystem);
+CoordinateSystems.Register(BNG15CoordinateSystem);
 
 End.
