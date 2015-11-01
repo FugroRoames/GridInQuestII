@@ -110,7 +110,8 @@ Var
 
 Function WGS84CoordinatesToBNGCoordinates(Const Coordinates: TCoordinates; DatumModel: TVerticalDatumModel = OSVRF10): TCoordinates;
 Var
-  EastOffset, NorthOffset, GeoidHeight: TCoordinate;
+  Parameters: TInterpolationParameters;
+  Shifts: TCoordinates;
 Begin
   { Full transformation of GRS80/WGS84/ETRS89 value to OSGB36 easting and northing as per OS method. }
   { 1. Perform transverse Mercator projection of initial ellipsoid using OS grid but WGS84 ellipsiod parameters, Lat/Lon MUST be in radians. }
@@ -123,17 +124,23 @@ Begin
 {$IFDEF LEVEL4}
   { Perform full kilometer resolution polynomial correction. }
   { This is the intrinsic conversion as defined by TN02 but requires a 20Mb data table. }
-  BilinearInterpolate(TN02GBData, Result, 1000, EastOffset, NorthOffset, GeoidHeight);
+  Parameters := BilinearGridInterpolationParameters(TN02GBData.Header.Origin, Result, 1000);
+  Shifts := InterpolateHorizontalTable(TN02GBData, Parameters);
+  Shifts.Altitude := -InterpolateVerticalTable(GM02GBData, Parameters); { Geoid is below ellipsoid. }
 {$ENDIF}
 {$IFDEF LEVEL3}
   { Perform 10 kilometer resolution polynomial correction. }
   { Max Easting Error: 0.371 Max Northing Error: 0.375 Max Geoid Height Error: 0.554 }
-  BilinearInterpolate(TN02GBData, Result, 10000, EastOffset, NorthOffset, GeoidHeight);
+  Parameters := BilinearGridInterpolationParameters(TN02GBData.Header.Origin, Result, 10000);
+  Shifts := InterpolateHorizontalTable(TN02GBData, Parameters);
+  Shifts.Altitude := -InterpolateVerticalTable(GM02GBData, Parameters); { Geoid height is subtracted. }
 {$ENDIF}
 {$IFDEF LEVEL2}
   { Perform 100 kilometer resolution polynomial correction. }
   { Max Easting Error: 2.790 Max Northing Error: 2.784 Max Geoid Height Error: 2.389 }
-  BilinearInterpolate(TN02GBData, Result, 100000, EastOffset, NorthOffset, GeoidHeight);
+  Parameters := BilinearGridInterpolationParameters(TN02GBData.Header.Origin, Result, 100000);
+  Shifts := InterpolateHorizontalTable(TN02GBData, Parameters);
+  Shifts.Altitude := -InterpolateVerticalTable(GM02GBData, Parameters); { Geoid height is subtracted. }
 {$ENDIF}
 {$IFDEF LEVEL1}
   { Instead of a polynomial correction, apply mean deltas which yeild a standard deviation of less than 10m in all directions. }
@@ -144,20 +151,16 @@ Begin
   { St. Dev.       3.29           9.45           3.47      }
   EastOffset := 96.04;
   NorthOffset := -68.87;
-  GeoidHeight := 51.16;
+  GeoidHeight := -51.16; { Geoid height is subtracted. }
 {$ENDIF}
-With Result Do
-  Begin
-    Easting := Easting+EastOffset;
-    Northing := Northing+NorthOffset;
-    Elevation := Elevation-GeoidHeight; { Geoid height is subtracted. }
-  End;
+  Result := Result+Shifts;
 End;
 
 Function BNGCoordinatesToWGS84Coordinates(Const Coordinates: TCoordinates; DatumModel: TVerticalDatumModel = OSVRF10): TCoordinates;
 {$IFNDEF LEVEL1}
 Var
-  EastOffset, NorthOffset, GeoidHeight: TCoordinate;
+  Parameters: TInterpolationParameters;
+  Shifts: TCoordinates;
   PriorResult: TCoordinates;
   Iteration: Integer;
 Const
@@ -197,14 +200,11 @@ Begin
       {$IFDEF LEVEL4}
         { Perform full kilometer resolution polynomial correction. }
         { This is the intrinsic conversion as defined by TN02 but requires a 20Mb data table. }
-        BilinearInterpolate(TN02GBData, Result, 1000, EastOffset, NorthOffset, GeoidHeight);
+        Parameters := BilinearGridInterpolationParameters(TN02GBData.Header.Origin, Result, 1000);
+        Shifts := InterpolateHorizontalTable(TN02GBData, Parameters);
+        Shifts.Altitude := -InterpolateVerticalTable(GM02GBData, Parameters); { Geoid is below ellipsoid. }
       {$ENDIF}
-      With Result Do
-        Begin
-          Easting := Coordinates.Easting-EastOffset;
-          Northing := Coordinates.Northing-NorthOffset;
-          Elevation := Coordinates.Elevation+GeoidHeight;
-        End;
+      Result := Coordinates-Shifts;
       { If convergance has been reached. }
       If (Abs(Result.Easting-PriorResult.Easting)<Epsilon) And
          (Abs(Result.Northing-PriorResult.Northing)<Epsilon) Then

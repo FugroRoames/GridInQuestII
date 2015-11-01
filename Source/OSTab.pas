@@ -88,10 +88,85 @@ Const
     (Code: 14; Name: 'Belfast'; Region: 'Northern Ireland'),
     (Code: 15; Name: 'Ordnance Datum Newlyn (Offshore)'; Region: 'UK Offshore'));
 
-Procedure BilinearInterpolate(Const HorizontalTable: THorizontalTable; Const Coordinates: TCoordinates; Const GridScale: TCoordinate; Var EastOffset, NorthOffset, GeoidHeight: TCoordinate);
+Type
+  TInterpolationParameters = Record
+    X1, X2: Integer;
+    Y1, Y2: Integer;
+    T, TI: TCoordinate;
+    U, UI: TCoordinate;
+  End;
+
+Function BilinearGridInterpolationParameters(Const Origin: TCoordinates; Const Coordinates: TCoordinates; Const GridScale: TCoordinate): TInterpolationParameters;
+Function InterpolateHorizontalTable(Const HorizontalTable: THorizontalTable; Parameters: TInterpolationParameters): TPlanarCoordinates;
+Function InterpolateVerticalTable(Const VerticalTable: TVerticalTable; Parameters: TInterpolationParameters): TCoordinate;
 
 Implementation
 
+Function BilinearGridInterpolationParameters(Const Origin: TCoordinates; Const Coordinates: TCoordinates; Const GridScale: TCoordinate): TInterpolationParameters;
+Var
+  InvGridScale: TCoordinate;
+Begin
+  InvGridScale := 1/GridScale;
+  With Result Do
+    Begin
+      X1 := Trunc((Coordinates.Easting-Origin.Easting)*InvGridScale);
+      Y1 := Trunc((Coordinates.Northing-Origin.Northing)*InvGridScale);
+      X2 := X1+1;
+      Y2 := Y1+1;
+      T := (Coordinates.Easting-(X1*GridScale+Origin.Easting))*InvGridScale;
+      TI := (1-T);
+      U := (Coordinates.Northing-(Y1*GridScale+Origin.Northing))*InvGridScale;
+      UI := (1-U);
+    End;
+End;
+
+Function InterpolateHorizontalTable(Const HorizontalTable: THorizontalTable; Parameters: TInterpolationParameters): TPlanarCoordinates;
+Var
+  SE0, SE1, SE2, SE3: TCoordinate;
+  SN0, SN1, SN2, SN3: TCoordinate;
+Begin
+  With Parameters, HorizontalTable Do
+    Begin
+      With Data(Y1, X1) Do
+        Begin
+          SE0 := ShiftEast;
+          SN0 := ShiftNorth;
+        End;
+      With Data(Y1, X2) Do
+        Begin
+          SE1 := ShiftEast;
+          SN1 := ShiftNorth;
+        End;
+      With Data(Y2, X2) Do
+        Begin
+          SE2 := ShiftEast;
+          SN2 := ShiftNorth;
+        End;
+      With Data(Y2, X1) Do
+        Begin
+          SE3 := ShiftEast;
+          SN3 := ShiftNorth;
+        End;
+      Result.Easting := (TI*UI*SE0)+(T*UI*SE1)+(T*U*SE2)+(TI*U*SE3);
+      Result.Northing := (TI*UI*SN0)+(T*UI*SN1)+(T*U*SN2)+(TI*U*SN3);
+    End;
+End;
+
+Function InterpolateVerticalTable(Const VerticalTable: TVerticalTable; Parameters: TInterpolationParameters): TCoordinate;
+Var
+  SG0, SG1, SG2, SG3: TCoordinate;
+Begin
+  With Parameters, VerticalTable Do
+    Begin
+      SG0 := Data(Y1, X1).GeoidHeight;
+      SG1 := Data(Y1, X2).GeoidHeight;
+      SG2 := Data(Y2, X2).GeoidHeight;
+      SG3 := Data(Y2, X1).GeoidHeight;
+      Result := (TI*UI*SG0)+(T*UI*SG1)+(T*U*SG2)+(TI*U*SG3);
+    End;
+End;
+
+(*
 Procedure BilinearInterpolate(Const HorizontalTable: THorizontalTable; Const Coordinates: TCoordinates; Const GridScale: TCoordinate; Var EastOffset, NorthOffset, GeoidHeight: TCoordinate);
 Var
   InvGridScale: TCoordinate;
@@ -151,7 +226,7 @@ Begin
   NorthOffset := (TI*UI*SN0)+(T*UI*SN1)+(T*U*SN2)+(TI*U*SN3);
   GeoidHeight := (TI*UI*SG0)+(T*UI*SG1)+(T*U*SG2)+(TI*U*SG3);
 End;
-
+*)
 Function THorizontalTable.Data(Row, Col: Integer): THorizontalRecord;
 Begin
   Result := Records[Col+Row*Header.ColumnCount];
