@@ -25,9 +25,6 @@ Uses
   SysUtils, Classes, Math, Geometry, Geodesy;
 
 Type
-  TVerticalDatumModel = (OSGM02, OSVRF10);
-
-Type
   TSmallCoordinate = Single; { Defined to keep storage space of tables compact. }
 
 Type

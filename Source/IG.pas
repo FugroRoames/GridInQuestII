@@ -67,8 +67,8 @@ Const
 Function IGToETRSGeodeticShift(Const Coordinates: TCoordinates): TCoordinates; {$IFDEF USE_INLINE}Inline;{$ENDIF}
 Function ETRSToIGGeodeticShift(Const Coordinates: TCoordinates): TCoordinates; {$IFDEF USE_INLINE}Inline;{$ENDIF}
 {$ENDIF}
-Function WGS84CoordinatesToIGCoordinates(Const Coordinates: TCoordinates; DatumModel: TVerticalDatumModel = OSVRF10): TCoordinates;
-Function IGCoordinatesToWGS84Coordinates(Const Coordinates: TCoordinates; DatumModel: TVerticalDatumModel = OSVRF10): TCoordinates;
+Function WGS84CoordinatesToIGCoordinates(Const Coordinates: TCoordinates): TCoordinates;
+Function IGCoordinatesToWGS84Coordinates(Const Coordinates: TCoordinates): TCoordinates;
 
 Implementation
 
@@ -144,7 +144,7 @@ Begin
 End;
 {$ENDIF}
 
-Function WGS84CoordinatesToIGCoordinates(Const Coordinates: TCoordinates; DatumModel: TVerticalDatumModel = OSVRF10): TCoordinates;
+Function WGS84CoordinatesToIGCoordinates(Const Coordinates: TCoordinates): TCoordinates;
 Var
   {$IFDEF LEVEL1}
   GridCoordinates: TCoordinates;
@@ -164,7 +164,7 @@ Begin
   // Add height from GM02/VRF10
 End;
 
-Function IGCoordinatesToWGS84Coordinates(Const Coordinates: TCoordinates; DatumModel: TVerticalDatumModel = OSVRF10): TCoordinates;
+Function IGCoordinatesToWGS84Coordinates(Const Coordinates: TCoordinates): TCoordinates;
 Var
   {$IFDEF LEVEL1}
   GridCoordinates: TCoordinates;

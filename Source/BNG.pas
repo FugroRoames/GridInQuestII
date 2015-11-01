@@ -34,13 +34,13 @@ Uses
 //{$DEFINE EMBED}
 
 Type
-  TBNGCoordinateSystem02 = Object(TCoordinateSystem)
+  TBNG02CoordinateSystem = Object(TCoordinateSystem)
     Function ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
     Function ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
   End;
 
 Type
-  TBNGCoordinateSystem10 = Object(TCoordinateSystem)
+  TBNG15CoordinateSystem = Object(TCoordinateSystem)
     Function ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
     Function ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
   End;
@@ -52,11 +52,11 @@ Var
   TN15GBData: THorizontalTable;
   GRS80Ellipsoid: TEllipsoid;
   OSTN02GridProjection: TProjection;
-  BNGCoordinateSystem02: TBNGCoordinateSystem02;
-  BNGCoordinateSystem10: TBNGCoordinateSystem10;
+  BNGCoordinateSystem02: TBNG02CoordinateSystem;
+  BNGCoordinateSystem10: TBNG15CoordinateSystem;
 
-Function WGS84CoordinatesToBNGCoordinates(Const Coordinates: TCoordinates; DatumModel: TVerticalDatumModel = OSVRF10): TCoordinates;
-Function BNGCoordinatesToWGS84Coordinates(Const Coordinates: TCoordinates; DatumModel: TVerticalDatumModel = OSVRF10): TCoordinates;
+Function WGS84CoordinatesToBNGCoordinates(Const Coordinates: TCoordinates; Const TNData: THorizontalTable; Const GMData: TVerticalTable): TCoordinates;
+Function BNGCoordinatesToWGS84Coordinates(Const Coordinates: TCoordinates; Const TNData: THorizontalTable; Const GMData: TVerticalTable): TCoordinates;
 
 Implementation
 
@@ -108,7 +108,7 @@ Var
   GM02DataFound: Boolean;
   GM15DataFound: Boolean;
 
-Function WGS84CoordinatesToBNGCoordinates(Const Coordinates: TCoordinates; DatumModel: TVerticalDatumModel = OSVRF10): TCoordinates;
+Function WGS84CoordinatesToBNGCoordinates(Const Coordinates: TCoordinates; Const TNData: THorizontalTable; Const GMData: TVerticalTable): TCoordinates;
 Var
   Parameters: TInterpolationParameters;
   Shifts: TCoordinates;
@@ -116,17 +116,13 @@ Begin
   { Full transformation of GRS80/WGS84/ETRS89 value to OSGB36 easting and northing as per OS method. }
   { 1. Perform transverse Mercator projection of initial ellipsoid using OS grid but WGS84 ellipsiod parameters, Lat/Lon MUST be in radians. }
   Result := TransverseMercator(Coordinates, OSTN02GridProjection);
-{  If TN02DataFound Then
-  Else If VRF10DataFound And (DatumModel=OSVRF10) Then
-  Else If GM02DataFound And (DatumModel=OSGM02) Then
-  Else  }
   { 2. Perform bi-linear interpolation of coordinate deltas from OSTN02 and OSGM02 reference table. }
 {$IFDEF LEVEL4}
   { Perform full kilometer resolution polynomial correction. }
   { This is the intrinsic conversion as defined by TN02 but requires a 20Mb data table. }
-  Parameters := BilinearGridInterpolationParameters(TN02GBData.Header.Origin, Result, 1000);
-  Shifts := InterpolateHorizontalTable(TN02GBData, Parameters);
-  Shifts.Altitude := -InterpolateVerticalTable(GM02GBData, Parameters); { Geoid is below ellipsoid. }
+  Parameters := BilinearGridInterpolationParameters(TNData.Header.Origin, Result, 1000);
+  Shifts := InterpolateHorizontalTable(TNData, Parameters);
+  Shifts.Altitude := -InterpolateVerticalTable(GMData, Parameters); { Geoid is below ellipsoid. }
 {$ENDIF}
 {$IFDEF LEVEL3}
   { Perform 10 kilometer resolution polynomial correction. }
@@ -156,7 +152,7 @@ Begin
   Result := Result+Shifts;
 End;
 
-Function BNGCoordinatesToWGS84Coordinates(Const Coordinates: TCoordinates; DatumModel: TVerticalDatumModel = OSVRF10): TCoordinates;
+Function BNGCoordinatesToWGS84Coordinates(Const Coordinates: TCoordinates; Const TNData: THorizontalTable; Const GMData: TVerticalTable): TCoordinates;
 {$IFNDEF LEVEL1}
 Var
   Parameters: TInterpolationParameters;
@@ -200,9 +196,9 @@ Begin
       {$IFDEF LEVEL4}
         { Perform full kilometer resolution polynomial correction. }
         { This is the intrinsic conversion as defined by TN02 but requires a 20Mb data table. }
-        Parameters := BilinearGridInterpolationParameters(TN02GBData.Header.Origin, Result, 1000);
-        Shifts := InterpolateHorizontalTable(TN02GBData, Parameters);
-        Shifts.Altitude := -InterpolateVerticalTable(GM02GBData, Parameters); { Geoid is below ellipsoid. }
+        Parameters := BilinearGridInterpolationParameters(TNData.Header.Origin, Result, 1000);
+        Shifts := InterpolateHorizontalTable(TNData, Parameters);
+        Shifts.Altitude := -InterpolateVerticalTable(GMData, Parameters); { Geoid is below ellipsoid. }
       {$ENDIF}
       Result := Coordinates-Shifts;
       { If convergance has been reached. }
@@ -218,36 +214,36 @@ Begin
   {$ENDIF}
 End;
 
-Function TBNGCoordinateSystem02.ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates;
+Function TBNG02CoordinateSystem.ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates;
 Var
   GeodeticCoordinates: TCoordinates;
 Begin
-  GeodeticCoordinates := BNGCoordinatesToWGS84Coordinates(Coordinates);
+  GeodeticCoordinates := BNGCoordinatesToWGS84Coordinates(Coordinates, TN02GBData, GM02GBData);
   Result := GeodeticToGeocentric(GeodeticCoordinates, GRS80Ellipsoid);
 End;
 
-Function TBNGCoordinateSystem02.ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates;
+Function TBNG02CoordinateSystem.ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates;
 Var
   GeodeticCoordinates: TCoordinates;
 Begin
   GeodeticCoordinates := GeocentricToGeodetic(Coordinates, GRS80Ellipsoid);
-  Result := WGS84CoordinatesToBNGCoordinates(GeodeticCoordinates);
+  Result := WGS84CoordinatesToBNGCoordinates(GeodeticCoordinates, TN02GBData, GM02GBData);
 End;
 
-Function TBNGCoordinateSystem10.ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates;
+Function TBNG15CoordinateSystem.ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates;
 Var
   GeodeticCoordinates: TCoordinates;
 Begin
-  GeodeticCoordinates := BNGCoordinatesToWGS84Coordinates(GeodeticCoordinates);
+  GeodeticCoordinates := BNGCoordinatesToWGS84Coordinates(Coordinates, TN15GBData, GM15GBData);
   Result := GeodeticToGeocentric(GeodeticCoordinates, GRS80Ellipsoid);
 End;
 
-Function TBNGCoordinateSystem10.ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates;
+Function TBNG15CoordinateSystem.ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates;
 Var
   GeodeticCoordinates: TCoordinates;
 Begin
   GeodeticCoordinates := GeocentricToGeodetic(Coordinates, GRS80Ellipsoid);
-  Result := WGS84CoordinatesToBNGCoordinates(GeodeticCoordinates);
+  Result := WGS84CoordinatesToBNGCoordinates(GeodeticCoordinates, TN15GBData, GM15GBData);
 End;
 
 {$IFDEF EMBED}
@@ -262,15 +258,21 @@ Begin
       TN02DataFound := TN02GBData.LoadFromStream(ResourceStream);
       FreeAndNil(ResourceStream);
     End;
-  If Not VRF10DataFound Then
+  If Not TN15DataFound Then
     Begin
-      ResourceStream := TResourceStream.Create(hInstance, 'VRF10GB', 'DATA');
+      ResourceStream := TResourceStream.Create(hInstance, 'TN15GB', 'DATA');
       VRF10DataFound := GM02GBData.LoadFromStream(ResourceStream);
       FreeAndNil(ResourceStream);
     End;
   If Not GM02DataFound Then
     Begin
       ResourceStream := TResourceStream.Create(hInstance, 'GM02GB', 'DATA');
+      GM02DataFound := GM02GBData.LoadFromStream(ResourceStream);
+      FreeAndNil(ResourceStream);
+    End;
+  If Not GM15DataFound Then
+    Begin
+      ResourceStream := TResourceStream.Create(hInstance, 'GM15GB', 'DATA');
       GM02DataFound := GM02GBData.LoadFromStream(ResourceStream);
       FreeAndNil(ResourceStream);
     End;
