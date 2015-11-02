@@ -72,6 +72,9 @@ Var
   BNG02CoordinateSystem: TBNG02CoordinateSystem;
   BNG15CoordinateSystem: TBNG15CoordinateSystem;
 
+Const
+  BNGBounds: TGeodeticBounds = (Western: -8.74*PI/180; Southern: 49.81*PI/180; Eastern: 1.84*PI/180; Northern: 60.9*PI/180);
+
 Function WGS84CoordinatesToBNGCoordinates(Const Coordinates: TCoordinates; Const TNData: THorizontalTable; Const GMData: TVerticalTable): TCoordinates;
 Function BNGCoordinatesToWGS84Coordinates(Const Coordinates: TCoordinates; Const TNData: THorizontalTable; Const GMData: TVerticalTable): TCoordinates;
 
@@ -144,7 +147,7 @@ Begin
 {$ELSE}
   Parameters := BilinearGridInterpolationParameters(TNData.Header.Origin, Result, GridScale);
   Shifts := InterpolateHorizontalTable(TNData, Parameters);
-  Shifts.Altitude := -InterpolateVerticalTable(GMData, Parameters); { Geoid is below ellipsoid. }
+  Shifts.Elevation := -InterpolateVerticalTable(GMData, Parameters); { Geoid is below ellipsoid. }
 {$ENDIF}
   Result := Result+Shifts;
 End;
@@ -179,7 +182,7 @@ Begin
     Begin
       Parameters := BilinearGridInterpolationParameters(TNData.Header.Origin, Result, GridScale);
       Shifts := InterpolateHorizontalTable(TNData, Parameters);
-      Shifts.Altitude := -InterpolateVerticalTable(GMData, Parameters); { Geoid is below ellipsoid. }
+      Shifts.Elevation := -InterpolateVerticalTable(GMData, Parameters); { Geoid is below ellipsoid. }
       Result := Coordinates-Shifts;
       { If convergance has been reached. }
       If (Abs(Result.Easting-PriorResult.Easting)<Epsilon) And
@@ -298,9 +301,9 @@ LoadResourceTables;
 GRS80Ellipsoid.Initialize(6378137.0000, 6356752.314140);
 BNGGridProjection.Initialize(0.9996012717, DegToRad(49), DegToRad(-2), 400000, -100000, GRS80Ellipsoid);
 BNG02CoordinateSystem.Initialize('British National Grid (2002)', 'OSGB36',
-                                 'OSGB36 / British National Grid (TN02/GM02)', 27700, ctProjected, aoXYZ);
+                                 'OSGB36 / British National Grid (TN02/GM02)', 27700, ctProjected, aoXYZ, BNGBounds);
 BNG15CoordinateSystem.Initialize('British National Grid (2015)', 'OSGB36',
-                                 'OSGB36 / British National Grid (TN15/GM15)', 27701, ctProjected, aoXYZ);
+                                 'OSGB36 / British National Grid (TN15/GM15)', 27701, ctProjected, aoXYZ, BNGBounds);
 CoordinateSystems.Register(BNG02CoordinateSystem);
 CoordinateSystems.Register(BNG15CoordinateSystem);
 

@@ -174,6 +174,8 @@ Begin
 End;
 
 Procedure TCoordinatePanel.Format(Tidy: Boolean = False);
+Const
+  UnitText = '';//'m';
 Begin
   If FEdit.ReadOnly Then
     FEdit.Font.Color := clBlue
@@ -186,21 +188,21 @@ Begin
     Case TCoordinatesEntryPanel(Parent).CoordinateType Of
     ctCartesian:
       Case AxisType Of
-      atXAxis: FEdit.Text := FormatCoordinateWithUnits(Coordinate, 'm', 3);
-      atYAxis: FEdit.Text := FormatCoordinateWithUnits(Coordinate, 'm', 3);
-      atZAxis: FEdit.Text := FormatCoordinateWithUnits(Coordinate, 'm', 3);
+      atXAxis: FEdit.Text := FormatCoordinateWithUnits(Coordinate, UnitText, 3);
+      atYAxis: FEdit.Text := FormatCoordinateWithUnits(Coordinate, UnitText, 3);
+      atZAxis: FEdit.Text := FormatCoordinateWithUnits(Coordinate, UnitText, 3);
       End;
     ctGeodetic:
       Case AxisType Of
-      atXAxis: FEdit.Text := FormatCoordinate(DecimalToSexagesimalCoordinate(Coordinate), soEastWestSuffix);
-      atYAxis: FEdit.Text := FormatCoordinate(DecimalToSexagesimalCoordinate(Coordinate), soNorthSouthSuffix);
-      atZAxis: FEdit.Text := FormatCoordinateWithUnits(Coordinate, 'm', 3);
+      atXAxis: FEdit.Text := FormatCoordinate(DecimalToSexagesimalCoordinate(Coordinate));//, soEastWestSuffix);
+      atYAxis: FEdit.Text := FormatCoordinate(DecimalToSexagesimalCoordinate(Coordinate));//, soNorthSouthSuffix);
+      atZAxis: FEdit.Text := FormatCoordinateWithUnits(Coordinate, UnitText, 3);
       End;
     ctProjected:
       Case AxisType Of
-      atXAxis: FEdit.Text := FormatCoordinate(Coordinate, 4, True)+' E';
-      atYAxis: FEdit.Text := FormatCoordinate(Coordinate, 4, True)+' N';
-      atZAxis: FEdit.Text := FormatCoordinateWithUnits(Coordinate, 'm', 3);
+      atXAxis: FEdit.Text := FormatCoordinate(Coordinate, 4, True);//+' E';
+      atYAxis: FEdit.Text := FormatCoordinate(Coordinate, 4, True);//+' N';
+      atZAxis: FEdit.Text := FormatCoordinateWithUnits(Coordinate, UnitText, 3);
       End;
     End;
 End;

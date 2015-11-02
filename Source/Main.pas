@@ -24,7 +24,7 @@ Interface
 Uses
   Classes, SysUtils, FileUtil, LCLIntf, Forms, Controls, Graphics, Dialogs,
   ExtCtrls, Menus, ActnList, StdCtrls, Grids, Clipbrd, GlobeCtrl, CoordCtrls,
-  DataStreams, Progress, Settings, Options, About, Math, Geometry, Geodesy,
+  DataStreams, Progress, Settings, Options, About, Geodesy,
   GeomUtils, GeodUtils;
 
 Type
@@ -579,25 +579,27 @@ Begin
 End;
 
 Function TMainForm.RecordOutputCoordinateText(RecordNumber, AxisIndex: Integer; AxisOrder: TAxisOrder; CoordinateType: TCoordinateType): String;
+Const
+  UnitText = '';
 Begin
   Case CoordinateType Of
   ctCartesian:
     Case AxisTypeFromIndex(AxisIndex, AxisOrder) Of
-    atXAxis: Result := FormatCoordinateWithUnits(OutputCoordinates[RecordNumber].X, 'm', 2);
-    atYAxis: Result := FormatCoordinateWithUnits(OutputCoordinates[RecordNumber].Y, 'm', 2);
-    atZAxis: Result := FormatCoordinateWithUnits(OutputCoordinates[RecordNumber].Z, 'm', 2);
+    atXAxis: Result := FormatCoordinateWithUnits(OutputCoordinates[RecordNumber].X, UnitText, 2);
+    atYAxis: Result := FormatCoordinateWithUnits(OutputCoordinates[RecordNumber].Y, UnitText, 2);
+    atZAxis: Result := FormatCoordinateWithUnits(OutputCoordinates[RecordNumber].Z, UnitText, 2);
     End;
   ctGeodetic:
     Case AxisTypeFromIndex(AxisIndex, AxisOrder) Of
-    atXAxis: Result := FormatCoordinate(DecimalToSexagesimalCoordinate(OutputCoordinates[RecordNumber].X), soEastWestSuffix);
-    atYAxis: Result := FormatCoordinate(DecimalToSexagesimalCoordinate(OutputCoordinates[RecordNumber].Y), soNorthSouthSuffix);
-    atZAxis: Result := FormatCoordinateWithUnits(OutputCoordinates[RecordNumber].Z, 'm', 3);
+    atXAxis: Result := FormatCoordinate(DecimalToSexagesimalCoordinate(OutputCoordinates[RecordNumber].X));//, soEastWestSuffix);
+    atYAxis: Result := FormatCoordinate(DecimalToSexagesimalCoordinate(OutputCoordinates[RecordNumber].Y));//, soNorthSouthSuffix);
+    atZAxis: Result := FormatCoordinateWithUnits(OutputCoordinates[RecordNumber].Z, UnitText, 3);
     End;
   ctProjected:
     Case AxisTypeFromIndex(AxisIndex, AxisOrder) Of
-    atXAxis: Result := FormatCoordinate(OutputCoordinates[RecordNumber].X, 3, True)+' E';
-    atYAxis: Result := FormatCoordinate(OutputCoordinates[RecordNumber].Y, 3, True)+' N';
-    atZAxis: Result := FormatCoordinateWithUnits(OutputCoordinates[RecordNumber].Z, 'm', 3);
+    atXAxis: Result := FormatCoordinate(OutputCoordinates[RecordNumber].X, 3, True);//+' E';
+    atYAxis: Result := FormatCoordinate(OutputCoordinates[RecordNumber].Y, 3, True);//+' N';
+    atZAxis: Result := FormatCoordinateWithUnits(OutputCoordinates[RecordNumber].Z, UnitText, 3);
     End;
   End;
 End;
@@ -662,6 +664,11 @@ End;
 Procedure TMainForm.DoInputChangeSystem(Sender: TObject);
 Begin
   OutputPanel.Clear(InputPanel.CoordinateSystemIndex);
+  With MainGlobe Do
+    Begin
+      ShowMarker := False;
+      Refresh;
+    End;
 End;
 
 Procedure TMainForm.DoOutputChangeSystem(Sender: TObject);

@@ -26,13 +26,16 @@ Uses
 
 { Define Irish Grid accuracy level. }
 //{$DEFINE LEVEL1}  { 2m horizontal accuracy using mean offset adjustments. }
-{$DEFINE LEVEL2} { 0.4m horizontal accuracy using the OSi/OSNI polynomial transformation. }
+{$DEFINE LEVEL2}  { 0.4m horizontal accuracy using the OSi/OSNI polynomial transformation. }
+
+{ Define to embed the data table within the executable. }
+//{$DEFINE EMBED} // TODO If needed?
 
 { Define to uses inline optimisation. }
 //{$DEFINE USE_INLINE}
 
 Type
-  TIGCoordinateSystem75 = Object(TCoordinateSystem)
+  TIGCoordinateSystem = Object(TCoordinateSystem)
     Function ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
     Function ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
   End;
@@ -42,12 +45,16 @@ Var
   GRS80Ellipsoid: TEllipsoid;
   IrishGridProjection: TProjection;
   IrishGPSGridProjection: TProjection;
-  IGCoordinateSystem75: TIGCoordinateSystem75;
+  IGCoordinateSystem: TIGCoordinateSystem;
+
+Const
+  IGBounds: TGeodeticBounds = (Western: -10.56*PI/180; Southern: 51.39*PI/180; Eastern: -5.34*PI/180; Northern: 55.43*PI/180);
 
 {$IFDEF LEVEL1}
-{ Mean offset of planar Irish Grid to Irish GPS Grid coordinates. }
+{ Mean offset of planar Irish Grid to Irish GPS Grid coordinates and average ellipsoid geoid separation. }
 Const
   MeanGridOffset: TPlanarCoordinates = (X: 49.0; Y: -23.4);
+  MeanGeoidSeparation: TCoordinate = 57.24;
 {$ENDIF}
 
 {$IFDEF LEVEL2}
@@ -67,25 +74,30 @@ Const
 Function IGToETRSGeodeticShift(Const Coordinates: TCoordinates): TCoordinates; {$IFDEF USE_INLINE}Inline;{$ENDIF}
 Function ETRSToIGGeodeticShift(Const Coordinates: TCoordinates): TCoordinates; {$IFDEF USE_INLINE}Inline;{$ENDIF}
 {$ENDIF}
-Function WGS84CoordinatesToIGCoordinates(Const Coordinates: TCoordinates): TCoordinates;
-Function IGCoordinatesToWGS84Coordinates(Const Coordinates: TCoordinates): TCoordinates;
+Function WGS84CoordinatesToIGCoordinates(Const Coordinates: TCoordinates; Const GMData: TVerticalTable): TCoordinates;
+Function IGCoordinatesToWGS84Coordinates(Const Coordinates: TCoordinates; Const GMData: TVerticalTable): TCoordinates;
 
 Implementation
 
-Function TIGCoordinateSystem75.ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates;
+{$IFDEF LEVEL2}
+Uses
+  ITM;
+{$ENDIF}
+
+Function TIGCoordinateSystem.ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates;
 Var
   GeodeticCoordinates: TCoordinates;
 Begin
-  GeodeticCoordinates := IGCoordinatesToWGS84Coordinates(Coordinates);
+  GeodeticCoordinates := IGCoordinatesToWGS84Coordinates(Coordinates, GM02NIData);
   Result := GeodeticToGeocentric(GeodeticCoordinates, GRS80Ellipsoid);
 End;
 
-Function TIGCoordinateSystem75.ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates;
+Function TIGCoordinateSystem.ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates;
 Var
   GeodeticCoordinates: TCoordinates;
 Begin
   GeodeticCoordinates := GeocentricToGeodetic(Coordinates, GRS80Ellipsoid);
-  Result := WGS84CoordinatesToIGCoordinates(GeodeticCoordinates);
+  Result := WGS84CoordinatesToIGCoordinates(GeodeticCoordinates, GM02NIData);
 End;
 
 {$IFDEF LEVEL2}
@@ -144,27 +156,32 @@ Begin
 End;
 {$ENDIF}
 
-Function WGS84CoordinatesToIGCoordinates(Const Coordinates: TCoordinates): TCoordinates;
+Function WGS84CoordinatesToIGCoordinates(Const Coordinates: TCoordinates; Const GMData: TVerticalTable): TCoordinates;
 Var
   {$IFDEF LEVEL1}
   GridCoordinates: TCoordinates;
   {$ENDIF}
   {$IFDEF LEVEL2}
   GeodeticCoordinates: TCoordinates;
+  Parameters: TInterpolationParameters;
+Const
+  GridScale = 1000;
   {$ENDIF}
 Begin
   {$IFDEF LEVEL1}
   GridCoordinates := TransverseMercator(Coordinates, IrishGPSGridProjection);
   Result := GridCoordinates+MeanGridOffset;
+  Result.Altitude := Result.Altitude-MeanGeoidSeparation; { Geoid is below ellipsoid. }
   {$ENDIF}
   {$IFDEF LEVEL2}
   GeodeticCoordinates := ETRSToIGGeodeticShift(Coordinates);
   Result := TransverseMercator(GeodeticCoordinates, IrishGridProjection);
+  //Parameters := BilinearGridInterpolationParameters(GMData.Header.Origin, Result, GridScale);
+  //Result.Altitude := Result.Altitude-InterpolateVerticalTable(GMData, Parameters); { Geoid is below ellipsoid. }
   {$ENDIF}
-  // Add height from GM02/VRF10
 End;
 
-Function IGCoordinatesToWGS84Coordinates(Const Coordinates: TCoordinates): TCoordinates;
+Function IGCoordinatesToWGS84Coordinates(Const Coordinates: TCoordinates; Const GMData: TVerticalTable): TCoordinates;
 Var
   {$IFDEF LEVEL1}
   GridCoordinates: TCoordinates;
@@ -172,16 +189,21 @@ Var
   {$IFDEF LEVEL2}
   GeodeticCoordinates: TCoordinates;
   {$ENDIF}
+  Parameters: TInterpolationParameters;
+Const
+  GridScale = 1000;
 Begin
+  Parameters := BilinearGridInterpolationParameters(GMData.Header.Origin, Coordinates, GridScale);
   {$IFDEF LEVEL1}
   GridCoordinates := Coordinates-MeanGridOffset;
   Result := InverseTransverseMercator(GridCoordinates, IrishGPSGridProjection);
+  Result.Altitude := Result.Altitude+MeanGeoidSeparation; { Geoid is below ellipsoid. }
   {$ENDIF}
   {$IFDEF LEVEL2}
   GeodeticCoordinates := InverseTransverseMercator(Coordinates, IrishGridProjection);
   Result := GeodeticCoordinates+IGToETRSGeodeticShift(GeodeticCoordinates);
+  Result.Altitude := Result.Altitude+InterpolateVerticalTable(GMData, Parameters); { Geoid is below ellipsoid. }
   {$ENDIF}
-  // Add height from GM02/VRF10
 End;
 
 Initialization
@@ -190,8 +212,8 @@ Airy1830ModifiedEllipsoid.Initialize(6377340.1890, 6356034.4470);
 GRS80Ellipsoid.Initialize(6378137.0000, 6356752.314140);
 IrishGridProjection.Initialize(1.000035, DegToRad(53.5), DegToRad(-8), 200000, 250000, Airy1830ModifiedEllipsoid);
 IrishGPSGridProjection.Initialize(1.000035, DegToRad(53.5), DegToRad(-8), 200000, 250000, GRS80Ellipsoid);
-IGCoordinateSystem75.Initialize('Irish Grid', 'IG75', 'Irish Grid (IG)', 29903, ctProjected, aoXYZ);
-CoordinateSystems.Register(IGCoordinateSystem75);
+IGCoordinateSystem.Initialize('Irish Grid', 'IG75', 'Irish Grid (IG)', 29903, ctProjected, aoXYZ, IGBounds);
+CoordinateSystems.Register(IGCoordinateSystem);
 
 End.
 

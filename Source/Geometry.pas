@@ -126,7 +126,8 @@ Operator - (A, B: T2DCoordinates): T2DCoordinates;
 Operator - (A, B: T3DCoordinates): T3DCoordinates;
 
 { Geometry functions. }
-Function NormalizeAngle(Angle: TCoordinate): TCoordinate;
+Function NormalizeAngle(Angle: TCoordinate): TCoordinate; {$IFDEF USE_INLINE}Inline;{$ENDIF}
+Function WithinExtents(P: TCoordinates; E: TExtents): Boolean; {$IFDEF USE_INLINE}Inline;{$ENDIF}
 
 Implementation
 
@@ -173,13 +174,28 @@ Begin
   Result.Z := A.Z-B.Z;
 End;
 
-Function NormalizeAngle(Angle: TCoordinate): TCoordinate;
+Function NormalizeAngle(Angle: TCoordinate): TCoordinate; {$IFDEF USE_INLINE}Inline;{$ENDIF}
 Begin
   Result := Angle;
   While Result>TwoPI Do
     Result -= TwoPI;
   While Result<0 Do
     Result += TwoPI;
+End;
+
+Function WithinExtents(P: TCoordinates; E: TExtents): Boolean; {$IFDEF USE_INLINE}Inline;{$ENDIF}
+Begin
+  If P.X<E.Max.X Then
+    If P.Y<E.Max.Y Then
+      If P.Z<E.Max.Z Then
+        If P.X>=E.Min.X Then
+          If P.Y>=E.Min.Y Then
+            If P.Z>=E.Min.Z Then
+              Begin
+                Result := True;
+                Exit;
+              End;
+  Result := False;
 End;
 
 End.

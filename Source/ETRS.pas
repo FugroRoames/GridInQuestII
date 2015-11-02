@@ -65,6 +65,12 @@ Var
   ETRS89CoordinateSystem30N: TETRS89CoordinateSystem30N;
   ETRS89CoordinateSystem31N: TETRS89CoordinateSystem31N;
 
+Const
+  EuropeBounds: TGeodeticBounds = (Western: -16.1*PI/180; Southern: 32.88*PI/180; Eastern: 39.65*PI/180; Northern: 84.17*PI/180);
+  UTM31NBounds: TGeodeticBounds = (Western: 0; Southern: 0; Eastern: 6*PI/180; Northern: 84*PI/180);
+  UTM30NBounds: TGeodeticBounds = (Western: -6*PI/180; Southern: 0; Eastern: 0; Northern: 84*PI/180);
+  UTM29NBounds: TGeodeticBounds = (Western: -12*PI/180; Southern: 0; Eastern: -6*PI/180; Northern:  84*PI/180);
+
 Implementation
 
 Function TETRS89CoordinateSystemGC.ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates;
@@ -141,11 +147,11 @@ GRS80Ellipsoid.Initialize(6378137.0000, 6356752.314140);
 UTMZone29Projection.Initialize(0.9996, 0, DegToRad(-9), 500000, 0, GRS80Ellipsoid);
 UTMZone30Projection.Initialize(0.9996, 0, DegToRad(-3), 500000, 0, GRS80Ellipsoid);
 UTMZone31Projection.Initialize(0.9996, 0, DegToRad(3), 500000, 0, GRS80Ellipsoid);
-ETRS89CoordinateSystemGC.Initialize('ETRS89 Cartesian', 'ETRS89CT', 'ETRS89 Cartesian', 4936, ctCartesian, aoXYZ);
-ETRS89CoordinateSystemGD.Initialize('ETRS89 Geodetic', 'ETRS89GD', 'ETRS89 Geodetic', 4937, ctGeodetic, aoYXZ);
-ETRS89CoordinateSystem31N.Initialize('ETRS89 UTM 31N', 'UTM31N', 'ETRS89 / UTM Zone 31N', 25831, ctProjected, aoXYZ);
-ETRS89CoordinateSystem30N.Initialize('ETRS89 UTM 30N', 'UTM30N', 'ETRS89 / UTM Zone 30N', 25830, ctProjected, aoXYZ);
-ETRS89CoordinateSystem29N.Initialize('ETRS89 UTM 29N', 'UTM29N', 'ETRS89 / UTM Zone 29N', 25829, ctProjected, aoXYZ);
+ETRS89CoordinateSystemGC.Initialize('ETRS89 Cartesian', 'ETRS89CT', 'ETRS89 Cartesian', 4936, ctCartesian, aoXYZ, EuropeBounds);
+ETRS89CoordinateSystemGD.Initialize('ETRS89 Geodetic', 'ETRS89GD', 'ETRS89 Geodetic', 4937, ctGeodetic, aoYXZ, EuropeBounds);
+ETRS89CoordinateSystem31N.Initialize('ETRS89 UTM 31N', 'UTM31N', 'ETRS89 / UTM Zone 31N', 25831, ctProjected, aoXYZ, UTM31NBounds);
+ETRS89CoordinateSystem30N.Initialize('ETRS89 UTM 30N', 'UTM30N', 'ETRS89 / UTM Zone 30N', 25830, ctProjected, aoXYZ, UTM30NBounds);
+ETRS89CoordinateSystem29N.Initialize('ETRS89 UTM 29N', 'UTM29N', 'ETRS89 / UTM Zone 29N', 25829, ctProjected, aoXYZ, UTM29NBounds);
 CoordinateSystems.Register(ETRS89CoordinateSystemGC);
 CoordinateSystems.Register(ETRS89CoordinateSystemGD);
 CoordinateSystems.Register(ETRS89CoordinateSystem29N);

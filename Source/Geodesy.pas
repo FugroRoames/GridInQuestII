@@ -73,16 +73,11 @@ Type
   End;
 
 Type
-  TExtents = Packed Object
-    P1, P2: TCoordinates;
-    Property Min: TCoordinates Read P1 Write P1;
-    Property Max: TCoordinates Read P2 Write P2;
-    Property SouthWest: TCoordinates Read P1 Write P1;
-    Property NorthEast: TCoordinates Read P2 Write P2;
-    Property Western: TCoordinate Read P1.X Write P1.X;
-    Property Southern: TCoordinate Read P1.Y Write P1.Y;
-    Property Eastern: TCoordinate Read P2.X Write P2.X;
-    Property Northern: TCoordinate Read P2.Y Write P2.Y;
+  TGeodeticBounds = Packed Object
+    Western: TCoordinate;
+    Southern: TCoordinate;
+    Eastern: TCoordinate;
+    Northern: TCoordinate;
   End;
 
 Type
@@ -152,6 +147,7 @@ Function GeocentricToGeodetic(Const Coordinates: TCoordinates; Const Ellipsoid: 
 Function HelmertTransform(Const Coordinates: TCoordinates; Const HelmertTransformParameters: THelmertTransformParameters): TCoordinates;
 Function TransverseMercator(Const Coordinates: TCoordinates; Const Projection: TProjection): TCoordinates;
 Function InverseTransverseMercator(Const Coordinates: TCoordinates; Const Projection: TProjection): TCoordinates;
+Function WithinGeodeticBounds(Coordinates: TCoordinates; Bounds: TGeodeticBounds): Boolean; {$IFDEF USE_INLINE}Inline;{$ENDIF}
 
 Const
   GeocentricAxisNames: TAxisNames = (LongX: 'X Coordinate'; LongY: 'Y Coordinate'; LongZ: 'Z Coordinate';
@@ -168,12 +164,14 @@ Type
     CoordinateType: TCoordinateType;
     Description: String;
     EPSGNumber: Integer;
+    GeodeticBounds: TGeodeticBounds;
     Name: String;
-    Constructor Initialize(NewName: String; NewAbbreviation: String; NewDescription: String;
-                         NewEPSGNumber: Integer; NewCoordinateType: TCoordinateType; NewAxisOrder: TAxisOrder);
+    Constructor Initialize(NewName: String; NewAbbreviation: String; NewDescription: String; NewEPSGNumber: Integer;
+                           NewCoordinateType: TCoordinateType; NewAxisOrder: TAxisOrder; NewBounds: TGeodeticBounds);
     Function AxisNames: TAxisNames;
     Function ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
     Function ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
+    Function WithinGeodeticBounds(Coordinates: TCoordinates): Boolean;
   End;
   TCoordinateSystemPointer = ^TCoordinateSystem;
 
@@ -475,7 +473,7 @@ Begin
     End;
 End;
 
-Function MeridionalArcLength(ScaledMajorAxis, ScaledMinorAxis, CentralLatitude, Latitude: TCoordinate): TCoordinate; Inline;
+Function MeridionalArcLength(ScaledMajorAxis, ScaledMinorAxis, CentralLatitude, Latitude: TCoordinate): TCoordinate; {$IFDEF USE_INLINE}Inline;{$ENDIF}
 Var
   LatitudeDelta: TCoordinate;
   LatitudeSum: TCoordinate;
@@ -494,7 +492,7 @@ Begin
   Result := ScaledMinorAxis*(Term1-Term2+Term3-Term4);
 End;
 
-Function CentralMeridianLatitude(ScaledMajorAxis, ScaledMinorAxis, MeridianScaleFactor, Northing, CentralNorthing, CentralLatitude: TCoordinate): TCoordinate; Inline;
+Function CentralMeridianLatitude(ScaledMajorAxis, ScaledMinorAxis, MeridianScaleFactor, Northing, CentralNorthing, CentralLatitude: TCoordinate): TCoordinate; {$IFDEF USE_INLINE}Inline;{$ENDIF}
 Var
   Latitude: TCoordinate;
   PriorLatitude: TCoordinate;
@@ -574,6 +572,19 @@ Begin
     End;
 End;
 
+Function WithinGeodeticBounds(Coordinates: TCoordinates; Bounds: TGeodeticBounds): Boolean; {$IFDEF USE_INLINE}Inline;{$ENDIF}
+Begin
+  If Coordinates.Longitude<Bounds.Eastern Then
+    If Coordinates.Latitude<Bounds.Northern Then
+      If Coordinates.Longitude>=Bounds.Western Then
+        If Coordinates.Latitude>=Bounds.Southern Then
+              Begin
+                Result := True;
+                Exit;
+              End;
+  Result := False;
+End;
+
 Constructor TProjection.Initialize(NewMeridianScaleFactor, NewTrueOriginLatitude,
                                    NewTrueOriginLongitude, NewOriginOffsetEasting,
                                    NewOriginOffsetNorthing: TCoordinate; NewEllipsoid: TEllipsoid);
@@ -596,8 +607,8 @@ Begin
   EccentricitySquared := (SemiMajorAxisSquared-SemiMinorAxisSquared)/SemiMajorAxisSquared;
 End;
 
-Constructor TCoordinateSystem.Initialize(NewName: String; NewAbbreviation: String; NewDescription: String;
-                            NewEPSGNumber: Integer; NewCoordinateType: TCoordinateType; NewAxisOrder: TAxisOrder);
+Constructor TCoordinateSystem.Initialize(NewName: String; NewAbbreviation: String; NewDescription: String; NewEPSGNumber: Integer;
+                                         NewCoordinateType: TCoordinateType; NewAxisOrder: TAxisOrder; NewBounds: TGeodeticBounds);
 Begin
   Name := NewName;
   Abbreviation := NewAbbreviation;
@@ -605,6 +616,7 @@ Begin
   EPSGNumber := NewEPSGNumber;
   CoordinateType := NewCoordinateType;
   AxisOrder := NewAxisOrder;
+  GeodeticBounds := NewBounds;
 End;
 
 Function TCoordinateSystem.AxisNames: TAxisNames;
@@ -629,6 +641,11 @@ Function TCoordinateSystem.ConvertFromGeocentric(Coordinates: TCoordinates): TCo
 Begin
   { Actual conversions performed by child implementations. }
   Result := NullCoordinates;
+End;
+
+Function TCoordinateSystem.WithinGeodeticBounds(Coordinates: TCoordinates): Boolean;
+Begin
+  Result := Geodesy.WithinGeodeticBounds(Coordinates, GeodeticBounds);
 End;
 
 Var
@@ -669,17 +686,16 @@ Begin
     EPSGNumber := 0
   Else
     EPSGNumber := CoordinateSystemsList[SystemIndex]^.EPSGNumber;
-  // TODO: UTM zones need overlap testing adding here.
   With CoordinateSystems Do
     Case EPSGNumber Of
     0: { Full List }
       Result := BuildCoordinateSystemsList([]);
-    25831:{ UTM Zone 31N }
-      Result := BuildCoordinateSystemsList([Byte(SystemIndex)]);
+    25831:{ UTM Zone 31N, no Ireland overlap. }
+      Result := BuildCoordinateSystemsList([Byte(SystemIndex), Byte(FindEPSGNumber(25830)), Byte(FindEPSGNumber(25829)), Byte(FindEPSGNumber(29903)), Byte(FindEPSGNumber(2157))]);
     25830:{ UTM Zone 30N }
-      Result := BuildCoordinateSystemsList([Byte(SystemIndex)]);
+      Result := BuildCoordinateSystemsList([Byte(SystemIndex), Byte(FindEPSGNumber(25831)), Byte(FindEPSGNumber(25829))]);
     25829:{ UTM Zone 29N }
-      Result := BuildCoordinateSystemsList([Byte(SystemIndex)]);
+      Result := BuildCoordinateSystemsList([Byte(SystemIndex), Byte(FindEPSGNumber(25831)), Byte(FindEPSGNumber(25830))]);
     29903, 2157: { Irish Grid and Irish Transverse Mercator }
       Result := BuildCoordinateSystemsList([Byte(SystemIndex), Byte(FindEPSGNumber(27700)), Byte(FindEPSGNumber(27701))]);
     27700, 27701: { British National Grid (TN02/GM02) and (TN15/GM15) }
