@@ -36,6 +36,8 @@ Uses
 
 Type
   TIGCoordinateSystem = Object(TCoordinateSystem)
+    PreferredVerticalDatum: TVerticalDatumCode;
+    LastVerticalDatum: TVerticalDatumCode;
     Function ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
     Function ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
   End;
@@ -74,8 +76,8 @@ Const
 Function IGToETRSGeodeticShift(Const Coordinates: TCoordinates): TCoordinates; {$IFDEF USE_INLINE}Inline;{$ENDIF}
 Function ETRSToIGGeodeticShift(Const Coordinates: TCoordinates): TCoordinates; {$IFDEF USE_INLINE}Inline;{$ENDIF}
 {$ENDIF}
-Function WGS84CoordinatesToIGCoordinates(Const Coordinates: TCoordinates; Const GMData: TVerticalTable): TCoordinates;
-Function IGCoordinatesToWGS84Coordinates(Const Coordinates: TCoordinates; Const GMData: TVerticalTable): TCoordinates;
+Function WGS84CoordinatesToIGCoordinates(Const InputCoordinates: TCoordinates; Const VerticalModel: TOSVerticalModel; Const PreferredDatum: TVerticalDatumCode; Out OutputCoordinates: TCoordinates; Out OutputDatum: TVerticalDatumCode): Boolean;
+Function IGCoordinatesToWGS84Coordinates(Const InputCoordinates: TCoordinates; Const VerticalModel: TOSVerticalModel; Const PreferredDatum: TVerticalDatumCode; Out OutputCoordinates: TCoordinates; Out OutputDatum: TVerticalDatumCode): Boolean;
 
 Implementation
 
@@ -88,8 +90,11 @@ Function TIGCoordinateSystem.ConvertToGeocentric(Coordinates: TCoordinates): TCo
 Var
   GeodeticCoordinates: TCoordinates;
 Begin
-  GeodeticCoordinates := IGCoordinatesToWGS84Coordinates(Coordinates, GM02NIData);
-  Result := GeodeticToGeocentric(GeodeticCoordinates, GRS80Ellipsoid);
+  // Test for bounds?
+  If IGCoordinatesToWGS84Coordinates(Coordinates, vmGM02, PreferredVerticalDatum, GeodeticCoordinates, LastVerticalDatum) Then
+    Result := GeodeticToGeocentric(GeodeticCoordinates, GRS80Ellipsoid)
+  Else
+    Result := NullCoordinates;
 End;
 
 Function TIGCoordinateSystem.ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates;
@@ -97,7 +102,9 @@ Var
   GeodeticCoordinates: TCoordinates;
 Begin
   GeodeticCoordinates := GeocentricToGeodetic(Coordinates, GRS80Ellipsoid);
-  Result := WGS84CoordinatesToIGCoordinates(GeodeticCoordinates, GM02NIData);
+  // Test for bounds?
+  If Not WGS84CoordinatesToIGCoordinates(GeodeticCoordinates, vmGM02, PreferredVerticalDatum, Result, LastVerticalDatum) Then
+    Result := NullCoordinates;
 End;
 
 {$IFDEF LEVEL2}
@@ -156,53 +163,59 @@ Begin
 End;
 {$ENDIF}
 
-Function WGS84CoordinatesToIGCoordinates(Const Coordinates: TCoordinates; Const GMData: TVerticalTable): TCoordinates;
+Function WGS84CoordinatesToIGCoordinates(Const InputCoordinates: TCoordinates; Const VerticalModel: TOSVerticalModel; Const PreferredDatum: TVerticalDatumCode; Out OutputCoordinates: TCoordinates; Out OutputDatum: TVerticalDatumCode): Boolean;
 Var
   {$IFDEF LEVEL1}
   GridCoordinates: TCoordinates;
   {$ENDIF}
   {$IFDEF LEVEL2}
   GeodeticCoordinates: TCoordinates;
-  Parameters: TInterpolationParameters;
-Const
-  GridScale = 1000;
+  ITMCoordinates: TCoordinates;
   {$ENDIF}
 Begin
   {$IFDEF LEVEL1}
-  GridCoordinates := TransverseMercator(Coordinates, IrishGPSGridProjection);
-  Result := GridCoordinates+MeanGridOffset;
-  Result.Altitude := Result.Altitude-MeanGeoidSeparation; { Geoid is below ellipsoid. }
+  GridCoordinates := TransverseMercator(InputCoordinates, IrishGPSGridProjection);
+  OutputCoordinates := GridCoordinates+MeanGridOffset;
+  OutputCoordinates.Elevation := OutputCoordinates.Elevation-MeanGeoidSeparation; { Geoid is below ellipsoid. }
+  OutputDatum := vdNone; { Level 1 cannot associate heights with a specific datum, but applies a mean separation value. }
+  Result := True;
   {$ENDIF}
   {$IFDEF LEVEL2}
-  GeodeticCoordinates := ETRSToIGGeodeticShift(Coordinates);
-  Result := TransverseMercator(GeodeticCoordinates, IrishGridProjection);
-  //Parameters := BilinearGridInterpolationParameters(GMData.Header.Origin, Result, GridScale);
-  //Result.Altitude := Result.Altitude-InterpolateVerticalTable(GMData, Parameters); { Geoid is below ellipsoid. }
+  GeodeticCoordinates := ETRSToIGGeodeticShift(InputCoordinates);
+  OutputCoordinates := TransverseMercator(GeodeticCoordinates, IrishGridProjection);
+  { Determine location validity from the corresponding ITM coordinates, and use that geoid height if valid. }
+  Result := WGS84CoordinatesToITMCoordinates(InputCoordinates, vmGM02, PreferredDatum, ITMCoordinates, OutputDatum);
+  If Result Then
+    OutputCoordinates.Elevation := ITMCoordinates.Elevation;
   {$ENDIF}
 End;
 
-Function IGCoordinatesToWGS84Coordinates(Const Coordinates: TCoordinates; Const GMData: TVerticalTable): TCoordinates;
-Var
+Function IGCoordinatesToWGS84Coordinates(Const InputCoordinates: TCoordinates; Const VerticalModel: TOSVerticalModel; Const PreferredDatum: TVerticalDatumCode; Out OutputCoordinates: TCoordinates; Out OutputDatum: TVerticalDatumCode): Boolean;
+ Var
   {$IFDEF LEVEL1}
   GridCoordinates: TCoordinates;
   {$ENDIF}
   {$IFDEF LEVEL2}
   GeodeticCoordinates: TCoordinates;
+  ITMCoordinates: TCoordinates;
   {$ENDIF}
-  Parameters: TInterpolationParameters;
-Const
-  GridScale = 1000;
 Begin
-  Parameters := BilinearGridInterpolationParameters(GMData.Header.Origin, Coordinates, GridScale);
   {$IFDEF LEVEL1}
-  GridCoordinates := Coordinates-MeanGridOffset;
-  Result := InverseTransverseMercator(GridCoordinates, IrishGPSGridProjection);
-  Result.Altitude := Result.Altitude+MeanGeoidSeparation; { Geoid is below ellipsoid. }
+  GridCoordinates := InputCoordinates-MeanGridOffset;
+  OutputCoordinates := InverseTransverseMercator(GridCoordinates, IrishGPSGridProjection);
+  OutputCoordinates.Altitude := OutputCoordinates.Altitude+MeanGeoidSeparation; { Geoid is below ellipsoid. }
+  OutputDatum := vdNone; { Level 1 cannot associate heights with a specific datum, but applies a mean separation value. }
+  Result := True;
   {$ENDIF}
   {$IFDEF LEVEL2}
-  GeodeticCoordinates := InverseTransverseMercator(Coordinates, IrishGridProjection);
-  Result := GeodeticCoordinates+IGToETRSGeodeticShift(GeodeticCoordinates);
-  Result.Altitude := Result.Altitude+InterpolateVerticalTable(GMData, Parameters); { Geoid is below ellipsoid. }
+  GeodeticCoordinates := InverseTransverseMercator(InputCoordinates, IrishGridProjection);
+  OutputCoordinates := GeodeticCoordinates+IGToETRSGeodeticShift(GeodeticCoordinates);
+  { Determine location validity from the corresponding ITM coordinates, and use that geoid height if valid. }
+  Result := WGS84CoordinatesToITMCoordinates(GeodeticCoordinates, vmGM02, PreferredDatum, ITMCoordinates, OutputDatum);
+  { Convert the ITM back to geodetic to determine the corresponding ellipsoidal height. }
+  Result := ITMCoordinatesToWGS84Coordinates(ITMCoordinates, vmGM02, PreferredDatum, GeodeticCoordinates, OutputDatum);
+  If Result Then
+    OutputCoordinates.Altitude := GeodeticCoordinates.Altitude; { Geoid is below ellipsoid. }
   {$ENDIF}
 End;
 
