@@ -7,6 +7,7 @@ object OptionsForm: TOptionsForm
   Caption = 'Options'
   ClientHeight = 359
   ClientWidth = 564
+  OnShow = FormShow
   Position = poScreenCenter
   LCLVersion = '1.5'
   object BottomPanel: TPanel

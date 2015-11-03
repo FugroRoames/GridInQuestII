@@ -23,7 +23,7 @@ Interface
 
 Uses
   Classes, SysUtils, FileInfo, FileUtil, LCLVersion, {$IFDEF Windows}Windows, {$ENDIF}
-  Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls, ComCtrls, OSTab, Geodesy, IG, ITM;
+  Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls, ComCtrls, OSTab, Geodesy, IG, ITM, LMessages;
 
 Type
   TOptionsForm = Class(TForm)
@@ -32,6 +32,7 @@ Type
     IrishDatumLabel: TLabel;
     OKButton: TButton;
     CancelButton: TButton;
+    Procedure FormShow(Sender: TObject);
     Procedure OKButtonClick(Sender: TObject);
   Private
     { private declarations }
@@ -52,6 +53,14 @@ Begin
       ShowModal;
       Free;
     End;
+End;
+
+Procedure TOptionsForm.FormShow(Sender: TObject);
+Begin
+  If ITMCoordinateSystem.PreferredVerticalDatum=vdMalinHead Then
+    IrishDatumComboBox.Text := 'Malin Head'
+  Else
+    IrishDatumComboBox.Text := 'Belfast';
 End;
 
 Procedure TOptionsForm.OKButtonClick(Sender: TObject);

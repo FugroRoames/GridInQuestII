@@ -22,6 +22,7 @@
         <CursorPos X="52" Y="27"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
       </Unit1>
       <Unit2>
         <Filename Value="Geodesy.pas"/>
@@ -54,7 +55,6 @@
         <ComponentName Value="SettingsForm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="2"/>
         <TopLine Value="421"/>
         <CursorPos X="97" Y="443"/>
@@ -124,7 +124,7 @@
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
         <CursorPos Y="10"/>
-        <UsageCount Value="183"/>
+        <UsageCount Value="184"/>
       </Unit13>
       <Unit14>
         <Filename Value="TN02.pas"/>
@@ -305,132 +305,134 @@
         <ComponentName Value="OptionsForm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="3"/>
-        <TopLine Value="47"/>
-        <CursorPos X="48" Y="62"/>
+        <TopLine Value="56"/>
+        <CursorPos X="5" Y="83"/>
         <UsageCount Value="10"/>
         <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
       </Unit38>
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="ITM.pas"/>
-        <Caret Line="47" Column="199" TopLine="34"/>
+        <Caret Line="59" Column="3" TopLine="45"/>
       </Position1>
       <Position2>
         <Filename Value="ITM.pas"/>
-        <Caret Line="48" Column="10" TopLine="33"/>
+        <Caret Line="60" Column="3" TopLine="46"/>
       </Position2>
       <Position3>
         <Filename Value="ITM.pas"/>
-        <Caret Line="155" Column="202" TopLine="155"/>
+        <Caret Line="61" Column="3" TopLine="47"/>
       </Position3>
       <Position4>
-        <Filename Value="ITM.pas"/>
-        <Caret Line="59" Column="3" TopLine="45"/>
-      </Position4>
-      <Position5>
-        <Filename Value="ITM.pas"/>
-        <Caret Line="60" Column="3" TopLine="46"/>
-      </Position5>
-      <Position6>
-        <Filename Value="ITM.pas"/>
-        <Caret Line="61" Column="3" TopLine="47"/>
-      </Position6>
-      <Position7>
         <Filename Value="IG.pas"/>
         <Caret Line="20" Column="46" TopLine="17"/>
-      </Position7>
-      <Position8>
+      </Position4>
+      <Position5>
         <Filename Value="IG.pas"/>
         <Caret Line="166" TopLine="154"/>
+      </Position5>
+      <Position6>
+        <Filename Value="BNG.pas"/>
+        <Caret Line="41" Column="90" TopLine="33"/>
+      </Position6>
+      <Position7>
+        <Filename Value="BNG.pas"/>
+        <Caret Line="128" Column="16" TopLine="114"/>
+      </Position7>
+      <Position8>
+        <Filename Value="BNG.pas"/>
+        <Caret Line="250" Column="23" TopLine="227"/>
       </Position8>
       <Position9>
         <Filename Value="BNG.pas"/>
-        <Caret Line="41" Column="90" TopLine="33"/>
+        <Caret Line="253" Column="20" TopLine="230"/>
       </Position9>
       <Position10>
         <Filename Value="BNG.pas"/>
-        <Caret Line="128" Column="16" TopLine="114"/>
+        <Caret Line="259" Column="20" TopLine="237"/>
       </Position10>
       <Position11>
         <Filename Value="BNG.pas"/>
-        <Caret Line="250" Column="23" TopLine="227"/>
+        <Caret Line="271" Column="14" TopLine="248"/>
       </Position11>
       <Position12>
         <Filename Value="BNG.pas"/>
-        <Caret Line="253" Column="20" TopLine="230"/>
+        <Caret Line="295" Column="14" TopLine="272"/>
       </Position12>
       <Position13>
         <Filename Value="BNG.pas"/>
-        <Caret Line="259" Column="20" TopLine="237"/>
+        <Caret Line="120" Column="14" TopLine="114"/>
       </Position13>
       <Position14>
         <Filename Value="BNG.pas"/>
-        <Caret Line="271" Column="14" TopLine="248"/>
+        <Caret Line="126" Column="16" TopLine="114"/>
       </Position14>
       <Position15>
         <Filename Value="BNG.pas"/>
-        <Caret Line="295" Column="14" TopLine="272"/>
+        <Caret Line="238" Column="23" TopLine="215"/>
       </Position15>
       <Position16>
         <Filename Value="BNG.pas"/>
-        <Caret Line="120" Column="14" TopLine="114"/>
+        <Caret Line="241" Column="20" TopLine="218"/>
       </Position16>
       <Position17>
         <Filename Value="BNG.pas"/>
-        <Caret Line="126" Column="16" TopLine="114"/>
+        <Caret Line="269" Column="14" TopLine="246"/>
       </Position17>
       <Position18>
         <Filename Value="BNG.pas"/>
-        <Caret Line="238" Column="23" TopLine="215"/>
+        <Caret Line="293" Column="14" TopLine="270"/>
       </Position18>
       <Position19>
-        <Filename Value="BNG.pas"/>
-        <Caret Line="241" Column="20" TopLine="218"/>
+        <Filename Value="IG.pas"/>
+        <Caret Line="77" Column="12" TopLine="63"/>
       </Position19>
       <Position20>
-        <Filename Value="BNG.pas"/>
-        <Caret Line="269" Column="14" TopLine="246"/>
+        <Filename Value="IG.pas"/>
+        <Caret Line="181" Column="85" TopLine="159"/>
       </Position20>
       <Position21>
-        <Filename Value="BNG.pas"/>
-        <Caret Line="293" Column="14" TopLine="270"/>
+        <Filename Value="IG.pas"/>
+        <Caret Line="41" TopLine="29"/>
       </Position21>
       <Position22>
         <Filename Value="IG.pas"/>
-        <Caret Line="77" Column="12" TopLine="63"/>
+        <Caret Line="106" Column="30" TopLine="91"/>
       </Position22>
       <Position23>
         <Filename Value="IG.pas"/>
-        <Caret Line="181" Column="85" TopLine="159"/>
+        <Caret Line="174" TopLine="163"/>
       </Position23>
       <Position24>
         <Filename Value="IG.pas"/>
-        <Caret Line="41" TopLine="29"/>
+        <Caret Line="209" Column="39" TopLine="195"/>
       </Position24>
       <Position25>
         <Filename Value="IG.pas"/>
-        <Caret Line="106" Column="30" TopLine="91"/>
+        <Caret Line="216" Column="118" TopLine="203"/>
       </Position25>
       <Position26>
-        <Filename Value="IG.pas"/>
-        <Caret Line="174" TopLine="163"/>
+        <Filename Value="Options.pas"/>
       </Position26>
       <Position27>
-        <Filename Value="IG.pas"/>
-        <Caret Line="209" Column="39" TopLine="195"/>
+        <Filename Value="Options.pas"/>
+        <Caret Line="72" Column="62" TopLine="46"/>
       </Position27>
       <Position28>
-        <Filename Value="IG.pas"/>
-        <Caret Line="216" Column="118" TopLine="203"/>
+        <Filename Value="Options.pas"/>
+        <Caret Line="63" Column="48" TopLine="48"/>
       </Position28>
       <Position29>
         <Filename Value="Options.pas"/>
+        <Caret Line="77" Column="3" TopLine="54"/>
       </Position29>
       <Position30>
         <Filename Value="Options.pas"/>
-        <Caret Line="72" Column="62" TopLine="46"/>
+        <Caret Line="83" TopLine="57"/>
       </Position30>
     </JumpHistory>
   </ProjectSession>

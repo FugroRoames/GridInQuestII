@@ -517,11 +517,9 @@ object MainForm: TMainForm
       end
       object OptionsBreak: TMenuItem
         Caption = '-'
-        Visible = False
       end
       object OptionsMenuItem: TMenuItem
         Action = OptionsAction
-        Visible = False
       end
     end
     object MapMenuItem: TMenuItem
@@ -617,7 +615,6 @@ object MainForm: TMainForm
     end
     object OptionsAction: TAction
       Caption = 'O&ptions...'
-      Enabled = False
       OnExecute = OptionsActionExecute
     end
     object ZoomInAction: TAction
