@@ -1,7 +1,7 @@
 object OptionsForm: TOptionsForm
-  Left = 639
+  Left = 985
   Height = 359
-  Top = 320
+  Top = 189
   Width = 564
   BorderStyle = bsDialog
   Caption = 'Options'
@@ -29,6 +29,7 @@ object OptionsForm: TOptionsForm
       Caption = 'OK'
       Default = True
       ModalResult = 1
+      OnClick = OKButtonClick
       TabOrder = 0
     end
     object CancelButton: TButton
@@ -43,5 +44,28 @@ object OptionsForm: TOptionsForm
       ModalResult = 2
       TabOrder = 1
     end
+  end
+  object IrishDatumComboBox: TComboBox
+    Left = 176
+    Height = 21
+    Top = 16
+    Width = 124
+    ItemHeight = 13
+    Items.Strings = (
+      'Belfast'
+      'Malin Head'
+    )
+    TabOrder = 1
+    Text = 'IrishDatumComboBox'
+  end
+  object IrishDatumLabel: TLabel
+    Left = 16
+    Height = 21
+    Top = 16
+    Width = 146
+    AutoSize = False
+    Caption = 'Preferred Irish Vertical Datum:'
+    Layout = tlCenter
+    ParentColor = False
   end
 end
