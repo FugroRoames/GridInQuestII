@@ -139,7 +139,7 @@ Begin
    Result.Longitude := DegToRad((B00+B10*U+B01*V+B11*UV+B20*U2+B02*V2+B21*U2V+
                        B12*UV2+B22*U2V2+B30*U3+B03*V3+B31*U3V+B13*UV3+
                        B32*U3V2+B23*U2V3+B33*U3V3)/3600);
-   Result.Altitude := Coordinates.Altitude;
+   Result.Altitude := 0; { No change to geoid height in this model. }
 End;
 
 Function ETRSToIGGeodeticShift(Const Coordinates: TCoordinates): TCoordinates; {$IFDEF USE_INLINE}Inline;{$ENDIF}
@@ -209,13 +209,12 @@ Begin
   {$ENDIF}
   {$IFDEF LEVEL2}
   GeodeticCoordinates := InverseTransverseMercator(InputCoordinates, IrishGridProjection);
+  GeodeticCoordinates.Altitude := 0; { Remove the altitude component. }
   OutputCoordinates := GeodeticCoordinates+IGToETRSGeodeticShift(GeodeticCoordinates);
-  { Determine location validity from the corresponding ITM coordinates, and use that geoid height if valid. }
-  Result := WGS84CoordinatesToITMCoordinates(GeodeticCoordinates, vmGM02, PreferredDatum, ITMCoordinates, OutputDatum);
-  { Convert the ITM back to geodetic to determine the corresponding ellipsoidal height. }
-  Result := ITMCoordinatesToWGS84Coordinates(ITMCoordinates, vmGM02, PreferredDatum, GeodeticCoordinates, OutputDatum);
+  { Determine location validity from the corresponding ITM coordinates, and the corresponding geoid height if valid. }
+  Result := WGS84CoordinatesToITMCoordinates(OutputCoordinates, vmGM02, PreferredDatum, ITMCoordinates, OutputDatum);
   If Result Then
-    OutputCoordinates.Altitude := GeodeticCoordinates.Altitude; { Geoid is below ellipsoid. }
+    OutputCoordinates.Altitude := InputCoordinates.Elevation-ITMCoordinates.Altitude; { Output the elevation with geoid height correction. }
   {$ENDIF}
 End;
 
