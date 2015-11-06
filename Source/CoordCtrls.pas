@@ -274,6 +274,7 @@ Begin
       DropDownCount := 9;
       Items.Text := CoordinateSystems.AvailableSystemsList;
       Parent := ThisPanel;
+      Sorted := True;
       Style := csDropDownList;
       OnChange := @DoOnChange;
     End;
@@ -296,6 +297,11 @@ Procedure TCoordinateSystemPanel.Clear(CompatibleIndex: Integer = -1);
 Begin
   FComboBox.Items.Text := CoordinateSystems.CompatibleSystemsList(CompatibleIndex);
   FComboBox.ItemIndex := -1;
+  {$IFDEF LCLQT}
+  { Work around for QT bug which removes sorting after list assignment. }
+  FComboBox.Sorted := False;
+  FComboBox.Sorted := True;
+  {$ENDIF}
 End;
 
 Procedure TCoordinatesEntryPanel.SetLocked(Value: Boolean);
