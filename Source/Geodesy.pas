@@ -367,19 +367,31 @@ Const
 Begin
   With Coordinates, Ellipsoid Do
     Begin
-      Result.Longitude := ArcTan(Y/X);
+      { Test for potential division by zero and substitute the limiting value of arctan. }
+      If Abs(X)<Epsilon Then
+        Result.Longitude := Sign(Y)*PI/2
+      Else
+        Result.Longitude := ArcTan(Y/X);
       Param := Sqrt(X*X+Y*Y);
-      LastLatValue := 0;
-      LatValue := ArcTan(Z/(Param*(1-EccentricitySquared)));
-      While Abs(LatValue-LastLatValue)>Epsilon Do
+      If Param<Epsilon Then
         Begin
-          SinLat := Sin(LatValue);
-          Height := SemiMajorAxis/Sqrt(1-(EccentricitySquared*SinLat*SinLat));
-          LatValue := ArcTan((Z+(EccentricitySquared*Height*SinLat))/Param);
-          LastLatValue := LatValue;
+          Result.Latitude := Sign(Z)*PI/2;
+          Result.Altitude := Z-SemiMinorAxis;
+        End
+      Else
+        Begin
+          LastLatValue := 0;
+          LatValue := ArcTan(Z/(Param*(1-EccentricitySquared)));
+          While Abs(LatValue-LastLatValue)>Epsilon Do
+            Begin
+              SinLat := Sin(LatValue);
+              Height := SemiMajorAxis/Sqrt(1-(EccentricitySquared*SinLat*SinLat));
+              LatValue := ArcTan((Z+(EccentricitySquared*Height*SinLat))/Param);
+              LastLatValue := LatValue;
+            End;
+          Result.Latitude := LatValue;
+          Result.Altitude := (Param/Cos(LatValue))-Height;
         End;
-      Result.Latitude := LatValue;
-      Result.Altitude := (Param/Cos(LatValue))-Height;
     End;
 End;
 
