@@ -24,8 +24,7 @@ Interface
 Uses
   Classes, SysUtils, FileUtil, LCLIntf, Forms, Controls, Graphics, Dialogs,
   ExtCtrls, Menus, ActnList, StdCtrls, Grids, Clipbrd, GlobeCtrl, CoordCtrls,
-  DataStreams, Progress, Settings, Options, About, Geodesy,
-  GeomUtils, GeodUtils;
+  DataStreams, Progress, Settings, Options, About, Geodesy, GeomUtils, GeodUtils;
 
 Type
   TMainForm = Class(TForm)
