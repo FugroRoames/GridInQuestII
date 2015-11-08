@@ -49,6 +49,24 @@ Function ITMCoordinatesToWGS84Coordinates(Const InputCoordinates: TCoordinates; 
 
 Implementation
 
+Type
+  TDatumZone = (dzNI, dzRoI);
+
+Type
+  TTransformationData = Object
+    NIGMData: TVerticalTable;
+    RoIGMData: TVerticalTable;
+    NIParameters: TInterpolationParameters;
+    RoIParameters: TInterpolationParameters;
+    NIValid: Boolean;
+    RoIValid: Boolean;
+    PreferredDatum: TVerticalDatumCode;
+    Procedure SetTables(Const VerticalModel: TOSVerticalModel);
+    Procedure SetParameters(Const Coordinates: TCoordinates);
+    Function SetZoneHeight(Const DatumZone: TDatumZone; Var OutputCoordinates: TCoordinates; Var OutputDatum: TVerticalDatumCode): Boolean;
+    Function SetHeight(Var OutputCoordinates: TCoordinates; Var OutputDatum: TVerticalDatumCode): Boolean;
+  End;
+
 Var
   ProgramFolder: String;
   GM02NIFileName: String;
@@ -59,6 +77,9 @@ Var
   GM02RoIDataFound: Boolean;
   GM15NIDataFound: Boolean;
   GM15RoIDataFound: Boolean;
+
+Const
+  GridScale = 1000;
 
 Function TITMCoordinateSystem.ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates;
 Var
@@ -81,34 +102,8 @@ Begin
     Result := NullCoordinates;
 End;
 
-Function WGS84CoordinatesToITMCoordinates(Const InputCoordinates: TCoordinates; Const VerticalModel: TOSVerticalModel; Const PreferredDatum: TVerticalDatumCode; Out OutputCoordinates: TCoordinates; Out OutputDatum: TVerticalDatumCode): Boolean;
-Var
-  NIGMData: TVerticalTable;
-  RoIGMData: TVerticalTable;
-  NIParameters: TInterpolationParameters;
-  RoIParameters: TInterpolationParameters;
-  NIValid: Boolean;
-  RoIValid: Boolean;
-Const
-  GridScale = 1000;
-  Procedure OutputNI;
-  Begin
-    With NIParameters Do
-      OutputDatum := TVerticalDatumCode(NIGMData.Data(X1, Y1).DatumCode);
-    Result := (OutputDatum<>vdNone);
-    If Result Then
-      OutputCoordinates.Altitude := OutputCoordinates.Altitude-InterpolateVerticalTable(NIGMData, NIParameters)
-  End;
-  Procedure OutputRoI;
-  Begin
-    With RoIParameters Do
-      OutputDatum := TVerticalDatumCode(RoIGMData.Data(X1, Y1).DatumCode);
-    Result := (OutputDatum<>vdNone);
-    If Result Then
-      OutputCoordinates.Altitude := OutputCoordinates.Altitude-InterpolateVerticalTable(RoIGMData, RoIParameters)
-  End;
+Procedure TTransformationData.SetTables(Const VerticalModel: TOSVerticalModel);
 Begin
-  Result := False;
   Case VerticalModel Of
   vmGM02:
     Begin
@@ -121,11 +116,40 @@ Begin
       RoIGMData := GM15RoIData;
     End;
   End;
-  OutputCoordinates := TransverseMercator(InputCoordinates, ITMProjection);
-  NIParameters := BilinearGridInterpolationParameters(NIGMData.Header.Origin, OutputCoordinates, GridScale);
+End;
+
+Procedure TTransformationData.SetParameters(Const Coordinates: TCoordinates);
+Begin
+  NIParameters := BilinearGridInterpolationParameters(NIGMData.Header.Origin, Coordinates, GridScale);
   NIValid := ParametersValid(NIParameters, NIGMData.Header);
-  RoIParameters := BilinearGridInterpolationParameters(RoIGMData.Header.Origin, OutputCoordinates, GridScale);
+  RoIParameters := BilinearGridInterpolationParameters(RoIGMData.Header.Origin, Coordinates, GridScale);
   RoIValid := ParametersValid(RoIParameters, RoIGMData.Header);
+End;
+
+Function TTransformationData.SetZoneHeight(Const DatumZone: TDatumZone; Var OutputCoordinates: TCoordinates; Var OutputDatum: TVerticalDatumCode): Boolean;
+Begin
+  Case DatumZone Of
+  dzNI:
+    Begin
+      With NIParameters Do
+        OutputDatum := TVerticalDatumCode(NIGMData.Data(X1, Y1).DatumCode);
+      Result := (OutputDatum<>vdNone);
+      If Result Then
+        OutputCoordinates.Altitude := OutputCoordinates.Altitude-InterpolateVerticalTable(NIGMData, NIParameters)
+    End;
+  dzRoI:
+    Begin
+      With RoIParameters Do
+        OutputDatum := TVerticalDatumCode(RoIGMData.Data(X1, Y1).DatumCode);
+      Result := (OutputDatum<>vdNone);
+      If Result Then
+        OutputCoordinates.Altitude := OutputCoordinates.Altitude-InterpolateVerticalTable(RoIGMData, RoIParameters)
+    End;
+  End;
+End;
+
+Function TTransformationData.SetHeight(Var OutputCoordinates: TCoordinates; Var OutputDatum: TVerticalDatumCode): Boolean;
+Begin
   If NIValid Then
     Begin
       { If both data tables are valid. }
@@ -133,92 +157,46 @@ Begin
         Begin
           { If NI preferred then try it first. }
           If PreferredDatum=vdBelfast Then
-            OutputNI;
+            Result := SetZoneHeight(dzNI, OutputCoordinates, OutputDatum);
           { If there was no valid output, try RoI. }
           If Not Result Then
-            OutputRoI;
+            Result := SetZoneHeight(dzRoI, OutputCoordinates, OutputDatum);
           { If still no valid output, try NI again if needed. }
           If Not Result And (PreferredDatum<>vdBelfast) Then
-            OutputNI;
+            Result := SetZoneHeight(dzNI, OutputCoordinates, OutputDatum);
         End
       Else
-        OutputNI;
+        Result := SetZoneHeight(dzNI, OutputCoordinates, OutputDatum);
     End
   Else
     Begin
       If RoIValid Then
-        OutputRoI;
+        Result := SetZoneHeight(dzRoI, OutputCoordinates, OutputDatum);
     End;
+End;
+
+Function WGS84CoordinatesToITMCoordinates(Const InputCoordinates: TCoordinates; Const VerticalModel: TOSVerticalModel; Const PreferredDatum: TVerticalDatumCode; Out OutputCoordinates: TCoordinates; Out OutputDatum: TVerticalDatumCode): Boolean;
+Var
+  Data: TTransformationData;
+Begin
+  Result := False;
+  Data.PreferredDatum := PreferredDatum;
+  Data.SetTables(VerticalModel);
+  OutputCoordinates := TransverseMercator(InputCoordinates, ITMProjection);
+  Data.SetParameters(OutputCoordinates);
+  Result := Data.SetHeight(OutputCoordinates, OutputDatum);
 End;
 
 Function ITMCoordinatesToWGS84Coordinates(Const InputCoordinates: TCoordinates; Const VerticalModel: TOSVerticalModel; Const PreferredDatum: TVerticalDatumCode; Out OutputCoordinates: TCoordinates; Out OutputDatum: TVerticalDatumCode): Boolean;
 Var
-  NIGMData: TVerticalTable;
-  RoIGMData: TVerticalTable;
-  NIParameters: TInterpolationParameters;
-  RoIParameters: TInterpolationParameters;
-  NIValid: Boolean;
-  RoIValid: Boolean;
-  Procedure OutputNI;
-  Begin
-    With NIParameters Do
-      OutputDatum := TVerticalDatumCode(NIGMData.Data(X1, Y1).DatumCode);
-    Result := (OutputDatum<>vdNone);
-    If Result Then
-      OutputCoordinates.Altitude := OutputCoordinates.Altitude+InterpolateVerticalTable(NIGMData, NIParameters)
-  End;
-  Procedure OutputRoI;
-  Begin
-    With RoIParameters Do
-      OutputDatum := TVerticalDatumCode(RoIGMData.Data(X1, Y1).DatumCode);
-    Result := (OutputDatum<>vdNone);
-    If Result Then
-      OutputCoordinates.Altitude := OutputCoordinates.Altitude+InterpolateVerticalTable(RoIGMData, RoIParameters)
-  End;
-Const
-  GridScale = 1000;
+  Data: TTransformationData;
 Begin
   Result := False;
-  Case VerticalModel Of
-  vmGM02:
-    Begin
-      NIGMData := GM02NIData;
-      RoIGMData := GM02RoIData;
-    End;
-  vmGM15:
-    Begin
-      NIGMData := GM15NIData;
-      RoIGMData := GM15RoIData;
-    End;
-  End;
-  NIParameters := BilinearGridInterpolationParameters(NIGMData.Header.Origin, InputCoordinates, GridScale);
-  NIValid := ParametersValid(NIParameters, NIGMData.Header);
-  RoIParameters := BilinearGridInterpolationParameters(RoIGMData.Header.Origin, InputCoordinates, GridScale);
-  RoIValid := ParametersValid(RoIParameters, RoIGMData.Header);
+  Data.PreferredDatum := PreferredDatum;
+  Data.SetTables(VerticalModel);
+  Data.SetParameters(InputCoordinates);
   OutputCoordinates := InverseTransverseMercator(InputCoordinates, ITMProjection);
-  If NIValid Then
-    Begin
-      { If both data tables are valid. }
-      If RoIValid Then
-        Begin
-          { If NI preferred then try it first. }
-          If PreferredDatum=vdBelfast Then
-            OutputNI;
-          { If there was no valid output, try RoI. }
-          If Not Result Then
-            OutputRoI;
-          { If still no valid output, try NI again if needed. }
-          If Not Result And (PreferredDatum<>vdBelfast) Then
-            OutputNI;
-        End
-      Else
-        OutputNI;
-    End
-  Else
-    Begin
-      If RoIValid Then
-        OutputRoI;
-    End;
+  Result := Data.SetHeight(OutputCoordinates, OutputDatum);
 End;
 
 Initialization
