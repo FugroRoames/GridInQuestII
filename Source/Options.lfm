@@ -48,10 +48,10 @@ object OptionsForm: TOptionsForm
   end
   object IrishDatumComboBox: TComboBox
     Left = 176
-    Height = 21
+    Height = 38
     Top = 16
     Width = 124
-    ItemHeight = 13
+    ItemHeight = 30
     Items.Strings = (
       'Belfast'
       'Malin Head'

@@ -103,12 +103,42 @@ Type
     U, UI: TCoordinate;
   End;
 
+Function VerticalDataCodeToName(DatumCode: TVerticalDatumCode): String;
+Function VerticalDataNameToCode(DatumName: String): TVerticalDatumCode;
 Function BilinearGridInterpolationParameters(Const Origin: TCoordinates; Const Coordinates: TCoordinates; Const GridScale: TCoordinate): TInterpolationParameters;
 Function InterpolateHorizontalTable(Const HorizontalTable: THorizontalTable; Parameters: TInterpolationParameters): TPlanarCoordinates;
 Function InterpolateVerticalTable(Const VerticalTable: TVerticalTable; Parameters: TInterpolationParameters): TCoordinate;
 Function ParametersValid(Parameters: TInterpolationParameters; DataHeader: TDataHeader): Boolean;
 
 Implementation
+
+Function VerticalDataCodeToName(DatumCode: TVerticalDatumCode): String;
+Var
+  Index: Integer;
+Begin
+  For Index := Low(VerticalData) To High(VerticalData) Do
+    With VerticalData[Index] Do
+      If DatumCode=Code Then
+        Begin
+          Result := Name;
+          Exit;
+        End;
+  Result := EmptyStr;
+End;
+
+Function VerticalDataNameToCode(DatumName: String): TVerticalDatumCode;
+Var
+  Index: Integer;
+Begin
+  For Index := Low(VerticalData) To High(VerticalData) Do
+    With VerticalData[Index] Do
+      If DatumName=Name Then
+        Begin
+          Result := Code;
+          Exit;
+        End;
+  Result := vdNone;
+End;
 
 Function BilinearGridInterpolationParameters(Const Origin: TCoordinates; Const Coordinates: TCoordinates; Const GridScale: TCoordinate): TInterpolationParameters;
 Var
