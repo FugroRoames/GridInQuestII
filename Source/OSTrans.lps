@@ -7,9 +7,10 @@
       <Unit0>
         <Filename Value="OSTrans.lpr"/>
         <IsPartOfProject Value="True"/>
-        <TopLine Value="13"/>
-        <CursorPos X="38" Y="23"/>
-        <UsageCount Value="23"/>
+        <IsVisibleTab Value="True"/>
+        <TopLine Value="128"/>
+        <CursorPos X="24" Y="138"/>
+        <UsageCount Value="24"/>
         <Loaded Value="True"/>
       </Unit0>
       <Unit1>
@@ -34,10 +35,9 @@
       <Unit4>
         <Filename Value="TransMain.pas"/>
         <IsPartOfProject Value="True"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="18"/>
-        <CursorPos X="55" Y="37"/>
+        <TopLine Value="6"/>
+        <CursorPos X="24" Y="30"/>
         <UsageCount Value="21"/>
         <Loaded Value="True"/>
       </Unit4>

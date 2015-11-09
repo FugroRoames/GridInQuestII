@@ -27,7 +27,7 @@ Type
   Public
     InputFileName: String;
     OutputFileName: String;
-    DoNotOverwrite: Boolean;
+    ProtectOutputMode: Boolean;
     SilentMode: Boolean;
     Constructor Create(TheOwner: TComponent); Override;
     Destructor Destroy; Override;
@@ -66,11 +66,11 @@ Begin
   WriteLn;
   WriteLn('Available Options:');
   WriteLn('--help (-h):  This help information. ');
-  WriteLn('--overwrite (-o): Allow output file to be over-written if it exists. ');
+  WriteLn('--protect (-p): Prevent output file from being over-written if it exists. ');
   WriteLn('--silent (-s): Supress all command line output. ');
-{ WriteLn('--format (-f) "format": OGR output format, ESRI shapefiles by default. ');
-  WriteLn('--map (-m):  Generate a procura map file for the checkout dataset. ');
-}  WriteLn;
+  WriteLn('--iformat (-i): Input format selection, csv by default. ');
+  WriteLn('--oformat (-o): Output format selection, csv by default. ');
+  WriteLn;
 End;
 
 Procedure TOSTransApplication.WriteToConsole(Text: String);
@@ -104,7 +104,7 @@ Begin
           WriteHelp;
           Exit;
         End;
-      DoNotOverwrite := Not HasOption('o', 'overwrite');
+      ProtectOutputMode := HasOption('p', 'protect');
       { Read the input file name parameter. }
       InputFileName := ParamStr(1);
       InputFileName := ExpandFileName(InputFileName);
@@ -116,7 +116,7 @@ Begin
       { Read the output file name parameter. }
       OutputFileName := ParamStr(2);
       OutputFileName := ExpandFileName(OutputFileName);
-      If FileExists(OutputFileName) And DoNotOverwrite Then
+      If FileExists(OutputFileName) And ProtectOutputMode Then
         Begin
           WriteToConsole('Output file exists: '+OutputFileName);
           Exit;
@@ -132,20 +132,20 @@ Begin
         End
       Else
         PackageCode := 0;
-      If HasOption('f', 'format') Then
+      If HasOption('i', 'iformat') Then
         Begin
           FormatName := GetOptionValue('f', 'format');
-          If SameText(FormatName, 'SQLite') Then
-            OutputFormat := ofSQLite
-          Else If SameText(FormatName, 'SHP') Then
-            OutputFormat := ofSHP
+          If SameText(FormatName, 'TXT') Then
+            OutputFormat := ofTXT
+          Else If SameText(FormatName, 'TAB') Then
+            OutputFormat := ofTAB
           Else If SameText(FormatName, 'CSV') Then
             OutputFormat := ofCSV
           Else
-            OutputFormat := ofSQLite;
+            OutputFormat := ofCSV;
         End
       Else
-        OutputFormat := ofSQLite;}
+        OutputFormat := ofCSV;}
       ProcessTransformation(InputFileName, OutputFileName);
     Finally
       Free;
