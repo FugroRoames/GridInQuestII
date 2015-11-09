@@ -2,14 +2,13 @@
 <CONFIG>
   <ProjectSession>
     <Version Value="9"/>
-    <BuildModes Active="Debug"/>
+    <BuildModes Active="Release"/>
     <Units Count="10">
       <Unit0>
         <Filename Value="OSTrans.lpr"/>
         <IsPartOfProject Value="True"/>
-        <IsVisibleTab Value="True"/>
-        <TopLine Value="128"/>
-        <CursorPos X="24" Y="138"/>
+        <TopLine Value="81"/>
+        <CursorPos X="59" Y="88"/>
         <UsageCount Value="24"/>
         <Loaded Value="True"/>
       </Unit0>
@@ -35,9 +34,10 @@
       <Unit4>
         <Filename Value="TransMain.pas"/>
         <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="6"/>
-        <CursorPos X="24" Y="30"/>
+        <TopLine Value="25"/>
+        <CursorPos X="58" Y="34"/>
         <UsageCount Value="21"/>
         <Loaded Value="True"/>
       </Unit4>
@@ -64,8 +64,8 @@
       <Unit8>
         <Filename Value="Geodesy.pas"/>
         <EditorIndex Value="3"/>
-        <TopLine Value="187"/>
-        <CursorPos X="20" Y="192"/>
+        <TopLine Value="19"/>
+        <CursorPos X="63" Y="29"/>
         <UsageCount Value="10"/>
         <Loaded Value="True"/>
       </Unit8>
@@ -81,123 +81,123 @@
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="OSTrans.lpr"/>
-        <Caret Line="87" TopLine="70"/>
+        <Caret Line="104" TopLine="87"/>
       </Position1>
       <Position2>
         <Filename Value="OSTrans.lpr"/>
-        <Caret Line="89" TopLine="72"/>
+        <Caret Line="106" TopLine="89"/>
       </Position2>
       <Position3>
         <Filename Value="OSTrans.lpr"/>
-        <Caret Line="90" TopLine="73"/>
+        <Caret Line="107" TopLine="90"/>
       </Position3>
       <Position4>
         <Filename Value="OSTrans.lpr"/>
-        <Caret Line="91" TopLine="74"/>
+        <Caret Line="135" TopLine="88"/>
       </Position4>
       <Position5>
         <Filename Value="OSTrans.lpr"/>
-        <Caret Line="97" TopLine="87"/>
+        <Caret Line="78" TopLine="68"/>
       </Position5>
       <Position6>
         <Filename Value="OSTrans.lpr"/>
-        <Caret Line="98" TopLine="87"/>
+        <Caret Line="79" TopLine="68"/>
       </Position6>
       <Position7>
         <Filename Value="OSTrans.lpr"/>
-        <Caret Line="99" TopLine="87"/>
+        <Caret Line="84" TopLine="68"/>
       </Position7>
       <Position8>
         <Filename Value="OSTrans.lpr"/>
-        <Caret Line="104" TopLine="87"/>
+        <Caret Line="87" TopLine="70"/>
       </Position8>
       <Position9>
         <Filename Value="OSTrans.lpr"/>
-        <Caret Line="106" TopLine="89"/>
+        <Caret Line="89" TopLine="72"/>
       </Position9>
       <Position10>
         <Filename Value="OSTrans.lpr"/>
-        <Caret Line="107" TopLine="90"/>
+        <Caret Line="90" TopLine="73"/>
       </Position10>
       <Position11>
         <Filename Value="OSTrans.lpr"/>
-        <Caret Line="135" TopLine="88"/>
+        <Caret Line="91" TopLine="74"/>
       </Position11>
       <Position12>
         <Filename Value="OSTrans.lpr"/>
-        <Caret Line="78" TopLine="68"/>
+        <Caret Line="97" TopLine="87"/>
       </Position12>
       <Position13>
         <Filename Value="OSTrans.lpr"/>
-        <Caret Line="79" TopLine="68"/>
+        <Caret Line="98" TopLine="87"/>
       </Position13>
       <Position14>
         <Filename Value="OSTrans.lpr"/>
-        <Caret Line="84" TopLine="68"/>
+        <Caret Line="99" TopLine="87"/>
       </Position14>
       <Position15>
         <Filename Value="OSTrans.lpr"/>
-        <Caret Line="87" TopLine="70"/>
+        <Caret Line="104" TopLine="87"/>
       </Position15>
       <Position16>
         <Filename Value="OSTrans.lpr"/>
-        <Caret Line="89" TopLine="72"/>
+        <Caret Line="109" TopLine="99"/>
       </Position16>
       <Position17>
         <Filename Value="OSTrans.lpr"/>
-        <Caret Line="90" TopLine="73"/>
+        <Caret Line="110" TopLine="99"/>
       </Position17>
       <Position18>
         <Filename Value="OSTrans.lpr"/>
-        <Caret Line="91" TopLine="74"/>
+        <Caret Line="135" TopLine="118"/>
       </Position18>
       <Position19>
         <Filename Value="OSTrans.lpr"/>
-        <Caret Line="97" TopLine="87"/>
+        <Caret Line="137" TopLine="118"/>
       </Position19>
       <Position20>
         <Filename Value="OSTrans.lpr"/>
-        <Caret Line="98" TopLine="87"/>
+        <Caret Line="25" Column="22" TopLine="13"/>
       </Position20>
       <Position21>
-        <Filename Value="OSTrans.lpr"/>
-        <Caret Line="99" TopLine="87"/>
+        <Filename Value="TransMain.pas"/>
+        <Caret Line="27" Column="21" TopLine="10"/>
       </Position21>
       <Position22>
         <Filename Value="OSTrans.lpr"/>
-        <Caret Line="104" TopLine="87"/>
+        <Caret Line="129" TopLine="121"/>
       </Position22>
       <Position23>
-        <Filename Value="OSTrans.lpr"/>
-        <Caret Line="109" TopLine="99"/>
+        <Filename Value="TransMain.pas"/>
+        <Caret Line="25" Column="50" TopLine="18"/>
       </Position23>
       <Position24>
-        <Filename Value="OSTrans.lpr"/>
-        <Caret Line="110" TopLine="99"/>
+        <Filename Value="TransMain.pas"/>
+        <Caret Line="27" Column="18" TopLine="18"/>
       </Position24>
       <Position25>
         <Filename Value="OSTrans.lpr"/>
-        <Caret Line="135" TopLine="118"/>
+        <Caret Line="112" Column="26" TopLine="107"/>
       </Position25>
       <Position26>
-        <Filename Value="OSTrans.lpr"/>
-        <Caret Line="137" TopLine="118"/>
+        <Filename Value="TransMain.pas"/>
+        <Caret Line="34" Column="40" TopLine="25"/>
       </Position26>
       <Position27>
-        <Filename Value="OSTrans.lpr"/>
-        <Caret Line="25" Column="22" TopLine="13"/>
+        <Filename Value="Geodesy.pas"/>
+        <Caret Line="688" Column="76" TopLine="671"/>
       </Position27>
       <Position28>
-        <Filename Value="TransMain.pas"/>
-        <Caret Line="27" Column="21" TopLine="10"/>
+        <Filename Value="Geodesy.pas"/>
+        <Caret Line="669" Column="31" TopLine="659"/>
       </Position28>
       <Position29>
-        <Filename Value="OSTrans.lpr"/>
-        <Caret Line="129" TopLine="121"/>
+        <Filename Value="Geodesy.pas"/>
+        <Caret Line="688" Column="53" TopLine="680"/>
       </Position29>
       <Position30>
-        <Filename Value="TransMain.pas"/>
-        <Caret Line="25" Column="50" TopLine="18"/>
+        <Filename Value="Geodesy.pas"/>
+        <Caret Line="682" Column="84" TopLine="671"/>
       </Position30>
     </JumpHistory>
   </ProjectSession>

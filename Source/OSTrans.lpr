@@ -65,11 +65,14 @@ Begin
   WriteLn('OutputFileName - File Name identifying output text file.');
   WriteLn;
   WriteLn('Available Options:');
-  WriteLn('--help (-h):  This help information. ');
-  WriteLn('--protect (-p): Prevent output file from being over-written if it exists. ');
-  WriteLn('--silent (-s): Supress all command line output. ');
-  WriteLn('--iformat (-i): Input format selection, csv by default. ');
-  WriteLn('--oformat (-o): Output format selection, csv by default. ');
+  WriteLn('--help (-h):  This help information.');
+  WriteLn('--list (-l):  List available coordinate reference systems.');
+  WriteLn('--protect (-p): Prevent output file from being over-written if it exists.');
+  WriteLn('--silent (-s): Supress all command line output.');
+  WriteLn('--iformat (-i)<csv|tab|txt>: Input format selection, csv by default.');
+  WriteLn('--oformat (-o)<csv|tab|txt>: Output format selection, csv by default.');
+  WriteLn('--source (-s)<EPSG>: Source coordinate system EPSG number.');
+  WriteLn('--target (-t)<EPSG>: Target coordinate system EPSG number.');
   WriteLn;
 End;
 
@@ -104,6 +107,12 @@ Begin
           WriteHelp;
           Exit;
         End;
+      If HasOption('l', 'list') Then
+        Begin
+          WriteToConsole('Available Coordinate Systems:');
+          WriteToConsole(BuildAvailableSystemsList);
+          Exit;
+        End;
       ProtectOutputMode := HasOption('p', 'protect');
       { Read the input file name parameter. }
       InputFileName := ParamStr(1);
@@ -126,7 +135,7 @@ Begin
           WriteToConsole('Output file name invalid: '+OutputFileName);
           Exit;
         End;
-{      If HasOption('k', 'package') Then
+{
         Begin
           PackageCode := StrToIntDef(GetOptionValue('k', 'package'), 0);
         End

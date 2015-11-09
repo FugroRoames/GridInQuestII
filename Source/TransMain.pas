@@ -24,16 +24,20 @@ Interface
 Uses
   SysUtils, Math, Geometry, Geodesy, ETRS, BNG, ITM, IG;
 
+Function BuildAvailableSystemsList(): String;
 Procedure ProcessTransformation(Const InputFileName: String; Const OutputFileName: String);
 
 Implementation
+
+Function BuildAvailableSystemsList: String;
+Begin
+  Result := CoordinateSystems.AvailableSystemsList(True);
+End;
 
 Procedure ProcessTransformation(Const InputFileName: String; Const OutputFileName: String);
 Begin
   WriteLn('File input from: '+InputFileName);
   WriteLn('File output to: '+OutputFileName);
-  WriteLn('Available Coordinate Systems: ');
-  WriteLn(CoordinateSystems.AvailableSystemsList);
   WriteLn(ITMCoordinateSystem.PreferredVerticalDatum);
 End;
 
