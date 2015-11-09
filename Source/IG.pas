@@ -38,6 +38,9 @@ Type
   TIGCoordinateSystem = Object(TCoordinateSystem)
     PreferredVerticalDatum: TVerticalDatumCode;
     LastVerticalDatum: TVerticalDatumCode;
+    Constructor Initialize(NewName: String; NewAbbreviation: String; NewDescription: String; NewEPSGNumber: Integer;
+                           NewCoordinateType: TCoordinateType; NewAxisOrder: TAxisOrder;
+                           NewBounds: TGeodeticBounds; NewPreferredVerticalDatum: TVerticalDatumCode);
     Function ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
     Function ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
   End;
@@ -85,6 +88,20 @@ Implementation
 Uses
   ITM;
 {$ENDIF}
+
+Constructor TIGCoordinateSystem.Initialize(NewName: String; NewAbbreviation: String; NewDescription: String; NewEPSGNumber: Integer;
+                                           NewCoordinateType: TCoordinateType; NewAxisOrder: TAxisOrder;
+                                           NewBounds: TGeodeticBounds; NewPreferredVerticalDatum: TVerticalDatumCode);
+Begin
+  Name := NewName;
+  Abbreviation := NewAbbreviation;
+  Description := NewDescription;
+  EPSGNumber := NewEPSGNumber;
+  CoordinateType := NewCoordinateType;
+  AxisOrder := NewAxisOrder;
+  GeodeticBounds := NewBounds;
+  PreferredVerticalDatum := NewPreferredVerticalDatum;
+End;
 
 Function TIGCoordinateSystem.ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates;
 Var
@@ -224,7 +241,7 @@ Airy1830ModifiedEllipsoid.Initialize(6377340.1890, 6356034.4470);
 GRS80Ellipsoid.Initialize(6378137.0000, 6356752.314140);
 IrishGridProjection.Initialize(1.000035, DegToRad(53.5), DegToRad(-8), 200000, 250000, Airy1830ModifiedEllipsoid);
 IrishGPSGridProjection.Initialize(1.000035, DegToRad(53.5), DegToRad(-8), 200000, 250000, GRS80Ellipsoid);
-IGCoordinateSystem.Initialize('Irish Grid', 'IG75', 'Irish Grid (IG)', 29903, ctProjected, aoXYZ, IGBounds);
+IGCoordinateSystem.Initialize('Irish Grid', 'IG75', 'Irish Grid (IG)', 29903, ctProjected, aoXYZ, IGBounds, vdMalinHead);
 CoordinateSystems.Register(IGCoordinateSystem);
 
 End.

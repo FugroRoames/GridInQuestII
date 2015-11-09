@@ -28,6 +28,9 @@ Type
   TITMCoordinateSystem = Object(TCoordinateSystem)
     PreferredVerticalDatum: TVerticalDatumCode;
     LastVerticalDatum: TVerticalDatumCode;
+    Constructor Initialize(NewName: String; NewAbbreviation: String; NewDescription: String; NewEPSGNumber: Integer;
+                           NewCoordinateType: TCoordinateType; NewAxisOrder: TAxisOrder;
+                           NewBounds: TGeodeticBounds; NewPreferredVerticalDatum: TVerticalDatumCode);
     Function ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
     Function ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
   End;
@@ -80,6 +83,20 @@ Var
 
 Const
   GridScale = 1000;
+
+Constructor TITMCoordinateSystem.Initialize(NewName: String; NewAbbreviation: String; NewDescription: String; NewEPSGNumber: Integer;
+                                            NewCoordinateType: TCoordinateType; NewAxisOrder: TAxisOrder;
+                                            NewBounds: TGeodeticBounds; NewPreferredVerticalDatum: TVerticalDatumCode);
+Begin
+  Name := NewName;
+  Abbreviation := NewAbbreviation;
+  Description := NewDescription;
+  EPSGNumber := NewEPSGNumber;
+  CoordinateType := NewCoordinateType;
+  AxisOrder := NewAxisOrder;
+  GeodeticBounds := NewBounds;
+  PreferredVerticalDatum := NewPreferredVerticalDatum;
+End;
 
 Function TITMCoordinateSystem.ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates;
 Var
@@ -213,8 +230,8 @@ GM15RoIDataFound := GM15RoIData.LoadFromFile(GM15RoIFileName);
 GRS80Ellipsoid.Initialize(6378137.0000, 6356752.314140);
 ITMProjection.Initialize(0.99982, DegToRad(53.5), DegToRad(-8), 600000, 750000, GRS80Ellipsoid);
 ITMCoordinateSystem.Initialize('Irish Transverse Mercator', 'IRENET95',
-                                 'Irish Transverse Mercator (ITM)', 2157, ctProjected, aoXYZ, ITMBounds);
-ITMCoordinateSystem.PreferredVerticalDatum := vdMalinHead;
+                                 'Irish Transverse Mercator (ITM)', 2157,
+                                 ctProjected, aoXYZ, ITMBounds, vdMalinHead);
 CoordinateSystems.Register(ITMCoordinateSystem);
 
 End.
