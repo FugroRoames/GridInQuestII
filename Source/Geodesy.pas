@@ -26,7 +26,7 @@ Unit Geodesy;
 Interface
 
 Uses
-  Math, Geometry;
+  SysUtils, Math, Geometry;
 
 Type
   TCoordinateType = (ctCartesian, ctGeodetic, ctProjected);
@@ -178,7 +178,7 @@ Type
 Type
   TCoordinateSystems = Object
     Count: Integer;
-    Function AvailableSystemsList: String;
+    Function AvailableSystemsList(EPSGPrefix: Boolean = False): String;
     Function CompatibleSystemsList(SystemIndex: Integer): String;
     Function FindByDescription(Const Description: String): Integer;
     Function FindEPSGNumber(Const Number: Integer): Integer;
@@ -666,7 +666,7 @@ Var
 Type
   TIndexList = Set Of Byte;
 
-Function BuildCoordinateSystemsList(OmitList: TIndexList): String;
+Function BuildCoordinateSystemsList(OmitList: TIndexList; EPSGPrefix: Boolean = False): String;
 Var
   FirstIndex: Integer;
   LastIndex: Integer;
@@ -678,6 +678,8 @@ Begin
   For Index := FirstIndex To LastIndex Do
     If Not (Index In OmitList) Then
       Begin
+        If EPSGPrefix Then
+          Result := Result+IntToStr(CoordinateSystemsList[Index]^.EPSGNumber)+' - ';
         Result := Result+CoordinateSystemsList[Index]^.Description;
         If Index<>LastIndex Then
           Result := Result+LineEnding;
@@ -685,9 +687,9 @@ Begin
 End;
 
 
-Function TCoordinateSystems.AvailableSystemsList: String;
+Function TCoordinateSystems.AvailableSystemsList(EPSGPrefix: Boolean = False): String;
 Begin
-  Result := BuildCoordinateSystemsList([]);
+  Result := BuildCoordinateSystemsList([], EPSGPrefix);
 End;
 
 Function TCoordinateSystems.CompatibleSystemsList(SystemIndex: Integer): String;
