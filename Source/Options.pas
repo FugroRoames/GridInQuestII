@@ -23,7 +23,8 @@ Interface
 
 Uses
   Classes, SysUtils, FileInfo, FileUtil, LCLVersion, {$IFDEF Windows}Windows, {$ENDIF}
-  Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls, ComCtrls, OSTab, Geodesy, IG, ITM, LMessages;
+  Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls, ComCtrls, //LMessages,
+  Config, OSTab, Geodesy, IG, ITM;
 
 Type
   TOptionsForm = Class(TForm)
@@ -77,6 +78,7 @@ Begin
       ITMCoordinateSystem.PreferredVerticalDatum := vdMalinHead;
     End;
   End;
+  WriteConfigOptions;
 End;
 
 End.
