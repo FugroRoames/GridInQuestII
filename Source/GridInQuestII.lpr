@@ -24,7 +24,7 @@ Uses
     cthreads,
     cmem,
   {$ENDIF}
-  Interfaces, Splash, Forms, Controls, Main, ETRS, BNG, ITM, IG, OSTab;
+  Interfaces, Splash, Forms, Controls, Main, ETRS, BNG, ITM, IG, OSTab, Config;
 
 {$R *.res}
 

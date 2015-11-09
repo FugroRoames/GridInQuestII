@@ -7,7 +7,8 @@
       <Unit0>
         <Filename Value="OSTrans.lpr"/>
         <IsPartOfProject Value="True"/>
-        <TopLine Value="81"/>
+        <IsVisibleTab Value="True"/>
+        <TopLine Value="63"/>
         <CursorPos X="59" Y="88"/>
         <UsageCount Value="24"/>
         <Loaded Value="True"/>
@@ -34,11 +35,10 @@
       <Unit4>
         <Filename Value="TransMain.pas"/>
         <IsPartOfProject Value="True"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
         <TopLine Value="25"/>
-        <CursorPos X="58" Y="34"/>
-        <UsageCount Value="21"/>
+        <CursorPos X="96" Y="32"/>
+        <UsageCount Value="22"/>
         <Loaded Value="True"/>
       </Unit4>
       <Unit5>
@@ -64,9 +64,8 @@
       <Unit8>
         <Filename Value="Geodesy.pas"/>
         <EditorIndex Value="3"/>
-        <TopLine Value="19"/>
-        <CursorPos X="63" Y="29"/>
-        <UsageCount Value="10"/>
+        <CursorPos X="43" Y="183"/>
+        <UsageCount Value="11"/>
         <Loaded Value="True"/>
       </Unit8>
       <Unit9>
@@ -74,7 +73,7 @@
         <EditorIndex Value="2"/>
         <TopLine Value="37"/>
         <CursorPos X="22" Y="45"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="11"/>
         <Loaded Value="True"/>
       </Unit9>
     </Units>

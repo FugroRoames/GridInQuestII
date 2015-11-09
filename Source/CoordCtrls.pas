@@ -323,7 +323,6 @@ Var
   SelectedSystem: String;
   CurrentSystemList: String;
   CoordinateSystem: TCoordinateSystem;
-  Coordinates: TCoordinates;
   Procedure SetAxisCaptionAndType(CoordinatePanel: TCoordinatePanel; Index: Integer; AxisOrder: TAxisOrder; AxisNames: TAxisNames);
   Begin
     CoordinatePanel.AxisType := AxisTypeFromIndex(Index, AxisOrder);
