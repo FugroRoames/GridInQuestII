@@ -53,6 +53,7 @@ Function ITMCoordinatesToWGS84Coordinates(Const InputCoordinates: TCoordinates; 
 Implementation
 
 Type
+  TAdjustDirection = (adAdd, adSubtract);
   TDatumZone = (dzNI, dzRoI);
 
 Type
@@ -66,8 +67,8 @@ Type
     PreferredDatum: TVerticalDatumCode;
     Procedure SetTables(Const VerticalModel: TOSVerticalModel);
     Procedure SetParameters(Const Coordinates: TCoordinates);
-    Function SetZoneHeight(Const DatumZone: TDatumZone; Var OutputCoordinates: TCoordinates; Var OutputDatum: TVerticalDatumCode): Boolean;
-    Function SetHeight(Var OutputCoordinates: TCoordinates; Var OutputDatum: TVerticalDatumCode): Boolean;
+    Function SetZoneHeight(Const DatumZone: TDatumZone; Var OutputCoordinates: TCoordinates; Var OutputDatum: TVerticalDatumCode; Const AdjustDirection: TAdjustDirection): Boolean;
+    Function AdjustHeight(Var OutputCoordinates: TCoordinates; Var OutputDatum: TVerticalDatumCode; Const AdjustDirection: TAdjustDirection): Boolean;
   End;
 
 Var
@@ -143,7 +144,7 @@ Begin
   RoIValid := ParametersValid(RoIParameters, RoIGMData.Header);
 End;
 
-Function TTransformationData.SetZoneHeight(Const DatumZone: TDatumZone; Var OutputCoordinates: TCoordinates; Var OutputDatum: TVerticalDatumCode): Boolean;
+Function TTransformationData.SetZoneHeight(Const DatumZone: TDatumZone; Var OutputCoordinates: TCoordinates; Var OutputDatum: TVerticalDatumCode; Const AdjustDirection: TAdjustDirection): Boolean;
 Begin
   Case DatumZone Of
   dzNI:
@@ -152,7 +153,12 @@ Begin
         OutputDatum := TVerticalDatumCode(NIGMData.Data(X1, Y1).DatumCode);
       Result := (OutputDatum<>vdNone);
       If Result Then
-        OutputCoordinates.Altitude := OutputCoordinates.Altitude-InterpolateVerticalTable(NIGMData, NIParameters)
+        Case AdjustDirection Of
+        adAdd:
+          OutputCoordinates.Altitude := OutputCoordinates.Altitude+InterpolateVerticalTable(NIGMData, NIParameters);
+        adSubtract:
+          OutputCoordinates.Altitude := OutputCoordinates.Altitude-InterpolateVerticalTable(NIGMData, NIParameters);
+        End;
     End;
   dzRoI:
     Begin
@@ -160,12 +166,17 @@ Begin
         OutputDatum := TVerticalDatumCode(RoIGMData.Data(X1, Y1).DatumCode);
       Result := (OutputDatum<>vdNone);
       If Result Then
-        OutputCoordinates.Altitude := OutputCoordinates.Altitude-InterpolateVerticalTable(RoIGMData, RoIParameters)
+        Case AdjustDirection Of
+        adAdd:
+          OutputCoordinates.Altitude := OutputCoordinates.Altitude+InterpolateVerticalTable(RoIGMData, RoIParameters);
+        adSubtract:
+          OutputCoordinates.Altitude := OutputCoordinates.Altitude-InterpolateVerticalTable(RoIGMData, RoIParameters);
+        End;
     End;
   End;
 End;
 
-Function TTransformationData.SetHeight(Var OutputCoordinates: TCoordinates; Var OutputDatum: TVerticalDatumCode): Boolean;
+Function TTransformationData.AdjustHeight(Var OutputCoordinates: TCoordinates; Var OutputDatum: TVerticalDatumCode; Const AdjustDirection: TAdjustDirection): Boolean;
 Begin
   If NIValid Then
     Begin
@@ -174,21 +185,21 @@ Begin
         Begin
           { If NI preferred then try it first. }
           If PreferredDatum=vdBelfast Then
-            Result := SetZoneHeight(dzNI, OutputCoordinates, OutputDatum);
+            Result := SetZoneHeight(dzNI, OutputCoordinates, OutputDatum, AdjustDirection);
           { If there was no valid output, try RoI. }
           If Not Result Then
-            Result := SetZoneHeight(dzRoI, OutputCoordinates, OutputDatum);
+            Result := SetZoneHeight(dzRoI, OutputCoordinates, OutputDatum, AdjustDirection);
           { If still no valid output, try NI again if needed. }
           If Not Result And (PreferredDatum<>vdBelfast) Then
-            Result := SetZoneHeight(dzNI, OutputCoordinates, OutputDatum);
+            Result := SetZoneHeight(dzNI, OutputCoordinates, OutputDatum, AdjustDirection);
         End
       Else
-        Result := SetZoneHeight(dzNI, OutputCoordinates, OutputDatum);
+        Result := SetZoneHeight(dzNI, OutputCoordinates, OutputDatum, AdjustDirection);
     End
   Else
     Begin
       If RoIValid Then
-        Result := SetZoneHeight(dzRoI, OutputCoordinates, OutputDatum);
+        Result := SetZoneHeight(dzRoI, OutputCoordinates, OutputDatum, AdjustDirection);
     End;
 End;
 
@@ -201,7 +212,7 @@ Begin
   Data.SetTables(VerticalModel);
   OutputCoordinates := TransverseMercator(InputCoordinates, ITMProjection);
   Data.SetParameters(OutputCoordinates);
-  Result := Data.SetHeight(OutputCoordinates, OutputDatum);
+  Result := Data.AdjustHeight(OutputCoordinates, OutputDatum, adSubtract);
 End;
 
 Function ITMCoordinatesToWGS84Coordinates(Const InputCoordinates: TCoordinates; Const VerticalModel: TOSVerticalModel; Const PreferredDatum: TVerticalDatumCode; Out OutputCoordinates: TCoordinates; Out OutputDatum: TVerticalDatumCode): Boolean;
@@ -213,7 +224,7 @@ Begin
   Data.SetTables(VerticalModel);
   Data.SetParameters(InputCoordinates);
   OutputCoordinates := InverseTransverseMercator(InputCoordinates, ITMProjection);
-  Result := Data.SetHeight(OutputCoordinates, OutputDatum);
+  Result := Data.AdjustHeight(OutputCoordinates, OutputDatum, adAdd);
 End;
 
 Initialization
