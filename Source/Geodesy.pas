@@ -157,6 +157,14 @@ Const
   CartesianAxisNames: TAxisNames = (LongX: 'Easting'; LongY: 'Northing'; LongZ: 'Elevation';
                                     ShortX: 'East'; ShortY: 'North'; ShortZ: 'Height');
 
+// TODO: Remove back to OSTab.
+Type
+  TVerticalDatumCode = (vdNone, vdOrdnanceDatumNewlyn, vdStMarys, vdDouglas02,
+                        vdStornoway, vdStKilda, vdLerwick, vdNewlyn, vdFairIsle,
+                        vdFlannanIsles, vdNorthRona, vdSuleSkerry, vdFoula,
+                        vdMalinHead, vdBelfast, vdOffshore);
+
+
 Type
   TCoordinateSystem = Object
     Abbreviation: String;
@@ -166,6 +174,8 @@ Type
     EPSGNumber: Integer;
     GeodeticBounds: TGeodeticBounds;
     Name: String;
+    PreferredVerticalDatum: TVerticalDatumCode;
+    LastVerticalDatum: TVerticalDatumCode;
     Constructor Initialize(NewName: String; NewAbbreviation: String; NewDescription: String; NewEPSGNumber: Integer;
                            NewCoordinateType: TCoordinateType; NewAxisOrder: TAxisOrder; NewBounds: TGeodeticBounds);
     Function AxisNames: TAxisNames;

@@ -36,8 +36,8 @@ Uses
 
 Type
   TIGCoordinateSystem = Object(TCoordinateSystem)
-    PreferredVerticalDatum: TVerticalDatumCode;
-    LastVerticalDatum: TVerticalDatumCode;
+//    PreferredVerticalDatum: TVerticalDatumCode;
+//    LastVerticalDatum: TVerticalDatumCode;
     Constructor Initialize(NewName: String; NewAbbreviation: String; NewDescription: String; NewEPSGNumber: Integer;
                            NewCoordinateType: TCoordinateType; NewAxisOrder: TAxisOrder;
                            NewBounds: TGeodeticBounds; NewPreferredVerticalDatum: TVerticalDatumCode);

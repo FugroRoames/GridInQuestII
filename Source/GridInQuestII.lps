@@ -2,7 +2,7 @@
 <CONFIG>
   <ProjectSession>
     <Version Value="9"/>
-    <BuildModes Active="Release"/>
+    <BuildModes Active="Debug"/>
     <Units Count="47">
       <Unit0>
         <Filename Value="GridInQuestII.lpr"/>
@@ -19,8 +19,8 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="2"/>
-        <TopLine Value="93"/>
-        <CursorPos X="54" Y="105"/>
+        <TopLine Value="609"/>
+        <CursorPos Y="626"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -28,9 +28,10 @@
       <Unit2>
         <Filename Value="Geodesy.pas"/>
         <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="18"/>
-        <TopLine Value="158"/>
-        <CursorPos X="34" Y="172"/>
+        <TopLine Value="155"/>
+        <CursorPos X="31" Y="160"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
       </Unit2>
@@ -46,7 +47,6 @@
       <Unit4>
         <Filename Value="Splash.pas"/>
         <IsPartOfProject Value="True"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
         <TopLine Value="48"/>
         <CursorPos X="4" Y="57"/>
@@ -60,8 +60,8 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="4"/>
-        <TopLine Value="311"/>
-        <CursorPos X="75" Y="440"/>
+        <TopLine Value="421"/>
+        <CursorPos X="4" Y="431"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -119,8 +119,8 @@
         <Filename Value="OSTab.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="14"/>
-        <TopLine Value="113"/>
-        <CursorPos Y="127"/>
+        <TopLine Value="21"/>
+        <CursorPos X="21" Y="41"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
       </Unit12>
@@ -137,27 +137,27 @@
         <EditorIndex Value="3"/>
         <TopLine Value="31"/>
         <CursorPos X="51" Y="47"/>
-        <UsageCount Value="31"/>
+        <UsageCount Value="37"/>
         <Loaded Value="True"/>
       </Unit14>
       <Unit15>
         <Filename Value="TN02.pas"/>
         <EditorIndex Value="-1"/>
         <CursorPos Y="26"/>
-        <UsageCount Value="15"/>
+        <UsageCount Value="14"/>
       </Unit15>
       <Unit16>
         <Filename Value="GM02.pas"/>
         <EditorIndex Value="-1"/>
         <CursorPos Y="26"/>
-        <UsageCount Value="15"/>
+        <UsageCount Value="14"/>
       </Unit16>
       <Unit17>
         <Filename Value="WKT.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="20"/>
         <CursorPos Y="33"/>
-        <UsageCount Value="90"/>
+        <UsageCount Value="89"/>
       </Unit17>
       <Unit18>
         <Filename Value="DataStreams.pas"/>
@@ -171,7 +171,7 @@
         <Filename Value="VRF10.pas"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="4" Y="24"/>
-        <UsageCount Value="15"/>
+        <UsageCount Value="14"/>
       </Unit19>
       <Unit20>
         <Filename Value="../../FreePascal/Lazarus/lcl/controls.pp"/>
@@ -179,7 +179,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="2060"/>
         <CursorPos X="17" Y="2163"/>
-        <UsageCount Value="7"/>
+        <UsageCount Value="6"/>
       </Unit20>
       <Unit21>
         <Filename Value="GlobeCtrl.pas"/>
@@ -196,7 +196,7 @@
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="24" Y="2"/>
-        <UsageCount Value="88"/>
+        <UsageCount Value="87"/>
       </Unit22>
       <Unit23>
         <Filename Value="About.pas"/>
@@ -205,7 +205,7 @@
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="5" Y="62"/>
-        <UsageCount Value="88"/>
+        <UsageCount Value="87"/>
       </Unit23>
       <Unit24>
         <Filename Value="CoordCtrls.pas"/>
@@ -229,7 +229,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="601"/>
         <CursorPos X="24" Y="614"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
       </Unit26>
       <Unit27>
         <Filename Value="BNG.pas"/>
@@ -243,21 +243,21 @@
         <Filename Value="../../../GISUtils.pas"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="21"/>
-        <UsageCount Value="88"/>
+        <UsageCount Value="87"/>
       </Unit28>
       <Unit29>
         <Filename Value="ITM.pas"/>
         <EditorIndex Value="12"/>
-        <TopLine Value="213"/>
-        <CursorPos Y="227"/>
+        <TopLine Value="21"/>
+        <CursorPos X="35" Y="28"/>
         <UsageCount Value="100"/>
         <Loaded Value="True"/>
       </Unit29>
       <Unit30>
         <Filename Value="IG.pas"/>
         <EditorIndex Value="11"/>
-        <TopLine Value="217"/>
-        <CursorPos X="120" Y="188"/>
+        <TopLine Value="21"/>
+        <CursorPos X="3" Y="40"/>
         <UsageCount Value="100"/>
         <Loaded Value="True"/>
       </Unit30>
@@ -266,14 +266,14 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="1090"/>
         <CursorPos X="77" Y="1114"/>
-        <UsageCount Value="2"/>
+        <UsageCount Value="1"/>
       </Unit31>
       <Unit32>
         <Filename Value="C:/Applications/Lazarus/lcl/include/customcombobox.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="180"/>
         <CursorPos Y="194"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
       </Unit32>
       <Unit33>
         <Filename Value="GridUtils.pas"/>
@@ -286,28 +286,28 @@
         <Filename Value="OSTN02R1K.inc"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="69" Y="5"/>
-        <UsageCount Value="1"/>
+        <UsageCount Value="0"/>
       </Unit34>
       <Unit35>
         <Filename Value="C:/Applications/Lazarus/lcl/include/customedit.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="88"/>
         <CursorPos X="3" Y="97"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
       </Unit35>
       <Unit36>
         <Filename Value="../../FreePascal/Lazarus/lcl/include/customedit.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="571"/>
         <CursorPos Y="583"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
       </Unit36>
       <Unit37>
         <Filename Value="C:/Applications/FreePascal/2.6.4/source/rtl/objpas/sysutils/finah.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="11"/>
         <CursorPos X="10" Y="24"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="8"/>
       </Unit37>
       <Unit38>
         <Filename Value="Options.pas"/>
@@ -317,7 +317,7 @@
         <EditorIndex Value="5"/>
         <TopLine Value="52"/>
         <CursorPos X="71" Y="26"/>
-        <UsageCount Value="39"/>
+        <UsageCount Value="42"/>
         <Loaded Value="True"/>
       </Unit38>
       <Unit39>
@@ -325,7 +325,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="127"/>
         <CursorPos Y="142"/>
-        <UsageCount Value="7"/>
+        <UsageCount Value="6"/>
       </Unit39>
       <Unit40>
         <Filename Value="../../FreePascal/Lazarus/lcl/stdctrls.pp"/>
@@ -333,14 +333,14 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="367"/>
         <CursorPos X="19" Y="375"/>
-        <UsageCount Value="7"/>
+        <UsageCount Value="6"/>
       </Unit40>
       <Unit41>
         <Filename Value="/usr/share/fpcsrc/rtl/objpas/math.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="192"/>
         <CursorPos X="29" Y="202"/>
-        <UsageCount Value="7"/>
+        <UsageCount Value="6"/>
       </Unit41>
       <Unit42>
         <Filename Value="/usr/share/fpcsrc/packages/fcl-xml/src/xmlcfg.pp"/>
@@ -348,7 +348,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="13"/>
         <CursorPos X="58" Y="26"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
       </Unit42>
       <Unit43>
         <Filename Value="/usr/share/fpcsrc/packages/fcl-xml/src/xmlconf.pp"/>
@@ -356,12 +356,12 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="31"/>
         <CursorPos X="27" Y="43"/>
-        <UsageCount Value="11"/>
+        <UsageCount Value="10"/>
       </Unit43>
       <Unit44>
         <Filename Value="../../../.config/GridInQuestII/GridInQuestII.cfg"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
         <DefaultSyntaxHighlighter Value="None"/>
       </Unit44>
       <Unit45>
@@ -369,7 +369,7 @@
         <EditorIndex Value="13"/>
         <TopLine Value="360"/>
         <CursorPos X="31" Y="374"/>
-        <UsageCount Value="11"/>
+        <UsageCount Value="14"/>
         <Loaded Value="True"/>
       </Unit45>
       <Unit46>
@@ -377,130 +377,141 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="1864"/>
         <CursorPos X="15" Y="1597"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
       </Unit46>
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="Splash.pas"/>
-        <Caret Line="83" TopLine="67"/>
+        <Filename Value="ITM.pas"/>
+        <Caret Line="214" TopLine="196"/>
       </Position1>
       <Position2>
-        <Filename Value="Splash.pas"/>
-        <Caret Line="84" TopLine="67"/>
+        <Filename Value="ITM.pas"/>
+        <Caret Line="215" TopLine="196"/>
       </Position2>
       <Position3>
-        <Filename Value="Splash.pas"/>
-        <Caret Line="85" TopLine="67"/>
+        <Filename Value="ITM.pas"/>
+        <Caret Line="181" TopLine="167"/>
       </Position3>
       <Position4>
-        <Filename Value="Splash.pas"/>
-        <Caret Line="86" TopLine="67"/>
+        <Filename Value="ITM.pas"/>
+        <Caret Line="184" TopLine="167"/>
       </Position4>
       <Position5>
-        <Filename Value="Splash.pas"/>
-        <Caret Line="88" TopLine="67"/>
+        <Filename Value="ITM.pas"/>
+        <Caret Line="187" TopLine="167"/>
       </Position5>
       <Position6>
-        <Filename Value="Splash.pas"/>
-        <Caret Line="89" TopLine="67"/>
+        <Filename Value="ITM.pas"/>
+        <Caret Line="190" TopLine="167"/>
       </Position6>
       <Position7>
-        <Filename Value="Splash.pas"/>
-        <Caret Line="91" TopLine="68"/>
+        <Filename Value="ITM.pas"/>
+        <Caret Line="193" TopLine="170"/>
       </Position7>
       <Position8>
-        <Filename Value="Splash.pas"/>
-        <Caret Line="92" TopLine="69"/>
+        <Filename Value="ITM.pas"/>
+        <Caret Line="204" TopLine="152"/>
       </Position8>
       <Position9>
-        <Filename Value="Splash.pas"/>
-        <Caret Line="94" TopLine="71"/>
+        <Filename Value="ITM.pas"/>
+        <Caret Line="210" TopLine="196"/>
       </Position9>
       <Position10>
-        <Filename Value="Splash.pas"/>
-        <Caret Line="90" Column="51" TopLine="72"/>
+        <Filename Value="ITM.pas"/>
+        <Caret Line="211" TopLine="196"/>
       </Position10>
       <Position11>
-        <Filename Value="Splash.pas"/>
-        <Caret Line="96" TopLine="73"/>
+        <Filename Value="ITM.pas"/>
+        <Caret Line="212" TopLine="196"/>
       </Position11>
       <Position12>
-        <Filename Value="Splash.pas"/>
-        <Caret Line="97" TopLine="74"/>
+        <Filename Value="ITM.pas"/>
+        <Caret Line="125" TopLine="111"/>
       </Position12>
       <Position13>
-        <Filename Value="Splash.pas"/>
-        <Caret Line="99" TopLine="76"/>
+        <Filename Value="ITM.pas"/>
+        <Caret Line="128" TopLine="111"/>
       </Position13>
       <Position14>
-        <Filename Value="Splash.pas"/>
-        <Caret Line="98" TopLine="76"/>
+        <Filename Value="ITM.pas"/>
+        <Caret Line="129" TopLine="111"/>
       </Position14>
       <Position15>
-        <Filename Value="Splash.pas"/>
-        <Caret Line="99" TopLine="76"/>
+        <Filename Value="ITM.pas"/>
+        <Caret Line="137" TopLine="114"/>
       </Position15>
       <Position16>
-        <Filename Value="Splash.pas"/>
-        <Caret Line="98" TopLine="76"/>
+        <Filename Value="ITM.pas"/>
+        <Caret Line="213" TopLine="199"/>
       </Position16>
       <Position17>
-        <Filename Value="Splash.pas"/>
-        <Caret Line="101" TopLine="79"/>
+        <Filename Value="ITM.pas"/>
+        <Caret Line="214" TopLine="199"/>
       </Position17>
       <Position18>
-        <Filename Value="Splash.pas"/>
-        <Caret Line="103" TopLine="81"/>
+        <Filename Value="ITM.pas"/>
+        <Caret Line="215" TopLine="199"/>
       </Position18>
       <Position19>
-        <Filename Value="Splash.pas"/>
-        <Caret Line="104" TopLine="82"/>
+        <Filename Value="ITM.pas"/>
+        <Caret Line="181" TopLine="177"/>
       </Position19>
       <Position20>
-        <Filename Value="Splash.pas"/>
-        <Caret Line="105" TopLine="83"/>
+        <Filename Value="ITM.pas"/>
+        <Caret Line="184" TopLine="177"/>
       </Position20>
       <Position21>
-        <Filename Value="Splash.pas"/>
-        <Caret Line="106" TopLine="84"/>
+        <Filename Value="ITM.pas"/>
+        <Caret Line="187" TopLine="177"/>
       </Position21>
       <Position22>
-        <Filename Value="Splash.pas"/>
-        <Caret Line="107" TopLine="85"/>
+        <Filename Value="ITM.pas"/>
+        <Caret Line="190" TopLine="177"/>
       </Position22>
       <Position23>
-        <Filename Value="Splash.pas"/>
-        <Caret Line="108" TopLine="86"/>
+        <Filename Value="ITM.pas"/>
+        <Caret Line="193" TopLine="177"/>
       </Position23>
       <Position24>
-        <Filename Value="Splash.pas"/>
-        <Caret Line="109" TopLine="87"/>
+        <Filename Value="ITM.pas"/>
+        <Caret Line="204" TopLine="182"/>
       </Position24>
       <Position25>
-        <Filename Value="Splash.pas"/>
-        <Caret Line="110" TopLine="88"/>
+        <Filename Value="ITM.pas"/>
+        <Caret Line="216" TopLine="202"/>
       </Position25>
       <Position26>
-        <Filename Value="Splash.pas"/>
-        <Caret Line="111" TopLine="89"/>
+        <Filename Value="ITM.pas"/>
+        <Caret Line="121" TopLine="107"/>
       </Position26>
       <Position27>
-        <Filename Value="Splash.pas"/>
-        <Caret Line="114" TopLine="92"/>
+        <Filename Value="Main.pas"/>
+        <Caret Line="623" TopLine="609"/>
       </Position27>
       <Position28>
-        <Filename Value="Splash.pas"/>
-        <Caret Line="115" TopLine="93"/>
+        <Filename Value="ITM.pas"/>
+        <Caret Line="121" TopLine="107"/>
       </Position28>
       <Position29>
-        <Filename Value="Splash.pas"/>
-        <Caret Line="116" TopLine="94"/>
+        <Filename Value="ITM.pas"/>
+        <Caret Line="28" Column="35" TopLine="21"/>
       </Position29>
       <Position30>
-        <Filename Value="Splash.pas"/>
-        <Caret Line="119" TopLine="97"/>
+        <Filename Value="Geodesy.pas"/>
+        <Caret Line="171" TopLine="147"/>
       </Position30>
     </JumpHistory>
   </ProjectSession>
+  <Debugging>
+    <BreakPoints Count="1">
+      <Item1>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="ITM.pas"/>
+        <Line Value="149"/>
+      </Item1>
+    </BreakPoints>
+  </Debugging>
 </CONFIG>

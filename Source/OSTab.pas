@@ -31,12 +31,12 @@ Type
   TOSHorizontalModel = (hmTN02, hmTH15);
   TOSVerticalModel = (vmGM02, vmGM15);
 
-Type
-  TVerticalDatumCode = (vdNone, vdOrdnanceDatumNewlyn, vdStMarys, vdDouglas02,
-                        vdStornoway, vdStKilda, vdLerwick, vdNewlyn, vdFairIsle,
-                        vdFlannanIsles, vdNorthRona, vdSuleSkerry, vdFoula,
-                        vdMalinHead, vdBelfast, vdOffshore);
-
+//Type
+//  TVerticalDatumCode = (vdNone, vdOrdnanceDatumNewlyn, vdStMarys, vdDouglas02,
+//                        vdStornoway, vdStKilda, vdLerwick, vdNewlyn, vdFairIsle,
+//                        vdFlannanIsles, vdNorthRona, vdSuleSkerry, vdFoula,
+//                        vdMalinHead, vdBelfast, vdOffshore);
+//
 Type
   TDatumRecord = Packed Record
     Code: TVerticalDatumCode;
