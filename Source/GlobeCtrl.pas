@@ -466,7 +466,7 @@ Var
   { Extended is explicitly used as SinCos requires this data type on some platforms. }
   XP, YP, ZP: Extended;
   IR, NYP: Extended;
-  S, D: Extended;
+  S: Extended;
   DLon: Extended;
   SinLat, CosLat: Extended;
   SinDLon, CosDLon: Extended;

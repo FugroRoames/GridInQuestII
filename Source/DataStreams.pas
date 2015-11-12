@@ -22,7 +22,7 @@ Unit DataStreams;
 Interface
 
 Uses
-  Classes, SysUtils, RtlConsts, Strings;
+  Classes, SysUtils;
 
 Type
   TFormatType = (ftDelimited, ftFixed);
@@ -540,6 +540,7 @@ Begin
       BufferEndPointer^ := #0;
       Dec(BufferEndPointer);
     End;
+  LastProgress := 0;
   { If there is valid data to read. }
   If BufferEndPointer>BufferPointer Then
     { Build the main record index. }

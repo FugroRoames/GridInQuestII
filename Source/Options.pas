@@ -33,6 +33,7 @@ Type
     IrishDatumLabel: TLabel;
     OKButton: TButton;
     CancelButton: TButton;
+    Panel1: TPanel;
     Procedure FormShow(Sender: TObject);
     Procedure OKButtonClick(Sender: TObject);
   Private

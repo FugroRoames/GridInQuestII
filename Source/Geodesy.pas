@@ -504,7 +504,7 @@ Begin
   Result := ScaledMinorAxis*(Term1-Term2+Term3-Term4);
 End;
 
-Function CentralMeridianLatitude(ScaledMajorAxis, ScaledMinorAxis, MeridianScaleFactor, Northing, CentralNorthing, CentralLatitude: TCoordinate): TCoordinate; {$IFDEF USE_INLINE}Inline;{$ENDIF}
+Function CentralMeridianLatitude(ScaledMajorAxis, ScaledMinorAxis, Northing, CentralNorthing, CentralLatitude: TCoordinate): TCoordinate; {$IFDEF USE_INLINE}Inline;{$ENDIF}
 Var
   Latitude: TCoordinate;
   PriorLatitude: TCoordinate;
@@ -548,7 +548,7 @@ Begin
     Begin
       ScaledMajorAxis := SemiMajorAxis*MeridianScaleFactor;
       ScaledMinorAxis := SemiMinorAxis*MeridianScaleFactor;
-      InitialLatitude := CentralMeridianLatitude(ScaledMajorAxis, ScaledMinorAxis, MeridianScaleFactor, Coordinates.Northing, OriginOffset.Northing, TrueOrigin.Latitude);
+      InitialLatitude := CentralMeridianLatitude(ScaledMajorAxis, ScaledMinorAxis, Coordinates.Northing, OriginOffset.Northing, TrueOrigin.Latitude);
       SinLatitude := Sin(InitialLatitude);
       SinLatitude2 := SinLatitude*SinLatitude;
       SubExpression := 1-EccentricitySquared*SinLatitude2;
