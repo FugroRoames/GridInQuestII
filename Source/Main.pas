@@ -563,15 +563,18 @@ Begin
     Begin
       Result.X := StrToFloatDef(InputData.Fields[InputFirstFieldIndex], 0);
       Result.Y:= StrToFloatDef(InputData.Fields[InputSecondFieldIndex], 0);
-      Result.Z := 0;
     End;
   aoYXZ:
     Begin
       Result.Y := StrToFloatDef(InputData.Fields[InputFirstFieldIndex], 0);
       Result.X := StrToFloatDef(InputData.Fields[InputSecondFieldIndex], 0);
-      Result.Z := 0;
     End;
   End;
+  { Output the third coordinate name if needed. }
+  If InputThirdFieldIndex<>-1 Then
+    Result.Z := StrToFloatDef(InputData.Fields[InputThirdFieldIndex], 0)
+  Else
+    Result.Z := 0;
 End;
 
 Function TMainForm.DataLoaded: Boolean;
