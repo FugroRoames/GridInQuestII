@@ -29,7 +29,7 @@ Type
   TSettingsForm = Class(TForm)
     BottomPanel: TPanel;
     TextDelimiterCheckBox: TCheckBox;
-    VirticalDataCheckBox: TCheckBox;
+    VerticalDataCheckBox: TCheckBox;
     HeaderRowCheckBox: TCheckBox;
     EndRowEdit: TEdit;
     ErrorHandlingComboBox: TComboBox;
@@ -77,7 +77,7 @@ Type
     Procedure TextDelimiterCheckBoxChange(Sender: TObject);
     Procedure TextDelimiterComboBoxChange(Sender: TObject);
     Procedure ThirdColumnComboBoxChange(Sender: TObject);
-    Procedure VirticalDataCheckBoxChange(Sender: TObject);
+    Procedure VerticalDataCheckBoxChange(Sender: TObject);
   Private
     { Private declarations. }
     Data: TDataStream;
@@ -214,13 +214,13 @@ Begin
         SetAxisCaption(ThirdFieldLabel, 2, AxisOrder, AxisNames);
         If CoordinateType=ctCartesian Then
           Begin
-            VirticalDataCheckBox.Checked := True;
-            VirticalDataCheckBox.Enabled := False;
+            VerticalDataCheckBox.Checked := True;
+            VerticalDataCheckBox.Enabled := False;
           End
         Else
           Begin
-            VirticalDataCheckBox.Checked := (MainForm.InputThirdFieldIndex<>-1);
-            VirticalDataCheckBox.Enabled := True;
+            VerticalDataCheckBox.Checked := (MainForm.InputThirdFieldIndex<>-1);
+            VerticalDataCheckBox.Enabled := True;
           End;
       End;
   StartRowEdit.Text := IntToStr(Data.FirstRow+1);
@@ -422,9 +422,9 @@ Begin
   DisplayDataInformation;
 End;
 
-Procedure TSettingsForm.VirticalDataCheckBoxChange(Sender: TObject);
+Procedure TSettingsForm.VerticalDataCheckBoxChange(Sender: TObject);
 Begin
-  ThirdColumnComboBox.Enabled := VirticalDataCheckBox.Checked;
+  ThirdColumnComboBox.Enabled := VerticalDataCheckBox.Checked;
   If Not ThirdColumnComboBox.Enabled Then
     Begin
       MainForm.InputThirdFieldIndex := -1;

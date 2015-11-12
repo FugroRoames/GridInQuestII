@@ -12,7 +12,7 @@ object SettingsForm: TSettingsForm
   LCLVersion = '1.5'
   object InputFileGroupBox: TGroupBox
     Left = 5
-    Height = 208
+    Height = 153
     Top = 5
     Width = 660
     Align = alTop
@@ -20,7 +20,7 @@ object SettingsForm: TSettingsForm
     BorderSpacing.Around = 5
     BorderSpacing.InnerBorder = 5
     Caption = 'Input File Details'
-    ClientHeight = 180
+    ClientHeight = 135
     ClientWidth = 656
     ParentColor = False
     TabOrder = 1
@@ -29,9 +29,9 @@ object SettingsForm: TSettingsForm
       AnchorSideTop.Side = asrCenter
       AnchorSideRight.Control = FileFormatComboBox
       Left = -3
-      Height = 24
-      Top = 3
-      Width = 180
+      Height = 13
+      Top = 4
+      Width = 111
       Alignment = taRightJustify
       Anchors = [akTop, akLeft, akRight]
       BorderSpacing.Around = 5
@@ -44,12 +44,12 @@ object SettingsForm: TSettingsForm
       AnchorSideLeft.Control = FixedColumnBreaksLabel
       AnchorSideLeft.Side = asrBottom
       AnchorSideTop.Control = InputFileGroupBox
-      Left = 182
-      Height = 30
+      Left = 113
+      Height = 21
       Top = 0
       Width = 189
       BorderSpacing.Left = 5
-      ItemHeight = 24
+      ItemHeight = 13
       ItemIndex = 0
       Items.Strings = (
         'Character Delimited Text'
@@ -65,10 +65,10 @@ object SettingsForm: TSettingsForm
       AnchorSideLeft.Side = asrBottom
       AnchorSideTop.Control = ColumnDelimiterComboBox
       AnchorSideTop.Side = asrCenter
-      Left = 381
-      Height = 24
-      Top = 3
-      Width = 146
+      Left = 312
+      Height = 13
+      Top = 4
+      Width = 83
       Alignment = taRightJustify
       BorderSpacing.Left = 10
       Caption = 'Column Delimiter:'
@@ -81,12 +81,12 @@ object SettingsForm: TSettingsForm
       AnchorSideLeft.Side = asrBottom
       AnchorSideTop.Control = InputFileGroupBox
       AnchorSideRight.Side = asrBottom
-      Left = 532
-      Height = 30
+      Left = 400
+      Height = 21
       Top = 0
       Width = 115
       BorderSpacing.Left = 5
-      ItemHeight = 24
+      ItemHeight = 13
       ItemIndex = 0
       Items.Strings = (
         'Comma'
@@ -104,9 +104,9 @@ object SettingsForm: TSettingsForm
       AnchorSideTop.Control = FixedColumnBreaksEdit
       AnchorSideTop.Side = asrCenter
       Left = 5
-      Height = 24
-      Top = 38
-      Width = 172
+      Height = 13
+      Top = 30
+      Width = 103
       Alignment = taRightJustify
       BorderSpacing.Left = 5
       BorderSpacing.Right = 5
@@ -122,10 +122,10 @@ object SettingsForm: TSettingsForm
       AnchorSideTop.Side = asrBottom
       AnchorSideRight.Control = ColumnDelimiterComboBox
       AnchorSideRight.Side = asrBottom
-      Left = 182
-      Height = 30
-      Top = 35
-      Width = 465
+      Left = 113
+      Height = 21
+      Top = 26
+      Width = 402
       Anchors = [akTop, akLeft, akRight]
       BorderSpacing.Top = 5
       BorderSpacing.CellAlignHorizontal = ccaLeftTop
@@ -138,10 +138,10 @@ object SettingsForm: TSettingsForm
       AnchorSideLeft.Control = FixedColumnBreaksEdit
       AnchorSideTop.Control = TextDelimiterComboBox
       AnchorSideTop.Side = asrCenter
-      Left = 182
-      Height = 29
-      Top = 71
-      Width = 178
+      Left = 113
+      Height = 17
+      Top = 54
+      Width = 110
       Caption = 'Has Text Delimiters'
       OnChange = TextDelimiterCheckBoxChange
       TabOrder = 4
@@ -152,10 +152,10 @@ object SettingsForm: TSettingsForm
       AnchorSideTop.Control = TextDelimiterComboBox
       AnchorSideTop.Side = asrCenter
       AnchorSideRight.Control = TextDelimiterComboBox
-      Left = 365
-      Height = 24
-      Top = 73
-      Width = 162
+      Left = 228
+      Height = 13
+      Top = 56
+      Width = 167
       Alignment = taRightJustify
       Anchors = [akTop, akLeft, akRight]
       BorderSpacing.Left = 5
@@ -171,14 +171,14 @@ object SettingsForm: TSettingsForm
       AnchorSideTop.Side = asrBottom
       AnchorSideRight.Control = FixedColumnBreaksEdit
       AnchorSideRight.Side = asrBottom
-      Left = 532
-      Height = 30
-      Top = 70
+      Left = 400
+      Height = 21
+      Top = 52
       Width = 115
       Anchors = [akTop, akLeft, akRight]
       BorderSpacing.Top = 5
       Enabled = False
-      ItemHeight = 24
+      ItemHeight = 13
       Items.Strings = (
         'Single Quote'
         'Double Quote'
@@ -192,10 +192,10 @@ object SettingsForm: TSettingsForm
       AnchorSideLeft.Control = FixedColumnBreaksEdit
       AnchorSideTop.Control = HeaderRowEdit
       AnchorSideTop.Side = asrCenter
-      Left = 182
-      Height = 29
-      Top = 106
-      Width = 156
+      Left = 113
+      Height = 17
+      Top = 80
+      Width = 98
       Caption = 'Has Header Row'
       Checked = True
       OnChange = HeaderRowCheckBoxChange
@@ -208,10 +208,10 @@ object SettingsForm: TSettingsForm
       AnchorSideTop.Control = HeaderRowEdit
       AnchorSideTop.Side = asrCenter
       AnchorSideRight.Control = HeaderRowEdit
-      Left = 343
-      Height = 24
-      Top = 108
-      Width = 184
+      Left = 216
+      Height = 13
+      Top = 82
+      Width = 179
       Alignment = taRightJustify
       Anchors = [akTop, akLeft, akRight]
       BorderSpacing.Left = 5
@@ -225,9 +225,9 @@ object SettingsForm: TSettingsForm
       AnchorSideLeft.Control = ColumnDelimiterComboBox
       AnchorSideTop.Control = TextDelimiterComboBox
       AnchorSideTop.Side = asrBottom
-      Left = 532
-      Height = 30
-      Top = 105
+      Left = 400
+      Height = 21
+      Top = 78
       Width = 80
       BorderSpacing.Top = 5
       NumbersOnly = True
@@ -239,10 +239,10 @@ object SettingsForm: TSettingsForm
       AnchorSideTop.Control = StartRowEdit
       AnchorSideTop.Side = asrCenter
       AnchorSideRight.Control = StartRowEdit
-      Left = 51
-      Height = 24
-      Top = 143
-      Width = 126
+      Left = 30
+      Height = 13
+      Top = 108
+      Width = 78
       Alignment = taRightJustify
       Anchors = [akTop, akRight]
       BorderSpacing.Right = 5
@@ -254,9 +254,9 @@ object SettingsForm: TSettingsForm
     object StartRowEdit: TEdit
       AnchorSideLeft.Control = FixedColumnBreaksEdit
       AnchorSideTop.Control = EndRowEdit
-      Left = 182
-      Height = 30
-      Top = 140
+      Left = 113
+      Height = 21
+      Top = 104
       Width = 80
       NumbersOnly = True
       OnEditingDone = StartRowEditEditingDone
@@ -267,10 +267,10 @@ object SettingsForm: TSettingsForm
       AnchorSideTop.Control = EndRowEdit
       AnchorSideTop.Side = asrCenter
       AnchorSideRight.Control = EndRowEdit
-      Left = 409
-      Height = 24
-      Top = 143
-      Width = 118
+      Left = 323
+      Height = 13
+      Top = 108
+      Width = 72
       Alignment = taRightJustify
       Anchors = [akTop, akRight]
       BorderSpacing.Right = 5
@@ -283,9 +283,9 @@ object SettingsForm: TSettingsForm
       AnchorSideLeft.Control = ColumnDelimiterComboBox
       AnchorSideTop.Control = HeaderRowEdit
       AnchorSideTop.Side = asrBottom
-      Left = 532
-      Height = 30
-      Top = 140
+      Left = 400
+      Height = 21
+      Top = 104
       Width = 80
       BorderSpacing.Top = 5
       NumbersOnly = True
@@ -295,8 +295,8 @@ object SettingsForm: TSettingsForm
   end
   object InputDataGroupBox: TGroupBox
     Left = 5
-    Height = 138
-    Top = 218
+    Height = 101
+    Top = 163
     Width = 660
     Align = alTop
     AutoSize = True
@@ -304,7 +304,7 @@ object SettingsForm: TSettingsForm
     BorderSpacing.InnerBorder = 5
     Caption = 'Input Data Settings'
     ChildSizing.ControlsPerLine = 3
-    ClientHeight = 110
+    ClientHeight = 83
     ClientWidth = 656
     ParentColor = False
     TabOrder = 3
@@ -313,9 +313,9 @@ object SettingsForm: TSettingsForm
       AnchorSideTop.Control = InputSystemComboBox
       AnchorSideTop.Side = asrCenter
       Left = 5
-      Height = 24
-      Top = 3
-      Width = 204
+      Height = 13
+      Top = 4
+      Width = 124
       Alignment = taRightJustify
       BorderSpacing.Left = 5
       Caption = 'Input Coordinate System:'
@@ -329,15 +329,15 @@ object SettingsForm: TSettingsForm
       AnchorSideTop.Control = InputDataGroupBox
       AnchorSideRight.Control = InputDataGroupBox
       AnchorSideRight.Side = asrBottom
-      Left = 214
-      Height = 30
+      Left = 134
+      Height = 21
       Top = 0
-      Width = 437
+      Width = 517
       Anchors = [akTop, akLeft, akRight]
       BorderSpacing.Left = 5
       BorderSpacing.Right = 5
       DropDownCount = 9
-      ItemHeight = 24
+      ItemHeight = 13
       OnChange = InputSystemComboBoxChange
       Style = csDropDownList
       TabOrder = 0
@@ -348,9 +348,9 @@ object SettingsForm: TSettingsForm
       AnchorSideTop.Side = asrCenter
       AnchorSideRight.Control = FirstColumnComboBox
       Left = 5
-      Height = 24
-      Top = 38
-      Width = 204
+      Height = 13
+      Top = 30
+      Width = 124
       Alignment = taRightJustify
       Anchors = [akTop, akLeft, akRight]
       BorderSpacing.Left = 5
@@ -364,12 +364,12 @@ object SettingsForm: TSettingsForm
       AnchorSideLeft.Control = InputSystemComboBox
       AnchorSideTop.Control = InputSystemComboBox
       AnchorSideTop.Side = asrBottom
-      Left = 214
-      Height = 30
-      Top = 35
+      Left = 134
+      Height = 21
+      Top = 26
       Width = 119
       BorderSpacing.Top = 5
-      ItemHeight = 24
+      ItemHeight = 13
       OnChange = FirstColumnComboBoxChange
       Style = csDropDownList
       TabOrder = 1
@@ -378,10 +378,10 @@ object SettingsForm: TSettingsForm
       AnchorSideTop.Control = SecondColumnComboBox
       AnchorSideTop.Side = asrCenter
       AnchorSideRight.Control = SecondColumnComboBox
-      Left = 420
-      Height = 24
-      Top = 38
-      Width = 107
+      Left = 463
+      Height = 13
+      Top = 30
+      Width = 64
       Alignment = taRightJustify
       Anchors = [akTop, akRight]
       BorderSpacing.Right = 5
@@ -396,37 +396,37 @@ object SettingsForm: TSettingsForm
       AnchorSideRight.Control = InputDataGroupBox
       AnchorSideRight.Side = asrBottom
       Left = 532
-      Height = 30
-      Top = 35
+      Height = 21
+      Top = 26
       Width = 119
       Anchors = [akTop, akRight]
       BorderSpacing.Top = 5
       BorderSpacing.Right = 5
-      ItemHeight = 24
+      ItemHeight = 13
       OnChange = SecondColumnComboBoxChange
       Style = csDropDownList
       TabOrder = 2
     end
-    object VirticalDataCheckBox: TCheckBox
+    object VerticalDataCheckBox: TCheckBox
       AnchorSideLeft.Control = InputSystemComboBox
       AnchorSideTop.Control = ThirdColumnComboBox
       AnchorSideTop.Side = asrCenter
-      Left = 214
-      Height = 29
-      Top = 71
-      Width = 157
-      Caption = 'Has Virtical Data'
-      OnChange = VirticalDataCheckBoxChange
+      Left = 134
+      Height = 17
+      Top = 54
+      Width = 100
+      Caption = 'Has Vertical Data'
+      OnChange = VerticalDataCheckBoxChange
       TabOrder = 4
     end
     object ThirdFieldLabel: TLabel
       AnchorSideTop.Control = ThirdColumnComboBox
       AnchorSideTop.Side = asrCenter
       AnchorSideRight.Control = ThirdColumnComboBox
-      Left = 438
-      Height = 24
-      Top = 73
-      Width = 89
+      Left = 474
+      Height = 13
+      Top = 56
+      Width = 53
       Alignment = taRightJustify
       Anchors = [akTop, akRight]
       BorderSpacing.Right = 5
@@ -441,14 +441,14 @@ object SettingsForm: TSettingsForm
       AnchorSideRight.Control = InputDataGroupBox
       AnchorSideRight.Side = asrBottom
       Left = 532
-      Height = 30
-      Top = 70
+      Height = 21
+      Top = 52
       Width = 119
       Anchors = [akTop, akRight]
       BorderSpacing.Top = 5
       BorderSpacing.Right = 5
       Enabled = False
-      ItemHeight = 24
+      ItemHeight = 13
       OnChange = ThirdColumnComboBoxChange
       Style = csDropDownList
       TabOrder = 3
@@ -456,15 +456,15 @@ object SettingsForm: TSettingsForm
   end
   object OuputDataGroupBox: TGroupBox
     Left = 5
-    Height = 94
-    Top = 358
+    Height = 49
+    Top = 269
     Width = 660
     Align = alTop
     AutoSize = True
     BorderSpacing.Around = 5
     BorderSpacing.InnerBorder = 5
     Caption = 'Ouput Data Settings'
-    ClientHeight = 66
+    ClientHeight = 31
     ClientWidth = 656
     ParentColor = False
     TabOrder = 2
@@ -473,9 +473,9 @@ object SettingsForm: TSettingsForm
       AnchorSideTop.Control = OutputSystemComboBox
       AnchorSideTop.Side = asrCenter
       Left = 5
-      Height = 24
-      Top = 3
-      Width = 217
+      Height = 13
+      Top = 4
+      Width = 132
       Alignment = taRightJustify
       BorderSpacing.Left = 5
       Caption = 'Output Coordinate System:'
@@ -489,15 +489,15 @@ object SettingsForm: TSettingsForm
       AnchorSideTop.Control = OuputDataGroupBox
       AnchorSideRight.Control = OuputDataGroupBox
       AnchorSideRight.Side = asrBottom
-      Left = 227
-      Height = 30
+      Left = 142
+      Height = 21
       Top = 0
-      Width = 424
+      Width = 509
       Anchors = [akTop, akLeft, akRight]
       BorderSpacing.Left = 5
       BorderSpacing.Right = 5
       DropDownCount = 9
-      ItemHeight = 24
+      ItemHeight = 13
       OnChange = OutputSystemComboBoxChange
       Style = csDropDownList
       TabOrder = 0
@@ -505,14 +505,14 @@ object SettingsForm: TSettingsForm
   end
   object BottomPanel: TPanel
     Left = 5
-    Height = 0
-    Top = 360
+    Height = 32
+    Top = 323
     Width = 660
     Align = alClient
     AutoSize = True
     BorderSpacing.Around = 5
     BevelOuter = bvNone
-    ClientHeight = 0
+    ClientHeight = 32
     ClientWidth = 660
     TabOrder = 0
     object ErrorHandlingComboBox: TComboBox
@@ -521,11 +521,11 @@ object SettingsForm: TSettingsForm
       AnchorSideTop.Control = OKButton
       AnchorSideTop.Side = asrCenter
       Left = 82
-      Height = 30
-      Top = 0
+      Height = 21
+      Top = 5
       Width = 159
       BorderSpacing.Around = 5
-      ItemHeight = 24
+      ItemHeight = 13
       ItemIndex = 0
       Items.Strings = (
         'Skip Records'
