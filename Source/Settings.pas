@@ -70,6 +70,7 @@ Type
     Procedure FixedColumnBreaksEditKeyPress(Sender: TObject; Var Key: char);
     Procedure HeaderRowCheckBoxChange(Sender: TObject);
     Procedure HeaderRowEditEditingDone(Sender: TObject);
+    Procedure InputFileGroupBoxResize(Sender: TObject);
     Procedure InputSystemComboBoxChange(Sender: TObject);
     Procedure OutputSystemComboBoxChange(Sender: TObject);
     Procedure SecondColumnComboBoxChange(Sender: TObject);
@@ -390,6 +391,13 @@ Procedure TSettingsForm.HeaderRowEditEditingDone(Sender: TObject);
 Begin
   Data.NameRow := StrToIntDef(HeaderRowEdit.Text, 1)-1;
   DisplayDataInformation;
+End;
+
+Procedure TSettingsForm.InputFileGroupBoxResize(Sender: TObject);
+Begin
+  //writeln(GetSystemMetrics(2));
+  FileFormatComboBox.Width := 40+FileFormatComboBox.Canvas.TextWidth('Character Delimited Text');
+  ColumnDelimiterComboBox.Width := 40+FileFormatComboBox.Canvas.TextWidth('Double Quote'); { To match the size needed for TextDelimiterComboBox. }
 End;
 
 Procedure TSettingsForm.StartRowEditEditingDone(Sender: TObject);
