@@ -8,31 +8,12 @@
         <Filename Value="OSTrans.lpr"/>
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="63"/>
-        <CursorPos X="59" Y="88"/>
+        <TopLine Value="41"/>
+        <CursorPos X="13" Y="56"/>
         <UsageCount Value="24"/>
         <Loaded Value="True"/>
       </Unit0>
       <Unit1>
-        <Filename Value="/usr/share/fpcsrc/tests/webtbs/tw17907/main/main.pas"/>
-        <EditorIndex Value="-1"/>
-        <UsageCount Value="10"/>
-      </Unit1>
-      <Unit2>
-        <Filename Value="/usr/share/fpcsrc/rtl/objpas/sysutils/filutilh.inc"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="134"/>
-        <CursorPos X="10" Y="144"/>
-        <UsageCount Value="11"/>
-      </Unit2>
-      <Unit3>
-        <Filename Value="/usr/share/fpcsrc/rtl/unix/sysutils.pp"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="584"/>
-        <CursorPos X="3" Y="588"/>
-        <UsageCount Value="11"/>
-      </Unit3>
-      <Unit4>
         <Filename Value="TransMain.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="1"/>
@@ -40,6 +21,25 @@
         <CursorPos X="96" Y="32"/>
         <UsageCount Value="22"/>
         <Loaded Value="True"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value="/usr/share/fpcsrc/tests/webtbs/tw17907/main/main.pas"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="10"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="/usr/share/fpcsrc/rtl/objpas/sysutils/filutilh.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="134"/>
+        <CursorPos X="10" Y="144"/>
+        <UsageCount Value="11"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="/usr/share/fpcsrc/rtl/unix/sysutils.pp"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="584"/>
+        <CursorPos X="3" Y="588"/>
+        <UsageCount Value="11"/>
       </Unit4>
       <Unit5>
         <Filename Value="BNG.pas"/>

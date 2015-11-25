@@ -52,8 +52,8 @@ Procedure TOSTransApplication.WriteHeader;
 Begin
   If SilentMode Then
     Exit;
-  WriteLn('OSTrans - OS/OSI/LPS Transformation utility to perform a spatial coordinate transformations.');
-  WriteLn('(OSTabc) 2015 Paul F. Michell, Michell Computing.');
+  WriteLn('GITrans - GridInQuestII spatial transformation utility.');
+  WriteLn('(c) 2015 Paul F. Michell, Michell Computing.');
   WriteLn;
 End;
 
