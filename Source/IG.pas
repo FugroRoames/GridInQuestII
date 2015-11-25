@@ -201,7 +201,7 @@ Begin
   GeodeticCoordinates := ETRSToIGGeodeticShift(InputCoordinates);
   OutputCoordinates := TransverseMercator(GeodeticCoordinates, IrishGridProjection);
   { Determine location validity from the corresponding ITM coordinates, and use that geoid height if valid. }
-  Result := WGS84CoordinatesToITMCoordinates(InputCoordinates, vmGM02, PreferredDatum, ITMCoordinates, OutputDatum);
+  Result := WGS84CoordinatesToITMCoordinates(InputCoordinates, VerticalModel, PreferredDatum, ITMCoordinates, OutputDatum);
   If Result Then
     OutputCoordinates.Elevation := ITMCoordinates.Elevation;
   {$ENDIF}
@@ -229,7 +229,7 @@ Begin
   GeodeticCoordinates.Altitude := 0; { Remove the altitude component. }
   OutputCoordinates := GeodeticCoordinates+IGToETRSGeodeticShift(GeodeticCoordinates);
   { Determine location validity from the corresponding ITM coordinates, and the corresponding geoid height if valid. }
-  Result := WGS84CoordinatesToITMCoordinates(OutputCoordinates, vmGM02, PreferredDatum, ITMCoordinates, OutputDatum);
+  Result := WGS84CoordinatesToITMCoordinates(OutputCoordinates, VerticalModel, PreferredDatum, ITMCoordinates, OutputDatum);
   If Result Then
     OutputCoordinates.Altitude := InputCoordinates.Elevation-ITMCoordinates.Altitude; { Output the elevation with geoid height correction. }
   {$ENDIF}
