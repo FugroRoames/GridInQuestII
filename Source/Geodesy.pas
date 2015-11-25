@@ -174,8 +174,8 @@ Type
     EPSGNumber: Integer;
     GeodeticBounds: TGeodeticBounds;
     Name: String;
-    PreferredVerticalDatum: TVerticalDatumCode;
-    LastVerticalDatum: TVerticalDatumCode;
+    PreferredVerticalDatum: TVerticalDatumCode; { These fields should be in the TITMCoordinateSystem declaration in the ITM unit. }
+    LastVerticalDatum: TVerticalDatumCode; { They have been declared here to avoid a compiler bug that incorrectly handles object inheritance. }
     Constructor Initialize(NewName: String; NewAbbreviation: String; NewDescription: String; NewEPSGNumber: Integer;
                            NewCoordinateType: TCoordinateType; NewAxisOrder: TAxisOrder; NewBounds: TGeodeticBounds);
     Function AxisNames: TAxisNames;
