@@ -19,10 +19,15 @@ Program GridInQuestII;
   {$LONGSTRINGS ON}
 {$ENDIF}
 
+{ $DEFINE LOGDEBUG} { Enable define to generate log file for heap trace. }
+
 Uses
   {$IFDEF UNIX}
     cthreads,
     cmem,
+  {$ENDIF}
+  {$IFDEF LOGDEBUG}
+    SysUtils,
   {$ENDIF}
   Interfaces, Splash, Forms, Controls, Main, ETRS, BNG, ITM, IG, OSTab, Config;
 
@@ -31,6 +36,7 @@ Uses
 {TODO: Remove local copy of 'fileinfo.pp' once Lazarus is update to use FPC 3 on all platforms. }
 
 Begin
+  {$IFDEF LOGDEBUG}SetHeapTraceOutput(ChangeFileExt(ParamStr(0), '.log'));{$ENDIF}
   Application.Title:='Grid InQuest II';
   RequireDerivedFormResource := True;
   Screen.Cursor := crHourGlass;
