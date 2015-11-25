@@ -73,5 +73,9 @@ XMLConfig := TXMLConfig.Create(Nil);
 XMLConfig.RootName := 'Configuration';
 XMLConfig.Filename := ConfigurationFolder+ApplicationName+ConfigExtension;
 
+Finalization
+
+XMLConfig.Free;
+
 End.
 
