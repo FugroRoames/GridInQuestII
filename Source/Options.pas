@@ -29,11 +29,15 @@ Uses
 Type
   TOptionsForm = Class(TForm)
     BottomPanel: TPanel;
-    IrishDatumComboBox: TComboBox;
-    IrishDatumLabel: TLabel;
+    DisplayFormattingGroupBox: TGroupBox;
+    OutputFormattingGroupBox: TGroupBox;
+    IrishSettingsGroupBox: TGroupBox;
+    IGDatumComboBox: TComboBox;
+    ITMDatumComboBox: TComboBox;
+    IGDatumLabel: TLabel;
+    ITMDatumLabel: TLabel;
     OKButton: TButton;
     CancelButton: TButton;
-    Panel1: TPanel;
     Procedure FormShow(Sender: TObject);
     Procedure OKButtonClick(Sender: TObject);
   Private
@@ -59,25 +63,29 @@ End;
 
 Procedure TOptionsForm.FormShow(Sender: TObject);
 Begin
-  If ITMCoordinateSystem.PreferredVerticalDatum=vdMalinHead Then
-    IrishDatumComboBox.Text := 'Malin Head'
+  If IGCoordinateSystem.PreferredVerticalDatum=vdMalinHead Then
+    IGDatumComboBox.Text := 'Malin Head'
   Else
-    IrishDatumComboBox.Text := 'Belfast';
+    IGDatumComboBox.Text := 'Belfast';
+  If ITMCoordinateSystem.PreferredVerticalDatum=vdMalinHead Then
+    ITMDatumComboBox.Text := 'Malin Head'
+  Else
+    ITMDatumComboBox.Text := 'Belfast';
 End;
 
 Procedure TOptionsForm.OKButtonClick(Sender: TObject);
 Begin
-  Case IrishDatumComboBox.Text Of
+  Case IGDatumComboBox.Text Of
   'Belfast':
-    Begin;
-      IGCoordinateSystem.PreferredVerticalDatum := vdBelfast;
-      ITMCoordinateSystem.PreferredVerticalDatum := vdBelfast;
-    End;
+    IGCoordinateSystem.PreferredVerticalDatum := vdBelfast;
   'Malin Head':
-    Begin;
-      IGCoordinateSystem.PreferredVerticalDatum := vdMalinHead;
-      ITMCoordinateSystem.PreferredVerticalDatum := vdMalinHead;
-    End;
+    IGCoordinateSystem.PreferredVerticalDatum := vdMalinHead;
+  End;
+  Case ITMDatumComboBox.Text Of
+  'Belfast':
+    ITMCoordinateSystem.PreferredVerticalDatum := vdBelfast;
+  'Malin Head':
+    ITMCoordinateSystem.PreferredVerticalDatum := vdMalinHead;
   End;
   WriteConfigOptions;
 End;

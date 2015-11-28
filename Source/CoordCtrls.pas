@@ -320,6 +320,7 @@ End;
 
 Procedure TCoordinateSystemPanel.DoOnChange(Sender: TObject);
 Var
+  DummyIndex: Integer;
   SelectedSystem: String;
   CurrentSystemList: String;
   CoordinateSystem: TCoordinateSystem;
@@ -333,6 +334,7 @@ Var
     End;
   End;
 Begin
+  DummyIndex := FComboBox.ItemIndex;
   SelectedSystem := FComboBox.Text;
   CurrentSystemList := FComboBox.Items.Text;
   With CoordinateSystems Do

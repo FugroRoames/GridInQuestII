@@ -1,27 +1,27 @@
 object OptionsForm: TOptionsForm
-  Left = 798
-  Height = 291
+  Left = 783
+  Height = 295
   Top = 217
-  Width = 475
+  Width = 363
   BorderStyle = bsDialog
   Caption = 'Options'
-  ClientHeight = 291
-  ClientWidth = 475
+  ClientHeight = 295
+  ClientWidth = 363
   OnShow = FormShow
   Position = poScreenCenter
   LCLVersion = '1.5'
   object BottomPanel: TPanel
     Left = 0
     Height = 40
-    Top = 251
-    Width = 475
+    Top = 255
+    Width = 363
     Align = alBottom
     BevelOuter = bvNone
     ClientHeight = 40
-    ClientWidth = 475
+    ClientWidth = 363
     TabOrder = 0
     object OKButton: TButton
-      Left = 265
+      Left = 153
       Height = 30
       Top = 5
       Width = 100
@@ -34,7 +34,7 @@ object OptionsForm: TOptionsForm
       TabOrder = 0
     end
     object CancelButton: TButton
-      Left = 370
+      Left = 258
       Height = 30
       Top = 5
       Width = 100
@@ -46,47 +46,107 @@ object OptionsForm: TOptionsForm
       TabOrder = 1
     end
   end
-  object Panel1: TPanel
-    Left = 0
-    Height = 104
-    Top = 0
-    Width = 475
+  object IrishSettingsGroupBox: TGroupBox
+    Left = 5
+    Height = 75
+    Top = 5
+    Width = 353
     Align = alTop
-    ChildSizing.LeftRightSpacing = 5
-    ChildSizing.TopBottomSpacing = 5
-    ChildSizing.HorizontalSpacing = 5
-    ChildSizing.VerticalSpacing = 5
-    ChildSizing.ControlsPerLine = 2
-    ClientHeight = 104
-    ClientWidth = 475
+    AutoSize = True
+    BorderSpacing.Around = 5
+    Caption = 'Irish System Settings'
+    ClientHeight = 57
+    ClientWidth = 349
     TabOrder = 1
-    object IrishDatumComboBox: TComboBox
-      Left = 224
-      Height = 21
-      Top = 8
-      Width = 245
+    object IGDatumLabel: TLabel
+      AnchorSideLeft.Control = IrishSettingsGroupBox
+      AnchorSideTop.Control = IGDatumComboBox
+      AnchorSideTop.Side = asrCenter
+      AnchorSideBottom.Side = asrCenter
+      Left = 5
+      Height = 13
+      Top = 9
+      Width = 136
       BorderSpacing.Around = 5
+      Caption = 'IG Preferred Vertical Datum:'
+      Layout = tlCenter
+      ParentColor = False
+    end
+    object IGDatumComboBox: TComboBox
+      AnchorSideLeft.Control = ITMDatumComboBox
+      AnchorSideTop.Control = IrishSettingsGroupBox
+      AnchorSideRight.Control = IrishSettingsGroupBox
+      AnchorSideRight.Side = asrBottom
+      Left = 153
+      Height = 21
+      Top = 5
+      Width = 191
+      Anchors = [akTop, akLeft, akRight]
+      BorderSpacing.Top = 5
+      BorderSpacing.Right = 5
+      BorderSpacing.Bottom = 5
       ItemHeight = 13
       Items.Strings = (
         'Belfast'
         'Malin Head'
       )
       TabOrder = 0
-      Text = 'IrishDatumComboBox'
+      Text = 'IGDatumComboBox'
     end
-    object IrishDatumLabel: TLabel
-      AnchorSideTop.Control = IrishDatumComboBox
+    object ITMDatumLabel: TLabel
+      AnchorSideLeft.Control = IrishSettingsGroupBox
+      AnchorSideTop.Control = ITMDatumComboBox
       AnchorSideTop.Side = asrCenter
       AnchorSideBottom.Side = asrCenter
-      Left = 51
+      Left = 5
       Height = 13
-      Top = 12
-      Width = 122
-      Anchors = [akTop]
+      Top = 35
+      Width = 143
       BorderSpacing.Around = 5
-      Caption = 'Preferred Vertical Datum:'
+      Caption = 'ITM Preferred Vertical Datum:'
       Layout = tlCenter
       ParentColor = False
     end
+    object ITMDatumComboBox: TComboBox
+      AnchorSideLeft.Control = ITMDatumLabel
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = IGDatumComboBox
+      AnchorSideTop.Side = asrBottom
+      AnchorSideRight.Control = IrishSettingsGroupBox
+      AnchorSideRight.Side = asrBottom
+      Left = 153
+      Height = 21
+      Top = 31
+      Width = 191
+      Anchors = [akTop, akLeft, akRight]
+      BorderSpacing.Around = 5
+      ItemHeight = 13
+      Items.Strings = (
+        'Belfast'
+        'Malin Head'
+      )
+      TabOrder = 1
+      Text = 'ITMDatumComboBox'
+    end
+  end
+  object DisplayFormattingGroupBox: TGroupBox
+    Left = 5
+    Height = 75
+    Top = 85
+    Width = 353
+    Align = alTop
+    BorderSpacing.Around = 5
+    Caption = 'Display Formatting'
+    TabOrder = 2
+  end
+  object OutputFormattingGroupBox: TGroupBox
+    Left = 5
+    Height = 83
+    Top = 165
+    Width = 353
+    Align = alTop
+    BorderSpacing.Around = 5
+    Caption = 'Output Formatting'
+    TabOrder = 3
   end
 end
