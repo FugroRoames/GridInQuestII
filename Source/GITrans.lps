@@ -8,15 +8,15 @@
         <Filename Value="GITrans.pas"/>
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="171"/>
-        <CursorPos X="45" Y="23"/>
+        <TopLine Value="131"/>
+        <CursorPos X="31" Y="135"/>
         <UsageCount Value="25"/>
         <Loaded Value="True"/>
       </Unit0>
       <Unit1>
         <Filename Value="TransMain.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="2"/>
+        <EditorIndex Value="1"/>
         <CursorPos X="99" Y="58"/>
         <UsageCount Value="23"/>
         <Loaded Value="True"/>
@@ -24,7 +24,7 @@
       <Unit2>
         <Filename Value="../Examples/Web/GITrans.js"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="4"/>
+        <EditorIndex Value="3"/>
         <TopLine Value="12"/>
         <CursorPos Y="32"/>
         <UsageCount Value="21"/>
@@ -72,14 +72,14 @@
       </Unit8>
       <Unit9>
         <Filename Value="Geodesy.pas"/>
-        <EditorIndex Value="6"/>
+        <EditorIndex Value="5"/>
         <CursorPos X="43" Y="183"/>
         <UsageCount Value="11"/>
         <Loaded Value="True"/>
       </Unit9>
       <Unit10>
         <Filename Value="ITM.pas"/>
-        <EditorIndex Value="5"/>
+        <EditorIndex Value="4"/>
         <TopLine Value="37"/>
         <CursorPos X="22" Y="45"/>
         <UsageCount Value="11"/>
@@ -109,7 +109,7 @@
       </Unit13>
       <Unit14>
         <Filename Value="../Examples/Web/index.html"/>
-        <EditorIndex Value="3"/>
+        <EditorIndex Value="2"/>
         <CursorPos X="8" Y="2"/>
         <UsageCount Value="10"/>
         <Loaded Value="True"/>
@@ -117,10 +117,9 @@
       </Unit14>
       <Unit15>
         <Filename Value="OSTrans.lpr"/>
-        <EditorIndex Value="1"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="136"/>
         <UsageCount Value="10"/>
-        <Loaded Value="True"/>
       </Unit15>
     </Units>
     <JumpHistory Count="15" HistoryIndex="14">

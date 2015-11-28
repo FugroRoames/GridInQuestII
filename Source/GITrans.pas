@@ -121,8 +121,8 @@ Begin
   With TGITransApplication.Create(Nil) Do
     Try
       { Test for CGI mode. }
-      OperatingMode := omCGI;
-      {If ParamCount=0 Then
+      //OperatingMode := omCGI;
+      If ParamCount=0 Then
         Begin
           If SameText(GetEnv('REQUEST_METHOD'),'GET') Then
             OperatingMode := omCGI
@@ -132,7 +132,7 @@ Begin
              OperatingMode := omIO;
         End
       Else
-        OperatingMode := omIO;}
+        OperatingMode := omIO;
       Case OperatingMode Of
       omIO:
         Begin

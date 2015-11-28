@@ -104,7 +104,7 @@ Var
   GeodeticCoordinates: TCoordinates;
 Begin
   // Test for bounds?
-  If ITMCoordinatesToWGS84Coordinates(Coordinates, vmGM02, PreferredVerticalDatum, GeodeticCoordinates, LastVerticalDatum) Then
+  If ITMCoordinatesToWGS84Coordinates(Coordinates, vmGM15, PreferredVerticalDatum, GeodeticCoordinates, LastVerticalDatum) Then
     Result := GeodeticToGeocentric(GeodeticCoordinates, GRS80Ellipsoid)
   Else
     Result := NullCoordinates;
@@ -116,7 +116,7 @@ Var
 Begin
   GeodeticCoordinates := GeocentricToGeodetic(Coordinates, GRS80Ellipsoid);
   // Test for bounds?
-  If Not WGS84CoordinatesToITMCoordinates(GeodeticCoordinates, vmGM02, PreferredVerticalDatum, Result, LastVerticalDatum) Then
+  If Not WGS84CoordinatesToITMCoordinates(GeodeticCoordinates, vmGM15, PreferredVerticalDatum, Result, LastVerticalDatum) Then
     Result := NullCoordinates;
 End;
 
