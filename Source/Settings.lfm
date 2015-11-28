@@ -1,27 +1,27 @@
 object SettingsForm: TSettingsForm
-  Left = 517
-  Height = 492
-  Top = 181
-  Width = 741
+  Left = 523
+  Height = 433
+  Top = 405
+  Width = 773
   AutoSize = True
   BorderStyle = bsDialog
   Caption = 'Data Settings'
-  ClientHeight = 492
-  ClientWidth = 741
+  ClientHeight = 433
+  ClientWidth = 773
   Position = poScreenCenter
   LCLVersion = '1.5'
   object InputFileGroupBox: TGroupBox
     Left = 5
-    Height = 205
+    Height = 201
     Top = 5
-    Width = 731
+    Width = 763
     Align = alTop
     AutoSize = True
     BorderSpacing.Around = 5
     BorderSpacing.InnerBorder = 5
     Caption = 'Input File Details'
-    ClientHeight = 182
-    ClientWidth = 729
+    ClientHeight = 178
+    ClientWidth = 761
     ParentColor = False
     TabOrder = 1
     OnResize = InputFileGroupBoxResize
@@ -142,7 +142,7 @@ object SettingsForm: TSettingsForm
       AnchorSideTop.Side = asrCenter
       Left = 201
       Height = 26
-      Top = 75
+      Top = 73
       Width = 199
       Caption = 'Has Text Delimiters'
       OnChange = TextDelimiterCheckBoxChange
@@ -156,7 +156,7 @@ object SettingsForm: TSettingsForm
       AnchorSideRight.Control = TextDelimiterComboBox
       Left = 405
       Height = 22
-      Top = 77
+      Top = 75
       Width = 200
       Alignment = taRightJustify
       Anchors = [akTop, akLeft, akRight]
@@ -174,7 +174,7 @@ object SettingsForm: TSettingsForm
       AnchorSideRight.Control = ColumnDelimiterComboBox
       AnchorSideRight.Side = asrBottom
       Left = 610
-      Height = 36
+      Height = 32
       Top = 70
       Width = 115
       Anchors = [akTop, akLeft, akRight]
@@ -196,7 +196,7 @@ object SettingsForm: TSettingsForm
       AnchorSideTop.Side = asrCenter
       Left = 201
       Height = 26
-      Top = 112
+      Top = 108
       Width = 174
       Caption = 'Has Header Row'
       Checked = True
@@ -212,7 +212,7 @@ object SettingsForm: TSettingsForm
       AnchorSideRight.Control = HeaderRowEdit
       Left = 380
       Height = 22
-      Top = 114
+      Top = 110
       Width = 225
       Alignment = taRightJustify
       Anchors = [akTop, akLeft, akRight]
@@ -229,7 +229,7 @@ object SettingsForm: TSettingsForm
       AnchorSideTop.Side = asrBottom
       Left = 610
       Height = 28
-      Top = 111
+      Top = 107
       Width = 80
       BorderSpacing.Top = 5
       NumbersOnly = True
@@ -243,7 +243,7 @@ object SettingsForm: TSettingsForm
       AnchorSideRight.Control = StartRowEdit
       Left = 56
       Height = 22
-      Top = 147
+      Top = 143
       Width = 140
       Alignment = taRightJustify
       Anchors = [akTop, akRight]
@@ -258,7 +258,7 @@ object SettingsForm: TSettingsForm
       AnchorSideTop.Control = EndRowEdit
       Left = 201
       Height = 28
-      Top = 144
+      Top = 140
       Width = 80
       NumbersOnly = True
       OnEditingDone = StartRowEditEditingDone
@@ -271,7 +271,7 @@ object SettingsForm: TSettingsForm
       AnchorSideRight.Control = EndRowEdit
       Left = 475
       Height = 22
-      Top = 147
+      Top = 143
       Width = 130
       Alignment = taRightJustify
       Anchors = [akTop, akRight]
@@ -287,7 +287,7 @@ object SettingsForm: TSettingsForm
       AnchorSideTop.Side = asrBottom
       Left = 610
       Height = 28
-      Top = 144
+      Top = 140
       Width = 80
       BorderSpacing.Top = 5
       NumbersOnly = True
@@ -298,8 +298,8 @@ object SettingsForm: TSettingsForm
   object InputDataGroupBox: TGroupBox
     Left = 5
     Height = 151
-    Top = 215
-    Width = 731
+    Top = 211
+    Width = 763
     Align = alTop
     AutoSize = True
     BorderSpacing.Around = 5
@@ -307,7 +307,7 @@ object SettingsForm: TSettingsForm
     Caption = 'Input Data Settings'
     ChildSizing.ControlsPerLine = 3
     ClientHeight = 128
-    ClientWidth = 729
+    ClientWidth = 761
     ParentColor = False
     TabOrder = 3
     object InputSystemLabel: TLabel
@@ -334,7 +334,7 @@ object SettingsForm: TSettingsForm
       Left = 237
       Height = 36
       Top = 0
-      Width = 487
+      Width = 519
       Anchors = [akTop, akLeft, akRight]
       BorderSpacing.Left = 5
       BorderSpacing.Right = 5
@@ -380,7 +380,7 @@ object SettingsForm: TSettingsForm
       AnchorSideTop.Control = SecondColumnComboBox
       AnchorSideTop.Side = asrCenter
       AnchorSideRight.Control = SecondColumnComboBox
-      Left = 462
+      Left = 494
       Height = 22
       Top = 48
       Width = 117
@@ -397,7 +397,7 @@ object SettingsForm: TSettingsForm
       AnchorSideTop.Side = asrBottom
       AnchorSideRight.Control = InputDataGroupBox
       AnchorSideRight.Side = asrBottom
-      Left = 584
+      Left = 616
       Height = 36
       Top = 41
       Width = 140
@@ -425,7 +425,7 @@ object SettingsForm: TSettingsForm
       AnchorSideTop.Control = ThirdColumnComboBox
       AnchorSideTop.Side = asrCenter
       AnchorSideRight.Control = ThirdColumnComboBox
-      Left = 479
+      Left = 511
       Height = 22
       Top = 89
       Width = 100
@@ -442,7 +442,7 @@ object SettingsForm: TSettingsForm
       AnchorSideTop.Side = asrBottom
       AnchorSideRight.Control = InputDataGroupBox
       AnchorSideRight.Side = asrBottom
-      Left = 584
+      Left = 616
       Height = 36
       Top = 82
       Width = 140
@@ -459,15 +459,15 @@ object SettingsForm: TSettingsForm
   object OuputDataGroupBox: TGroupBox
     Left = 5
     Height = 69
-    Top = 371
-    Width = 731
+    Top = 367
+    Width = 763
     Align = alTop
     AutoSize = True
     BorderSpacing.Around = 5
     BorderSpacing.InnerBorder = 5
     Caption = 'Ouput Data Settings'
     ClientHeight = 46
-    ClientWidth = 729
+    ClientWidth = 761
     ParentColor = False
     TabOrder = 2
     object OutputSystemLabel: TLabel
@@ -494,7 +494,7 @@ object SettingsForm: TSettingsForm
       Left = 252
       Height = 36
       Top = 0
-      Width = 472
+      Width = 504
       Anchors = [akTop, akLeft, akRight]
       BorderSpacing.Left = 5
       BorderSpacing.Right = 5
@@ -507,15 +507,15 @@ object SettingsForm: TSettingsForm
   end
   object BottomPanel: TPanel
     Left = 5
-    Height = 42
-    Top = 445
-    Width = 731
+    Height = 1
+    Top = 433
+    Width = 763
     Align = alClient
     AutoSize = True
     BorderSpacing.Around = 5
     BevelOuter = bvNone
-    ClientHeight = 42
-    ClientWidth = 731
+    ClientHeight = 1
+    ClientWidth = 763
     TabOrder = 0
     object ErrorHandlingComboBox: TComboBox
       AnchorSideLeft.Control = ErrorHandlingLabel
@@ -558,7 +558,7 @@ object SettingsForm: TSettingsForm
     object OKButton: TButton
       AnchorSideTop.Control = CancelButton
       AnchorSideRight.Control = CancelButton
-      Left = 526
+      Left = 558
       Height = 30
       Top = 0
       Width = 100
@@ -573,7 +573,7 @@ object SettingsForm: TSettingsForm
       AnchorSideTop.Control = BottomPanel
       AnchorSideRight.Control = BottomPanel
       AnchorSideRight.Side = asrBottom
-      Left = 631
+      Left = 663
       Height = 30
       Top = 0
       Width = 100

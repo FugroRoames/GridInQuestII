@@ -27,6 +27,9 @@ Uses
   Config, OSTab, Geodesy, IG, ITM;
 
 Type
+
+  { TOptionsForm }
+
   TOptionsForm = Class(TForm)
     BottomPanel: TPanel;
     DisplayFormattingGroupBox: TGroupBox;
@@ -39,6 +42,7 @@ Type
     OKButton: TButton;
     CancelButton: TButton;
     Procedure FormShow(Sender: TObject);
+    Procedure IrishSettingsGroupBoxResize(Sender: TObject);
     Procedure OKButtonClick(Sender: TObject);
   Private
     { private declarations }
@@ -71,6 +75,13 @@ Begin
     ITMDatumComboBox.Text := 'Malin Head'
   Else
     ITMDatumComboBox.Text := 'Belfast';
+End;
+
+Procedure TOptionsForm.IrishSettingsGroupBoxResize(Sender: TObject);
+Begin
+  { Set the widths to match the maximum needed for the ComboBoxes. }
+  IGDatumComboBox.Width := 40+IGDatumComboBox.Canvas.TextWidth('Malin Head');
+  ITMDatumComboBox.Width := 40+ITMDatumComboBox.Canvas.TextWidth('Malin Head');
 End;
 
 Procedure TOptionsForm.OKButtonClick(Sender: TObject);

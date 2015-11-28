@@ -395,9 +395,9 @@ End;
 
 Procedure TSettingsForm.InputFileGroupBoxResize(Sender: TObject);
 Begin
-  //writeln(GetSystemMetrics(2));
+  { Widths to match the maximum size needed for the ComboBoxes. }
   FileFormatComboBox.Width := 40+FileFormatComboBox.Canvas.TextWidth('Character Delimited Text');
-  ColumnDelimiterComboBox.Width := 40+FileFormatComboBox.Canvas.TextWidth('Double Quote'); { To match the size needed for TextDelimiterComboBox. }
+  ColumnDelimiterComboBox.Width := 40+ColumnDelimiterComboBox.Canvas.TextWidth('Double Quote');
 End;
 
 Procedure TSettingsForm.StartRowEditEditingDone(Sender: TObject);
