@@ -28,14 +28,14 @@ Interface
 Uses
   Classes, SysUtils, StdCtrls;
 
-Procedure CheckComboBoxWidth(ThisComboBox: TComboBox);
+Procedure CheckComboBoxWidth(ThisComboBox: TComboBox; LimitWidth: Integer = 0);
 
 Implementation
 
 Const
   ComboButtonWidth = 40;
 
-Procedure CheckComboBoxWidth(ThisComboBox: TComboBox);
+Procedure CheckComboBoxWidth(ThisComboBox: TComboBox; LimitWidth: Integer = 0);
 Var
   Index, LastIndex: Integer;
   CurrentWidth, MaximumWidth: Integer;
@@ -46,7 +46,10 @@ Begin
     Begin
       CurrentWidth := ComboButtonWidth+ThisComboBox.Canvas.TextWidth(ThisComboBox.Items[Index]);
       If CurrentWidth>MaximumWidth Then
-        MaximumWidth := CurrentWidth;
+        If (CurrentWidth>LimitWidth) And (LimitWidth<>0) Then
+          MaximumWidth := LimitWidth
+        Else
+          MaximumWidth := CurrentWidth;
     End;
   If MaximumWidth>ThisComboBox.Width Then
     ThisComboBox.Width := MaximumWidth;

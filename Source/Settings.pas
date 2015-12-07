@@ -32,8 +32,6 @@ Type
     VerticalDataCheckBox: TCheckBox;
     HeaderRowCheckBox: TCheckBox;
     EndRowEdit: TEdit;
-    ErrorHandlingComboBox: TComboBox;
-    ErrorHandlingLabel: TLabel;
     HeaderRowEdit: TEdit;
     EndRowLabel: TLabel;
     HeaderRowLabel: TLabel;
@@ -70,6 +68,7 @@ Type
     Procedure FixedColumnBreaksEditKeyPress(Sender: TObject; Var Key: char);
     Procedure HeaderRowCheckBoxChange(Sender: TObject);
     Procedure HeaderRowEditEditingDone(Sender: TObject);
+    Procedure InputDataGroupBoxResize(Sender: TObject);
     Procedure InputFileGroupBoxResize(Sender: TObject);
     Procedure InputSystemComboBoxChange(Sender: TObject);
     Procedure OutputSystemComboBoxChange(Sender: TObject);
@@ -397,6 +396,17 @@ Procedure TSettingsForm.InputFileGroupBoxResize(Sender: TObject);
 Begin
   CheckComboBoxWidth(FileFormatComboBox);
   CheckComboBoxWidth(ColumnDelimiterComboBox);
+  CheckComboBoxWidth(TextDelimiterComboBox);
+End;
+
+Procedure TSettingsForm.InputDataGroupBoxResize(Sender: TObject);
+Var
+  MaxWidth: Integer;
+Begin
+  MaxWidth := InputSystemComboBox.Width Div 3;
+  CheckComboBoxWidth(FirstColumnComboBox, MaxWidth);
+  CheckComboBoxWidth(SecondColumnComboBox, MaxWidth);
+  CheckComboBoxWidth(ThirdColumnComboBox, MaxWidth);
 End;
 
 Procedure TSettingsForm.StartRowEditEditingDone(Sender: TObject);
