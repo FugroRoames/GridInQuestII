@@ -109,6 +109,9 @@ Implementation
 Uses
   Main;
 
+Const
+  ComboButtonWidth = 40;
+
 Function ShowSettingsForm(NewData: TDataStream): Boolean;
 Begin
   With TSettingsForm.Create(Application.MainForm) Do
@@ -396,8 +399,8 @@ End;
 Procedure TSettingsForm.InputFileGroupBoxResize(Sender: TObject);
 Begin
   { Widths to match the maximum size needed for the ComboBoxes. }
-  FileFormatComboBox.Width := 40+FileFormatComboBox.Canvas.TextWidth('Character Delimited Text');
-  ColumnDelimiterComboBox.Width := 40+ColumnDelimiterComboBox.Canvas.TextWidth('Double Quote');
+  FileFormatComboBox.Width := ComboButtonWidth+FileFormatComboBox.Canvas.TextWidth('Character Delimited Text');
+  ColumnDelimiterComboBox.Width := ComboButtonWidth+ColumnDelimiterComboBox.Canvas.TextWidth('Double Quote');
 End;
 
 Procedure TSettingsForm.StartRowEditEditingDone(Sender: TObject);
