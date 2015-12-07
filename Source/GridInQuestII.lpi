@@ -20,7 +20,7 @@
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
       <MinorVersionNr Value="1"/>
-      <BuildNr Value="363"/>
+      <BuildNr Value="364"/>
       <Language Value="0809"/>
       <Attributes pvaPreRelease="True"/>
       <StringTable Comments="Developed for the three Ordnance Surveys of Britain and Ireland." CompanyName="Michell Computing" FileDescription="Coordinate Transformation Program" LegalCopyright="(c) 2015 Michell Computing" ProductName="Grid InQuest II" ProductVersion="0.10A"/>
@@ -142,9 +142,8 @@
         <IsPartOfProject Value="True"/>
       </Unit14>
       <Unit15>
-        <Filename Value="ctrlutils.pas"/>
+        <Filename Value="CtrlUtils.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="CtrlUtils"/>
       </Unit15>
     </Units>
   </ProjectOptions>

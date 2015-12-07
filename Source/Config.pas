@@ -24,6 +24,28 @@ Interface
 Uses
   Classes, SysUtils, DOM, XMLConf, OSTab, ITM, IG;
 
+Type
+  TFormatSettings = Record
+    GeodeticStyle: String;
+    GeodeticUnits: String;
+    GeodeticQuadrants: String;
+    GeodeticDecimalPlaces: Integer;
+    GeodeticWhitespace: Boolean;
+    GeodeticPositiveLongitude: Boolean;
+    ProjectedStyle: String;
+    ProjectedDecimalPlaces: Integer;
+    CartesianStyle: String;
+    CartesianDecimalPlaces: Integer;
+    HeightStyle: String;
+    HeightDecimalPlaces: Integer;
+    HeightDatumSuffix: Boolean;
+  End;
+
+Var
+  InteractiveSettings: TFormatSettings;
+  OutputSettings: TFormatSettings;
+
+
 Procedure ReadConfigOptions;
 Procedure WriteConfigOptions;
 
@@ -34,25 +56,174 @@ Var
   XMLConfig: TXMLConfig;
 
 Const
+  InteractiveSettingsKey = 'InteractiveSettings';
+  OutputSettingsKey = 'OutputSettings';
+  GeodeticFormatKey = 'GeodeticFormat';
+  ProjectedFormatKey = 'ProjectedFormat';
+  CartesianFormatKey = 'CartesianFormat';
+  HeightFormatKey = 'HeightFormat';
+  StyleKey = 'Style';
+  UnitsKey = 'Units';
+  QuadrantsKey = 'Quadrants';
+  DecimalPlacesKey = 'DecimalPlaces';
+  AddWhitespaceKey = 'AddWhitespace';
+  AllPositiveLongitudeKey = 'AllPositiveLongitude';
+  DatumSuffixKey = 'DatumSuffix';
+  IrishSettingsKey = 'IrishSettings';
   IGPreferredDatumKey = 'IGPreferredDatum';
   ITMPreferredDatumKey = 'ITMPreferredDatum';
 
 Procedure ReadConfigOptions;
 Begin
+  { Interactive formatting settings. }
+  XMLConfig.OpenKey(InteractiveSettingsKey);
+////////////
+  With InteractiveSettings Do
+    Begin
+      XMLConfig.OpenKey(GeodeticFormatKey);
+      GeodeticStyle := XMLConfig.GetValue(StyleKey, 'DMS');
+      GeodeticUnits := XMLConfig.GetValue(UnitsKey, 'SYM');
+      GeodeticQuadrants := XMLConfig.GetValue(QuadrantsKey, 'SGN');
+      GeodeticDecimalPlaces := XMLConfig.GetValue(DecimalPlacesKey, 3);
+      GeodeticWhitespace := XMLConfig.GetValue(AddWhitespaceKey, True);
+      GeodeticPositiveLongitude := XMLConfig.GetValue(AllPositiveLongitudeKey, True);
+      XMLConfig.CloseKey;
+
+      XMLConfig.OpenKey(ProjectedFormatKey);
+      ProjectedStyle := XMLConfig.GetValue(StyleKey, 'EN');
+      ProjectedDecimalPlaces := XMLConfig.GetValue(DecimalPlacesKey, 2);
+      XMLConfig.CloseKey;
+
+      XMLConfig.OpenKey(CartesianFormatKey);
+      CartesianStyle := XMLConfig.GetValue(StyleKey, 'XYZ');
+      CartesianDecimalPlaces := XMLConfig.GetValue(DecimalPlacesKey, 2);
+      XMLConfig.CloseKey;
+
+      XMLConfig.OpenKey(HeightFormatKey);
+      HeightStyle := XMLConfig.GetValue(StyleKey, 'XYZ');
+      HeightDecimalPlaces := XMLConfig.GetValue(DecimalPlacesKey, 2);
+      HeightDatumSuffix := XMLConfig.GetValue(DatumSuffixKey, True);
+      XMLConfig.CloseKey;
+    End;
+  ////////
+  XMLConfig.CloseKey;
+  { Output formatting settings. }
+  XMLConfig.OpenKey(OutputSettingsKey);
+////////////
+  With OutputSettings Do
+    Begin
+      XMLConfig.OpenKey(GeodeticFormatKey);
+      GeodeticStyle := XMLConfig.GetValue(StyleKey, 'DMS');
+      GeodeticUnits := XMLConfig.GetValue(UnitsKey, 'SYM');
+      GeodeticQuadrants := XMLConfig.GetValue(QuadrantsKey, 'SGN');
+      GeodeticDecimalPlaces := XMLConfig.GetValue(DecimalPlacesKey, 3);
+      GeodeticWhitespace := XMLConfig.GetValue(AddWhitespaceKey, True);
+      GeodeticPositiveLongitude := XMLConfig.GetValue(AllPositiveLongitudeKey, True);
+      XMLConfig.CloseKey;
+
+      XMLConfig.OpenKey(ProjectedFormatKey);
+      ProjectedStyle := XMLConfig.GetValue(StyleKey, 'EN');
+      ProjectedDecimalPlaces := XMLConfig.GetValue(DecimalPlacesKey, 2);
+      XMLConfig.CloseKey;
+
+      XMLConfig.OpenKey(CartesianFormatKey);
+      CartesianStyle := XMLConfig.GetValue(StyleKey, 'XYZ');
+      CartesianDecimalPlaces := XMLConfig.GetValue(DecimalPlacesKey, 2);
+      XMLConfig.CloseKey;
+
+      XMLConfig.OpenKey(HeightFormatKey);
+      HeightStyle := XMLConfig.GetValue(StyleKey, 'XYZ');
+      HeightDecimalPlaces := XMLConfig.GetValue(DecimalPlacesKey, 2);
+      HeightDatumSuffix := XMLConfig.GetValue(DatumSuffixKey, True);
+      XMLConfig.CloseKey;
+    End;
+////////
+  XMLConfig.CloseKey;
+  { Irish datum settings. }
+  XMLConfig.OpenKey(IrishSettingsKey);
   With IGCoordinateSystem Do
     PreferredVerticalDatum := VerticalDataNameToCode(XMLConfig.GetValue(IGPreferredDatumKey,
                                                      VerticalDataCodeToName(PreferredVerticalDatum)));
   With ITMCoordinateSystem Do
     PreferredVerticalDatum := VerticalDataNameToCode(XMLConfig.GetValue(ITMPreferredDatumKey,
                                                      VerticalDataCodeToName(PreferredVerticalDatum)));
+  XMLConfig.CloseKey;
 End;
 
 Procedure WriteConfigOptions;
 Begin
+  { Interactive formatting settings. }
+  XMLConfig.Clear;
+  XMLConfig.OpenKey(InteractiveSettingsKey);
+////////////
+  With InteractiveSettings Do
+    Begin
+      XMLConfig.OpenKey(GeodeticFormatKey);
+      XMLConfig.SetValue(StyleKey, GeodeticStyle);
+      XMLConfig.SetValue(UnitsKey, GeodeticUnits);
+      XMLConfig.SetValue(QuadrantsKey, GeodeticQuadrants);
+      XMLConfig.SetValue(DecimalPlacesKey, GeodeticDecimalPlaces);
+      XMLConfig.SetValue(AddWhitespaceKey, GeodeticWhitespace);
+      XMLConfig.SetValue(AllPositiveLongitudeKey, GeodeticPositiveLongitude);
+      XMLConfig.CloseKey;
+
+      XMLConfig.OpenKey(ProjectedFormatKey);
+      XMLConfig.SetValue(StyleKey, ProjectedStyle);
+      XMLConfig.SetValue(DecimalPlacesKey, ProjectedDecimalPlaces);
+      XMLConfig.CloseKey;
+
+      XMLConfig.OpenKey(CartesianFormatKey);
+      XMLConfig.SetValue(StyleKey, CartesianStyle);
+      XMLConfig.SetValue(DecimalPlacesKey, CartesianDecimalPlaces);
+      XMLConfig.CloseKey;
+
+      XMLConfig.OpenKey(HeightFormatKey);
+      XMLConfig.SetValue(StyleKey, HeightStyle);
+      XMLConfig.SetValue(DecimalPlacesKey, HeightDecimalPlaces);
+      XMLConfig.SetValue(DatumSuffixKey, HeightDatumSuffix);
+      XMLConfig.CloseKey;
+    End;
+////////
+  XMLConfig.CloseKey;
+  { Output formatting settings. }
+  XMLConfig.OpenKey(OutputSettingsKey);
+  ////////////
+  With OutputSettings Do
+    Begin
+      XMLConfig.OpenKey(GeodeticFormatKey);
+      XMLConfig.SetValue(StyleKey, GeodeticStyle);
+      XMLConfig.SetValue(UnitsKey, GeodeticUnits);
+      XMLConfig.SetValue(QuadrantsKey, GeodeticQuadrants);
+      XMLConfig.SetValue(DecimalPlacesKey, GeodeticDecimalPlaces);
+      XMLConfig.SetValue(AddWhitespaceKey, GeodeticWhitespace);
+      XMLConfig.SetValue(AllPositiveLongitudeKey, GeodeticPositiveLongitude);
+      XMLConfig.CloseKey;
+
+      XMLConfig.OpenKey(ProjectedFormatKey);
+      XMLConfig.SetValue(StyleKey, ProjectedStyle);
+      XMLConfig.SetValue(DecimalPlacesKey, ProjectedDecimalPlaces);
+      XMLConfig.CloseKey;
+
+      XMLConfig.OpenKey(CartesianFormatKey);
+      XMLConfig.SetValue(StyleKey, CartesianStyle);
+      XMLConfig.SetValue(DecimalPlacesKey, CartesianDecimalPlaces);
+      XMLConfig.CloseKey;
+
+      XMLConfig.OpenKey(HeightFormatKey);
+      XMLConfig.SetValue(StyleKey, HeightStyle);
+      XMLConfig.SetValue(DecimalPlacesKey, HeightDecimalPlaces);
+      XMLConfig.SetValue(DatumSuffixKey, HeightDatumSuffix);
+      XMLConfig.CloseKey;
+    End;
+  ////////
+  XMLConfig.CloseKey;
+  { Irish datum settings. }
+  XMLConfig.OpenKey(IrishSettingsKey);
   With IGCoordinateSystem Do
     XMLConfig.SetValue(IGPreferredDatumKey, VerticalDataCodeToName(PreferredVerticalDatum));
   With ITMCoordinateSystem Do
     XMLConfig.SetValue(ITMPreferredDatumKey, VerticalDataCodeToName(PreferredVerticalDatum));
+  XMLConfig.CloseKey;
   XMLConfig.Flush;
 End;
 
