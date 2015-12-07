@@ -1,12 +1,12 @@
 object OptionsForm: TOptionsForm
-  Left = 441
-  Height = 423
-  Top = 200
+  Left = 488
+  Height = 390
+  Top = 197
   Width = 720
   AutoSize = True
   BorderStyle = bsDialog
   Caption = 'Options'
-  ClientHeight = 423
+  ClientHeight = 390
   ClientWidth = 720
   OnShow = FormShow
   Position = poScreenCenter
@@ -96,12 +96,12 @@ object OptionsForm: TOptionsForm
     Height = 280
     Top = 0
     Width = 720
-    ActivePage = TabSheet1
+    ActivePage = InteractiveTabSheet
     Align = alTop
     TabIndex = 0
     TabOrder = 1
     OnResize = OptionsPageControlResize
-    object TabSheet1: TTabSheet
+    object InteractiveTabSheet: TTabSheet
       Caption = 'Interactive Settings'
       ClientHeight = 254
       ClientWidth = 712
@@ -117,6 +117,7 @@ object OptionsForm: TOptionsForm
         ClientHeight = 55
         ClientWidth = 698
         TabOrder = 0
+        OnResize = GeodeticDisplayGroupBoxResize
         object GeodeticStyleLabel: TLabel
           AnchorSideLeft.Control = GeodeticDisplayGroupBox
           AnchorSideTop.Control = GeodeticStyleComboBox
@@ -183,7 +184,7 @@ object OptionsForm: TOptionsForm
             'None'
           )
           Style = csDropDownList
-          TabOrder = 2
+          TabOrder = 1
           Text = 'Symbols'
         end
         object QuadrantsLabel: TLabel
@@ -219,7 +220,7 @@ object OptionsForm: TOptionsForm
             'None'
           )
           Style = csDropDownList
-          TabOrder = 3
+          TabOrder = 2
           Text = 'Signs'
         end
         object GeodeticPlacesLabel: TLabel
@@ -244,7 +245,7 @@ object OptionsForm: TOptionsForm
           Height = 21
           Top = 31
           Width = 40
-          TabOrder = 1
+          TabOrder = 3
           Text = '3'
         end
         object WhitespaceCheckBox: TCheckBox
@@ -290,6 +291,7 @@ object OptionsForm: TOptionsForm
         ClientHeight = 31
         ClientWidth = 698
         TabOrder = 1
+        OnResize = ProjectedDisplayGroupBoxResize
         object ProjectedStyleLabel: TLabel
           AnchorSideLeft.Control = ProjectedDisplayGroupBox
           AnchorSideTop.Control = ProjectedStyleComboBox
@@ -320,7 +322,7 @@ object OptionsForm: TOptionsForm
             'Axis Suffix Letter'
           )
           Style = csDropDownList
-          TabOrder = 1
+          TabOrder = 0
           Text = 'Value Only'
         end
         object ProjectedPlacesLabel: TLabel
@@ -347,7 +349,7 @@ object OptionsForm: TOptionsForm
           Height = 21
           Top = 5
           Width = 40
-          TabOrder = 0
+          TabOrder = 1
           Text = '2'
         end
       end
@@ -363,6 +365,7 @@ object OptionsForm: TOptionsForm
         ClientHeight = 31
         ClientWidth = 698
         TabOrder = 2
+        OnResize = CartesianDisplayGroupBoxResize
         object CartesianStyleLabel: TLabel
           AnchorSideLeft.Control = CartesianDisplayGroupBox
           AnchorSideTop.Control = CartesianStyleComboBox
@@ -393,7 +396,7 @@ object OptionsForm: TOptionsForm
             'Axis Suffix Letter'
           )
           Style = csDropDownList
-          TabOrder = 1
+          TabOrder = 0
           Text = 'Value Only'
         end
         object CartesianPlacesLabel: TLabel
@@ -421,7 +424,7 @@ object OptionsForm: TOptionsForm
           Top = 5
           Width = 40
           BorderSpacing.Around = 5
-          TabOrder = 0
+          TabOrder = 1
           Text = '2'
         end
       end
@@ -437,6 +440,7 @@ object OptionsForm: TOptionsForm
         ClientHeight = 31
         ClientWidth = 698
         TabOrder = 3
+        OnResize = HeightDisplayGroupBoxResize
         object HeightStyleLabel: TLabel
           AnchorSideLeft.Control = HeightDisplayGroupBox
           AnchorSideTop.Control = HeightStyleComboBox
@@ -466,7 +470,7 @@ object OptionsForm: TOptionsForm
             'Value and Units'
           )
           Style = csDropDownList
-          TabOrder = 1
+          TabOrder = 0
           Text = 'Value Only'
         end
         object HeightPlacesLabel: TLabel
@@ -494,7 +498,7 @@ object OptionsForm: TOptionsForm
           Top = 5
           Width = 40
           BorderSpacing.Around = 5
-          TabOrder = 0
+          TabOrder = 1
           Text = '2'
         end
         object DatumSuffixCheckBox: TCheckBox
@@ -513,11 +517,11 @@ object OptionsForm: TOptionsForm
         end
       end
     end
-    object TabSheet2: TTabSheet
+    object OutputTabSheet: TTabSheet
       Caption = 'Output File Settings'
       ClientHeight = 254
       ClientWidth = 712
-      object GeodeticDisplayGroupBox1: TGroupBox
+      object GeodeticOutputGroupBox: TGroupBox
         Left = 5
         Height = 73
         Top = 5
@@ -529,9 +533,10 @@ object OptionsForm: TOptionsForm
         ClientHeight = 55
         ClientWidth = 698
         TabOrder = 0
-        object GeodeticStyleLabel1: TLabel
-          AnchorSideLeft.Control = GeodeticDisplayGroupBox1
-          AnchorSideTop.Control = GeodeticStyleComboBox1
+        OnResize = GeodeticOutputGroupBoxResize
+        object GeodeticStyleOutputLabel: TLabel
+          AnchorSideLeft.Control = GeodeticOutputGroupBox
+          AnchorSideTop.Control = GeodeticStyleOutputComboBox
           AnchorSideTop.Side = asrCenter
           Left = 5
           Height = 13
@@ -542,10 +547,10 @@ object OptionsForm: TOptionsForm
           Layout = tlCenter
           ParentColor = False
         end
-        object GeodeticStyleComboBox1: TComboBox
-          AnchorSideLeft.Control = GeodeticStyleLabel1
+        object GeodeticStyleOutputComboBox: TComboBox
+          AnchorSideLeft.Control = GeodeticStyleOutputLabel
           AnchorSideLeft.Side = asrBottom
-          AnchorSideTop.Control = GeodeticDisplayGroupBox1
+          AnchorSideTop.Control = GeodeticOutputGroupBox
           Left = 38
           Height = 21
           Top = 5
@@ -562,10 +567,10 @@ object OptionsForm: TOptionsForm
           TabOrder = 0
           Text = 'Degrees, Minutes, Seconds'
         end
-        object GeodeticUnitsLabel1: TLabel
-          AnchorSideLeft.Control = GeodeticStyleComboBox1
+        object GeodeticUnitsOutputLabel: TLabel
+          AnchorSideLeft.Control = GeodeticStyleOutputComboBox
           AnchorSideLeft.Side = asrBottom
-          AnchorSideTop.Control = GeodeticStyleLabel1
+          AnchorSideTop.Control = GeodeticStyleOutputLabel
           AnchorSideTop.Side = asrCenter
           Left = 210
           Height = 13
@@ -577,10 +582,10 @@ object OptionsForm: TOptionsForm
           Layout = tlCenter
           ParentColor = False
         end
-        object GeodeticUnitsComboBox1: TComboBox
-          AnchorSideLeft.Control = GeodeticUnitsLabel1
+        object GeodeticUnitsOutputComboBox: TComboBox
+          AnchorSideLeft.Control = GeodeticUnitsOutputLabel
           AnchorSideLeft.Side = asrBottom
-          AnchorSideTop.Control = GeodeticStyleComboBox1
+          AnchorSideTop.Control = GeodeticStyleOutputComboBox
           AnchorSideTop.Side = asrCenter
           Left = 243
           Height = 21
@@ -595,13 +600,13 @@ object OptionsForm: TOptionsForm
             'None'
           )
           Style = csDropDownList
-          TabOrder = 2
+          TabOrder = 1
           Text = 'Symbols'
         end
-        object QuadrantsLabel1: TLabel
-          AnchorSideLeft.Control = GeodeticUnitsComboBox1
+        object QuadrantsOutputLabel: TLabel
+          AnchorSideLeft.Control = GeodeticUnitsOutputComboBox
           AnchorSideLeft.Side = asrBottom
-          AnchorSideTop.Control = GeodeticStyleComboBox1
+          AnchorSideTop.Control = GeodeticStyleOutputComboBox
           AnchorSideTop.Side = asrCenter
           Left = 332
           Height = 13
@@ -613,10 +618,10 @@ object OptionsForm: TOptionsForm
           Layout = tlCenter
           ParentColor = False
         end
-        object QuadrantsComboBox1: TComboBox
-          AnchorSideLeft.Control = QuadrantsLabel1
+        object QuadrantsOutputComboBox: TComboBox
+          AnchorSideLeft.Control = QuadrantsOutputLabel
           AnchorSideLeft.Side = asrBottom
-          AnchorSideTop.Control = GeodeticStyleComboBox1
+          AnchorSideTop.Control = GeodeticStyleOutputComboBox
           AnchorSideTop.Side = asrCenter
           Left = 392
           Height = 21
@@ -631,12 +636,12 @@ object OptionsForm: TOptionsForm
             'None'
           )
           Style = csDropDownList
-          TabOrder = 3
+          TabOrder = 2
           Text = 'Signs'
         end
-        object GeodeticPlacesLabel1: TLabel
-          AnchorSideLeft.Control = GeodeticDisplayGroupBox1
-          AnchorSideTop.Control = GeodeticPlacesEdit1
+        object GeodeticPlacesOutputLabel: TLabel
+          AnchorSideLeft.Control = GeodeticOutputGroupBox
+          AnchorSideTop.Control = GeodeticPlacesOutputEdit
           AnchorSideTop.Side = asrCenter
           Left = 5
           Height = 13
@@ -647,22 +652,22 @@ object OptionsForm: TOptionsForm
           Layout = tlCenter
           ParentColor = False
         end
-        object GeodeticPlacesEdit1: TEdit
-          AnchorSideLeft.Control = GeodeticPlacesLabel1
+        object GeodeticPlacesOutputEdit: TEdit
+          AnchorSideLeft.Control = GeodeticPlacesOutputLabel
           AnchorSideLeft.Side = asrBottom
-          AnchorSideTop.Control = GeodeticStyleComboBox1
+          AnchorSideTop.Control = GeodeticStyleOutputComboBox
           AnchorSideTop.Side = asrBottom
           Left = 83
           Height = 21
           Top = 31
           Width = 40
-          TabOrder = 1
+          TabOrder = 3
           Text = '3'
         end
-        object WhitespaceCheckBox1: TCheckBox
-          AnchorSideLeft.Control = GeodeticPlacesEdit1
+        object WhitespaceOutputCheckBox: TCheckBox
+          AnchorSideLeft.Control = GeodeticPlacesOutputEdit
           AnchorSideLeft.Side = asrBottom
-          AnchorSideTop.Control = GeodeticPlacesLabel1
+          AnchorSideTop.Control = GeodeticPlacesOutputLabel
           AnchorSideTop.Side = asrCenter
           Left = 133
           Height = 17
@@ -675,10 +680,10 @@ object OptionsForm: TOptionsForm
           State = cbChecked
           TabOrder = 4
         end
-        object LongitudeCheckBox1: TCheckBox
-          AnchorSideLeft.Control = WhitespaceCheckBox1
+        object LongitudeOutputCheckBox: TCheckBox
+          AnchorSideLeft.Control = WhitespaceOutputCheckBox
           AnchorSideLeft.Side = asrBottom
-          AnchorSideTop.Control = WhitespaceCheckBox1
+          AnchorSideTop.Control = WhitespaceOutputCheckBox
           AnchorSideTop.Side = asrCenter
           Left = 239
           Height = 17
@@ -690,7 +695,7 @@ object OptionsForm: TOptionsForm
           TabOrder = 5
         end
       end
-      object ProjectedDisplayGroupBox1: TGroupBox
+      object ProjectedOutputGroupBox: TGroupBox
         Left = 5
         Height = 49
         Top = 83
@@ -702,9 +707,10 @@ object OptionsForm: TOptionsForm
         ClientHeight = 31
         ClientWidth = 698
         TabOrder = 1
-        object ProjectedStyleLabel1: TLabel
-          AnchorSideLeft.Control = ProjectedDisplayGroupBox1
-          AnchorSideTop.Control = ProjectedStyleComboBox1
+        OnResize = ProjectedOutputGroupBoxResize
+        object ProjectedStyleOutputLabel: TLabel
+          AnchorSideLeft.Control = ProjectedOutputGroupBox
+          AnchorSideTop.Control = ProjectedStyleOutputComboBox
           AnchorSideTop.Side = asrCenter
           Left = 5
           Height = 13
@@ -715,10 +721,10 @@ object OptionsForm: TOptionsForm
           Layout = tlCenter
           ParentColor = False
         end
-        object ProjectedStyleComboBox1: TComboBox
-          AnchorSideLeft.Control = ProjectedStyleLabel1
+        object ProjectedStyleOutputComboBox: TComboBox
+          AnchorSideLeft.Control = ProjectedStyleOutputLabel
           AnchorSideLeft.Side = asrBottom
-          AnchorSideTop.Control = ProjectedDisplayGroupBox1
+          AnchorSideTop.Control = ProjectedOutputGroupBox
           Left = 38
           Height = 21
           Top = 5
@@ -732,13 +738,13 @@ object OptionsForm: TOptionsForm
             'Axis Suffix Letter'
           )
           Style = csDropDownList
-          TabOrder = 1
+          TabOrder = 0
           Text = 'Value Only'
         end
-        object ProjectedPlacesLabel1: TLabel
-          AnchorSideLeft.Control = ProjectedStyleComboBox1
+        object ProjectedPlacesOutputLabel: TLabel
+          AnchorSideLeft.Control = ProjectedStyleOutputComboBox
           AnchorSideLeft.Side = asrBottom
-          AnchorSideTop.Control = ProjectedStyleComboBox1
+          AnchorSideTop.Control = ProjectedStyleOutputComboBox
           AnchorSideTop.Side = asrCenter
           Left = 184
           Height = 13
@@ -750,20 +756,20 @@ object OptionsForm: TOptionsForm
           Layout = tlCenter
           ParentColor = False
         end
-        object ProjectedPlacesEdit1: TEdit
-          AnchorSideLeft.Control = ProjectedPlacesLabel1
+        object ProjectedPlacesOutputEdit: TEdit
+          AnchorSideLeft.Control = ProjectedPlacesOutputLabel
           AnchorSideLeft.Side = asrBottom
-          AnchorSideTop.Control = ProjectedStyleComboBox1
+          AnchorSideTop.Control = ProjectedStyleOutputComboBox
           AnchorSideTop.Side = asrCenter
           Left = 262
           Height = 21
           Top = 5
           Width = 40
-          TabOrder = 0
+          TabOrder = 1
           Text = '2'
         end
       end
-      object CartesianDisplayGroupBox1: TGroupBox
+      object CartesianOutputGroupBox: TGroupBox
         Left = 5
         Height = 49
         Top = 137
@@ -775,9 +781,10 @@ object OptionsForm: TOptionsForm
         ClientHeight = 31
         ClientWidth = 698
         TabOrder = 2
-        object CartesianStyleLabel1: TLabel
-          AnchorSideLeft.Control = CartesianDisplayGroupBox1
-          AnchorSideTop.Control = CartesianStyleComboBox1
+        OnResize = CartesianOutputGroupBoxResize
+        object CartesianStyleOutputLabel: TLabel
+          AnchorSideLeft.Control = CartesianOutputGroupBox
+          AnchorSideTop.Control = CartesianStyleOutputComboBox
           AnchorSideTop.Side = asrCenter
           Left = 5
           Height = 13
@@ -788,10 +795,10 @@ object OptionsForm: TOptionsForm
           Layout = tlCenter
           ParentColor = False
         end
-        object CartesianStyleComboBox1: TComboBox
-          AnchorSideLeft.Control = CartesianStyleLabel1
+        object CartesianStyleOutputComboBox: TComboBox
+          AnchorSideLeft.Control = CartesianStyleOutputLabel
           AnchorSideLeft.Side = asrBottom
-          AnchorSideTop.Control = CartesianDisplayGroupBox1
+          AnchorSideTop.Control = CartesianOutputGroupBox
           Left = 38
           Height = 21
           Top = 5
@@ -805,13 +812,13 @@ object OptionsForm: TOptionsForm
             'Axis Suffix Letter'
           )
           Style = csDropDownList
-          TabOrder = 1
+          TabOrder = 0
           Text = 'Value Only'
         end
-        object CartesianPlacesLabel1: TLabel
-          AnchorSideLeft.Control = CartesianStyleComboBox1
+        object CartesianPlacesOutputLabel: TLabel
+          AnchorSideLeft.Control = CartesianStyleOutputComboBox
           AnchorSideLeft.Side = asrBottom
-          AnchorSideTop.Control = CartesianStyleComboBox1
+          AnchorSideTop.Control = CartesianStyleOutputComboBox
           AnchorSideTop.Side = asrCenter
           Left = 184
           Height = 13
@@ -823,21 +830,21 @@ object OptionsForm: TOptionsForm
           Layout = tlCenter
           ParentColor = False
         end
-        object CartesianPlacesEdit1: TEdit
-          AnchorSideLeft.Control = CartesianPlacesLabel1
+        object CartesianPlacesOutputEdit: TEdit
+          AnchorSideLeft.Control = CartesianPlacesOutputLabel
           AnchorSideLeft.Side = asrBottom
-          AnchorSideTop.Control = CartesianStyleComboBox1
+          AnchorSideTop.Control = CartesianStyleOutputComboBox
           AnchorSideTop.Side = asrCenter
           Left = 262
           Height = 21
           Top = 5
           Width = 40
           BorderSpacing.Around = 5
-          TabOrder = 0
+          TabOrder = 1
           Text = '2'
         end
       end
-      object HeightDisplayGroupBox1: TGroupBox
+      object HeightOutputGroupBox: TGroupBox
         Left = 5
         Height = 49
         Top = 191
@@ -849,9 +856,10 @@ object OptionsForm: TOptionsForm
         ClientHeight = 31
         ClientWidth = 698
         TabOrder = 3
-        object HeightStyleLabel1: TLabel
-          AnchorSideLeft.Control = HeightDisplayGroupBox1
-          AnchorSideTop.Control = HeightStyleComboBox1
+        OnResize = HeightOutputGroupBoxResize
+        object HeightStyleOutputLabel: TLabel
+          AnchorSideLeft.Control = HeightOutputGroupBox
+          AnchorSideTop.Control = HeightStyleOutputComboBox
           AnchorSideTop.Side = asrCenter
           Left = 5
           Height = 13
@@ -862,10 +870,10 @@ object OptionsForm: TOptionsForm
           Layout = tlCenter
           ParentColor = False
         end
-        object HeightStyleComboBox1: TComboBox
-          AnchorSideLeft.Control = HeightStyleLabel1
+        object HeightStyleOutputComboBox: TComboBox
+          AnchorSideLeft.Control = HeightStyleOutputLabel
           AnchorSideLeft.Side = asrBottom
-          AnchorSideTop.Control = HeightDisplayGroupBox1
+          AnchorSideTop.Control = HeightOutputGroupBox
           Left = 38
           Height = 21
           Top = 5
@@ -878,13 +886,13 @@ object OptionsForm: TOptionsForm
             'Value and Units'
           )
           Style = csDropDownList
-          TabOrder = 1
+          TabOrder = 0
           Text = 'Value Only'
         end
-        object HeightPlacesLabel1: TLabel
-          AnchorSideLeft.Control = HeightStyleComboBox1
+        object HeightPlacesOutputLabel: TLabel
+          AnchorSideLeft.Control = HeightStyleOutputComboBox
           AnchorSideLeft.Side = asrBottom
-          AnchorSideTop.Control = HeightStyleComboBox1
+          AnchorSideTop.Control = HeightStyleOutputComboBox
           AnchorSideTop.Side = asrCenter
           Left = 184
           Height = 13
@@ -896,23 +904,23 @@ object OptionsForm: TOptionsForm
           Layout = tlCenter
           ParentColor = False
         end
-        object HeightPlacesEdit1: TEdit
-          AnchorSideLeft.Control = HeightPlacesLabel1
+        object HeightPlacesOutputEdit: TEdit
+          AnchorSideLeft.Control = HeightPlacesOutputLabel
           AnchorSideLeft.Side = asrBottom
-          AnchorSideTop.Control = HeightStyleComboBox1
+          AnchorSideTop.Control = HeightStyleOutputComboBox
           AnchorSideTop.Side = asrCenter
           Left = 262
           Height = 21
           Top = 5
           Width = 40
           BorderSpacing.Around = 5
-          TabOrder = 0
+          TabOrder = 1
           Text = '2'
         end
-        object DatumSuffixCheckBox1: TCheckBox
-          AnchorSideLeft.Control = HeightPlacesEdit1
+        object DatumSuffixOutputCheckBox: TCheckBox
+          AnchorSideLeft.Control = HeightPlacesOutputEdit
           AnchorSideLeft.Side = asrBottom
-          AnchorSideTop.Control = HeightStyleComboBox1
+          AnchorSideTop.Control = HeightStyleOutputComboBox
           AnchorSideTop.Side = asrCenter
           Left = 312
           Height = 17
@@ -928,13 +936,13 @@ object OptionsForm: TOptionsForm
   end
   object BottomPanel: TPanel
     Left = 0
-    Height = 84
+    Height = 51
     Top = 339
     Width = 720
     Align = alClient
     AutoSize = True
     BevelOuter = bvNone
-    ClientHeight = 84
+    ClientHeight = 51
     ClientWidth = 720
     TabOrder = 2
     object OKButton: TButton

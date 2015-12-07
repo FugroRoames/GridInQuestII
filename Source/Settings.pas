@@ -23,7 +23,7 @@ Interface
 
 Uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs,
-  StdCtrls, ExtCtrls, DataStreams, Geodesy;
+  StdCtrls, ExtCtrls, CtrlUtils, DataStreams, Geodesy;
 
 Type
   TSettingsForm = Class(TForm)
@@ -108,9 +108,6 @@ Implementation
 
 Uses
   Main;
-
-Const
-  ComboButtonWidth = 40;
 
 Function ShowSettingsForm(NewData: TDataStream): Boolean;
 Begin
@@ -398,9 +395,8 @@ End;
 
 Procedure TSettingsForm.InputFileGroupBoxResize(Sender: TObject);
 Begin
-  { Widths to match the maximum size needed for the ComboBoxes. }
-  FileFormatComboBox.Width := ComboButtonWidth+FileFormatComboBox.Canvas.TextWidth('Character Delimited Text');
-  ColumnDelimiterComboBox.Width := ComboButtonWidth+ColumnDelimiterComboBox.Canvas.TextWidth('Double Quote');
+  CheckComboBoxWidth(FileFormatComboBox);
+  CheckComboBoxWidth(ColumnDelimiterComboBox);
 End;
 
 Procedure TSettingsForm.StartRowEditEditingDone(Sender: TObject);

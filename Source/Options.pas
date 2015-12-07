@@ -23,54 +23,51 @@ Interface
 
 Uses
   Classes, SysUtils, FileInfo, FileUtil, LCLVersion, {$IFDEF Windows}Windows, {$ENDIF}
-  Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls, ComCtrls, //LMessages,
+  Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls, ComCtrls, CtrlUtils,
   Config, OSTab, Geodesy, IG, ITM;
 
 Type
-
-  { TOptionsForm }
-
   TOptionsForm = Class(TForm)
     BottomPanel: TPanel;
     CancelButton: TButton;
     CartesianDisplayGroupBox: TGroupBox;
-    CartesianDisplayGroupBox1: TGroupBox;
+    CartesianOutputGroupBox: TGroupBox;
     CartesianPlacesEdit: TEdit;
-    CartesianPlacesEdit1: TEdit;
+    CartesianPlacesOutputEdit: TEdit;
     CartesianPlacesLabel: TLabel;
-    CartesianPlacesLabel1: TLabel;
+    CartesianPlacesOutputLabel: TLabel;
     CartesianStyleComboBox: TComboBox;
-    CartesianStyleComboBox1: TComboBox;
+    CartesianStyleOutputComboBox: TComboBox;
     CartesianStyleLabel: TLabel;
-    CartesianStyleLabel1: TLabel;
+    CartesianStyleOutputLabel: TLabel;
     DatumSuffixCheckBox: TCheckBox;
-    DatumSuffixCheckBox1: TCheckBox;
+    DatumSuffixOutputCheckBox: TCheckBox;
     GeodeticDisplayGroupBox: TGroupBox;
-    GeodeticDisplayGroupBox1: TGroupBox;
+    GeodeticOutputGroupBox: TGroupBox;
     GeodeticPlacesEdit: TEdit;
-    GeodeticPlacesEdit1: TEdit;
+    GeodeticPlacesOutputEdit: TEdit;
     GeodeticPlacesLabel: TLabel;
-    GeodeticPlacesLabel1: TLabel;
+    GeodeticPlacesOutputLabel: TLabel;
     GeodeticStyleComboBox: TComboBox;
-    GeodeticStyleComboBox1: TComboBox;
+    GeodeticStyleOutputComboBox: TComboBox;
     GeodeticStyleLabel: TLabel;
-    GeodeticStyleLabel1: TLabel;
+    GeodeticStyleOutputLabel: TLabel;
     GeodeticUnitsComboBox: TComboBox;
-    GeodeticUnitsComboBox1: TComboBox;
+    GeodeticUnitsOutputComboBox: TComboBox;
     GeodeticUnitsLabel: TLabel;
-    GeodeticUnitsLabel1: TLabel;
+    GeodeticUnitsOutputLabel: TLabel;
     HeightDisplayGroupBox: TGroupBox;
-    HeightDisplayGroupBox1: TGroupBox;
+    HeightOutputGroupBox: TGroupBox;
     HeightPlacesEdit: TEdit;
-    HeightPlacesEdit1: TEdit;
+    HeightPlacesOutputEdit: TEdit;
     HeightPlacesLabel: TLabel;
-    HeightPlacesLabel1: TLabel;
+    HeightPlacesOutputLabel: TLabel;
     HeightStyleComboBox: TComboBox;
-    HeightStyleComboBox1: TComboBox;
+    HeightStyleOutputComboBox: TComboBox;
     HeightStyleLabel: TLabel;
-    HeightStyleLabel1: TLabel;
+    HeightStyleOutputLabel: TLabel;
     LongitudeCheckBox: TCheckBox;
-    LongitudeCheckBox1: TCheckBox;
+    LongitudeOutputCheckBox: TCheckBox;
     OKButton: TButton;
     OptionsPageControl: TPageControl;
     IrishSettingsGroupBox: TGroupBox;
@@ -79,31 +76,35 @@ Type
     IGDatumLabel: TLabel;
     ITMDatumLabel: TLabel;
     ProjectedDisplayGroupBox: TGroupBox;
-    ProjectedDisplayGroupBox1: TGroupBox;
+    ProjectedOutputGroupBox: TGroupBox;
     ProjectedPlacesEdit: TEdit;
-    ProjectedPlacesEdit1: TEdit;
+    ProjectedPlacesOutputEdit: TEdit;
     ProjectedPlacesLabel: TLabel;
-    ProjectedPlacesLabel1: TLabel;
+    ProjectedPlacesOutputLabel: TLabel;
     ProjectedStyleComboBox: TComboBox;
-    ProjectedStyleComboBox1: TComboBox;
+    ProjectedStyleOutputComboBox: TComboBox;
     ProjectedStyleLabel: TLabel;
-    ProjectedStyleLabel1: TLabel;
+    ProjectedStyleOutputLabel: TLabel;
     QuadrantsComboBox: TComboBox;
-    QuadrantsComboBox1: TComboBox;
+    QuadrantsOutputComboBox: TComboBox;
     QuadrantsLabel: TLabel;
-    QuadrantsLabel1: TLabel;
-    TabSheet1: TTabSheet;
-    TabSheet2: TTabSheet;
+    QuadrantsOutputLabel: TLabel;
+    InteractiveTabSheet: TTabSheet;
+    OutputTabSheet: TTabSheet;
     WhitespaceCheckBox: TCheckBox;
-    WhitespaceCheckBox1: TCheckBox;
+    WhitespaceOutputCheckBox: TCheckBox;
+    Procedure CartesianDisplayGroupBoxResize(Sender: TObject);
+    Procedure CartesianOutputGroupBoxResize(Sender: TObject);
     Procedure FormShow(Sender: TObject);
+    Procedure GeodeticOutputGroupBoxResize(Sender: TObject);
+    Procedure HeightDisplayGroupBoxResize(Sender: TObject);
+    Procedure HeightOutputGroupBoxResize(Sender: TObject);
+    Procedure OptionsPageControlResize(Sender: TObject);
+    Procedure GeodeticDisplayGroupBoxResize(Sender: TObject);
     Procedure IrishSettingsGroupBoxResize(Sender: TObject);
     Procedure OKButtonClick(Sender: TObject);
-    procedure OptionsPageControlResize(Sender: TObject);
-  Private
-    { private declarations }
-  Public
-    { public declarations }
+    Procedure ProjectedDisplayGroupBoxResize(Sender: TObject);
+    Procedure ProjectedOutputGroupBoxResize(Sender: TObject);
   End;
 
 Procedure ShowOptionsForm();
@@ -111,9 +112,6 @@ Procedure ShowOptionsForm();
 Implementation
 
 {$R *.lfm}
-
-Const
-  ComboButtonWidth = 40;
 
 Procedure ShowOptionsForm();
 Begin
@@ -136,11 +134,62 @@ Begin
     ITMDatumComboBox.Text := 'Belfast';
 End;
 
+Procedure TOptionsForm.OptionsPageControlResize(Sender: TObject);
+Begin
+  OptionsPageControl.ClientHeight := GeodeticDisplayGroupBox.Height+
+                                     ProjectedDisplayGroupBox.Height+
+                                     CartesianDisplayGroupBox.Height+
+                                     HeightDisplayGroupBox.Height+25;
+End;
+
+Procedure TOptionsForm.GeodeticDisplayGroupBoxResize(Sender: TObject);
+Begin
+  CheckComboBoxWidth(GeodeticStyleComboBox);
+  CheckComboBoxWidth(GeodeticUnitsComboBox);
+  CheckComboBoxWidth(QuadrantsComboBox);
+End;
+
+Procedure TOptionsForm.ProjectedDisplayGroupBoxResize(Sender: TObject);
+Begin
+  CheckComboBoxWidth(ProjectedStyleComboBox);
+End;
+
+Procedure TOptionsForm.CartesianDisplayGroupBoxResize(Sender: TObject);
+Begin
+  CheckComboBoxWidth(CartesianStyleComboBox);
+End;
+
+Procedure TOptionsForm.HeightDisplayGroupBoxResize(Sender: TObject);
+Begin
+  CheckComboBoxWidth(HeightStyleComboBox);
+End;
+
+Procedure TOptionsForm.GeodeticOutputGroupBoxResize(Sender: TObject);
+Begin
+  CheckComboBoxWidth(GeodeticStyleOutputComboBox);
+  CheckComboBoxWidth(GeodeticUnitsOutputComboBox);
+  CheckComboBoxWidth(QuadrantsOutputComboBox);
+End;
+
+Procedure TOptionsForm.ProjectedOutputGroupBoxResize(Sender: TObject);
+Begin
+  CheckComboBoxWidth(ProjectedStyleOutputComboBox);
+End;
+
+Procedure TOptionsForm.CartesianOutputGroupBoxResize(Sender: TObject);
+Begin
+  CheckComboBoxWidth(CartesianStyleOutputComboBox);
+End;
+
+Procedure TOptionsForm.HeightOutputGroupBoxResize(Sender: TObject);
+Begin
+  CheckComboBoxWidth(HeightStyleOutputComboBox);
+End;
+
 Procedure TOptionsForm.IrishSettingsGroupBoxResize(Sender: TObject);
 Begin
-  { Set the widths to match the maximum needed for the ComboBoxes. }
-  IGDatumComboBox.Width := ComboButtonWidth+IGDatumComboBox.Canvas.TextWidth('Malin Head');
-  ITMDatumComboBox.Width := ComboButtonWidth+ITMDatumComboBox.Canvas.TextWidth('Malin Head');
+  CheckComboBoxWidth(IGDatumComboBox);
+  CheckComboBoxWidth(ITMDatumComboBox);
 End;
 
 Procedure TOptionsForm.OKButtonClick(Sender: TObject);
@@ -158,14 +207,6 @@ Begin
     ITMCoordinateSystem.PreferredVerticalDatum := vdMalinHead;
   End;
   WriteConfigOptions;
-End;
-
-Procedure TOptionsForm.OptionsPageControlResize(Sender: TObject);
-Begin
-  OptionsPageControl.ClientHeight := GeodeticDisplayGroupBox.Height+
-                                     ProjectedDisplayGroupBox.Height+
-                                     CartesianDisplayGroupBox.Height+
-                                     HeightDisplayGroupBox.Height+25;
 End;
 
 End.
