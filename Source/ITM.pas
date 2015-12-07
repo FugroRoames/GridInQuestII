@@ -178,6 +178,7 @@ End;
 
 Function TTransformationData.AdjustHeight(Var OutputCoordinates: TCoordinates; Var OutputDatum: TVerticalDatumCode; Const AdjustDirection: TAdjustDirection): Boolean;
 Begin
+  Result := False;
   If NIValid Then
     Begin
       { If both data tables are valid. }
