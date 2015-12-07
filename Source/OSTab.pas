@@ -31,6 +31,8 @@ Type
   TOSHorizontalModel = (hmTN02, hmTH15);
   TOSVerticalModel = (vmGM02, vmGM15);
 
+//  NON, ODN, MAR, DOU, STO, KIL, LER, NEW, FAI, FLA, NRO, SSK, FOU, MAL, BEL, OFS
+
 //Type
 //  TVerticalDatumCode = (vdNone, vdOrdnanceDatumNewlyn, vdStMarys, vdDouglas02,
 //                        vdStornoway, vdStKilda, vdLerwick, vdNewlyn, vdFairIsle,
