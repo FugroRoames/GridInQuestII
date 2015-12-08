@@ -131,7 +131,6 @@
       <Unit14>
         <Filename Value="Config.pas"/>
         <IsPartOfProject Value="True"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="3"/>
         <TopLine Value="179"/>
         <CursorPos X="22" Y="191"/>
@@ -222,8 +221,10 @@
       </Unit25>
       <Unit26>
         <Filename Value="GeodUtils.pas"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="15"/>
-        <CursorPos Y="29"/>
+        <TopLine Value="152"/>
+        <CursorPos X="26" Y="167"/>
         <UsageCount Value="100"/>
         <Loaded Value="True"/>
       </Unit26>

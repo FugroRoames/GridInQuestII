@@ -164,7 +164,7 @@ Begin
                Not ((TextLength>1) And ((Text[TextLength-1]='S') Or
                                         (Text[TextLength-1]=' '))) Then
               Begin
-                Sign := 1;
+                Sign := -1;
                 HasSuffix := False;
               End;
           { If exists, then remove the suffix and any whitespace. }
