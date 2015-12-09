@@ -29,54 +29,110 @@ Uses
   Classes, SysUtils, StrUtils, Math, Geometry, Geodesy, GeomUtils;
 
 Type
-  TSexagesimalOption = (soPlusMinusPrefix, soNorthSouthPrefix, soEastWestPrefix, soNorthSouthSuffix, soEastWestSuffix);
+  TTypedOption = (toSignPrefix, toLetterPrefix, toLetterSuffix, toSexagseimalLetters, toSexagseimalSymbols, toCompactWhitespace, toPositiveLongitude);
+  TTypedOptions = Set Of TTypedOption;
 
-Const
-  SexigesimalDelims = [#0..' '];
-  SexagesimalFormat = '%.0F %.0F %.4F ';
-  LongSexagesimalFormat = '%.0F° %.0F'' %.4F" ';
-  CompactSexagesimalFormat = '%.0FD%.0FM%.3FS';
-
-Function FormatCoordinate(Const Coordinate: TSexagesimalCoordinate; Option: TSexagesimalOption = soPlusMinusPrefix; FormatPattern: String = SexagesimalFormat): String; Overload;
-Function TryGeodeticTextToCoordinate(Text: String; Var Value: TCoordinate; AxisType: TAxisType; UnitSuffix: String = 'm'): Boolean;
-Function TryGeocentricTextToCoordinate(Text: String; Var Value: TCoordinate; AxisType: TAxisType; UnitSuffix: String = 'm'): Boolean;
-Function TryCartesianTextToCoordinate(Text: String; Var Value: TCoordinate; AxisType: TAxisType; UnitSuffix: String = 'm'): Boolean;
+Function FormatTypedCoordinate(Const Coordinate: TCoordinate; CoordinateType: TCoordinateType; AxisType: TAxisType; DecimalPlaces: Integer = -1; Options: TTypedOptions = []): String;
+Function FormatTypedCoordinates(Const Coordinates: TCoordinates; CoordinateType: TCoordinateType; AxisOrder: TAxisOrder; DecimalPlaces: Integer = -1; Options: TTypedOptions = []; Const Spacer: String = ' '): String;
+Function TryGeodeticTextToCoordinate(Text: String; Var Coordinate: TCoordinate; AxisType: TAxisType; UnitSuffix: String = 'm'): Boolean;
+Function TryGeocentricTextToCoordinate(Text: String; Var Coordinate: TCoordinate; AxisType: TAxisType; UnitSuffix: String = 'm'): Boolean;
+Function TryCartesianTextToCoordinate(Text: String; Var Coordinate: TCoordinate; AxisType: TAxisType; UnitSuffix: String = 'm'): Boolean;
 
 Implementation
 
-Function FormatCoordinate(Const Coordinate: TSexagesimalCoordinate; Option: TSexagesimalOption = soPlusMinusPrefix; FormatPattern: String = SexagesimalFormat): String;
+Const
+  SexigesimalDelims = [#0..' '];
+  SexagesimalFormat = '%.0F %.0F %.*F ';
+  LongSexagesimalFormat = '%.0F° %.0F'' %.*F" ';
+  CompactSexagesimalFormat = '%.0FD%.0FM%.*FS';
+
+Function FormatTypedCoordinate(Const Coordinate: TCoordinate; CoordinateType: TCoordinateType; AxisType: TAxisType; DecimalPlaces: Integer; Options: TTypedOptions = []): String;
+Const
+  UnitText = '';
+Var
+  AdjustedCoordinate: TCoordinate;
+  Function FormatAdjustedCoordinate: String;
+  Begin
+    With DecimalToSexagesimalCoordinate(AdjustedCoordinate) Do
+      Begin
+        Result := Format(LongSexagesimalFormat, [Degrees, Minutes, DecimalPlaces, Seconds]);
+        If toSignPrefix In Options Then
+          Begin
+            If Sign=1 Then
+              Result := '+'+Result
+            Else
+              Result := '-'+Result;
+          End
+        Else If toLetterSuffix In Options Then
+          Begin
+            If AxisType=atXAxis Then
+              If Sign=1 Then
+                Result := Result+'E'
+              Else
+                Result := Result+'W';
+            If AxisType=atYAxis Then
+              If Sign=1 Then
+                Result := Result+'N'
+              Else
+                Result := Result+'S';
+          End
+        Else
+          Begin
+            If Sign=-1 Then
+              Result := '-'+Result;
+          End;
+      End;
+  End;
+
 Begin
-  With Coordinate Do
-    Case Option Of
-    soPlusMinusPrefix:
-      If Sign=1 Then
-        Result := '+'+Format(FormatPattern, [Degrees, Minutes, Seconds])
-      Else
-        Result := '-'+Format(FormatPattern, [Degrees, Minutes, Seconds]);
-    soNorthSouthPrefix:
-      If Sign=1 Then
-        Result := 'N'+Format(FormatPattern, [Degrees, Minutes, Seconds])
-      Else
-        Result := 'S'+Format(FormatPattern, [Degrees, Minutes, Seconds]);
-    soEastWestPrefix:
-      If Sign=1 Then
-        Result := 'E'+Format(FormatPattern, [Degrees, Minutes, Seconds])
-      Else
-        Result := 'W'+Format(FormatPattern, [Degrees, Minutes, Seconds]);
-    soNorthSouthSuffix:
-      If Sign=1 Then
-        Result := Format(FormatPattern, [Degrees, Minutes, Seconds])+'N'
-      Else
-        Result := Format(FormatPattern, [Degrees, Minutes, Seconds])+'S';
-    soEastWestSuffix:
-      If Sign=1 Then
-        Result := Format(FormatPattern, [Degrees, Minutes, Seconds])+'E'
-      Else
-        Result := Format(FormatPattern, [Degrees, Minutes, Seconds])+'W';
+  Case CoordinateType Of
+  ctGeodetic:
+    Case AxisType Of
+    atXAxis:
+      Begin
+        AdjustedCoordinate := Coordinate;
+        If toPositiveLongitude In Options Then
+          If Coordinate<0 Then
+            AdjustedCoordinate := 360+Coordinate;
+        Result := FormatAdjustedCoordinate;
+      End;
+    atYAxis:
+      Begin
+        AdjustedCoordinate := Coordinate;
+        Result := FormatAdjustedCoordinate;
+      End;
+    atZAxis: Result := FormatCoordinateWithUnits(Coordinate, UnitText, DecimalPlaces, True);
     End;
+  ctProjected:
+    Case AxisType Of
+    atXAxis: Result := FormatCoordinate(Coordinate, DecimalPlaces, True);//+' E';
+    atYAxis: Result := FormatCoordinate(Coordinate, DecimalPlaces, True);//+' N';
+    atZAxis: Result := FormatCoordinateWithUnits(Coordinate, UnitText, DecimalPlaces);
+    End;
+  ctCartesian:
+    Case AxisType Of
+    atXAxis: Result := FormatCoordinateWithUnits(Coordinate, UnitText, DecimalPlaces);
+    atYAxis: Result := FormatCoordinateWithUnits(Coordinate, UnitText, DecimalPlaces);
+    atZAxis: Result := FormatCoordinateWithUnits(Coordinate, UnitText, DecimalPlaces);
+    End;
+  End;
 End;
 
-Function TryGeodeticTextToCoordinate(Text: String; Var Value: TCoordinate; AxisType: TAxisType; UnitSuffix: String = 'm'): Boolean;
+Function FormatTypedCoordinates(Const Coordinates: TCoordinates; CoordinateType: TCoordinateType; AxisOrder: TAxisOrder; DecimalPlaces: Integer; Options: TTypedOptions = []; Const Spacer: String = ' '): String;
+Begin
+  Case AxisOrder Of
+  aoXYZ:
+    Result := FormatTypedCoordinate(Coordinates.X, CoordinateType, atXAxis, DecimalPlaces, Options)+Spacer+
+              FormatTypedCoordinate(Coordinates.Y, CoordinateType, atYAxis, DecimalPlaces, Options)+Spacer+
+              FormatTypedCoordinate(Coordinates.Z, CoordinateType, atZAxis, DecimalPlaces, Options);
+  aoYXZ:
+    Result := FormatTypedCoordinate(Coordinates.Y, CoordinateType, atYAxis, DecimalPlaces, Options)+Spacer+
+              FormatTypedCoordinate(Coordinates.X, CoordinateType, atXAxis, DecimalPlaces, Options)+Spacer+
+              FormatTypedCoordinate(Coordinates.Z, CoordinateType, atZAxis, DecimalPlaces, Options);
+  End;
+End;
+
+Function TryGeodeticTextToCoordinate(Text: String; Var Coordinate: TCoordinate; AxisType: TAxisType; UnitSuffix: String = 'm'): Boolean;
 Var
   Sign: Integer;
   TextLength: Integer;
@@ -132,7 +188,7 @@ Begin
       If Copy(Text, 1+TextLength-SuffixLength, SuffixLength)=UpperCase(UnitSuffix) Then
         SetLength(Text, TextLength-SuffixLength);
       { Atempt to convert the remainder to a valid value and quit. }
-      Result := TryStrToFloat(Text, Value);
+      Result := TryStrToFloat(Text, Coordinate);
       Exit;
     End;
   { Remove hemisphere or sign prefix, noting the sign value. }
@@ -223,10 +279,6 @@ Begin
           { Attempt to convert the degree part and quit if invalid. }
           If Not TryStrToFloat(PartText, DegreeValue) Then
             Exit;
-          { Quit if the degree value is not within the valid range. }
-          If (DegreeValue<0) Or ((DegreeValue>90) And (AxisType=atYAxis)) Or
-             ((DegreeValue>180) And (AxisType=atXAxis)) Then
-            Exit;
           { Quit if there is no valid degree suffix. }
           If HasSuffix And (Suffix<>'D') Then
               Exit;
@@ -258,17 +310,26 @@ Begin
       End;
     End;
   { Calculate the final return value. }
-  Value := DegreeValue+MinuteValue/60+SecondValue/3600;
-  { Perform a final combined value range check. }
-  If ((Value>90) And (AxisType=atYAxis)) Or ((Value>180) And (AxisType=atXAxis)) Then
-    Exit;
+  Coordinate := DegreeValue+MinuteValue/60+SecondValue/3600;
+  { Perform the final Y axis range check. }
+  If AxisType=atYAxis Then
+    If Coordinate>90 Then
+      Exit;
   { Re-introduce the direction sign value. }
-  Value := Sign*Value;
+  Coordinate := Sign*Coordinate;
+  { Perform the final X axis range check. }
+  If AxisType=atXAxis Then
+    Begin
+      If Coordinate<-180 Then
+        Exit;
+      If Coordinate>360 Then
+        Exit;
+    End;
   { Return the sucess. }
   Result := True;
 End;
 
-Function TryGeocentricTextToCoordinate(Text: String; Var Value: TCoordinate; AxisType: TAxisType; UnitSuffix: String): Boolean;
+Function TryGeocentricTextToCoordinate(Text: String; Var Coordinate: TCoordinate; AxisType: TAxisType; UnitSuffix: String): Boolean;
 Var
   SuffixLength: Integer;
   TextLength: Integer;
@@ -284,11 +345,11 @@ Begin
       If Copy(Text, 1+TextLength-SuffixLength, SuffixLength)=UpperCase(UnitSuffix) Then
         SetLength(Text, TextLength-SuffixLength);
       { Atempt to convert the remainder to a valid value. }
-      Result := TryStrToFloat(Text, Value);
+      Result := TryStrToFloat(Text, Coordinate);
     End;
 End;
 
-Function TryCartesianTextToCoordinate(Text: String; Var Value: TCoordinate; AxisType: TAxisType; UnitSuffix: String): Boolean;
+Function TryCartesianTextToCoordinate(Text: String; Var Coordinate: TCoordinate; AxisType: TAxisType; UnitSuffix: String): Boolean;
 Var
   SuffixLength: Integer;
   TextLength: Integer;
@@ -316,9 +377,9 @@ Begin
       If HasAxisSuffix Then
         SetLength(Text, TextLength-1);
       { Atempt to convert the remainder to a valid value. }
-      Result := TryStrToFloat(Trim(Text), Value);
+      Result := TryStrToFloat(Trim(Text), Coordinate);
       { Treat negative values for an X or Y axis as invalid. }
-      If Value<0 Then
+      If Coordinate<0 Then
         Result := (AxisType=atZAxis);
     End;
 End;

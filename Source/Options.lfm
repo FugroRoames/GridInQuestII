@@ -1,7 +1,7 @@
 object OptionsForm: TOptionsForm
-  Left = 564
+  Left = 710
   Height = 390
-  Top = 212
+  Top = 216
   Width = 720
   AutoSize = True
   BorderStyle = bsDialog
@@ -248,7 +248,7 @@ object OptionsForm: TOptionsForm
           TabOrder = 3
           Text = '3'
         end
-        object WhitespaceCheckBox: TCheckBox
+        object CompactCheckBox: TCheckBox
           AnchorSideLeft.Control = GeodeticPlacesEdit
           AnchorSideLeft.Side = asrBottom
           AnchorSideTop.Control = GeodeticPlacesLabel
@@ -256,20 +256,20 @@ object OptionsForm: TOptionsForm
           Left = 133
           Height = 17
           Top = 33
-          Width = 96
+          Width = 119
           BorderSpacing.Left = 5
           BorderSpacing.Around = 5
-          Caption = 'Add Whitespace'
+          Caption = 'Compact Whitespace'
           Checked = True
           State = cbChecked
           TabOrder = 4
         end
         object LongitudeCheckBox: TCheckBox
-          AnchorSideLeft.Control = WhitespaceCheckBox
+          AnchorSideLeft.Control = CompactCheckBox
           AnchorSideLeft.Side = asrBottom
-          AnchorSideTop.Control = WhitespaceCheckBox
+          AnchorSideTop.Control = CompactCheckBox
           AnchorSideTop.Side = asrCenter
-          Left = 239
+          Left = 262
           Height = 17
           Top = 33
           Width = 119
@@ -664,7 +664,7 @@ object OptionsForm: TOptionsForm
           TabOrder = 3
           Text = '3'
         end
-        object WhitespaceOutputCheckBox: TCheckBox
+        object CompactOutputCheckBox: TCheckBox
           AnchorSideLeft.Control = GeodeticPlacesOutputEdit
           AnchorSideLeft.Side = asrBottom
           AnchorSideTop.Control = GeodeticPlacesOutputLabel
@@ -672,20 +672,20 @@ object OptionsForm: TOptionsForm
           Left = 133
           Height = 17
           Top = 33
-          Width = 96
+          Width = 119
           BorderSpacing.Left = 5
           BorderSpacing.Around = 5
-          Caption = 'Add Whitespace'
+          Caption = 'Compact Whitespace'
           Checked = True
           State = cbChecked
           TabOrder = 4
         end
         object LongitudeOutputCheckBox: TCheckBox
-          AnchorSideLeft.Control = WhitespaceOutputCheckBox
+          AnchorSideLeft.Control = CompactOutputCheckBox
           AnchorSideLeft.Side = asrBottom
-          AnchorSideTop.Control = WhitespaceOutputCheckBox
+          AnchorSideTop.Control = CompactOutputCheckBox
           AnchorSideTop.Side = asrCenter
-          Left = 239
+          Left = 262
           Height = 17
           Top = 33
           Width = 119

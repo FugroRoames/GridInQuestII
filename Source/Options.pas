@@ -24,7 +24,7 @@ Interface
 Uses
   Classes, SysUtils, FileInfo, FileUtil, LCLVersion, {$IFDEF Windows}Windows, {$ENDIF}
   Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls, ComCtrls, CtrlUtils,
-  Config, OSTab, Geodesy, IG, ITM;
+  Config, OSTab, Geodesy, IG, ITM, GeodUtils;
 
 Type
   TOptionsForm = Class(TForm)
@@ -91,8 +91,8 @@ Type
     QuadrantsOutputLabel: TLabel;
     InteractiveTabSheet: TTabSheet;
     OutputTabSheet: TTabSheet;
-    WhitespaceCheckBox: TCheckBox;
-    WhitespaceOutputCheckBox: TCheckBox;
+    CompactCheckBox: TCheckBox;
+    CompactOutputCheckBox: TCheckBox;
     Procedure CartesianDisplayGroupBoxResize(Sender: TObject);
     Procedure CartesianOutputGroupBoxResize(Sender: TObject);
     Procedure FormShow(Sender: TObject);
@@ -123,15 +123,43 @@ Begin
 End;
 
 Procedure TOptionsForm.FormShow(Sender: TObject);
+  Function OptionsToText(Options: TTypedOptions): String;
+  Begin
+    If toSexagseimalSymbols In Options Then
+      Result := 'Symbols'
+    Else If toSexagseimalLetters In Options Then
+      Result := 'Letters'
+    Else
+      Result := 'None'
+  End;
+  Function DatumCodeToText(Code: TVerticalDatumCode): String;
+  Begin
+    Case Code Of
+    vdBelfast:
+      Result := 'Belfast';
+    vdMalinHead:
+      Result := 'Malin Head';
+    End;
+  End;
 Begin
-  If IGCoordinateSystem.PreferredVerticalDatum=vdMalinHead Then
-    IGDatumComboBox.Text := 'Malin Head'
-  Else
-    IGDatumComboBox.Text := 'Belfast';
-  If ITMCoordinateSystem.PreferredVerticalDatum=vdMalinHead Then
-    ITMDatumComboBox.Text := 'Malin Head'
-  Else
-    ITMDatumComboBox.Text := 'Belfast';
+  With InteractiveSettings Do
+    Begin
+      //GeodeticStyleComboBox.Text := (GeodeticStyle);
+      GeodeticUnitsComboBox.Text := OptionsToText(GeodeticUnits);
+      QuadrantsComboBox.Text := GeodeticQuadrants;
+      GeodeticPlacesEdit.Text := IntToStr(GeodeticDecimalPlaces);
+      CompactCheckBox.Checked := GeodeticCompactFormat;
+      LongitudeCheckBox.Checked := GeodeticPositiveLongitude;
+      //ProjectedStyleComboBox.Text := (ProjectedStyle);
+      ProjectedPlacesEdit.Text := IntToStr(ProjectedDecimalPlaces);
+      //CartesianStyleComboBox.Text := (CartesianStyle);
+      CartesianPlacesEdit.Text := IntToStr(CartesianDecimalPlaces);
+      //HeightStyleComboBox.Text := (HeightStyle);
+      HeightPlacesEdit.Text := IntToStr(HeightDecimalPlaces);
+      DatumSuffixCheckBox.Checked := HeightDatumSuffix;
+    End;
+  IGDatumComboBox.Text := DatumCodeToText(IGCoordinateSystem.PreferredVerticalDatum);
+  ITMDatumComboBox.Text := DatumCodeToText(ITMCoordinateSystem.PreferredVerticalDatum);
 End;
 
 Procedure TOptionsForm.OptionsPageControlResize(Sender: TObject);
@@ -193,19 +221,41 @@ Begin
 End;
 
 Procedure TOptionsForm.OKButtonClick(Sender: TObject);
+  Function TextToUnits(Text: String): TTypedOptions;
+  Begin
+    Case Text Of
+    'Symbols': Result := [toSexagseimalSymbols];
+    'Letters': Result := [toSexagseimalLetters];
+    Else
+      Result := [];
+    End;
+  End;
+  Function DatumTextToCode(Text: String): TVerticalDatumCode;
+  Begin
+    If SameText(IGDatumComboBox.Text, 'Belfast') Then
+      Result := vdBelfast
+    Else
+      Result := vdMalinHead;
+  End;
 Begin
-  Case IGDatumComboBox.Text Of
-  'Belfast':
-    IGCoordinateSystem.PreferredVerticalDatum := vdBelfast;
-  'Malin Head':
-    IGCoordinateSystem.PreferredVerticalDatum := vdMalinHead;
-  End;
-  Case ITMDatumComboBox.Text Of
-  'Belfast':
-    ITMCoordinateSystem.PreferredVerticalDatum := vdBelfast;
-  'Malin Head':
-    ITMCoordinateSystem.PreferredVerticalDatum := vdMalinHead;
-  End;
+  With InteractiveSettings Do
+    Begin
+      //GeodeticStyle := GetValue(GeodeticStyleComboBox.Text);
+      GeodeticUnits := TextToUnits(GeodeticUnitsComboBox.Text);
+      GeodeticQuadrants := QuadrantsComboBox.Text;
+      GeodeticDecimalPlaces := StrToIntDef(GeodeticPlacesEdit.Text, 2);
+      GeodeticCompactFormat := CompactCheckBox.Checked;
+      GeodeticPositiveLongitude := LongitudeCheckBox.Checked;
+      //ProjectedStyle := GetValue(ProjectedStyleComboBox.Text);
+      ProjectedDecimalPlaces := StrToIntDef(ProjectedPlacesEdit.Text, 2);
+      //CartesianStyle := GetValue(CartesianStyleComboBox.Text);
+      CartesianDecimalPlaces := StrToIntDef(CartesianPlacesEdit.Text, 2);
+      //HeightStyle := GetValue(HeightStyleComboBox.Text);
+      HeightDecimalPlaces := StrToIntDef(HeightPlacesEdit.Text, 2);
+      HeightDatumSuffix := DatumSuffixCheckBox.Checked;
+    End;
+  IGCoordinateSystem.PreferredVerticalDatum := DatumTextToCode(IGDatumComboBox.Text);
+  ITMCoordinateSystem.PreferredVerticalDatum := DatumTextToCode(ITMDatumComboBox.Text);
   WriteConfigOptions;
 End;
 

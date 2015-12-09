@@ -129,6 +129,7 @@ Type
     Procedure DoOutputChangeSystem(Sender: TObject);
     Procedure DoLoadProgress(Sender: TObject; Progress: Integer);
     Procedure DoParseProgress(Sender: TObject; Progress: Integer);
+    Procedure SetPanelFormattingOptions(DataPanel: TCoordinatesEntryPanel; Settings: TFormatSettings);
   Public
     { Public declarations. }
     GlobeSystemIndex: Integer;
@@ -238,6 +239,8 @@ End;
 Procedure TMainForm.OptionsActionExecute(Sender: TObject);
 Begin
   ShowOptionsForm;
+  SetPanelFormattingOptions(InputPanel, InteractiveSettings);
+  SetPanelFormattingOptions(OutputPanel, InteractiveSettings);
 End;
 
 Procedure TMainForm.DataDrawGridDrawCell(Sender: TObject; aCol, aRow: Integer; aRect: TRect; aState: TGridDrawState);
@@ -585,26 +588,40 @@ End;
 Function TMainForm.RecordOutputCoordinateText(RecordNumber, AxisIndex: Integer; AxisOrder: TAxisOrder; CoordinateType: TCoordinateType): String;
 Const
   UnitText = '';
+Var
+  AxisType: TAxisType;
+  DecimalPlaces: Integer;
+  Options: TTypedOptions;
 Begin
+  //toSignPrefix, toLetterPrefix, toLetterSuffix,  toCompactWhitespace
   Case CoordinateType Of
-  ctCartesian:
-    Case AxisTypeFromIndex(AxisIndex, AxisOrder) Of
-    atXAxis: Result := FormatCoordinateWithUnits(OutputCoordinates[RecordNumber].X, UnitText, 2);
-    atYAxis: Result := FormatCoordinateWithUnits(OutputCoordinates[RecordNumber].Y, UnitText, 2);
-    atZAxis: Result := FormatCoordinateWithUnits(OutputCoordinates[RecordNumber].Z, UnitText, 2);
-    End;
   ctGeodetic:
-    Case AxisTypeFromIndex(AxisIndex, AxisOrder) Of
-    atXAxis: Result := FormatCoordinate(DecimalToSexagesimalCoordinate(OutputCoordinates[RecordNumber].X));//, soEastWestSuffix);
-    atYAxis: Result := FormatCoordinate(DecimalToSexagesimalCoordinate(OutputCoordinates[RecordNumber].Y));//, soNorthSouthSuffix);
-    atZAxis: Result := FormatCoordinateWithUnits(OutputCoordinates[RecordNumber].Z, UnitText, 3);
+    Begin
+      DecimalPlaces := OutputSettings.GeodeticDecimalPlaces;
+      Options := [];
+      If OutputSettings.GeodeticPositiveLongitude Then
+        Options += [toPositiveLongitude];
+      If OutputSettings.GeodeticCompactFormat Then
+        Options += [toCompactWhitespace];
+      //toSignPrefix
+      //toSexagseimalLetters, toSexagseimalSymbols
     End;
   ctProjected:
-    Case AxisTypeFromIndex(AxisIndex, AxisOrder) Of
-    atXAxis: Result := FormatCoordinate(OutputCoordinates[RecordNumber].X, 3, True);//+' E';
-    atYAxis: Result := FormatCoordinate(OutputCoordinates[RecordNumber].Y, 3, True);//+' N';
-    atZAxis: Result := FormatCoordinateWithUnits(OutputCoordinates[RecordNumber].Z, UnitText, 3);
+    Begin
+      DecimalPlaces := OutputSettings.GeodeticDecimalPlaces;
+      Options := [];
     End;
+  ctCartesian:
+    Begin
+      DecimalPlaces := OutputSettings.CartesianDecimalPlaces;
+      Options := [];
+    End;
+  End;
+  AxisType := AxisTypeFromIndex(AxisIndex, AxisOrder);
+  Case AxisType Of
+  atXAxis: Result := FormatTypedCoordinate(OutputCoordinates[RecordNumber].X, CoordinateType, AxisType, DecimalPlaces, Options);
+  atYAxis: Result := FormatTypedCoordinate(OutputCoordinates[RecordNumber].Y, CoordinateType, AxisType, DecimalPlaces, Options);
+  atZAxis: Result := FormatTypedCoordinate(OutputCoordinates[RecordNumber].Z, CoordinateType, AxisType, DecimalPlaces, Options);
   End;
 End;
 
@@ -667,6 +684,7 @@ End;
 
 Procedure TMainForm.DoInputChangeSystem(Sender: TObject);
 Begin
+  SetPanelFormattingOptions(InputPanel, InteractiveSettings);
   OutputPanel.Clear(InputPanel.CoordinateSystemIndex);
   With MainGlobe Do
     Begin
@@ -680,6 +698,7 @@ Var
   InputIndex: Integer;
   OutputIndex: Integer;
 Begin
+  SetPanelFormattingOptions(OutputPanel, InteractiveSettings);
   If InputPanel.Valid Then
     Begin
       InputIndex := InputPanel.CoordinateSystemIndex;
@@ -756,6 +775,41 @@ Begin
     ProgressDisplay.Show('Parse Data Progress')
   Else
     ProgressDisplay.Progress := Progress;
+End;
+
+Procedure TMainForm.SetPanelFormattingOptions(DataPanel: TCoordinatesEntryPanel; Settings: TFormatSettings);
+Begin
+  With DataPanel Do
+    Begin
+      //toSignPrefix, toLetterPrefix, toLetterSuffix,  toCompactWhitespace
+      Options := [];
+      Case CoordinateType Of
+      ctGeodetic:
+        Begin
+          DecimalPlaces := Settings.GeodeticDecimalPlaces;
+          If Settings.GeodeticPositiveLongitude Then
+            Options := Options+[toPositiveLongitude];
+          If Settings.GeodeticCompactFormat Then
+            Options := Options+[toCompactWhitespace];
+          Case Settings.GeodeticQuadrants Of
+          'Signs': Options := Options+[toSignPrefix];
+          'Letters': Options := Options+[toLetterSuffix];
+          End;
+          //
+          //toSexagseimalLetters, toSexagseimalSymbols
+        End;
+      ctProjected:
+        Begin
+          DecimalPlaces := Settings.ProjectedDecimalPlaces;
+        End;
+      ctCartesian:
+        Begin
+          DecimalPlaces := Settings.CartesianDecimalPlaces;
+        End;
+      End;
+      HeightDecimalPlaces := Settings.HeightDecimalPlaces;
+      Refresh;
+    End;
 End;
 
 End.

@@ -81,10 +81,13 @@ Type
   Private
     { Private declarations. }
     FCoordinateSystemPanel: TCoordinateSystemPanel;
+    FDecimalPlaces: Integer;
+    FHeightDecimalPlaces: Integer;
     FFirstCoordinatePanel: TCoordinatePanel;
     FLocked: Boolean;
     FOnChangeSystem: TNotifyEvent;
     FOnValid: TNotifyEvent;
+    FOptions: TTypedOptions;
     FSecondCoordinatePanel: TCoordinatePanel;
     FThirdCoordinatePanel: TCoordinatePanel;
     FPanelType: TPanelType;
@@ -101,11 +104,15 @@ Type
     { Public declarations. }
     Constructor Create(TheOwner: TComponent; PanelType: TPanelType); Virtual;
     Procedure Clear(CompatibleIndex: Integer = -1);
+    Procedure Refresh;
     Property Coordinates: TCoordinates Read GetCoordinates Write SetCoordinates;
     Property CoordinatesAsText: String Read GetCoordinatesAsText;
     Property CoordinateSystemIndex: Integer Read GetCoordinateSystemIndex Write SetCoordinateSystemIndex;
     Property CoordinateType: TCoordinateType Read FCoordinateType Write FCoordinateType;
+    Property DecimalPlaces: Integer Read FDecimalPlaces Write FDecimalPlaces;
+    Property HeightDecimalPlaces: Integer Read FHeightDecimalPlaces Write FHeightDecimalPlaces;
     Property Locked: Boolean Read FLocked Write SetLocked;
+    Property Options: TTypedOptions Read FOptions Write FOptions;
     Property Valid: Boolean Read GetValid;
     Property OnChangeSystem: TNotifyEvent Read FOnChangeSystem Write FOnChangeSystem;
     Property OnValid: TNotifyEvent Read FOnValid Write FOnValid;
@@ -174,8 +181,6 @@ Begin
 End;
 
 Procedure TCoordinatePanel.Format(Tidy: Boolean = False);
-Const
-  UnitText = '';//'m';
 Begin
   If FEdit.ReadOnly Then
     FEdit.Font.Color := clBlue
@@ -185,28 +190,12 @@ Begin
     Else
       FEdit.Font.Color := clRed;
   If Valid And Tidy Then
-    Case TCoordinatesEntryPanel(Parent).CoordinateType Of
-    ctCartesian:
-      Case AxisType Of
-      atXAxis: FEdit.Text := FormatCoordinateWithUnits(Coordinate, UnitText, 3);
-      atYAxis: FEdit.Text := FormatCoordinateWithUnits(Coordinate, UnitText, 3);
-      atZAxis: FEdit.Text := FormatCoordinateWithUnits(Coordinate, UnitText, 3);
-      End;
-    ctGeodetic:
-      Case AxisType Of
-      atXAxis: FEdit.Text := FormatCoordinate(DecimalToSexagesimalCoordinate(Coordinate));//, soEastWestSuffix);
-      atYAxis: FEdit.Text := FormatCoordinate(DecimalToSexagesimalCoordinate(Coordinate));//, soNorthSouthSuffix);
-      atZAxis: FEdit.Text := FormatCoordinateWithUnits(Coordinate, UnitText, 3);
-      End;
-    ctProjected:
-      Case AxisType Of
-      atXAxis: FEdit.Text := FormatCoordinate(Coordinate, 4, True);//+' E';
-      atYAxis: FEdit.Text := FormatCoordinate(Coordinate, 4, True);//+' N';
-      atZAxis: FEdit.Text := FormatCoordinateWithUnits(Coordinate, UnitText, 3);
-      End;
-    End;
+    With TCoordinatesEntryPanel(Parent) Do
+    If (AxisType=atZAxis) And (TCoordinatesEntryPanel(Parent).CoordinateType<>ctCartesian) Then
+      FEdit.Text := FormatTypedCoordinate(Coordinate, CoordinateType, AxisType, HeightDecimalPlaces, Options)
+    Else
+      FEdit.Text := FormatTypedCoordinate(Coordinate, CoordinateType, AxisType, DecimalPlaces, Options);
 End;
-
 
 Procedure TCoordinatePanel.Validate;
 Begin
@@ -214,7 +203,21 @@ Begin
   ctCartesian:
     FValid := TryGeocentricTextToCoordinate(FEdit.Text, FCoordinate, FAxisType);
   ctGeodetic:
-    FValid := TryGeodeticTextToCoordinate(FEdit.Text, FCoordinate, FAxisType);
+    Begin
+      { Adjust the X axis coordinate to fit within the valid range for the current positive longitude setting. }
+      If FAxisType=atXAxis Then
+        If toPositiveLongitude In TCoordinatesEntryPanel(Parent).Options Then
+          Begin
+            If FCoordinate<0 Then
+              FCoordinate := 360+FCoordinate;
+          End
+        Else
+          Begin
+            If (FCoordinate>180) And (FCoordinate<=360) Then
+              FCoordinate := FCoordinate-360;
+          End;
+      FValid := TryGeodeticTextToCoordinate(FEdit.Text, FCoordinate, FAxisType);
+    End;
   ctProjected:
     FValid := TryCartesianTextToCoordinate(FEdit.Text, FCoordinate, FAxisType);
   Else
@@ -370,6 +373,8 @@ Begin
   Inherited Create(TheOwner);
   Align := alTop;
   AutoSize := True;
+  DecimalPlaces := 2;
+  Options := [];
   ThisPanel := Self;
   { The child controls are created in reverse order so that Align=alTop orders them correctly. }
   FThirdCoordinatePanel := TCoordinatePanel.Create(TheOwner, 'Z coordinate:', atZAxis, True);
@@ -490,6 +495,13 @@ Begin
   FFirstCoordinatePanel.Clear;
   FSecondCoordinatePanel.Clear;
   FThirdCoordinatePanel.Clear;
+End;
+
+Procedure TCoordinatesEntryPanel.Refresh;
+Begin
+  FFirstCoordinatePanel.Format(True);
+  FSecondCoordinatePanel.Format(True);
+  FThirdCoordinatePanel.Format(True);
 End;
 
 Procedure Register;
