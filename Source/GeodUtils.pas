@@ -155,13 +155,15 @@ Var
     'S':
       Begin
         Result := (AxisType=atYAxis);
-        Sign := -1;
+        If Result Then
+          Sign := -1;
       End;
     'E': Result := (AxisType=atXAxis);
     'W':
       Begin
         Result := (AxisType=atXAxis);
-        Sign := -1;
+        If Result Then
+          Sign := -1;
       End;
     Else
       Result := False;
@@ -207,28 +209,29 @@ Begin
     Begin
       { Remove any hemisphere suffix noting the sign value. }
       HasSuffix := ValidHemispereLetter(Text[TextLength]);
+      { NOTE: there is an ambiguous case where '00D 00M 00S' is used.
+              Here the seconds 'S' could be mistaken for a South suffix.
+              This is arbitrated by testing for the text containing a
+              'D' and 'M' then the 'S' is judged to be seconds. These must
+              be a second 'S' for the last to be taken as a valid South suffix. }
+      If HasSuffix Then
+        If Text[TextLength]='S' Then
+          Begin
+            { If there are units for degrees and minutes. }
+            If (Pos('D', Text)<>0) And (Pos('M', Text)<>0) Then
+              { There must be 2 'S' characters for there to be a valid south suffix. }
+              If RPosEx('S', Text, TextLength-1)=0 Then
+                Begin
+                  { Otherwise reset the status to no suffix. }
+                  Sign := 1;
+                  HasSuffix := False;
+                End;
+          End;
+      { If exists, then remove the suffix and any whitespace. }
       If HasSuffix Then
         Begin
-          { NOTE: there is an ambiguous case where '00D 00M 00S' is used.
-                  Here the seconds 'S' could be mistaken for a South suffix.
-                  This is arbitrated by testing for the text containing a
-                  'D' and 'M' then the 'S' is judged to be seconds. However,
-                  if the last two characters are ' S' or 'SS' then the last 'S'
-                  is taken to be a valid South suffix. }
-          If Text[TextLength]='S' Then
-            If (Pos('D', Text)<>0) And (Pos('M', Text)<>0) And
-               Not ((TextLength>1) And ((Text[TextLength-1]='S') Or
-                                        (Text[TextLength-1]=' '))) Then
-              Begin
-                Sign := -1;
-                HasSuffix := False;
-              End;
-          { If exists, then remove the suffix and any whitespace. }
-          If HasSuffix Then
-            Begin
-              SetLength(Text, TextLength-1);
-              Text := Trim(Text);
-            End;
+          SetLength(Text, TextLength-1);
+          Text := Trim(Text);
         End;
     End;
   { Scan the parts text for invalid characters. }

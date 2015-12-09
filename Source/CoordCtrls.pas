@@ -194,7 +194,22 @@ Begin
     If (AxisType=atZAxis) And (TCoordinatesEntryPanel(Parent).CoordinateType<>ctCartesian) Then
       FEdit.Text := FormatTypedCoordinate(Coordinate, CoordinateType, AxisType, HeightDecimalPlaces, Options)
     Else
-      FEdit.Text := FormatTypedCoordinate(Coordinate, CoordinateType, AxisType, DecimalPlaces, Options);
+      Begin
+        { Adjust geodetic X axis coordinate value to fit within the valid range for the current positive longitude setting. }
+        If  TCoordinatesEntryPanel(Parent).CoordinateType=ctGeodetic Then
+          If AxisType=atXAxis Then
+              If toPositiveLongitude In TCoordinatesEntryPanel(Parent).Options Then
+                Begin
+                  If Coordinate<0 Then
+                    FCoordinate := 360+Coordinate;
+                End
+              Else
+                Begin
+                  If (Coordinate>180) And (Coordinate<=360) Then
+                    FCoordinate := Coordinate-360;
+                End;
+        FEdit.Text := FormatTypedCoordinate(Coordinate, CoordinateType, AxisType, DecimalPlaces, Options);
+      End;
 End;
 
 Procedure TCoordinatePanel.Validate;
@@ -203,21 +218,7 @@ Begin
   ctCartesian:
     FValid := TryGeocentricTextToCoordinate(FEdit.Text, FCoordinate, FAxisType);
   ctGeodetic:
-    Begin
-      { Adjust the X axis coordinate to fit within the valid range for the current positive longitude setting. }
-      If FAxisType=atXAxis Then
-        If toPositiveLongitude In TCoordinatesEntryPanel(Parent).Options Then
-          Begin
-            If FCoordinate<0 Then
-              FCoordinate := 360+FCoordinate;
-          End
-        Else
-          Begin
-            If (FCoordinate>180) And (FCoordinate<=360) Then
-              FCoordinate := FCoordinate-360;
-          End;
-      FValid := TryGeodeticTextToCoordinate(FEdit.Text, FCoordinate, FAxisType);
-    End;
+    FValid := TryGeodeticTextToCoordinate(FEdit.Text, FCoordinate, FAxisType);
   ctProjected:
     FValid := TryCartesianTextToCoordinate(FEdit.Text, FCoordinate, FAxisType);
   Else
