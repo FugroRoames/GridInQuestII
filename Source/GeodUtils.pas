@@ -29,93 +29,163 @@ Uses
   Classes, SysUtils, StrUtils, Math, Geometry, Geodesy, GeomUtils;
 
 Type
-  TTypedOption = (toSignPrefix, toLetterPrefix, toLetterSuffix, toSexagseimalLetters, toSexagseimalSymbols, toCompactWhitespace, toPositiveLongitude);
+  TTypedOption = (toSignPrefix, toLetterPrefix, toLetterSuffix, toTwoPartSexagseimal, toThreePartSexagseimal, toGeodeticLetters, toGeodeticSymbols,
+                  toCompactWhitespace, toPositiveLongitude, toUnitSuffix, toHeightDatumSuffix);
   TTypedOptions = Set Of TTypedOption;
 
 Function FormatTypedCoordinate(Const Coordinate: TCoordinate; CoordinateType: TCoordinateType; AxisType: TAxisType; DecimalPlaces: Integer = -1; Options: TTypedOptions = []): String;
 Function FormatTypedCoordinates(Const Coordinates: TCoordinates; CoordinateType: TCoordinateType; AxisOrder: TAxisOrder; DecimalPlaces: Integer = -1; Options: TTypedOptions = []; Const Spacer: String = ' '): String;
 Function TryGeodeticTextToCoordinate(Text: String; Var Coordinate: TCoordinate; AxisType: TAxisType; UnitSuffix: String = 'm'): Boolean;
-Function TryGeocentricTextToCoordinate(Text: String; Var Coordinate: TCoordinate; AxisType: TAxisType; UnitSuffix: String = 'm'): Boolean;
 Function TryCartesianTextToCoordinate(Text: String; Var Coordinate: TCoordinate; AxisType: TAxisType; UnitSuffix: String = 'm'): Boolean;
+Function TryProjectedTextToCoordinate(Text: String; Var Coordinate: TCoordinate; AxisType: TAxisType; UnitSuffix: String = 'm'): Boolean;
 
 Implementation
 
 Const
   SexigesimalDelims = [#0..' '];
-  SexagesimalFormat = '%.0F %.0F %.*F ';
-  LongSexagesimalFormat = '%.0F° %.0F'' %.*F" ';
-  CompactSexagesimalFormat = '%.0FD%.0FM%.*FS';
+  DecimalFormat = '%.*F';
+  TwoPartSexagesimalFormat = '%.0F %.*F';
+  ThreePartSexagesimalFormat = '%.0F %.0F %.*F';
+  DecimalSymbolFormat = '%.*F°';
+  TwoPartSexagesimalSymbolFormat = '%.0F° %.*F''';
+  ThreePartSexagesimalSymbolFormat = '%.0F° %.0F'' %.*F"';
+  DecimalLetterFormat = '%.*FD';
+  TwoPartSexagesimalLetterFormat = '%.0FD %.*FM';
+  ThreePartSexagesimalLetterFormat = '%.0FD %.0FM %.*FS';
 
 Function FormatTypedCoordinate(Const Coordinate: TCoordinate; CoordinateType: TCoordinateType; AxisType: TAxisType; DecimalPlaces: Integer; Options: TTypedOptions = []): String;
-Const
-  UnitText = '';
 Var
-  AdjustedCoordinate: TCoordinate;
-  Function FormatAdjustedCoordinate: String;
+  ValidatedCoordinate: TCoordinate;
+  Prefix: String;
+  Suffix: String;
+  Spacer: String;
+  Function AdjustWhitespace(Text: String): String;
   Begin
-    With DecimalToSexagesimalCoordinate(AdjustedCoordinate) Do
-      Begin
-        Result := Format(LongSexagesimalFormat, [Degrees, Minutes, DecimalPlaces, Seconds]);
-        If toSignPrefix In Options Then
-          Begin
-            If Sign=1 Then
-              Result := '+'+Result
-            Else
-              Result := '-'+Result;
-          End
-        Else If toLetterSuffix In Options Then
-          Begin
-            If AxisType=atXAxis Then
-              If Sign=1 Then
-                Result := Result+'E'
-              Else
-                Result := Result+'W';
-            If AxisType=atYAxis Then
-              If Sign=1 Then
-                Result := Result+'N'
-              Else
-                Result := Result+'S';
-          End
-        Else
-          Begin
-            If Sign=-1 Then
-              Result := '-'+Result;
-          End;
-      End;
+    If toCompactWhitespace In Options Then
+      Result := AnsiReplaceStr(Text, ' ', '')
+    Else
+      Result := Text;
   End;
-
+  Function FormatGeodeticCoordinate: String;
+  Var
+    CurrentFormat: String;
+    Indicatior: String;
+    SexagesimalCoordinate: TSexagesimalCoordinate;
+  Begin
+    { Construct requested coordinate options format. }
+    If toThreePartSexagseimal In Options Then
+      Begin
+        If toGeodeticSymbols In Options Then
+          CurrentFormat := AdjustWhitespace(ThreePartSexagesimalSymbolFormat)
+        Else If toGeodeticLetters In Options Then
+          CurrentFormat := AdjustWhitespace(ThreePartSexagesimalLetterFormat)
+        Else
+          CurrentFormat := ThreePartSexagesimalFormat;
+        SexagesimalCoordinate := DecimalToSexagesimalCoordinate(ValidatedCoordinate);
+        With SexagesimalCoordinate Do
+          Result := Format(CurrentFormat, [Degrees, Minutes, DecimalPlaces, Seconds]);
+      End
+    Else If toTwoPartSexagseimal In Options Then
+      Begin
+        If toGeodeticSymbols In Options Then
+          CurrentFormat := AdjustWhitespace(TwoPartSexagesimalSymbolFormat)
+        Else If toGeodeticLetters In Options Then
+          CurrentFormat := AdjustWhitespace(TwoPartSexagesimalLetterFormat)
+        Else
+          CurrentFormat := TwoPartSexagesimalFormat;
+        SexagesimalCoordinate := DecimalToSexagesimalCoordinate(ValidatedCoordinate, True); { Ignore the seconds part. }
+        With SexagesimalCoordinate Do
+          Result := Format(CurrentFormat, [Degrees, DecimalPlaces, Minutes]);
+      End
+    Else
+      Begin
+        If toGeodeticSymbols In Options Then
+          CurrentFormat := DecimalSymbolFormat
+        Else If toGeodeticLetters In Options Then
+          CurrentFormat := DecimalLetterFormat
+        Else
+          CurrentFormat := DecimalFormat;
+        SexagesimalCoordinate := DecimalToSexagesimalCoordinate(ValidatedCoordinate); { Required to isolate sign. }
+        Result := Format(CurrentFormat, [DecimalPlaces, Abs(ValidatedCoordinate)]); { Sign applied later. }
+      End;
+    { Determine required prefix and suffix characters. }
+    If AxisType=atXAxis Then
+      If SexagesimalCoordinate.Sign=1 Then
+        Indicatior := 'E'
+      Else
+        Indicatior := 'W'
+    Else If AxisType=atYAxis Then
+      If SexagesimalCoordinate.Sign=1 Then
+        Indicatior := 'N'
+      Else
+        Indicatior := 'S';
+    If toLetterSuffix In Options Then
+      Suffix := Indicatior
+    Else If toLetterPrefix In Options Then
+      Prefix := Indicatior
+    Else
+      { Otherwise apply any required sign character. }
+      If SexagesimalCoordinate.Sign=-1 Then
+        Result := '-'+Result
+      Else
+        If toSignPrefix In Options Then
+          Result := '+'+Result;
+  End;
+  Function FormatVerticalCoordinate: String;
+  Var
+    UnitText: String;
+  Begin
+    If toUnitSuffix In Options Then
+      UnitText := 'm' //TODO: Lookup from coordinate system properties or additional parameter?
+    Else
+      UnitText := '';
+    Result := FormatCoordinateWithUnits(ValidatedCoordinate, UnitText, DecimalPlaces, True);
+    If toHeightDatumSuffix In Options Then
+      Suffix := '[DATUM]'; // TODO: Lookup from coordinate system properties or additional parameter?
+  End;
+  Function FormatGeneralCoordinate(Identifier: String): String;
+  Begin
+    If toLetterPrefix In Options Then
+      Prefix := Identifier
+    Else If toLetterSuffix In Options Then
+      Suffix := Identifier;
+    Result := FormatCoordinate(ValidatedCoordinate, DecimalPlaces, True);
+  End;
 Begin
+  ValidatedCoordinate := Coordinate;
+  Prefix := '';
+  Suffix := '';
+  If toCompactWhitespace In Options Then
+    Spacer := ''
+  Else
+    Spacer := ' ';
   Case CoordinateType Of
   ctGeodetic:
     Case AxisType Of
     atXAxis:
       Begin
-        AdjustedCoordinate := Coordinate;
         If toPositiveLongitude In Options Then
           If Coordinate<0 Then
-            AdjustedCoordinate := 360+Coordinate;
-        Result := FormatAdjustedCoordinate;
+            ValidatedCoordinate := 360+Coordinate;
+        Result := FormatGeodeticCoordinate;
       End;
-    atYAxis:
-      Begin
-        AdjustedCoordinate := Coordinate;
-        Result := FormatAdjustedCoordinate;
-      End;
-    atZAxis: Result := FormatCoordinateWithUnits(Coordinate, UnitText, DecimalPlaces, True);
+    atYAxis: Result := FormatGeodeticCoordinate;
+    atZAxis: Result := FormatVerticalCoordinate;
     End;
   ctProjected:
     Case AxisType Of
-    atXAxis: Result := FormatCoordinate(Coordinate, DecimalPlaces, True);//+' E';
-    atYAxis: Result := FormatCoordinate(Coordinate, DecimalPlaces, True);//+' N';
-    atZAxis: Result := FormatCoordinateWithUnits(Coordinate, UnitText, DecimalPlaces);
+    atXAxis: Result := FormatGeneralCoordinate('E');
+    atYAxis: Result := FormatGeneralCoordinate('N');
+    atZAxis: Result := FormatVerticalCoordinate;
     End;
   ctCartesian:
     Case AxisType Of
-    atXAxis: Result := FormatCoordinateWithUnits(Coordinate, UnitText, DecimalPlaces);
-    atYAxis: Result := FormatCoordinateWithUnits(Coordinate, UnitText, DecimalPlaces);
-    atZAxis: Result := FormatCoordinateWithUnits(Coordinate, UnitText, DecimalPlaces);
+    atXAxis: Result := FormatGeneralCoordinate('X');
+    atYAxis: Result := FormatGeneralCoordinate('Y');
+    atZAxis: Result := FormatGeneralCoordinate('Z');
     End;
   End;
+  Result := Trim(Prefix+Spacer+Result+Spacer+Suffix);
 End;
 
 Function FormatTypedCoordinates(Const Coordinates: TCoordinates; CoordinateType: TCoordinateType; AxisOrder: TAxisOrder; DecimalPlaces: Integer; Options: TTypedOptions = []; Const Spacer: String = ' '): String;
@@ -212,17 +282,18 @@ Begin
       { NOTE: there is an ambiguous case where '00D 00M 00S' is used.
               Here the seconds 'S' could be mistaken for a South suffix.
               This is arbitrated by testing for the text containing a
-              'D' and 'M' then the 'S' is judged to be seconds. These must
-              be a second 'S' for the last to be taken as a valid South suffix. }
+              'D' and 'M' then the 'S' is judged to be seconds. In this
+              case there must be a second 'S' for the last to be taken
+              as a valid South suffix. }
       If HasSuffix Then
         If Text[TextLength]='S' Then
           Begin
             { If there are units for degrees and minutes. }
             If (Pos('D', Text)<>0) And (Pos('M', Text)<>0) Then
-              { There must be 2 'S' characters for there to be a valid south suffix. }
+              { If there is no second 'S' character. }
               If RPosEx('S', Text, TextLength-1)=0 Then
                 Begin
-                  { Otherwise reset the status to no suffix. }
+                  { Reset the status to no suffix. }
                   Sign := 1;
                   HasSuffix := False;
                 End;
@@ -332,7 +403,7 @@ Begin
   Result := True;
 End;
 
-Function TryGeocentricTextToCoordinate(Text: String; Var Coordinate: TCoordinate; AxisType: TAxisType; UnitSuffix: String): Boolean;
+Function TryCartesianTextToCoordinate(Text: String; Var Coordinate: TCoordinate; AxisType: TAxisType; UnitSuffix: String): Boolean;
 Var
   SuffixLength: Integer;
   TextLength: Integer;
@@ -340,7 +411,14 @@ Begin
   Result := False;
   { Prepare the text for parsing. }
   SuffixLength := Length(UnitSuffix);
-  Text := UpperCase(Trim(Text));
+  Text := UpperCase(Text);
+  { Remove any valid prefix or suffix characters. }
+  Case AxisType Of
+  atXAxis: Text := StringReplace(Text, 'X', '', [rfReplaceAll, rfIgnoreCase]);
+  atYAxis: Text := StringReplace(Text, 'Y', '', [rfReplaceAll, rfIgnoreCase]);
+  atZAxis: Text := StringReplace(Text, 'Z', '', [rfReplaceAll, rfIgnoreCase]);
+  End;
+  Text := Trim(Text);
   TextLength := Length(Text);
   If TextLength>0 Then
     Begin
@@ -352,7 +430,7 @@ Begin
     End;
 End;
 
-Function TryCartesianTextToCoordinate(Text: String; Var Coordinate: TCoordinate; AxisType: TAxisType; UnitSuffix: String): Boolean;
+Function TryProjectedTextToCoordinate(Text: String; Var Coordinate: TCoordinate; AxisType: TAxisType; UnitSuffix: String): Boolean;
 Var
   SuffixLength: Integer;
   TextLength: Integer;
@@ -362,23 +440,27 @@ Begin
   Result := False;
   { Prepare the text for parsing. }
   SuffixLength := Length(UnitSuffix);
-  Text := UpperCase(Trim(Text));
+  Text := UpperCase(Text);
+  { Remove any valid prefix or suffix characters. }
+  Case AxisType Of
+  atXAxis:
+    Begin
+      Text := StringReplace(Text, 'E', '', [rfReplaceAll, rfIgnoreCase]);
+      Text := StringReplace(Text, 'W', '', [rfReplaceAll, rfIgnoreCase]);
+    End;
+  atYAxis:
+    Begin
+      Text := StringReplace(Text, 'N', '', [rfReplaceAll, rfIgnoreCase]);
+      Text := StringReplace(Text, 'S', '', [rfReplaceAll, rfIgnoreCase]);
+    End;
+  End;
+  Text := Trim(Text);
   TextLength := Length(Text);
   If TextLength>0 Then
     Begin
       { Remove any unit suffix. }
       If Copy(Text, 1+TextLength-SuffixLength, SuffixLength)=UpperCase(UnitSuffix) Then
         SetLength(Text, TextLength-SuffixLength);
-      { Validate any axis type suffix. }
-      TextLength := Length(Text);
-      AxisSuffix := Text[TextLength];
-      HasAxisSuffix := False;
-      If Not (AxisSuffix In ['0'..'9']) Then
-        HasAxisSuffix := ((AxisSuffix='E') And (AxisType=atXAxis)) Or
-                         ((AxisSuffix='N') And (AxisType=atYAxis));
-      { Remove any axis type suffix. }
-      If HasAxisSuffix Then
-        SetLength(Text, TextLength-1);
       { Atempt to convert the remainder to a valid value. }
       Result := TryStrToFloat(Trim(Text), Coordinate);
       { Treat negative values for an X or Y axis as invalid. }

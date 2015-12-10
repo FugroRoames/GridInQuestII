@@ -123,15 +123,6 @@ Begin
 End;
 
 Procedure TOptionsForm.FormShow(Sender: TObject);
-  Function OptionsToText(Options: TTypedOptions): String;
-  Begin
-    If toSexagseimalSymbols In Options Then
-      Result := 'Symbols'
-    Else If toSexagseimalLetters In Options Then
-      Result := 'Letters'
-    Else
-      Result := 'None'
-  End;
   Function DatumCodeToText(Code: TVerticalDatumCode): String;
   Begin
     Case Code Of
@@ -144,19 +135,35 @@ Procedure TOptionsForm.FormShow(Sender: TObject);
 Begin
   With InteractiveSettings Do
     Begin
-      //GeodeticStyleComboBox.Text := (GeodeticStyle);
-      GeodeticUnitsComboBox.Text := OptionsToText(GeodeticUnits);
+      GeodeticStyleComboBox.Text := GeodeticStyle;
+      GeodeticUnitsComboBox.Text := GeodeticUnits;
       QuadrantsComboBox.Text := GeodeticQuadrants;
       GeodeticPlacesEdit.Text := IntToStr(GeodeticDecimalPlaces);
       CompactCheckBox.Checked := GeodeticCompactFormat;
       LongitudeCheckBox.Checked := GeodeticPositiveLongitude;
-      //ProjectedStyleComboBox.Text := (ProjectedStyle);
+      ProjectedStyleComboBox.Text := ProjectedStyle;
       ProjectedPlacesEdit.Text := IntToStr(ProjectedDecimalPlaces);
-      //CartesianStyleComboBox.Text := (CartesianStyle);
+      CartesianStyleComboBox.Text := CartesianStyle;
       CartesianPlacesEdit.Text := IntToStr(CartesianDecimalPlaces);
-      //HeightStyleComboBox.Text := (HeightStyle);
+      HeightStyleComboBox.Text := HeightStyle;
       HeightPlacesEdit.Text := IntToStr(HeightDecimalPlaces);
       DatumSuffixCheckBox.Checked := HeightDatumSuffix;
+    End;
+  With OutputSettings Do
+    Begin
+      GeodeticStyleOutputComboBox.Text := GeodeticStyle;
+      GeodeticUnitsOutputComboBox.Text := GeodeticUnits;
+      QuadrantsOutputComboBox.Text := GeodeticQuadrants;
+      GeodeticPlacesOutputEdit.Text := IntToStr(GeodeticDecimalPlaces);
+      CompactOutputCheckBox.Checked := GeodeticCompactFormat;
+      LongitudeOutputCheckBox.Checked := GeodeticPositiveLongitude;
+      ProjectedStyleOutputComboBox.Text := ProjectedStyle;
+      ProjectedPlacesOutputEdit.Text := IntToStr(ProjectedDecimalPlaces);
+      CartesianStyleOutputComboBox.Text := CartesianStyle;
+      CartesianPlacesOutputEdit.Text := IntToStr(CartesianDecimalPlaces);
+      HeightStyleOutputComboBox.Text := HeightStyle;
+      HeightPlacesOutputEdit.Text := IntToStr(HeightDecimalPlaces);
+      DatumSuffixOutputCheckBox.Checked := HeightDatumSuffix;
     End;
   IGDatumComboBox.Text := DatumCodeToText(IGCoordinateSystem.PreferredVerticalDatum);
   ITMDatumComboBox.Text := DatumCodeToText(ITMCoordinateSystem.PreferredVerticalDatum);
@@ -221,15 +228,6 @@ Begin
 End;
 
 Procedure TOptionsForm.OKButtonClick(Sender: TObject);
-  Function TextToUnits(Text: String): TTypedOptions;
-  Begin
-    Case Text Of
-    'Symbols': Result := [toSexagseimalSymbols];
-    'Letters': Result := [toSexagseimalLetters];
-    Else
-      Result := [];
-    End;
-  End;
   Function DatumTextToCode(Text: String): TVerticalDatumCode;
   Begin
     If SameText(IGDatumComboBox.Text, 'Belfast') Then
@@ -240,19 +238,35 @@ Procedure TOptionsForm.OKButtonClick(Sender: TObject);
 Begin
   With InteractiveSettings Do
     Begin
-      //GeodeticStyle := GetValue(GeodeticStyleComboBox.Text);
-      GeodeticUnits := TextToUnits(GeodeticUnitsComboBox.Text);
+      GeodeticStyle := GeodeticStyleComboBox.Text;
+      GeodeticUnits := GeodeticUnitsComboBox.Text;
       GeodeticQuadrants := QuadrantsComboBox.Text;
       GeodeticDecimalPlaces := StrToIntDef(GeodeticPlacesEdit.Text, 2);
       GeodeticCompactFormat := CompactCheckBox.Checked;
       GeodeticPositiveLongitude := LongitudeCheckBox.Checked;
-      //ProjectedStyle := GetValue(ProjectedStyleComboBox.Text);
+      ProjectedStyle := ProjectedStyleComboBox.Text;
       ProjectedDecimalPlaces := StrToIntDef(ProjectedPlacesEdit.Text, 2);
-      //CartesianStyle := GetValue(CartesianStyleComboBox.Text);
+      CartesianStyle := CartesianStyleComboBox.Text;
       CartesianDecimalPlaces := StrToIntDef(CartesianPlacesEdit.Text, 2);
-      //HeightStyle := GetValue(HeightStyleComboBox.Text);
+      HeightStyle := HeightStyleComboBox.Text;
       HeightDecimalPlaces := StrToIntDef(HeightPlacesEdit.Text, 2);
       HeightDatumSuffix := DatumSuffixCheckBox.Checked;
+    End;
+  With OutputSettings Do
+    Begin
+      GeodeticStyle := GeodeticStyleOutputComboBox.Text;
+      GeodeticUnits := GeodeticUnitsOutputComboBox.Text;
+      GeodeticQuadrants := QuadrantsOutputComboBox.Text;
+      GeodeticDecimalPlaces := StrToIntDef(GeodeticPlacesOutputEdit.Text, 2);
+      GeodeticCompactFormat := CompactOutputCheckBox.Checked;
+      GeodeticPositiveLongitude := LongitudeOutputCheckBox.Checked;
+      ProjectedStyle := ProjectedStyleOutputComboBox.Text;
+      ProjectedDecimalPlaces := StrToIntDef(ProjectedPlacesOutputEdit.Text, 2);
+      CartesianStyle := CartesianStyleOutputComboBox.Text;
+      CartesianDecimalPlaces := StrToIntDef(CartesianPlacesOutputEdit.Text, 2);
+      HeightStyle := HeightStyleOutputComboBox.Text;
+      HeightDecimalPlaces := StrToIntDef(HeightPlacesOutputEdit.Text, 2);
+      HeightDatumSuffix := DatumSuffixOutputCheckBox.Checked;
     End;
   IGCoordinateSystem.PreferredVerticalDatum := DatumTextToCode(IGDatumComboBox.Text);
   ITMCoordinateSystem.PreferredVerticalDatum := DatumTextToCode(ITMDatumComboBox.Text);

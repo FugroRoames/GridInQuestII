@@ -189,10 +189,10 @@ Begin
       FEdit.Font.Color := clBlack
     Else
       FEdit.Font.Color := clRed;
-  If Valid And Tidy Then
-    With TCoordinatesEntryPanel(Parent) Do
+  If (Valid And Tidy) Or FEdit.ReadOnly Then
     If (AxisType=atZAxis) And (TCoordinatesEntryPanel(Parent).CoordinateType<>ctCartesian) Then
-      FEdit.Text := FormatTypedCoordinate(Coordinate, CoordinateType, AxisType, HeightDecimalPlaces, Options)
+      FEdit.Text := FormatTypedCoordinate(Coordinate, TCoordinatesEntryPanel(Parent).CoordinateType, AxisType,
+                                          TCoordinatesEntryPanel(Parent).HeightDecimalPlaces, TCoordinatesEntryPanel(Parent).Options)
     Else
       Begin
         { Adjust geodetic X axis coordinate value to fit within the valid range for the current positive longitude setting. }
@@ -208,7 +208,8 @@ Begin
                   If (Coordinate>180) And (Coordinate<=360) Then
                     FCoordinate := Coordinate-360;
                 End;
-        FEdit.Text := FormatTypedCoordinate(Coordinate, CoordinateType, AxisType, DecimalPlaces, Options);
+        FEdit.Text := FormatTypedCoordinate(Coordinate, TCoordinatesEntryPanel(Parent).CoordinateType, AxisType,
+                                            TCoordinatesEntryPanel(Parent).DecimalPlaces, TCoordinatesEntryPanel(Parent).Options);
       End;
 End;
 
@@ -216,11 +217,11 @@ Procedure TCoordinatePanel.Validate;
 Begin
   Case TCoordinatesEntryPanel(Parent).CoordinateType Of
   ctCartesian:
-    FValid := TryGeocentricTextToCoordinate(FEdit.Text, FCoordinate, FAxisType);
+    FValid := TryCartesianTextToCoordinate(FEdit.Text, FCoordinate, FAxisType);
   ctGeodetic:
     FValid := TryGeodeticTextToCoordinate(FEdit.Text, FCoordinate, FAxisType);
   ctProjected:
-    FValid := TryCartesianTextToCoordinate(FEdit.Text, FCoordinate, FAxisType);
+    FValid := TryProjectedTextToCoordinate(FEdit.Text, FCoordinate, FAxisType);
   Else
     FValid := False;
   End;

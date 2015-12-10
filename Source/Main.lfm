@@ -417,7 +417,7 @@ object MainForm: TMainForm
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   Position = poScreenCenter
-  LCLVersion = '1.5'
+  LCLVersion = '1.4.4.0'
   object SidePanel: TPanel
     Left = 0
     Height = 641
