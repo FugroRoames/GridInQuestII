@@ -124,6 +124,7 @@ Const
   NullCoordinates: TCoordinates = (X: 0; Y: 0; Z: 0);
 
 { Coordinates operator overloads. }
+Operator = (A, B: TCoordinates): Boolean;
 Operator := (A: TPlanarCoordinates): TCoordinates;
 Operator + (A, B: TPlanarCoordinates): TPlanarCoordinates;
 Operator + (A, B: TCoordinates): TCoordinates;
@@ -139,9 +140,9 @@ Function NormalizeLatitude(Angle: TCoordinate): TCoordinate;
 Function NormalizeLongitude(Angle: TCoordinate): TCoordinate;
 Function AxisTypeFromIndex(Index: Integer; AxisOrder: TAxisOrder = aoXYZ): TAxisType;
 Function SexagesimalToDecimalCoordinate(Const Coordinate: TSexagesimalCoordinate): TCoordinate;
-Function DecimalToSexagesimalCoordinate(Const Coordinate: TCoordinate): TSexagesimalCoordinate;
+Function DecimalToSexagesimalCoordinate(Const Coordinate: TCoordinate; IgnoreSeconds: Boolean = False): TSexagesimalCoordinate;
 Function SexagesimalToDecimalCoordinates(Const Coordinates: TSexagesimalCoordinates): TCoordinates;
-Function DecimalToSexagesimalCoordinates(Const Coordinates: TCoordinates): TSexagesimalCoordinates;
+Function DecimalToSexagesimalCoordinates(Const Coordinates: TCoordinates; IgnoreSeconds: Boolean = False): TSexagesimalCoordinates;
 Function GeodeticToGeocentric(Const Coordinates: TCoordinates; Const Ellipsoid: TEllipsoid):TCoordinates;
 Function GeocentricToGeodetic(Const Coordinates: TCoordinates; Const Ellipsoid: TEllipsoid):TCoordinates;
 Function HelmertTransform(Const Coordinates: TCoordinates; Const HelmertTransformParameters: THelmertTransformParameters): TCoordinates;
@@ -202,6 +203,11 @@ Var
   CoordinateSystems: TCoordinateSystems;
 
 Implementation
+
+Operator=(A, B: TCoordinates): Boolean;
+Begin
+  Result := (T3DCoordinates(A)=T3DCoordinates(B));
+End;
 
 Operator:=(A: TPlanarCoordinates): TCoordinates;
 Begin
@@ -300,7 +306,7 @@ Begin;
     Result := Sign*(Degrees+Minutes*OneOverSixty+Seconds*OneOverSixtySquared);
 End;
 
-Function DecimalToSexagesimalCoordinate(Const Coordinate: TCoordinate): TSexagesimalCoordinate;
+Function DecimalToSexagesimalCoordinate(Const Coordinate: TCoordinate; IgnoreSeconds: Boolean = False): TSexagesimalCoordinate;
 Var
   Value: TCoordinate;
 Const
@@ -318,14 +324,20 @@ Begin
           Seconds := 0;
         End
       Else
-        Begin
-          Minutes := Int(Value+Epsilon);
-          Value := (Value-Minutes)*60;
-          If Value<0 Then
-            Seconds := 0
-          Else
-            Seconds := Value;
-        End;
+        If IgnoreSeconds Then
+          Begin
+            Minutes := Value;
+            Seconds := 0;
+          End
+        Else
+          Begin
+            Minutes := Int(Value+Epsilon);
+            Value := (Value-Minutes)*60;
+            If Value<0 Then
+              Seconds := 0
+            Else
+              Seconds := Value;
+          End;
     End;
 End;
 
@@ -339,12 +351,12 @@ Begin
     End;
 End;
 
-Function DecimalToSexagesimalCoordinates(Const Coordinates: TCoordinates): TSexagesimalCoordinates;
+Function DecimalToSexagesimalCoordinates(Const Coordinates: TCoordinates; IgnoreSeconds: Boolean = False): TSexagesimalCoordinates;
 Begin
   With Result Do
     Begin
-      Latitude := DecimalToSexagesimalCoordinate(Coordinates.Latitude);
-      Longitude := DecimalToSexagesimalCoordinate(Coordinates.Longitude);
+      Latitude := DecimalToSexagesimalCoordinate(Coordinates.Latitude, IgnoreSeconds);
+      Longitude := DecimalToSexagesimalCoordinate(Coordinates.Longitude, IgnoreSeconds);
       Altitude := Coordinates.Altitude;
     End;
 End;
