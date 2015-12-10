@@ -208,8 +208,11 @@ Begin
                   If (Coordinate>180) And (Coordinate<=360) Then
                     FCoordinate := Coordinate-360;
                 End;
-        FEdit.Text := FormatTypedCoordinate(Coordinate, TCoordinatesEntryPanel(Parent).CoordinateType, AxisType,
-                                            TCoordinatesEntryPanel(Parent).DecimalPlaces, TCoordinatesEntryPanel(Parent).Options);
+        If TCoordinatesEntryPanel(Parent).CoordinateSystemIndex=-1 Then
+          FEdit.Text := EmptyStr
+        Else
+          FEdit.Text := FormatTypedCoordinate(Coordinate, TCoordinatesEntryPanel(Parent).CoordinateType, AxisType,
+                                              TCoordinatesEntryPanel(Parent).DecimalPlaces, TCoordinatesEntryPanel(Parent).Options);
       End;
 End;
 
@@ -440,7 +443,11 @@ End;
 
 Function TCoordinatesEntryPanel.GetCoordinateSystemIndex: Integer;
 Begin
-  Result := CoordinateSystems.FindByDescription(FCoordinateSystemPanel.FComboBox.Text);
+  Try
+    Result := CoordinateSystems.FindByDescription(FCoordinateSystemPanel.FComboBox.Text);
+  Except
+    Result := -1;
+  End;
 End;
 
 Function TCoordinatesEntryPanel.GetValid: Boolean;
