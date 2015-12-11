@@ -22,8 +22,8 @@ Unit CoordCtrls;
 Interface
 
 Uses
-  Classes, SysUtils, LCLType, LResources, Forms, Controls,
-  Graphics, Dialogs, StdCtrls, ExtCtrls, Geometry, Geodesy, GeomUtils, GeodUtils;
+  Classes, SysUtils, LCLType, LResources, Forms, Controls, Graphics, Dialogs,
+  StdCtrls, ExtCtrls, Geometry, Geodesy, GeomUtils, GeodUtils, OSTab;
 
 Type
   TPanelType = (ptInput, ptOutput);
@@ -92,6 +92,8 @@ Type
     FThirdCoordinatePanel: TCoordinatePanel;
     FPanelType: TPanelType;
     FCoordinateType: TCoordinateType;
+    FShowHeightDatumSuffix: Boolean;
+    FVerticalDatum: TVerticalDatumCode;
     Function GetCoordinates: TCoordinates;
     Function GetCoordinatesAsText: String;
     Function GetCoordinateSystemIndex: Integer;
@@ -113,7 +115,9 @@ Type
     Property HeightDecimalPlaces: Integer Read FHeightDecimalPlaces Write FHeightDecimalPlaces;
     Property Locked: Boolean Read FLocked Write SetLocked;
     Property Options: TTypedOptions Read FOptions Write FOptions;
+    Property ShowHeightDatumSuffix: Boolean Read FShowHeightDatumSuffix Write FShowHeightDatumSuffix;
     Property Valid: Boolean Read GetValid;
+    Property VerticalDatum: TVerticalDatumCode Read FVerticalDatum Write FVerticalDatum;
     Property OnChangeSystem: TNotifyEvent Read FOnChangeSystem Write FOnChangeSystem;
     Property OnValid: TNotifyEvent Read FOnValid Write FOnValid;
   Published
@@ -181,6 +185,8 @@ Begin
 End;
 
 Procedure TCoordinatePanel.Format(Tidy: Boolean = False);
+Var
+  DatumSuffix: String;
 Begin
   If FEdit.ReadOnly Then
     FEdit.Font.Color := clBlue
@@ -190,11 +196,23 @@ Begin
     Else
       FEdit.Font.Color := clRed;
   If (Valid And Tidy) Or FEdit.ReadOnly Then
-    If (AxisType=atZAxis) And (TCoordinatesEntryPanel(Parent).CoordinateType<>ctCartesian) Then
-      FEdit.Text := FormatTypedCoordinate(Coordinate, TCoordinatesEntryPanel(Parent).CoordinateType, AxisType,
-                                          TCoordinatesEntryPanel(Parent).HeightDecimalPlaces, TCoordinatesEntryPanel(Parent).Options)
+    { For non cartesian Z axes. }
+    If (TCoordinatesEntryPanel(Parent).CoordinateType<>ctCartesian) And (AxisType=atZAxis) Then
+      Try
+        If (toHeightDatumSuffix In TCoordinatesEntryPanel(Parent).Options) And
+            TCoordinatesEntryPanel(Parent).ShowHeightDatumSuffix Then
+          DatumSuffix := VerticalDataCodeToAbbreviation(TCoordinatesEntryPanel(Parent).VerticalDatum)
+        Else
+          DatumSuffix := '';
+        FEdit.Text := FormatTypedCoordinate(Coordinate, TCoordinatesEntryPanel(Parent).CoordinateType, AxisType,
+                                            TCoordinatesEntryPanel(Parent).HeightDecimalPlaces,
+                                            TCoordinatesEntryPanel(Parent).Options, DatumSuffix);
+      Except
+        FEdit.Text := EmptyStr;
+      End
     Else
-      Begin
+      { Otherwise for geodetic or projected non-height axes. }
+      Try
         { Adjust geodetic X axis coordinate value to fit within the valid range for the current positive longitude setting. }
         If  TCoordinatesEntryPanel(Parent).CoordinateType=ctGeodetic Then
           If AxisType=atXAxis Then
@@ -208,11 +226,11 @@ Begin
                   If (Coordinate>180) And (Coordinate<=360) Then
                     FCoordinate := Coordinate-360;
                 End;
-        If TCoordinatesEntryPanel(Parent).CoordinateSystemIndex=-1 Then
-          FEdit.Text := EmptyStr
-        Else
-          FEdit.Text := FormatTypedCoordinate(Coordinate, TCoordinatesEntryPanel(Parent).CoordinateType, AxisType,
-                                              TCoordinatesEntryPanel(Parent).DecimalPlaces, TCoordinatesEntryPanel(Parent).Options);
+        FEdit.Text := FormatTypedCoordinate(Coordinate, TCoordinatesEntryPanel(Parent).CoordinateType, AxisType,
+                                            TCoordinatesEntryPanel(Parent).DecimalPlaces,
+                                            TCoordinatesEntryPanel(Parent).Options);
+      Except
+        FEdit.Text := EmptyStr;
       End;
 End;
 
@@ -381,6 +399,7 @@ Begin
   DecimalPlaces := 2;
   Options := [];
   ThisPanel := Self;
+  FShowHeightDatumSuffix := False;
   { The child controls are created in reverse order so that Align=alTop orders them correctly. }
   FThirdCoordinatePanel := TCoordinatePanel.Create(TheOwner, 'Z coordinate:', atZAxis, True);
   FThirdCoordinatePanel.Parent := ThisPanel;
@@ -443,11 +462,7 @@ End;
 
 Function TCoordinatesEntryPanel.GetCoordinateSystemIndex: Integer;
 Begin
-  Try
-    Result := CoordinateSystems.FindByDescription(FCoordinateSystemPanel.FComboBox.Text);
-  Except
-    Result := -1;
-  End;
+  Result := CoordinateSystems.FindByDescription(FCoordinateSystemPanel.FComboBox.Text);
 End;
 
 Function TCoordinatesEntryPanel.GetValid: Boolean;
@@ -466,30 +481,23 @@ Begin
 End;
 
 Procedure TCoordinatesEntryPanel.SetCoordinates(Value: TCoordinates);
-  Procedure SetCoordinateForAxis(Coordinates: TCoordinates; Edit: TEdit; AxisType: TAxisType);
+  Procedure SetCoordinateForAxis(Coordinates: TCoordinates; CoordinatePanel: TCoordinatePanel);
   Begin
-    Case AxisType Of
-    atXAxis: Edit.Text := FormatCoordinate(Coordinates.X);
-    atYAxis: Edit.Text := FormatCoordinate(Coordinates.Y);
-    atZAxis: Edit.Text := FormatCoordinate(Coordinates.Z);
-    End;
+    With CoordinatePanel Do
+      Begin
+        Case AxisType Of
+        atXAxis: FCoordinate := Coordinates.X;
+        atYAxis: FCoordinate := Coordinates.Y;
+        atZAxis: FCoordinate := Coordinates.Z;
+        End;
+        FEdit.Text := FormatCoordinate(Coordinate);
+        Format(True);
+      End;
   End;
 Begin
-  With FFirstCoordinatePanel Do
-    Begin
-      SetCoordinateForAxis(Value, FEdit, AxisType);
-      Format(True);
-    End;
-  With FSecondCoordinatePanel Do
-    Begin
-      SetCoordinateForAxis(Value, FEdit, AxisType);
-      Format(True);
-    End;
-  With FThirdCoordinatePanel Do
-    Begin
-      SetCoordinateForAxis(Value, FEdit, AxisType);
-      Format(True);
-    End;
+  SetCoordinateForAxis(Value, FFirstCoordinatePanel);
+  SetCoordinateForAxis(Value, FSecondCoordinatePanel);
+  SetCoordinateForAxis(Value, FThirdCoordinatePanel);
 End;
 
 Procedure TCoordinatesEntryPanel.SetCoordinateSystemIndex(Value: Integer);

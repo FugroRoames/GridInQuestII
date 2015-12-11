@@ -177,6 +177,7 @@ Begin
   InputPanel := TCoordinatesEntryPanel.Create(SidePanel, ptInput);
   InputPanel.TabOrder := 0;
   OutputPanel.TabOrder := 1;
+  OutputPanel.ShowHeightDatumSuffix := True;
   InputPanel.OnValid := @DoInputValid;
   InputPanel.OnChangeSystem := @DoInputChangeSystem;
   OutputPanel.OnChangeSystem := @DoOutputChangeSystem;
@@ -692,6 +693,7 @@ Begin
       InputIndex := InputPanel.CoordinateSystemIndex;
       OutputIndex := OutputPanel.CoordinateSystemIndex;
       OutputPanel.Coordinates := TransformCoordinates(InputPanel.Coordinates, InputIndex, OutputIndex);
+      OutputPanel.VerticalDatum := CoordinateSystems.Items(OutputIndex).LastVerticalDatum;
     End;
 End;
 

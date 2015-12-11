@@ -33,8 +33,10 @@ Type
                   toCompactWhitespace, toPositiveLongitude, toUnitSuffix, toHeightDatumSuffix);
   TTypedOptions = Set Of TTypedOption;
 
-Function FormatTypedCoordinate(Const Coordinate: TCoordinate; CoordinateType: TCoordinateType; AxisType: TAxisType; DecimalPlaces: Integer = -1; Options: TTypedOptions = []): String;
-Function FormatTypedCoordinates(Const Coordinates: TCoordinates; CoordinateType: TCoordinateType; AxisOrder: TAxisOrder; DecimalPlaces: Integer = -1; Options: TTypedOptions = []; Const Spacer: String = ' '): String;
+Function FormatTypedCoordinate(Const Coordinate: TCoordinate; CoordinateType: TCoordinateType; AxisType: TAxisType;
+                               DecimalPlaces: Integer = -1; Options: TTypedOptions = []; DatumSuffix: String = ''): String;
+Function FormatTypedCoordinates(Const Coordinates: TCoordinates; CoordinateType: TCoordinateType; AxisOrder: TAxisOrder;
+                                DecimalPlaces: Integer = -1; Options: TTypedOptions = []; DatumSuffix: String = ''; Const Spacer: String = ' '): String;
 Function TryGeodeticTextToCoordinate(Text: String; Var Coordinate: TCoordinate; AxisType: TAxisType; UnitSuffix: String = 'm'): Boolean;
 Function TryCartesianTextToCoordinate(Text: String; Var Coordinate: TCoordinate; AxisType: TAxisType; UnitSuffix: String = 'm'): Boolean;
 Function TryProjectedTextToCoordinate(Text: String; Var Coordinate: TCoordinate; AxisType: TAxisType; UnitSuffix: String = 'm'): Boolean;
@@ -53,7 +55,8 @@ Const
   TwoPartSexagesimalLetterFormat = '%.0FD %.*FM';
   ThreePartSexagesimalLetterFormat = '%.0FD %.0FM %.*FS';
 
-Function FormatTypedCoordinate(Const Coordinate: TCoordinate; CoordinateType: TCoordinateType; AxisType: TAxisType; DecimalPlaces: Integer; Options: TTypedOptions = []): String;
+Function FormatTypedCoordinate(Const Coordinate: TCoordinate; CoordinateType: TCoordinateType; AxisType: TAxisType;
+                               DecimalPlaces: Integer; Options: TTypedOptions = []; DatumSuffix: String = ''): String;
 Var
   ValidatedCoordinate: TCoordinate;
   Prefix: String;
@@ -141,7 +144,8 @@ Var
       UnitText := '';
     Result := FormatCoordinateWithUnits(ValidatedCoordinate, UnitText, DecimalPlaces, True);
     If toHeightDatumSuffix In Options Then
-      Suffix := '[DATUM]'; // TODO: Lookup from coordinate system properties or additional parameter?
+      If DatumSuffix<>'' Then
+        Suffix := '['+DatumSuffix+']';
   End;
   Function FormatGeneralCoordinate(Identifier: String): String;
   Begin
@@ -188,25 +192,45 @@ Begin
   Result := Trim(Prefix+Spacer+Result+Spacer+Suffix);
 End;
 
-Function FormatTypedCoordinates(Const Coordinates: TCoordinates; CoordinateType: TCoordinateType; AxisOrder: TAxisOrder; DecimalPlaces: Integer; Options: TTypedOptions = []; Const Spacer: String = ' '): String;
+Function FormatTypedCoordinates(Const Coordinates: TCoordinates; CoordinateType: TCoordinateType; AxisOrder: TAxisOrder;
+                                DecimalPlaces: Integer; Options: TTypedOptions = []; DatumSuffix: String = ''; Const Spacer: String = ' '): String;
 Begin
   Case AxisOrder Of
   aoXYZ:
     Result := FormatTypedCoordinate(Coordinates.X, CoordinateType, atXAxis, DecimalPlaces, Options)+Spacer+
               FormatTypedCoordinate(Coordinates.Y, CoordinateType, atYAxis, DecimalPlaces, Options)+Spacer+
-              FormatTypedCoordinate(Coordinates.Z, CoordinateType, atZAxis, DecimalPlaces, Options);
+              FormatTypedCoordinate(Coordinates.Z, CoordinateType, atZAxis, DecimalPlaces, Options, DatumSuffix);
   aoYXZ:
     Result := FormatTypedCoordinate(Coordinates.Y, CoordinateType, atYAxis, DecimalPlaces, Options)+Spacer+
               FormatTypedCoordinate(Coordinates.X, CoordinateType, atXAxis, DecimalPlaces, Options)+Spacer+
-              FormatTypedCoordinate(Coordinates.Z, CoordinateType, atZAxis, DecimalPlaces, Options);
+              FormatTypedCoordinate(Coordinates.Z, CoordinateType, atZAxis, DecimalPlaces, Options, DatumSuffix);
   End;
+End;
+
+Function TryHeightTextToCoordinate(Text: String; Var Coordinate: TCoordinate; UnitSuffix: String): Boolean;
+Var
+  TextLength: Integer;
+  SectionLength: Integer;
+Begin
+  { Remove any datum suffix. }
+  SectionLength := Pos('[', Text)-1;
+  If SectionLength>0 Then
+    SetLength(Text, SectionLength);
+  { Remove any unit suffix. }
+  Text := Trim(Text);
+  TextLength := Length(Text);
+  SectionLength := Length(UnitSuffix);
+  If SameText(Copy(Text, 1+TextLength-SectionLength, SectionLength), UnitSuffix) Then
+    SetLength(Text, TextLength-SectionLength);
+  { Atempt to convert the remainder to a valid value and quit. }
+  Text := Trim(Text);
+  Result := TryStrToFloat(Text, Coordinate);
 End;
 
 Function TryGeodeticTextToCoordinate(Text: String; Var Coordinate: TCoordinate; AxisType: TAxisType; UnitSuffix: String = 'm'): Boolean;
 Var
   Sign: Integer;
   TextLength: Integer;
-  SuffixLength: Integer;
   HasPrefix: Boolean;
   HasSuffix: Boolean;
   PartCount: Integer;
@@ -242,27 +266,24 @@ Var
 Begin
   Sign := 1;
   Result := False;
-  { Prepare the text for parsing. }
-  SuffixLength := Length(UnitSuffix);
-  Text := UpperCase(Trim(Text));
-  Text := StringReplace(Text, '°', 'D', [rfReplaceAll]); { UTF8 Degree symbol. }
-  Text := StringReplace(Text, #176, 'D', [rfReplaceAll]); { ANSI Degree symbol. }
-  Text := StringReplace(Text, '''', 'M', [rfReplaceAll]);
-  Text := StringReplace(Text, '"', 'S', [rfReplaceAll]);
   { Quit if the text is empty. }
+  Text := Trim(Text);
   TextLength := Length(Text);
   If TextLength=0 Then
     Exit;
   { Process an altitude component. }
   If AxisType=atZAxis Then
     Begin
-      { Remove any unit suffix. }
-      If Copy(Text, 1+TextLength-SuffixLength, SuffixLength)=UpperCase(UnitSuffix) Then
-        SetLength(Text, TextLength-SuffixLength);
-      { Atempt to convert the remainder to a valid value and quit. }
-      Result := TryStrToFloat(Text, Coordinate);
+      Result := TryHeightTextToCoordinate(Text, Coordinate, UnitSuffix);
       Exit;
     End;
+  { Prepare the text for parsing geodetic axes. }
+  Text := UpperCase(Trim(Text));
+  Text := StringReplace(Text, '°', 'D', [rfReplaceAll]); { UTF8 Degree symbol. }
+  Text := StringReplace(Text, #176, 'D', [rfReplaceAll]); { ANSI Degree symbol. }
+  Text := StringReplace(Text, '''', 'M', [rfReplaceAll]);
+  Text := StringReplace(Text, '"', 'S', [rfReplaceAll]);
+  TextLength := Length(Text);
   { Remove hemisphere or sign prefix, noting the sign value. }
   HasPrefix := ValidHemispereLetter(Text[1]);
   If Not HasPrefix Then
@@ -432,41 +453,39 @@ End;
 
 Function TryProjectedTextToCoordinate(Text: String; Var Coordinate: TCoordinate; AxisType: TAxisType; UnitSuffix: String): Boolean;
 Var
-  SuffixLength: Integer;
+  SectionLength: Integer;
   TextLength: Integer;
   HasAxisSuffix: Boolean;
   AxisSuffix: Char;
 Begin
-  Result := False;
-  { Prepare the text for parsing. }
-  SuffixLength := Length(UnitSuffix);
-  Text := UpperCase(Text);
+  { Process any elevation component. }
+  If AxisType=atZAxis Then
+    Begin
+      Result := TryHeightTextToCoordinate(Text, Coordinate, UnitSuffix);
+      Exit;
+    End;
   { Remove any valid prefix or suffix characters. }
   Case AxisType Of
-  atXAxis:
-    Begin
-      Text := StringReplace(Text, 'E', '', [rfReplaceAll, rfIgnoreCase]);
-      Text := StringReplace(Text, 'W', '', [rfReplaceAll, rfIgnoreCase]);
-    End;
-  atYAxis:
-    Begin
-      Text := StringReplace(Text, 'N', '', [rfReplaceAll, rfIgnoreCase]);
-      Text := StringReplace(Text, 'S', '', [rfReplaceAll, rfIgnoreCase]);
-    End;
+  atXAxis: Text := StringReplace(Text, 'E', '', [rfReplaceAll, rfIgnoreCase]);
+  atYAxis: Text := StringReplace(Text, 'N', '', [rfReplaceAll, rfIgnoreCase]);
   End;
-  Text := Trim(Text);
+  { Prepare the text for parsing projected axes. }
+  SectionLength := Length(UnitSuffix);
+  Text := UpperCase(Trim(Text));
   TextLength := Length(Text);
   If TextLength>0 Then
     Begin
       { Remove any unit suffix. }
-      If Copy(Text, 1+TextLength-SuffixLength, SuffixLength)=UpperCase(UnitSuffix) Then
-        SetLength(Text, TextLength-SuffixLength);
+      If Copy(Text, 1+TextLength-SectionLength, SectionLength)=UpperCase(UnitSuffix) Then
+        SetLength(Text, TextLength-SectionLength);
       { Atempt to convert the remainder to a valid value. }
       Result := TryStrToFloat(Trim(Text), Coordinate);
       { Treat negative values for an X or Y axis as invalid. }
       If Coordinate<0 Then
         Result := (AxisType=atZAxis);
-    End;
+    End
+  Else
+    Result := False;
 End;
 
 End.

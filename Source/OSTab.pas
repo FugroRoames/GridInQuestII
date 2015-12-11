@@ -31,8 +31,6 @@ Type
   TOSHorizontalModel = (hmTN02, hmTH15);
   TOSVerticalModel = (vmGM02, vmGM15);
 
-//  NON, ODN, MAR, DOU, STO, KIL, LER, NEW, FAI, FLA, NRO, SSK, FOU, MAL, BEL, OFS
-
 //Type
 //  TVerticalDatumCode = (vdNone, vdOrdnanceDatumNewlyn, vdStMarys, vdDouglas02,
 //                        vdStornoway, vdStKilda, vdLerwick, vdNewlyn, vdFairIsle,
@@ -42,6 +40,7 @@ Type
 Type
   TDatumRecord = Packed Record
     Code: TVerticalDatumCode;
+    Abbreviation: String;
     Name: String;
     Region: String;
   End;
@@ -80,22 +79,22 @@ Type
 
 Const
   VerticalData: Array [0..15] Of TDatumRecord =
-    ((Code: vdNone; Name: 'None'; Region: 'Outside Model'),
-    (Code: vdOrdnanceDatumNewlyn; Name: 'Ordnance Datum Newlyn'; Region: 'UK Mainland'),
-    (Code: vdStMarys; Name: 'St Marys'; Region: 'Scilly Isles'),
-    (Code: vdDouglas02; Name: 'Douglas02'; Region: 'Isle of Man'),
-    (Code: vdStornoway; Name: 'Stornoway'; Region: 'Outer Hebrides'),
-    (Code: vdStKilda; Name: 'St Kilda'; Region: 'St Kilda'),
-    (Code: vdLerwick; Name: 'Lerwick'; Region: 'Shetland Isles'),
-    (Code: vdNewlyn; Name: 'Newlyn'; Region: 'Orkney Isles'),
-    (Code: vdFairIsle; Name: 'Fair Isle'; Region: 'Fair Isle'),
-    (Code: vdFlannanIsles; Name: 'Flannan Isles'; Region: 'Flannan Isles'),
-    (Code: vdNorthRona; Name: 'North Rona'; Region: 'North Rona'),
-    (Code: vdSuleSkerry; Name: 'Sule Skerry'; Region: 'Sule Skerry'),
-    (Code: vdFoula; Name: 'Foula'; Region: 'Foula'),
-    (Code: vdMalinHead; Name: 'Malin Head'; Region: 'Republic of Ireland'),
-    (Code: vdBelfast; Name: 'Belfast'; Region: 'Northern Ireland'),
-    (Code: vdOffshore; Name: 'Ordnance Datum Newlyn (Offshore)'; Region: 'UK Offshore'));
+    ((Code: vdNone; Abbreviation: 'NON'; Name: 'None'; Region: 'Outside Model'),
+    (Code: vdOrdnanceDatumNewlyn; Abbreviation: 'ODN'; Name: 'Ordnance Datum Newlyn'; Region: 'UK Mainland'),
+    (Code: vdStMarys; Abbreviation: 'MAR'; Name: 'St Marys'; Region: 'Scilly Isles'),
+    (Code: vdDouglas02; Abbreviation: 'DOU'; Name: 'Douglas02'; Region: 'Isle of Man'),
+    (Code: vdStornoway; Abbreviation: 'STO'; Name: 'Stornoway'; Region: 'Outer Hebrides'),
+    (Code: vdStKilda; Abbreviation: 'KIL'; Name: 'St Kilda'; Region: 'St Kilda'),
+    (Code: vdLerwick; Abbreviation: 'LER'; Name: 'Lerwick'; Region: 'Shetland Isles'),
+    (Code: vdNewlyn; Abbreviation: 'NEW'; Name: 'Newlyn'; Region: 'Orkney Isles'),
+    (Code: vdFairIsle; Abbreviation: 'FAI'; Name: 'Fair Isle'; Region: 'Fair Isle'),
+    (Code: vdFlannanIsles; Abbreviation: 'FLA'; Name: 'Flannan Isles'; Region: 'Flannan Isles'),
+    (Code: vdNorthRona; Abbreviation: 'NRO'; Name: 'North Rona'; Region: 'North Rona'),
+    (Code: vdSuleSkerry; Abbreviation: 'SSK'; Name: 'Sule Skerry'; Region: 'Sule Skerry'),
+    (Code: vdFoula; Abbreviation: 'FOU'; Name: 'Foula'; Region: 'Foula'),
+    (Code: vdMalinHead; Abbreviation: 'MAL'; Name: 'Malin Head'; Region: 'Republic of Ireland'),
+    (Code: vdBelfast; Abbreviation: 'BEL'; Name: 'Belfast'; Region: 'Northern Ireland'),
+    (Code: vdOffshore; Abbreviation: 'OFF'; Name: 'Ordnance Datum Newlyn (Offshore)'; Region: 'UK Offshore'));
 
 Type
   TInterpolationParameters = Record
@@ -105,6 +104,7 @@ Type
     U, UI: TCoordinate;
   End;
 
+Function VerticalDataCodeToAbbreviation(DatumCode: TVerticalDatumCode): String;
 Function VerticalDataCodeToName(DatumCode: TVerticalDatumCode): String;
 Function VerticalDataNameToCode(DatumName: String): TVerticalDatumCode;
 Function BilinearGridInterpolationParameters(Const Origin: TCoordinates; Const Coordinates: TCoordinates; Const GridScale: TCoordinate): TInterpolationParameters;
@@ -113,6 +113,20 @@ Function InterpolateVerticalTable(Const VerticalTable: TVerticalTable; Parameter
 Function ParametersValid(Parameters: TInterpolationParameters; DataHeader: TDataHeader): Boolean;
 
 Implementation
+
+Function VerticalDataCodeToAbbreviation(DatumCode: TVerticalDatumCode): String;
+Var
+  Index: Integer;
+Begin
+  For Index := Low(VerticalData) To High(VerticalData) Do
+    With VerticalData[Index] Do
+      If DatumCode=Code Then
+        Begin
+          Result := Abbreviation;
+          Exit;
+        End;
+  Result := EmptyStr;
+End;
 
 Function VerticalDataCodeToName(DatumCode: TVerticalDatumCode): String;
 Var
