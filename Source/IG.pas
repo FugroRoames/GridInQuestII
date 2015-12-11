@@ -122,6 +122,7 @@ Begin
   // Test for bounds?
   If Not WGS84CoordinatesToIGCoordinates(GeodeticCoordinates, vmGM15, PreferredVerticalDatum, Result, LastVerticalDatum) Then
     Result := NullCoordinates;
+  gLastVerticalDatum := LastVerticalDatum;
 End;
 
 {$IFDEF LEVEL2}

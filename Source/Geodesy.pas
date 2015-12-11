@@ -165,6 +165,8 @@ Type
                         vdFlannanIsles, vdNorthRona, vdSuleSkerry, vdFoula,
                         vdMalinHead, vdBelfast, vdOffshore);
 
+Var // TODO: Should this be used?
+  gLastVerticalDatum: TVerticalDatumCode;
 
 Type
   TCoordinateSystem = Object

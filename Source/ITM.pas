@@ -118,6 +118,7 @@ Begin
   // Test for bounds?
   If Not WGS84CoordinatesToITMCoordinates(GeodeticCoordinates, vmGM15, PreferredVerticalDatum, Result, LastVerticalDatum) Then
     Result := NullCoordinates;
+  gLastVerticalDatum := LastVerticalDatum;
 End;
 
 Procedure TTransformationData.SetTables(Const VerticalModel: TOSVerticalModel);

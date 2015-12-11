@@ -25,7 +25,7 @@ Uses
   Classes, SysUtils, FileUtil, LCLIntf, Forms, Controls, Graphics, Dialogs,
   ExtCtrls, Menus, ActnList, StdCtrls, Grids, Clipbrd, GlobeCtrl, CoordCtrls,
   DataStreams, Progress, Settings, Options, About, Config, Geodesy,
-  GeomUtils, GeodUtils;
+  GeomUtils, GeodUtils, OSTab;
 
 Type
   TMainForm = Class(TForm)
@@ -141,6 +141,7 @@ Type
     InputThirdFieldIndex: Integer;
     OutputSystemIndex: Integer;
     OutputCoordinates: Array Of TCoordinates;
+    OutputData: Array Of TVerticalDatumCode;
     OutputFieldTerminator: Char;
     OutputTextDelimiter: Char;
     Procedure SetupDataGrid;
@@ -402,6 +403,7 @@ Begin
       Screen.Cursor := crHourglass;
       ProgressDisplay.Show('Transforming Data');
       SetLength(OutputCoordinates, InputData.RecordCount);
+      SetLength(OutputData, InputData.RecordCount);
       LastRecordIndex := InputData.RecordCount-1;
       For RecordIndex := 0 To LastRecordIndex Do
         Begin
@@ -409,6 +411,7 @@ Begin
           InputCoordinates := DataDrawGridCoordinates(RecordIndex+1);
           { Calculate the output coordinates}
           OutputCoordinates[RecordIndex] := TransformCoordinates(InputCoordinates, InputSystemIndex, OutputSystemIndex);
+          OutputData[RecordIndex] := gLastVerticalDatum;
           { Update progress display. }
           ProgressDisplay.Progress := Integer(Int64(100*Int64(RecordIndex)) Div LastRecordIndex);
         End;
@@ -430,6 +433,7 @@ Begin
   InputFirstFieldIndex := -1;
   InputSecondFieldIndex := -1;
   SetLength(OutputCoordinates, 0);
+  SetLength(OutputData, 0);
 End;
 
 Procedure TMainForm.ExitActionExecute(Sender: TObject);
@@ -603,7 +607,8 @@ Begin
   Case AxisType Of
   atXAxis: Result := FormatTypedCoordinate(OutputCoordinates[RecordNumber].X, CoordinateType, AxisType, DecimalPlaces, Options);
   atYAxis: Result := FormatTypedCoordinate(OutputCoordinates[RecordNumber].Y, CoordinateType, AxisType, DecimalPlaces, Options);
-  atZAxis: Result := FormatTypedCoordinate(OutputCoordinates[RecordNumber].Z, CoordinateType, AxisType, DecimalPlaces, Options);
+  atZAxis: Result := FormatTypedCoordinate(OutputCoordinates[RecordNumber].Z, CoordinateType, AxisType, DecimalPlaces, Options,
+                                           VerticalDataCodeToAbbreviation(OutputData[RecordNumber]));
   End;
 End;
 
@@ -686,14 +691,17 @@ Procedure TMainForm.DoOutputChangeSystem(Sender: TObject);
 Var
   InputIndex: Integer;
   OutputIndex: Integer;
+  NewCoordinates: TCoordinates;
 Begin
   SetPanelFormattingOptions(OutputPanel, InteractiveSettings);
   If InputPanel.Valid Then
     Begin
       InputIndex := InputPanel.CoordinateSystemIndex;
       OutputIndex := OutputPanel.CoordinateSystemIndex;
-      OutputPanel.Coordinates := TransformCoordinates(InputPanel.Coordinates, InputIndex, OutputIndex);
-      OutputPanel.VerticalDatum := CoordinateSystems.Items(OutputIndex).LastVerticalDatum;
+      NewCoordinates := TransformCoordinates(InputPanel.Coordinates, InputIndex, OutputIndex);
+      OutputPanel.VerticalDatum := gLastVerticalDatum;
+      OutputPanel.Coordinates := NewCoordinates;
+//      OutputPanel.VerticalDatum := CoordinateSystems.Items(OutputIndex).LastVerticalDatum;
     End;
 End;
 
