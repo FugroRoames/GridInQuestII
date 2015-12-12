@@ -131,7 +131,7 @@ Type
     Procedure DoParseProgress(Sender: TObject; Progress: Integer);
     Procedure SetPanelFormattingOptions(DataPanel: TCoordinatesEntryPanel; Settings: TFormatSettings);
     Procedure CoordinateTypeAndSettingsToOptionsAndDecimalPlaces(Const CoordinateType: TCoordinateType; Const Settings: TFormatSettings;
-                                                                 Var Options: TTypedOptions; Var DecimalPlaces, HeightDecimalPlaces: Integer);
+                                                                 Out Options: TTypedOptions; Out DecimalPlaces, HeightDecimalPlaces: Integer);
   Public
     { Public declarations. }
     GlobeSystemIndex: Integer;
@@ -178,7 +178,6 @@ Begin
   InputPanel := TCoordinatesEntryPanel.Create(SidePanel, ptInput);
   InputPanel.TabOrder := 0;
   OutputPanel.TabOrder := 1;
-  OutputPanel.ShowHeightDatumSuffix := True;
   InputPanel.OnValid := @DoInputValid;
   InputPanel.OnChangeSystem := @DoInputChangeSystem;
   OutputPanel.OnChangeSystem := @DoOutputChangeSystem;
@@ -411,7 +410,7 @@ Begin
           InputCoordinates := DataDrawGridCoordinates(RecordIndex+1);
           { Calculate the output coordinates}
           OutputCoordinates[RecordIndex] := TransformCoordinates(InputCoordinates, InputSystemIndex, OutputSystemIndex);
-          OutputData[RecordIndex] := gLastVerticalDatum;
+          OutputData[RecordIndex] := CoordinateSystems.Items(OutputSystemIndex).LastVerticalDatum;
           { Update progress display. }
           ProgressDisplay.Progress := Integer(Int64(100*Int64(RecordIndex)) Div LastRecordIndex);
         End;
@@ -615,20 +614,24 @@ End;
 Function TMainForm.TransformCoordinates(Const Coordinates: TCoordinates; InputIndex, OutputIndex: Integer): TCoordinates;
 Var
   InputCoordinates, GeocentricCoordinates: TCoordinates;
+  InputCoordinateSystemPointer: TCoordinateSystemPointer;
+  OutputCoordinateSystemPointer: TCoordinateSystemPointer;
 Begin
   If (InputIndex<>-1) And (OutputIndex<>-1) Then
     Begin
-      If CoordinateSystems.Items(InputIndex).CoordinateType=ctGeodetic Then
+      InputCoordinateSystemPointer := CoordinateSystems.Pointers(InputIndex);
+      OutputCoordinateSystemPointer := CoordinateSystems.Pointers(OutputIndex);
+      If InputCoordinateSystemPointer^.CoordinateType=ctGeodetic Then
         InputCoordinates := GeodeticDegToRad(Coordinates)
       Else
         InputCoordinates := Coordinates;
       Try
-        GeocentricCoordinates := CoordinateSystems.Items(InputIndex).ConvertToGeocentric(InputCoordinates);
+        GeocentricCoordinates := InputCoordinateSystemPointer^.ConvertToGeocentric(InputCoordinates);
         If GeocentricCoordinates=NullCoordinates Then
           Result := NullCoordinates
         Else
-          Result := CoordinateSystems.Items(OutputIndex).ConvertFromGeocentric(GeocentricCoordinates);
-        If CoordinateSystems.Items(OutputIndex).CoordinateType=ctGeodetic Then
+          Result := OutputCoordinateSystemPointer^.ConvertFromGeocentric(GeocentricCoordinates);
+        If OutputCoordinateSystemPointer^.CoordinateType=ctGeodetic Then
           Result := GeodeticRadToDeg(Result);
       Except
         Result := NullCoordinates;
@@ -699,9 +702,8 @@ Begin
       InputIndex := InputPanel.CoordinateSystemIndex;
       OutputIndex := OutputPanel.CoordinateSystemIndex;
       NewCoordinates := TransformCoordinates(InputPanel.Coordinates, InputIndex, OutputIndex);
-      OutputPanel.VerticalDatum := gLastVerticalDatum;
+      OutputPanel.VerticalDatum := CoordinateSystems.Items(OutputIndex).LastVerticalDatum;
       OutputPanel.Coordinates := NewCoordinates;
-//      OutputPanel.VerticalDatum := CoordinateSystems.Items(OutputIndex).LastVerticalDatum;
     End;
 End;
 
@@ -788,7 +790,7 @@ Begin
   DataPanel.Refresh;
 End;
 
-Procedure TMainForm.CoordinateTypeAndSettingsToOptionsAndDecimalPlaces(Const CoordinateType: TCoordinateType; Const Settings: TFormatSettings; Var Options: TTypedOptions; Var DecimalPlaces, HeightDecimalPlaces: Integer);
+Procedure TMainForm.CoordinateTypeAndSettingsToOptionsAndDecimalPlaces(Const CoordinateType: TCoordinateType; Const Settings: TFormatSettings; Out Options: TTypedOptions; Out DecimalPlaces, HeightDecimalPlaces: Integer);
 Begin
   Options := [];
   Case CoordinateType Of

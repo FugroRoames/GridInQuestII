@@ -97,6 +97,7 @@ Begin
   AxisOrder := NewAxisOrder;
   GeodeticBounds := NewBounds;
   PreferredVerticalDatum := NewPreferredVerticalDatum;
+  LastVerticalDatum := vdNone;
 End;
 
 Function TITMCoordinateSystem.ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates;
@@ -118,7 +119,6 @@ Begin
   // Test for bounds?
   If Not WGS84CoordinatesToITMCoordinates(GeodeticCoordinates, vmGM15, PreferredVerticalDatum, Result, LastVerticalDatum) Then
     Result := NullCoordinates;
-  gLastVerticalDatum := LastVerticalDatum;
 End;
 
 Procedure TTransformationData.SetTables(Const VerticalModel: TOSVerticalModel);

@@ -92,7 +92,6 @@ Type
     FThirdCoordinatePanel: TCoordinatePanel;
     FPanelType: TPanelType;
     FCoordinateType: TCoordinateType;
-    FShowHeightDatumSuffix: Boolean;
     FVerticalDatum: TVerticalDatumCode;
     Function GetCoordinates: TCoordinates;
     Function GetCoordinatesAsText: String;
@@ -115,7 +114,6 @@ Type
     Property HeightDecimalPlaces: Integer Read FHeightDecimalPlaces Write FHeightDecimalPlaces;
     Property Locked: Boolean Read FLocked Write SetLocked;
     Property Options: TTypedOptions Read FOptions Write FOptions;
-    Property ShowHeightDatumSuffix: Boolean Read FShowHeightDatumSuffix Write FShowHeightDatumSuffix;
     Property Valid: Boolean Read GetValid;
     Property VerticalDatum: TVerticalDatumCode Read FVerticalDatum Write FVerticalDatum;
     Property OnChangeSystem: TNotifyEvent Read FOnChangeSystem Write FOnChangeSystem;
@@ -200,13 +198,16 @@ Begin
     If (TCoordinatesEntryPanel(Parent).CoordinateType<>ctCartesian) And (AxisType=atZAxis) Then
       Try
         If (toHeightDatumSuffix In TCoordinatesEntryPanel(Parent).Options) And
-            TCoordinatesEntryPanel(Parent).ShowHeightDatumSuffix Then
+           (TCoordinatesEntryPanel(Parent).FPanelType=ptOutput) Then
           DatumSuffix := VerticalDataCodeToAbbreviation(TCoordinatesEntryPanel(Parent).VerticalDatum)
         Else
           DatumSuffix := '';
-        FEdit.Text := FormatTypedCoordinate(Coordinate, TCoordinatesEntryPanel(Parent).CoordinateType, AxisType,
-                                            TCoordinatesEntryPanel(Parent).HeightDecimalPlaces,
-                                            TCoordinatesEntryPanel(Parent).Options, DatumSuffix);
+        //If TCoordinatesEntryPanel(Parent).CoordinateSystemIndex=-1 Then
+        //  FEdit.Text := EmptyStr
+        //Else
+          FEdit.Text := FormatTypedCoordinate(Coordinate, TCoordinatesEntryPanel(Parent).CoordinateType, AxisType,
+                                              TCoordinatesEntryPanel(Parent).HeightDecimalPlaces,
+                                              TCoordinatesEntryPanel(Parent).Options, DatumSuffix);
       Except
         FEdit.Text := EmptyStr;
       End
@@ -226,9 +227,12 @@ Begin
                   If (Coordinate>180) And (Coordinate<=360) Then
                     FCoordinate := Coordinate-360;
                 End;
-        FEdit.Text := FormatTypedCoordinate(Coordinate, TCoordinatesEntryPanel(Parent).CoordinateType, AxisType,
-                                            TCoordinatesEntryPanel(Parent).DecimalPlaces,
-                                            TCoordinatesEntryPanel(Parent).Options);
+        //If TCoordinatesEntryPanel(Parent).CoordinateSystemIndex=-1 Then
+        //  FEdit.Text := EmptyStr
+        //Else
+          FEdit.Text := FormatTypedCoordinate(Coordinate, TCoordinatesEntryPanel(Parent).CoordinateType, AxisType,
+                                              TCoordinatesEntryPanel(Parent).DecimalPlaces,
+                                              TCoordinatesEntryPanel(Parent).Options);
       Except
         FEdit.Text := EmptyStr;
       End;
@@ -399,7 +403,6 @@ Begin
   DecimalPlaces := 2;
   Options := [];
   ThisPanel := Self;
-  FShowHeightDatumSuffix := False;
   { The child controls are created in reverse order so that Align=alTop orders them correctly. }
   FThirdCoordinatePanel := TCoordinatePanel.Create(TheOwner, 'Z coordinate:', atZAxis, True);
   FThirdCoordinatePanel.Parent := ThisPanel;
