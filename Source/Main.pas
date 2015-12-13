@@ -243,7 +243,10 @@ Procedure TMainForm.OptionsActionExecute(Sender: TObject);
 Begin
   ShowOptionsForm;
   SetPanelFormattingOptions(InputPanel, InteractiveSettings);
-  DoOutputChangeSystem(Self);
+  If OutputPanel.CoordinateSystemIndex=-1 Then
+    SetPanelFormattingOptions(OutputPanel, InteractiveSettings)
+  Else
+    DoOutputChangeSystem(Self);
   DataDrawGrid.Refresh;
 End;
 
