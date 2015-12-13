@@ -34,6 +34,7 @@ Type
   TDataStream = Class(TMemoryStream)
   Private
     FBOF: Boolean;
+    FConsecutiveDelimiters: Boolean;
     FCurrentRow: TStringList;
     FEOF: Boolean;
     FFieldCount: Integer;
@@ -87,6 +88,7 @@ Type
     Function RecordAsText(OutputFieldTerminator: Char; TextDelimiter: Char = #0): String;
     Function RowLength(RowIndex: Integer): Integer;
     Property BOF: Boolean Read FBOF;
+    Property ConsecutiveDelimiters: Boolean Read FConsecutiveDelimiters Write FConsecutiveDelimiters;
     Property EOF: Boolean Read FEOF;
     Property FieldCount: Integer Read FFieldCount Write SetFieldCount;
     Property FieldLengths[Index: Integer]: Integer Read GetFieldLengths Write SetFieldLengths;
@@ -449,34 +451,56 @@ Begin
       FieldIndex := 0;
       While FieldIndex<FieldCount Do
         Begin
-          { Move past any whitespace. }
-          While CurrentPointer^=' ' Do
-            Inc(CurrentPointer);
-          { If a text delimiter is set, skip any delimited data. }
-          If (TextDelimiter<>#0) And (CurrentPointer^=TextDelimiter) Then
+          { If the end of record is reached due to insufficient fields found. }
+          If CurrentPointer^ In RecordTerminators Then
             Begin
-              { Find the start of the delimited text. }
-              Inc(CurrentPointer);
-              FieldPointer := CurrentPointer;
-              While CurrentPointer^<>TextDelimiter Do
-                Inc(CurrentPointer);
+              { Add a place holder empty field value. }
+              FieldStarts[FieldIndex] := 0;
+              FieldLengths[FieldIndex] := 0;
             End
           Else
             Begin
-              { Find the start of the field. }
-              FieldPointer := CurrentPointer;
-              { Find the end of the current field. }
-              While Not (CurrentPointer^ In FieldTerminators) Do
+              { Move past any whitespace. }
+              While CurrentPointer^=' ' Do
                 Inc(CurrentPointer);
+              { If a text delimiter is set, skip any delimited data. }
+              If (TextDelimiter<>#0) And (CurrentPointer^=TextDelimiter) Then
+                Begin
+                  { Find the start of the delimited text. }
+                  Inc(CurrentPointer);
+                  FieldPointer := CurrentPointer;
+                  While CurrentPointer^<>TextDelimiter Do
+                    Inc(CurrentPointer);
+                End
+              Else
+                Begin
+                  { Find the start of the field. }
+                  FieldPointer := CurrentPointer;
+                  { Find the end of the current field. }
+                  While Not (CurrentPointer^ In FieldTerminators) Do
+                    Inc(CurrentPointer);
+                End;
+              { Add the extracted field extents to the FieldIndex lists. }
+              FieldStarts[FieldIndex] := 1+FieldPointer-RecordPointer;
+              FieldLengths[FieldIndex] := CurrentPointer-FieldPointer;
+              If ConsecutiveDelimiters Then
+                Begin
+                  { Find the start of the next field. }
+                  While Not (CurrentPointer^ In FieldTerminators) Do
+                    Inc(CurrentPointer);
+                  { Skip multiple field terminators. }
+                  While CurrentPointer^=FieldTerminator Do
+                    Inc(CurrentPointer);
+                End
+              Else
+                Begin
+                  { Find the start of the next field. }
+                  While Not (CurrentPointer^ In FieldTerminators) Do
+                    Inc(CurrentPointer);
+                  If CurrentPointer^=FieldTerminator Then
+                    Inc(CurrentPointer);
+                End;
             End;
-          { Add the extracted field extents to the FieldIndex lists. }
-          FieldStarts[FieldIndex] := 1+FieldPointer-RecordPointer;
-          FieldLengths[FieldIndex] := CurrentPointer-FieldPointer;
-          { Find the start of the next field. }
-          While Not (CurrentPointer^ In FieldTerminators) Do
-            Inc(CurrentPointer);
-          If CurrentPointer^=FieldTerminator Then
-            Inc(CurrentPointer);
           Inc(FieldIndex);
         End;
     End;

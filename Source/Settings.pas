@@ -29,6 +29,7 @@ Type
   TSettingsForm = Class(TForm)
     BottomPanel: TPanel;
     TextDelimiterCheckBox: TCheckBox;
+    ConsecutiveDelimitersCheckBox: TCheckBox;
     VerticalDataCheckBox: TCheckBox;
     HeaderRowCheckBox: TCheckBox;
     EndRowEdit: TEdit;
@@ -61,6 +62,7 @@ Type
     InputSystemLabel: TLabel;
     ThirdColumnComboBox: TComboBox;
     Procedure ColumnDelimiterComboBoxChange(Sender: TObject);
+    Procedure ConsecutiveDelimitersCheckBoxChange(Sender: TObject);
     Procedure EndRowEditEditingDone(Sender: TObject);
     Procedure FileFormatComboBoxChange(Sender: TObject);
     Procedure FirstColumnComboBoxChange(Sender: TObject);
@@ -83,6 +85,7 @@ Type
     Data: TDataStream;
     OldFormatType: TFormatType;
     OldFieldTerminator: Char;
+    OldConsecutiveDelimiters: Boolean;
     OldBreaksList: String;
     OldTextDelimiter: Char;
     OldNameRow: Integer;
@@ -247,6 +250,7 @@ Procedure TSettingsForm.SaveSettings;
 Begin
   OldFormatType := Data.FormatType;
   OldFieldTerminator := Data.FieldTerminator;
+  OldConsecutiveDelimiters := Data.ConsecutiveDelimiters;
   OldBreaksList := FixedColumnBreaksEdit.Text;
   OldTextDelimiter := Data.TextDelimiter;
   OldNameRow := Data.NameRow;
@@ -263,6 +267,7 @@ Procedure TSettingsForm.RestoreSettings;
 Begin
   Data.FormatType := OldFormatType;
   Data.FieldTerminator := OldFieldTerminator;
+  Data.ConsecutiveDelimiters := OldConsecutiveDelimiters;
   ParseBreaksList(OldBreaksList);
   Data.TextDelimiter := OldTextDelimiter;
   Data.NameRow := OldNameRow;
@@ -329,6 +334,12 @@ Begin
         Data.FieldTerminator := InputText[1];
     End;
   End;
+  DisplayDataInformation;
+End;
+
+Procedure TSettingsForm.ConsecutiveDelimitersCheckBoxChange(Sender: TObject);
+Begin
+  Data.ConsecutiveDelimiters := ConsecutiveDelimitersCheckBox.Checked;
   DisplayDataInformation;
 End;
 
