@@ -105,6 +105,7 @@ Type
     { Public declarations. }
     Constructor Create(TheOwner: TComponent; PanelType: TPanelType); Virtual;
     Procedure Clear(CompatibleIndex: Integer = -1);
+    Procedure ClearCoordinates;
     Procedure Refresh;
     Property Coordinates: TCoordinates Read GetCoordinates Write SetCoordinates;
     Property CoordinatesAsText: String Read GetCoordinatesAsText;
@@ -139,6 +140,8 @@ Var
   ThisPanel: TPanel;
 Begin
   FAxisType := AxisType;
+  FCoordinate := 0;
+  FValid := False;
   Inherited Create(TheOwner);
   Align := alTop;
   AutoSize := True;
@@ -172,7 +175,6 @@ Begin
     End;
   If TheOwner Is TWinControl Then
     Parent := TWinControl(TheOwner);
-  Validate;
 End;
 
 Procedure TCoordinatePanel.Clear;
@@ -202,12 +204,13 @@ Begin
           DatumSuffix := VerticalDataCodeToAbbreviation(TCoordinatesEntryPanel(Parent).VerticalDatum)
         Else
           DatumSuffix := '';
-        //If TCoordinatesEntryPanel(Parent).CoordinateSystemIndex=-1 Then
-        //  FEdit.Text := EmptyStr
-        //Else
-          FEdit.Text := FormatTypedCoordinate(Coordinate, TCoordinatesEntryPanel(Parent).CoordinateType, AxisType,
-                                              TCoordinatesEntryPanel(Parent).HeightDecimalPlaces,
-                                              TCoordinatesEntryPanel(Parent).Options, DatumSuffix);
+        If TCoordinatesEntryPanel(Parent).CoordinateSystemIndex=-1 Then
+          FEdit.Text := EmptyStr
+        Else
+          If FEdit.Text<>EmptyStr Then
+            FEdit.Text := FormatTypedCoordinate(Coordinate, TCoordinatesEntryPanel(Parent).CoordinateType, AxisType,
+                                                TCoordinatesEntryPanel(Parent).HeightDecimalPlaces,
+                                                TCoordinatesEntryPanel(Parent).Options, DatumSuffix);
       Except
         FEdit.Text := EmptyStr;
       End
@@ -227,12 +230,13 @@ Begin
                   If (Coordinate>180) And (Coordinate<=360) Then
                     FCoordinate := Coordinate-360;
                 End;
-        //If TCoordinatesEntryPanel(Parent).CoordinateSystemIndex=-1 Then
-        //  FEdit.Text := EmptyStr
-        //Else
-          FEdit.Text := FormatTypedCoordinate(Coordinate, TCoordinatesEntryPanel(Parent).CoordinateType, AxisType,
-                                              TCoordinatesEntryPanel(Parent).DecimalPlaces,
-                                              TCoordinatesEntryPanel(Parent).Options);
+        If TCoordinatesEntryPanel(Parent).CoordinateSystemIndex=-1 Then
+          FEdit.Text := EmptyStr
+        Else
+          If FEdit.Text<>EmptyStr Then
+            FEdit.Text := FormatTypedCoordinate(Coordinate, TCoordinatesEntryPanel(Parent).CoordinateType, AxisType,
+                                                TCoordinatesEntryPanel(Parent).DecimalPlaces,
+                                                TCoordinatesEntryPanel(Parent).Options);
       Except
         FEdit.Text := EmptyStr;
       End;
@@ -512,6 +516,11 @@ End;
 Procedure TCoordinatesEntryPanel.Clear(CompatibleIndex: Integer = -1);
 Begin
   FCoordinateSystemPanel.Clear(CompatibleIndex);
+  ClearCoordinates;
+End;
+
+Procedure TCoordinatesEntryPanel.ClearCoordinates;
+Begin
   FFirstCoordinatePanel.Clear;
   FSecondCoordinatePanel.Clear;
   FThirdCoordinatePanel.Clear;

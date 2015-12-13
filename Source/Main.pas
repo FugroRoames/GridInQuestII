@@ -704,7 +704,9 @@ Begin
       NewCoordinates := TransformCoordinates(InputPanel.Coordinates, InputIndex, OutputIndex);
       OutputPanel.VerticalDatum := CoordinateSystems.Items(OutputIndex).LastVerticalDatum;
       OutputPanel.Coordinates := NewCoordinates;
-    End;
+    End
+  Else
+    OutputPanel.ClearCoordinates;
 End;
 
 Procedure TMainForm.SetupDataGrid;
