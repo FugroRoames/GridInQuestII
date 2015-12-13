@@ -18,9 +18,10 @@
         <ComponentName Value="MainForm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="2"/>
-        <TopLine Value="231"/>
-        <CursorPos Y="245"/>
+        <TopLine Value="241"/>
+        <CursorPos X="2" Y="247"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -58,7 +59,6 @@
         <ComponentName Value="SettingsForm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="4"/>
         <TopLine Value="384"/>
         <CursorPos X="69" Y="407"/>
@@ -138,7 +138,7 @@
         <EditorIndex Value="3"/>
         <TopLine Value="194"/>
         <CursorPos X="3" Y="28"/>
-        <UsageCount Value="151"/>
+        <UsageCount Value="152"/>
         <Loaded Value="True"/>
       </Unit14>
       <Unit15>
@@ -147,7 +147,7 @@
         <EditorIndex Value="6"/>
         <TopLine Value="31"/>
         <CursorPos X="57" Y="49"/>
-        <UsageCount Value="88"/>
+        <UsageCount Value="89"/>
         <Loaded Value="True"/>
       </Unit15>
       <Unit16>

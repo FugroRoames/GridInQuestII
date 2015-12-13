@@ -243,7 +243,7 @@ Procedure TMainForm.OptionsActionExecute(Sender: TObject);
 Begin
   ShowOptionsForm;
   SetPanelFormattingOptions(InputPanel, InteractiveSettings);
-  SetPanelFormattingOptions(OutputPanel, InteractiveSettings);
+  DoOutputChangeSystem(Self);
   DataDrawGrid.Refresh;
 End;
 
