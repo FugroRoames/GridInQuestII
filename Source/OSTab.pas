@@ -79,7 +79,7 @@ Type
 
 Const
   VerticalData: Array [0..15] Of TDatumRecord =
-    ((Code: vdNone; Abbreviation: 'NON'; Name: 'None'; Region: 'Outside Model'),
+    ((Code: vdNone; Abbreviation: ''; Name: 'None'; Region: 'Outside Model'),
     (Code: vdOrdnanceDatumNewlyn; Abbreviation: 'ODN'; Name: 'Ordnance Datum Newlyn'; Region: 'UK Mainland'),
     (Code: vdStMarys; Abbreviation: 'MAR'; Name: 'St Marys'; Region: 'Scilly Isles'),
     (Code: vdDouglas02; Abbreviation: 'DOU'; Name: 'Douglas02'; Region: 'Isle of Man'),
