@@ -22,7 +22,7 @@ Unit WKT;
 Interface
 
 Uses
-  SysUtils, StrUtils, Math, Geometry, Geodesy;
+  SysUtils, StrUtils, Geometry, Geodesy;
 
 { WKT text constants. }
 ResourceString

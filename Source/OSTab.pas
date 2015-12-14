@@ -22,7 +22,7 @@ Unit OSTab;
 Interface
 
 Uses
-  SysUtils, Classes, Math, Geometry, Geodesy;
+  SysUtils, Classes, Geometry, Geodesy;
 
 Type
   TSmallCoordinate = Single; { Defined to keep storage space of tables compact. }
@@ -60,10 +60,12 @@ Type
   THorizontalTable = Packed Object
     Header: TDataHeader;
     Records: THorizontalRecordArray;
+    Constructor Initialize;
     Function Data(X, Y: Integer): THorizontalRecord;
     Function LoadFromFile(FileName: String): Boolean;
     Function LoadFromStream(Source: TStream): Boolean;
   End;
+  THorizontalTablePointer = ^THorizontalTable;
   TVerticalRecord = Packed Record
     GeoidHeight: TSmallCoordinate;
     DatumCode: Byte;
@@ -72,10 +74,12 @@ Type
   TVerticalTable = Packed Object
     Header: TDataHeader;
     Records: TVerticalRecordArray;
+    Constructor Initialize;
     Function Data(X, Y: Integer): TVerticalRecord;
     Function LoadFromFile(FileName: String): Boolean;
     Function LoadFromStream(Source: TStream): Boolean;
   End;
+  TVerticalTablePointer = ^TVerticalTable;
 
 Const
   VerticalData: Array [0..15] Of TDatumRecord =
@@ -226,6 +230,11 @@ Begin
     Result := ((X1>=0) And (Y1>=0) And (X2<ColumnCount) And (Y2<RowCount));
 End;
 
+Constructor THorizontalTable.Initialize;
+Begin
+  { Nothing required here. }
+End;
+
 Function THorizontalTable.Data(X, Y: Integer): THorizontalRecord;
 Begin
   Result := Records[X+Y*Header.ColumnCount];
@@ -261,6 +270,11 @@ Begin
     End
   Else
     Result := False;
+End;
+
+Constructor TVerticalTable.Initialize;
+Begin
+  { Nothing required here. }
 End;
 
 Function TVerticalTable.Data(X, Y: Integer): TVerticalRecord;

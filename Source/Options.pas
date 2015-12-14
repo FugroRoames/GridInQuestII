@@ -22,9 +22,8 @@ Unit Options;
 Interface
 
 Uses
-  Classes, SysUtils, FileInfo, FileUtil, LCLVersion, {$IFDEF Windows}Windows, {$ENDIF}
-  Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls, ComCtrls, CtrlUtils,
-  Config, OSTab, Geodesy, IG, ITM, GeodUtils;
+  Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs,
+  StdCtrls, ExtCtrls, ComCtrls, CtrlUtils, Config, OSTab, Geodesy, IG, ITM;
 
 Type
   TOptionsForm = Class(TForm)
@@ -230,7 +229,7 @@ End;
 Procedure TOptionsForm.OKButtonClick(Sender: TObject);
   Function DatumTextToCode(Text: String): TVerticalDatumCode;
   Begin
-    If SameText(IGDatumComboBox.Text, 'Belfast') Then
+    If SameText(Text, 'Belfast') Then
       Result := vdBelfast
     Else
       Result := vdMalinHead;

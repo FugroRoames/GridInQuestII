@@ -46,12 +46,14 @@ Type
     ShortY: String;
     ShortZ: String;
   End;
+  TAxisNamesPointer = ^TAxisNames;
 
 Type
   TPlanarCoordinates = Packed Object(Geometry.T2DCoordinates)
     Property Easting: TCoordinate Read X Write X;
     Property Northing: TCoordinate Read Y Write y;
   End;
+  TPlanarCoordinatesPointer = ^TPlanarCoordinates;
 
 Type
   TCoordinates = Packed Object(Geometry.T3DCoordinates)
@@ -62,6 +64,7 @@ Type
     Property Longitude: TCoordinate Read X Write X;
     Property Altitude: TCoordinate Read Z Write Z;
   End;
+  TCoordinatesPointer = ^TCoordinates;
 
 Type
   TMeasuredCoordinates = Packed Object(Geometry.T3DCoordinates)
@@ -71,6 +74,7 @@ Type
     Property Elevation: TCoordinate Read Z Write Z;
     Property Measure: TCoordinate Read M Write M;
   End;
+ TMeasuredCoordinatesPointer = ^TMeasuredCoordinates;
 
 Type
   TGeodeticBounds = Packed Object
@@ -79,17 +83,20 @@ Type
     Eastern: TCoordinate;
     Northern: TCoordinate;
   End;
+  TGeodeticBoundsPointer = ^TGeodeticBounds;
 
 Type
   TSexagesimalCoordinate = Packed Object
       Degrees, Minutes, Seconds, Sign: TCoordinate;
   End;
+  TSexagesimalCoordinatePointer = ^TSexagesimalCoordinate;
 
 Type
   TSexagesimalCoordinates = Packed Object
     Latitude, Longitude: TSexagesimalCoordinate;
     Altitude: TCoordinate;
   End;
+  TSexagesimalCoordinatesPointer = ^TSexagesimalCoordinates;
 
 Type
   THelmertTransformParameters = Packed Object
@@ -97,6 +104,7 @@ Type
     Rotation: TCoordinates;
     Scale: TCoordinate;
   End;
+  THelmertTransformParametersPointer = ^THelmertTransformParameters;
 
 Type
   TEllipsoid = Packed Object
@@ -108,6 +116,7 @@ Type
     EccentricitySquared: TCoordinate;
     Constructor Initialize(NewSemiMajorAxis, NewSemiMinorAxis: TCoordinate);
   End;
+  TEllipsoidPointer = ^TEllipsoid;
 
 Type
   TProjection = Packed Object
@@ -117,6 +126,7 @@ Type
     TrueOrigin: TCoordinates;
     Constructor Initialize(NewMeridianScaleFactor, NewTrueOriginLatitude, NewTrueOriginLongitude, NewOriginOffsetEasting, NewOriginOffsetNorthing: TCoordinate; NewEllipsoid: TEllipsoid);
   End;
+  TProjectionPointer = ^TProjection;
 
 Const
   OneOverSixty: TCoordinate = 1/60;
@@ -179,8 +189,8 @@ Type
     Constructor Initialize(NewName: String; NewAbbreviation: String; NewDescription: String; NewEPSGNumber: Integer;
                            NewCoordinateType: TCoordinateType; NewAxisOrder: TAxisOrder; NewBounds: TGeodeticBounds);
     Function AxisNames: TAxisNames;
-    Function ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
-    Function ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
+    Function ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual; Abstract;
+    Function ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual; Abstract;
     Function WithinGeodeticBounds(Coordinates: TCoordinates): Boolean;
   End;
   TCoordinateSystemPointer = ^TCoordinateSystem;
@@ -662,18 +672,6 @@ Begin
   ctProjected:
     Result := CartesianAxisNames;
   End;
-End;
-
-Function TCoordinateSystem.ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates;
-Begin
-  { Actual conversions performed by child implementations. }
-  Result := NullCoordinates;
-End;
-
-Function TCoordinateSystem.ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates;
-Begin
-  { Actual conversions performed by child implementations. }
-  Result := NullCoordinates;
 End;
 
 Function TCoordinateSystem.WithinGeodeticBounds(Coordinates: TCoordinates): Boolean;

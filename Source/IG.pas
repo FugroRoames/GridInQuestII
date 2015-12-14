@@ -93,13 +93,8 @@ Constructor TIGCoordinateSystem.Initialize(NewName: String; NewAbbreviation: Str
                                            NewCoordinateType: TCoordinateType; NewAxisOrder: TAxisOrder;
                                            NewBounds: TGeodeticBounds; NewPreferredVerticalDatum: TVerticalDatumCode);
 Begin
-  Name := NewName;
-  Abbreviation := NewAbbreviation;
-  Description := NewDescription;
-  EPSGNumber := NewEPSGNumber;
-  CoordinateType := NewCoordinateType;
-  AxisOrder := NewAxisOrder;
-  GeodeticBounds := NewBounds;
+  Inherited Initialize(NewName, NewAbbreviation, NewDescription, NewEPSGNumber,
+                             NewCoordinateType, NewAxisOrder, NewBounds);
   PreferredVerticalDatum := NewPreferredVerticalDatum;
   LastVerticalDatum := vdNone;
 End;
@@ -108,11 +103,14 @@ Function TIGCoordinateSystem.ConvertToGeocentric(Coordinates: TCoordinates): TCo
 Var
   GeodeticCoordinates: TCoordinates;
 Begin
-  // Test for bounds?
   If IGCoordinatesToWGS84Coordinates(Coordinates, vmGM15, PreferredVerticalDatum, GeodeticCoordinates, LastVerticalDatum) Then
-    Result := GeodeticToGeocentric(GeodeticCoordinates, GRS80Ellipsoid)
-  Else
-    Result := NullCoordinates;
+    If WithinGeodeticBounds(GeodeticCoordinates) Then
+      Result := GeodeticToGeocentric(GeodeticCoordinates, GRS80Ellipsoid)
+    Else
+      Begin
+        LastVerticalDatum := vdNone;
+        Result := NullCoordinates
+      End;
 End;
 
 Function TIGCoordinateSystem.ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates;
@@ -120,9 +118,11 @@ Var
   GeodeticCoordinates: TCoordinates;
 Begin
   GeodeticCoordinates := GeocentricToGeodetic(Coordinates, GRS80Ellipsoid);
-  // Test for bounds?
-  If Not WGS84CoordinatesToIGCoordinates(GeodeticCoordinates, vmGM15, PreferredVerticalDatum, Result, LastVerticalDatum) Then
-    Result := NullCoordinates;
+  If WithinGeodeticBounds(GeodeticCoordinates) Then
+    If WGS84CoordinatesToIGCoordinates(GeodeticCoordinates, vmGM15, PreferredVerticalDatum, Result, LastVerticalDatum) Then
+      Exit;
+  LastVerticalDatum := vdNone;
+  Result := NullCoordinates
 End;
 
 {$IFDEF LEVEL2}

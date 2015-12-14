@@ -26,7 +26,7 @@ Unit GeomUtils;
 Interface
 
 Uses
-  Classes, SysUtils, StrUtils, Math, Geometry;
+  Classes, SysUtils, Math, Geometry;
 
 Type
   TUnitType = (utLength, utArea);
@@ -51,7 +51,7 @@ Const
   AcresPerSquareMeter = 1/SquareMetersPerAcre;
   SquareMilesPerSquareMeter = 1/SquareMetersPerSquareMile;
 
-Procedure DetermineOptimalCoordinateUnits(Value: TCoordinate; UnitType: TUnitType; UnitSystem: TUnitSystem; Var UnitSuffix: String; Var ValueMultiplier: TCoordinate; Var RequiredDecimalPlaces: Integer);
+Procedure DetermineOptimalCoordinateUnits(Value: TCoordinate; UnitType: TUnitType; UnitSystem: TUnitSystem; Out UnitSuffix: String; Out ValueMultiplier: TCoordinate; Out RequiredDecimalPlaces: Integer);
 Function FormatCoordinate(Const Value: TCoordinate; DecimalPlaces: Integer = -1; ZeroFill: Boolean = False): String; Overload;
 Function FormatCoordinateWithUnits(Const Value: TCoordinate; Units: String; DecimalPlaces: Integer = -1; ZeroFill: Boolean = False): String;
 Function FormatCoordinateWithConversion(Const Value: TCoordinate; UnitType: TUnitType; UnitSystem: TUnitSystem = usMetric; DecimalPlaces: Integer = -1; ZeroFill: Boolean = False): String; Overload;
@@ -62,7 +62,7 @@ Function ExtractCoordinatePair(Const CoordinatesText: String; Out Coordinates: T
 
 Implementation
 
-Procedure DetermineOptimalCoordinateUnits(Value: TCoordinate; UnitType: TUnitType; UnitSystem: TUnitSystem; Var UnitSuffix: String; Var ValueMultiplier: TCoordinate; Var RequiredDecimalPlaces: Integer);
+Procedure DetermineOptimalCoordinateUnits(Value: TCoordinate; UnitType: TUnitType; UnitSystem: TUnitSystem; Out UnitSuffix: String; Out ValueMultiplier: TCoordinate; Out RequiredDecimalPlaces: Integer);
 Begin
   If UnitSystem=usMetric Then
     If UnitType=utLength Then
@@ -167,7 +167,6 @@ End;
 Function FormatCoordinateWithConversion(Const Value: TCoordinate; UnitType: TUnitType; UnitSystem: TUnitSystem = usMetric; DecimalPlaces: Integer = -1; ZeroFill: Boolean = False): String; Overload;
 Var
   AdjustedValue: TCoordinate;
-  CoordinateFormat: String;
   Units: String;
   ValueMultiplier: TCoordinate;
   RequiredDecimalPlaces: Integer;

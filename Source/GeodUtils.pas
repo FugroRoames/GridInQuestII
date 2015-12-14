@@ -26,7 +26,7 @@ Unit GeodUtils;
 Interface
 
 Uses
-  Classes, SysUtils, StrUtils, Math, Geometry, Geodesy, GeomUtils;
+  Classes, SysUtils, StrUtils, Geometry, Geodesy, GeomUtils;
 
 Type
   TTypedOption = (toSignPrefix, toLetterPrefix, toLetterSuffix, toTwoPartSexagseimal, toThreePartSexagseimal, toGeodeticLetters, toGeodeticSymbols,
@@ -455,8 +455,6 @@ Function TryProjectedTextToCoordinate(Text: String; Var Coordinate: TCoordinate;
 Var
   SectionLength: Integer;
   TextLength: Integer;
-  HasAxisSuffix: Boolean;
-  AxisSuffix: Char;
 Begin
   { Process any elevation component. }
   If AxisType=atZAxis Then

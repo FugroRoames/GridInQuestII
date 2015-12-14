@@ -22,8 +22,8 @@ Unit Progress;
 Interface
 
 Uses
-  Classes, SysUtils, LResources, LCLType, Forms, Controls, Graphics, Dialogs, ComCtrls,
-  ExtCtrls,  Menus, StdCtrls;
+  Classes, SysUtils, LResources, LCLType, Forms, Controls, Graphics, Dialogs,
+  ExtCtrls,  Menus;
 
 Type
   TProgressDisplay = Class

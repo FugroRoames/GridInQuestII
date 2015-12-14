@@ -51,13 +51,12 @@ Uses
 //{$DEFINE EMBED}
 
 Type
-  TBNG02CoordinateSystem = Object(TCoordinateSystem)
-    Function ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
-    Function ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
-  End;
-
-Type
-  TBNG15CoordinateSystem = Object(TCoordinateSystem)
+  TBNGCoordinateSystem = Object(TCoordinateSystem)
+    GMDataPointer: TVerticalTablePointer;
+    TNDataPointer: THorizontalTablePointer;
+    Constructor Initialize(NewName: String; NewAbbreviation: String; NewDescription: String; NewEPSGNumber: Integer;
+                           NewCoordinateType: TCoordinateType; NewAxisOrder: TAxisOrder;
+                           NewBounds: TGeodeticBounds; Var NewTNData: THorizontalTable; Var NewGMData: TVerticalTable);
     Function ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
     Function ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
   End;
@@ -69,14 +68,14 @@ Var
   TN15GBData: THorizontalTable;
   GRS80Ellipsoid: TEllipsoid;
   BNGGridProjection: TProjection;
-  BNG02CoordinateSystem: TBNG02CoordinateSystem;
-  BNG15CoordinateSystem: TBNG15CoordinateSystem;
+  BNG02CoordinateSystem: TBNGCoordinateSystem;
+  BNG15CoordinateSystem: TBNGCoordinateSystem;
 
 Const
   BNGBounds: TGeodeticBounds = (Western: -8.74*PI/180; Southern: 49.81*PI/180; Eastern: 1.84*PI/180; Northern: 60.9*PI/180);
 
-Function WGS84CoordinatesToBNGCoordinates(Const Coordinates: TCoordinates; Const TNData: THorizontalTable; Const GMData: TVerticalTable): TCoordinates;
-Function BNGCoordinatesToWGS84Coordinates(Const Coordinates: TCoordinates; Const TNData: THorizontalTable; Const GMData: TVerticalTable): TCoordinates;
+Function WGS84CoordinatesToBNGCoordinates(Const Coordinates: TCoordinates; Const TNData: THorizontalTable; Const GMData: TVerticalTable; Out OutputCoordinates: TCoordinates; Out OutputDatum: TVerticalDatumCode): Boolean;
+Function BNGCoordinatesToWGS84Coordinates(Const Coordinates: TCoordinates; Const TNData: THorizontalTable; Const GMData: TVerticalTable; Out OutputCoordinates: TCoordinates; Out OutputDatum: TVerticalDatumCode): Boolean;
 
 Implementation
 
@@ -128,7 +127,44 @@ Var
   GM02DataFound: Boolean;
   GM15DataFound: Boolean;
 
-Function WGS84CoordinatesToBNGCoordinates(Const Coordinates: TCoordinates; Const TNData: THorizontalTable; Const GMData: TVerticalTable): TCoordinates;
+Constructor TBNGCoordinateSystem.Initialize(NewName: String; NewAbbreviation: String; NewDescription: String;
+                                            NewEPSGNumber: Integer; NewCoordinateType: TCoordinateType;
+                                            NewAxisOrder: TAxisOrder; NewBounds: TGeodeticBounds;
+                                            Var NewTNData: THorizontalTable; Var NewGMData: TVerticalTable);
+Begin
+  Inherited Initialize(NewName, NewAbbreviation, NewDescription, NewEPSGNumber,
+                             NewCoordinateType, NewAxisOrder, NewBounds);
+  TNDataPointer := @NewTNData;
+  GMDataPointer := @NewGMData;
+End;
+
+Function TBNGCoordinateSystem.ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates;
+Var
+  GeodeticCoordinates: TCoordinates;
+Begin
+  If BNGCoordinatesToWGS84Coordinates(Coordinates, TNDataPointer^, GMDataPointer^, GeodeticCoordinates, LastVerticalDatum) Then
+    If WithinGeodeticBounds(GeodeticCoordinates) Then
+      Result := GeodeticToGeocentric(GeodeticCoordinates, GRS80Ellipsoid)
+    Else
+      Begin
+        LastVerticalDatum := vdNone;
+        Result := NullCoordinates
+      End;
+End;
+
+Function TBNGCoordinateSystem.ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates;
+Var
+  GeodeticCoordinates: TCoordinates;
+Begin
+  GeodeticCoordinates := GeocentricToGeodetic(Coordinates, GRS80Ellipsoid);
+  If WithinGeodeticBounds(GeodeticCoordinates) Then
+    If WGS84CoordinatesToBNGCoordinates(GeodeticCoordinates, TNDataPointer^, GMDataPointer^, Result, LastVerticalDatum) Then
+      Exit;
+  LastVerticalDatum := vdNone;
+  Result := NullCoordinates
+End;
+
+Function WGS84CoordinatesToBNGCoordinates(Const Coordinates: TCoordinates; Const TNData: THorizontalTable; Const GMData: TVerticalTable; Out OutputCoordinates: TCoordinates; Out OutputDatum: TVerticalDatumCode): Boolean;
 Var
 {$IFNDEF LEVEL1}Parameters: TInterpolationParameters;{$ENDIF}
   Shifts: TCoordinates;
@@ -136,28 +172,37 @@ Var
 {$IFDEF LEVEL3}Const GridScale = 10000;{$ENDIF}
 {$IFDEF LEVEL4}Const GridScale = 1000;{$ENDIF}
 Begin
+  { By default return no vertical datum code. }
+  Result := False;
+  OutputDatum := vdNone;
   { Full transformation of GRS80/WGS84/ETRS89 value to OSGB36 easting and northing as per OS method. }
   { 1. Perform transverse Mercator projection of initial ellipsoid using OS grid but WGS84 ellipsiod parameters, Lat/Lon MUST be in radians. }
-  Result := TransverseMercator(Coordinates, BNGGridProjection);
+  OutputCoordinates := TransverseMercator(Coordinates, BNGGridProjection);
   { 2. Perform coordinate corrections either from mean shift or from interpolation of the OS data tables. }
 {$IFDEF LEVEL1}
   Shifts.Easting := 96.04;
   Shifts.Northing := -68.87;
   Shifts.Altitude := -51.16; { Geoid height is subtracted. }
+  Result := True;
 {$ELSE}
-  Parameters := BilinearGridInterpolationParameters(TNData.Header.Origin, Result, GridScale);
+  Parameters := BilinearGridInterpolationParameters(TNData.Header.Origin, OutputCoordinates, GridScale);
   Shifts := InterpolateHorizontalTable(TNData, Parameters);
   Shifts.Elevation := -InterpolateVerticalTable(GMData, Parameters); { Geoid is below ellipsoid. }
+  { Lookup the vertical datum for the current geoid model grid square. }
+  With Parameters Do
+    OutputDatum := TVerticalDatumCode(GMData.Data(X1, Y1).DatumCode);
+  Result := (OutputDatum<>vdNone);
 {$ENDIF}
-  Result := Result+Shifts;
+  OutputCoordinates := OutputCoordinates+Shifts;
 End;
 
-Function BNGCoordinatesToWGS84Coordinates(Const Coordinates: TCoordinates; Const TNData: THorizontalTable; Const GMData: TVerticalTable): TCoordinates;
+Function BNGCoordinatesToWGS84Coordinates(Const Coordinates: TCoordinates; Const TNData: THorizontalTable; Const GMData: TVerticalTable; Out OutputCoordinates: TCoordinates; Out OutputDatum: TVerticalDatumCode): Boolean;
 {$IFNDEF LEVEL1}
 Var
   Parameters: TInterpolationParameters;
+  GeodeticCoordinates: TCoordinates;
+  PriorCoordinates: TCoordinates;
   Shifts: TCoordinates;
-  PriorResult: TCoordinates;
   Iteration: Integer;
 Const
   IterationLimit = 6;
@@ -167,66 +212,45 @@ Const
 {$IFDEF LEVEL3}GridScale = 10000;{$ENDIF}
 {$IFDEF LEVEL4}GridScale = 1000;{$ENDIF}
 Begin
-  Result := Coordinates;
+  { Set the initial geodetic coordinates. }
+  GeodeticCoordinates := Coordinates;
+  { By default return no vertical datum code. }
+  Result := False;
+  OutputDatum := vdNone;
   {$IFDEF LEVEL1}
-  With Result Do
+  With GeodeticCoordinates Do
     Begin
       Easting := Easting-96.04;
       Northing := Northing+68.87;
       Elevation := Elevation+51.16; { Geoid height is added. }
     End;
-  Result := InverseTransverseMercator(Result, OSTN02GridProjection);
+  OutputCoordinates := InverseTransverseMercator(GeodeticCoordinates, OSTN02GridProjection);
+  Result := True;
   {$ELSE}
-  PriorResult := NullCoordinates;
+  { Prepare for itteration loop. }
+  PriorCoordinates := NullCoordinates;
   For Iteration := 1 To IterationLimit Do
     Begin
-      Parameters := BilinearGridInterpolationParameters(TNData.Header.Origin, Result, GridScale);
+      Parameters := BilinearGridInterpolationParameters(TNData.Header.Origin, GeodeticCoordinates, GridScale);
       Shifts := InterpolateHorizontalTable(TNData, Parameters);
       Shifts.Elevation := -InterpolateVerticalTable(GMData, Parameters); { Geoid is below ellipsoid. }
-      Result := Coordinates-Shifts;
+      GeodeticCoordinates := Coordinates-Shifts;
       { If convergance has been reached. }
-      If (Abs(Result.Easting-PriorResult.Easting)<Epsilon) And
-         (Abs(Result.Northing-PriorResult.Northing)<Epsilon) Then
+      If (Abs(GeodeticCoordinates.Easting-PriorCoordinates.Easting)<Epsilon) And
+         (Abs(GeodeticCoordinates.Northing-PriorCoordinates.Northing)<Epsilon) Then
          Begin
-           Result := InverseTransverseMercator(Result, BNGGridProjection);
+           OutputCoordinates := InverseTransverseMercator(GeodeticCoordinates, BNGGridProjection);
+           With Parameters Do
+             OutputDatum := TVerticalDatumCode(GMData.Data(X1, Y1).DatumCode);
+           Result := (OutputDatum<>vdNone);
            Exit;
          End;
-      PriorResult := Result;
+      PriorCoordinates := GeodeticCoordinates;
     End;
+  { If no valid solution found. }
+  OutputCoordinates := NullCoordinates;
   Raise Exception.Create('Inverse BNG projection failed to converge grid to ETRS89 coordinates.');
   {$ENDIF}
-End;
-
-Function TBNG02CoordinateSystem.ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates;
-Var
-  GeodeticCoordinates: TCoordinates;
-Begin
-  GeodeticCoordinates := BNGCoordinatesToWGS84Coordinates(Coordinates, TN02GBData, GM02GBData);
-  Result := GeodeticToGeocentric(GeodeticCoordinates, GRS80Ellipsoid);
-End;
-
-Function TBNG02CoordinateSystem.ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates;
-Var
-  GeodeticCoordinates: TCoordinates;
-Begin
-  GeodeticCoordinates := GeocentricToGeodetic(Coordinates, GRS80Ellipsoid);
-  Result := WGS84CoordinatesToBNGCoordinates(GeodeticCoordinates, TN02GBData, GM02GBData);
-End;
-
-Function TBNG15CoordinateSystem.ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates;
-Var
-  GeodeticCoordinates: TCoordinates;
-Begin
-  GeodeticCoordinates := BNGCoordinatesToWGS84Coordinates(Coordinates, TN15GBData, GM15GBData);
-  Result := GeodeticToGeocentric(GeodeticCoordinates, GRS80Ellipsoid);
-End;
-
-Function TBNG15CoordinateSystem.ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates;
-Var
-  GeodeticCoordinates: TCoordinates;
-Begin
-  GeodeticCoordinates := GeocentricToGeodetic(Coordinates, GRS80Ellipsoid);
-  Result := WGS84CoordinatesToBNGCoordinates(GeodeticCoordinates, TN15GBData, GM15GBData);
 End;
 
 {$IFDEF EMBED}
@@ -290,9 +314,13 @@ GM02FileName := ProgramFolder+'GM02GB.dat';
 GM15FileName := ProgramFolder+'GM15GB.dat';
 {$ENDIF}
 {$IFNDEF LEVEL1}
+TN02GBData.Initialize;
 TN02DataFound := TN02GBData.LoadFromFile(TN02FileName);
+TN15GBData.Initialize;
 TN15DataFound := TN15GBData.LoadFromFile(TN15FileName);
+GM02GBData.Initialize;
 GM02DataFound := GM02GBData.LoadFromFile(GM02FileName);
+GM15GBData.Initialize;
 GM15DataFound := GM15GBData.LoadFromFile(GM15FileName);
 {$ENDIF}
 {$IFDEF EMBED}
@@ -301,9 +329,9 @@ LoadResourceTables;
 GRS80Ellipsoid.Initialize(6378137.0000, 6356752.314140);
 BNGGridProjection.Initialize(0.9996012717, DegToRad(49), DegToRad(-2), 400000, -100000, GRS80Ellipsoid);
 BNG02CoordinateSystem.Initialize('British National Grid (2002)', 'OSGB36',
-                                 'OSGB36 / British National Grid (TN02/GM02)', 27700, ctProjected, aoXYZ, BNGBounds);
+                                 'OSGB36 / British National Grid (TN02/GM02)', 27700, ctProjected, aoXYZ, BNGBounds, TN02GBData, GM02GBData);
 BNG15CoordinateSystem.Initialize('British National Grid (2015)', 'OSGB36',
-                                 'OSGB36 / British National Grid (TN15/GM15)', 27701, ctProjected, aoXYZ, BNGBounds);
+                                 'OSGB36 / British National Grid (TN15/GM15)', 27701, ctProjected, aoXYZ, BNGBounds, TN15GBData, GM15GBData);
 CoordinateSystems.Register(BNG02CoordinateSystem);
 CoordinateSystems.Register(BNG15CoordinateSystem);
 

@@ -22,7 +22,7 @@ Unit ITM;
 Interface
 
 Uses
-  SysUtils, Math, Geometry, Geodesy, OSTab;
+  SysUtils, Math, Geodesy, OSTab;
 
 Type
   TITMCoordinateSystem = Object(TCoordinateSystem)
@@ -89,13 +89,8 @@ Constructor TITMCoordinateSystem.Initialize(NewName: String; NewAbbreviation: St
                                             NewCoordinateType: TCoordinateType; NewAxisOrder: TAxisOrder;
                                             NewBounds: TGeodeticBounds; NewPreferredVerticalDatum: TVerticalDatumCode);
 Begin
-  Name := NewName;
-  Abbreviation := NewAbbreviation;
-  Description := NewDescription;
-  EPSGNumber := NewEPSGNumber;
-  CoordinateType := NewCoordinateType;
-  AxisOrder := NewAxisOrder;
-  GeodeticBounds := NewBounds;
+  Inherited Initialize(NewName, NewAbbreviation, NewDescription, NewEPSGNumber,
+                             NewCoordinateType, NewAxisOrder, NewBounds);
   PreferredVerticalDatum := NewPreferredVerticalDatum;
   LastVerticalDatum := vdNone;
 End;
@@ -104,11 +99,14 @@ Function TITMCoordinateSystem.ConvertToGeocentric(Coordinates: TCoordinates): TC
 Var
   GeodeticCoordinates: TCoordinates;
 Begin
-  // Test for bounds?
   If ITMCoordinatesToWGS84Coordinates(Coordinates, vmGM15, PreferredVerticalDatum, GeodeticCoordinates, LastVerticalDatum) Then
-    Result := GeodeticToGeocentric(GeodeticCoordinates, GRS80Ellipsoid)
-  Else
-    Result := NullCoordinates;
+    If WithinGeodeticBounds(GeodeticCoordinates) Then
+      Result := GeodeticToGeocentric(GeodeticCoordinates, GRS80Ellipsoid)
+    Else
+      Begin
+        LastVerticalDatum := vdNone;
+        Result := NullCoordinates
+      End;
 End;
 
 Function TITMCoordinateSystem.ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates;
@@ -116,9 +114,11 @@ Var
   GeodeticCoordinates: TCoordinates;
 Begin
   GeodeticCoordinates := GeocentricToGeodetic(Coordinates, GRS80Ellipsoid);
-  // Test for bounds?
-  If Not WGS84CoordinatesToITMCoordinates(GeodeticCoordinates, vmGM15, PreferredVerticalDatum, Result, LastVerticalDatum) Then
-    Result := NullCoordinates;
+  If WithinGeodeticBounds(GeodeticCoordinates) Then
+    If WGS84CoordinatesToITMCoordinates(GeodeticCoordinates, vmGM15, PreferredVerticalDatum, Result, LastVerticalDatum) Then
+      Exit;
+  LastVerticalDatum := vdNone;
+  Result := NullCoordinates
 End;
 
 Procedure TTransformationData.SetTables(Const VerticalModel: TOSVerticalModel);
