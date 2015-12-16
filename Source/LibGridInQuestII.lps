@@ -4,13 +4,14 @@
     <PathDelim Value="\"/>
     <Version Value="9"/>
     <BuildModes Active="Default"/>
-    <Units Count="7">
+    <Units Count="10">
       <Unit0>
         <Filename Value="LibGridInQuestII.lpr"/>
         <IsPartOfProject Value="True"/>
-        <TopLine Value="12"/>
-        <CursorPos X="16" Y="23"/>
-        <UsageCount Value="29"/>
+        <IsVisibleTab Value="True"/>
+        <TopLine Value="36"/>
+        <CursorPos X="24" Y="39"/>
+        <UsageCount Value="33"/>
         <Loaded Value="True"/>
       </Unit0>
       <Unit1>
@@ -22,45 +23,66 @@
       </Unit1>
       <Unit2>
         <Filename Value="Geodesy.pas"/>
-        <EditorIndex Value="5"/>
-        <TopLine Value="761"/>
-        <CursorPos X="14" Y="206"/>
-        <UsageCount Value="13"/>
+        <EditorIndex Value="6"/>
+        <TopLine Value="169"/>
+        <CursorPos X="93" Y="178"/>
+        <UsageCount Value="15"/>
         <Loaded Value="True"/>
       </Unit2>
       <Unit3>
         <Filename Value="IG.pas"/>
-        <EditorIndex Value="3"/>
+        <EditorIndex Value="4"/>
         <TopLine Value="221"/>
         <CursorPos X="77" Y="245"/>
-        <UsageCount Value="13"/>
+        <UsageCount Value="15"/>
         <Loaded Value="True"/>
       </Unit3>
       <Unit4>
         <Filename Value="ITM.pas"/>
-        <EditorIndex Value="4"/>
-        <UsageCount Value="13"/>
+        <EditorIndex Value="5"/>
+        <UsageCount Value="15"/>
         <Loaded Value="True"/>
       </Unit4>
       <Unit5>
         <Filename Value="ETRS.pas"/>
-        <EditorIndex Value="1"/>
+        <EditorIndex Value="2"/>
         <TopLine Value="109"/>
-        <CursorPos X="3" Y="128"/>
-        <UsageCount Value="13"/>
+        <CursorPos X="93" Y="126"/>
+        <UsageCount Value="15"/>
         <Loaded Value="True"/>
       </Unit5>
       <Unit6>
         <Filename Value="BNG.pas"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="2"/>
-        <TopLine Value="279"/>
-        <CursorPos X="7" Y="286"/>
-        <UsageCount Value="13"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="320"/>
+        <CursorPos X="35" Y="333"/>
+        <UsageCount Value="15"/>
         <Loaded Value="True"/>
       </Unit6>
+      <Unit7>
+        <Filename Value="C:\lazarus\fpc\2.6.4\source\rtl\objpas\sysutils\sysutilh.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="286"/>
+        <CursorPos X="12" Y="298"/>
+        <UsageCount Value="11"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="C:\lazarus\fpc\2.6.4\source\rtl\objpas\sysutils\sysutils.inc"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="723"/>
+        <CursorPos X="5" Y="727"/>
+        <UsageCount Value="11"/>
+        <Loaded Value="True"/>
+      </Unit8>
+      <Unit9>
+        <Filename Value="C:\lazarus\fpc\2.6.4\source\rtl\inc\resh.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="44"/>
+        <CursorPos X="10" Y="56"/>
+        <UsageCount Value="11"/>
+      </Unit9>
     </Units>
-    <JumpHistory Count="13" HistoryIndex="12">
+    <JumpHistory Count="23" HistoryIndex="22">
       <Position1>
         <Filename Value="LibGridInQuestII.lpr"/>
         <Caret Line="41" Column="15" TopLine="21"/>
@@ -113,6 +135,46 @@
         <Filename Value="LibGridInQuestII.lpr"/>
         <Caret Line="38" Column="34" TopLine="23"/>
       </Position13>
+      <Position14>
+        <Filename Value="LibGridInQuestII.lpr"/>
+        <Caret Line="37" Column="53" TopLine="24"/>
+      </Position14>
+      <Position15>
+        <Filename Value="LibGridInQuestII.lpr"/>
+        <Caret Line="33" Column="26" TopLine="27"/>
+      </Position15>
+      <Position16>
+        <Filename Value="LibGridInQuestII.lpr"/>
+        <Caret Line="39" Column="4" TopLine="27"/>
+      </Position16>
+      <Position17>
+        <Filename Value="LibGridInQuestII.lpr"/>
+        <Caret Line="43" Column="16" TopLine="27"/>
+      </Position17>
+      <Position18>
+        <Filename Value="LibGridInQuestII.lpr"/>
+        <Caret Line="27" Column="43" TopLine="26"/>
+      </Position18>
+      <Position19>
+        <Filename Value="LibGridInQuestII.lpr"/>
+        <Caret Line="37" Column="19" TopLine="19"/>
+      </Position19>
+      <Position20>
+        <Filename Value="BNG.pas"/>
+        <Caret Line="292" Column="2" TopLine="285"/>
+      </Position20>
+      <Position21>
+        <Filename Value="BNG.pas"/>
+        <Caret Line="289" Column="30" TopLine="279"/>
+      </Position21>
+      <Position22>
+        <Filename Value="BNG.pas"/>
+        <Caret Line="333" Column="22" TopLine="313"/>
+      </Position22>
+      <Position23>
+        <Filename Value="LibGridInQuestII.lpr"/>
+        <Caret Line="25" Column="97" TopLine="18"/>
+      </Position23>
     </JumpHistory>
   </ProjectSession>
 </CONFIG>

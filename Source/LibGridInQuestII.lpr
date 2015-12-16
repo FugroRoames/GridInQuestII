@@ -28,20 +28,29 @@ Uses
 
 {$R *.res}
 
-Function ConvertCoordinates(SourceEPSG, TargetEPSG: Integer; InputCoordinates: TCoordinates): TCoordinates;{$IFDEF WINDOWS}StdCall;{$ELSE} CDecl;{$ENDIF}
+Function ConvertCoordinates(SourceEPSG, TargetEPSG: Integer; Var InputCoordinates: TCoordinates; Out OutputCoordinates: TCoordinates; Out OutputDatum: Integer): Boolean;{$IFDEF WINDOWS}StdCall;{$ELSE} CDecl;{$ENDIF}
 Var
   SourceCoordinateSystem: TCoordinateSystem;
   TargetCoordinateSystem: TCoordinateSystem;
   GeocentricCoordinates: TCoordinates;
 Begin
+  Result := False;
   With CoordinateSystems Do
     SourceCoordinateSystem := Items(FindEPSGNumber(SourceEPSG));
   With CoordinateSystems Do
     TargetCoordinateSystem := Items(FindEPSGNumber(TargetEPSG));
-  //If SourceCoordinateSystem<>Nil Then
-    GeocentricCoordinates := SourceCoordinateSystem.ConvertToGeocentric(InputCoordinates);
-  //If TargetCoordinateSystem<>Nil Then
-    Result := TargetCoordinateSystem.ConvertFromGeocentric(GeocentricCoordinates);
+  If Assigned(@SourceCoordinateSystem) Then
+    GeocentricCoordinates := SourceCoordinateSystem.ConvertToGeocentric(InputCoordinates)
+  Else
+    Exit;
+  If Assigned(@TargetCoordinateSystem) Then
+    Begin
+      OutputCoordinates := TargetCoordinateSystem.ConvertFromGeocentric(GeocentricCoordinates);
+      OutputDatum := Integer(TargetCoordinateSystem.LastVerticalDatum);
+    End
+  Else
+    Exit;
+  Result := True;
 End;
 
 Exports
