@@ -22,7 +22,10 @@ Unit ITM;
 Interface
 
 Uses
-  SysUtils, Math, Geodesy, OSTab;
+  Classes, SysUtils, Math, Geodesy, OSTab;
+
+{ Define to embed the data table within the executable. }
+{$DEFINE EMBED}
 
 { Define to include ITM using GM02 as an additional coordinate system. }
 //{$DEFINE ITM02}
@@ -55,6 +58,25 @@ Function WGS84CoordinatesToITMCoordinates(Const InputCoordinates: TCoordinates; 
 Function ITMCoordinatesToWGS84Coordinates(Const InputCoordinates: TCoordinates; Const VerticalModel: TOSVerticalModel; Const PreferredDatum: TVerticalDatumCode; Out OutputCoordinates: TCoordinates; Out OutputDatum: TVerticalDatumCode): Boolean;
 
 Implementation
+
+{ Embed the required data tables using resource files. }
+{$IFDEF EMBED}
+{$IFDEF Darwin}
+  {$IFDEF ITM02}
+    {$R GM02NI.res}
+    {$R GM02RoI.res}
+  {$ENDIF}
+  {$R TN15NI.res}
+  {$R GM15RoI.res}
+{$ELSE}
+  {$IFDEF ITM02}
+    {$R GM02NI.rc}
+    {$R GM02RoI.rc}
+  {$ENDIF}
+  {$R GM15NI.rc}
+  {$R GM15RoI.rc}
+{$ENDIF}
+{$ENDIF}
 
 Type
   TAdjustDirection = (adAdd, adSubtract);
@@ -233,6 +255,41 @@ Begin
   Result := Data.AdjustHeight(OutputCoordinates, OutputDatum, adAdd);
 End;
 
+{$IFDEF EMBED}
+Procedure LoadResourceTables;
+Var
+  ResourceStream: TStream;
+Begin
+  { If no external data files found, load the tables from the embedded resources. }
+  {$IFDEF ITM02}
+  If Not GM02NIDataFound Then
+    Begin
+      ResourceStream := TResourceStream.Create(hInstance, 'GM02NI, 'DATA');
+      GM02NIDataFound := GM02NIData.LoadFromStream(ResourceStream);
+      FreeAndNil(ResourceStream);
+    End;
+  If Not GM02RoIDataFound Then
+    Begin
+      ResourceStream := TResourceStream.Create(hInstance, 'GM02RoI, 'DATA');
+      GM02RoIDataFound := GM02RoIData.LoadFromStream(ResourceStream);
+      FreeAndNil(ResourceStream);
+    End;
+  {$ENDIF}
+  If Not GM15NIDataFound Then
+    Begin
+      ResourceStream := TResourceStream.Create(hInstance, 'GM15NI', 'DATA');
+      GM15NIDataFound := GM15NIData.LoadFromStream(ResourceStream);
+      FreeAndNil(ResourceStream);
+    End;
+  If Not GM15RoIDataFound Then
+    Begin
+      ResourceStream := TResourceStream.Create(hInstance, 'GM15RoI', 'DATA');
+      GM15RoIDataFound := GM15RoIData.LoadFromStream(ResourceStream);
+      FreeAndNil(ResourceStream);
+    End;
+End;
+{$ENDIF}
+
 Initialization
 
 ProgramFolder := IncludeTrailingPathDelimiter(ExtractFilePath(ParamStr(0)));
@@ -246,6 +303,11 @@ GM02RoIDataFound := GM02RoIData.LoadFromFile(GM02RoIFileName);
 {$ENDIF}
 GM15NIDataFound := GM15NIData.LoadFromFile(GM15NIFileName);
 GM15RoIDataFound := GM15RoIData.LoadFromFile(GM15RoIFileName);
+
+{$IFDEF EMBED}
+LoadResourceTables;
+{$ENDIF}
+
 GRS80Ellipsoid.Initialize(6378137.0000, 6356752.314140);
 ITMProjection.Initialize(0.99982, DegToRad(53.5), DegToRad(-8), 600000, 750000, GRS80Ellipsoid);
 {$IFDEF ITM02}
@@ -253,6 +315,7 @@ ITMProjection.Initialize(0.99982, DegToRad(53.5), DegToRad(-8), 600000, 750000, 
 ITM02CoordinateSystem.Initialize('Irish Transverse Mercator', 'IRENET95',
                                  'Irish Transverse Mercator (ITM/GM02)', 2157,
                                  ctProjected, aoXYZ, ITMBounds, vdMalinHead);
+CoordinateSystems.Register(ITM02CoordinateSystem);
 {$ENDIF}
 
 ITM15CoordinateSystem.Initialize('Irish Transverse Mercator', 'IRENET95',
