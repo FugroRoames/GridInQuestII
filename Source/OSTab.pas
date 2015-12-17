@@ -22,7 +22,7 @@ Unit OSTab;
 Interface
 
 Uses
-  SysUtils, Classes, Geometry, Geodesy;
+  SysUtils, Classes, Geometry, Geodesy; // TODO: Remove Classes dependency by replacing TStreams code.
 
 Type
   TSmallCoordinate = Single; { Defined to keep storage space of tables compact. }

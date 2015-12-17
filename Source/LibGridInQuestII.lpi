@@ -21,7 +21,7 @@
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
       <MinorVersionNr Value="1"/>
-      <BuildNr Value="24"/>
+      <BuildNr Value="51"/>
       <Language Value="0809"/>
       <StringTable Comments="Developed for the three Ordnance Surveys of Britain and Ireland." CompanyName="Michell Computing" FileDescription="Coordinate Transformation Library" LegalCopyright="(c) 2015 Michell Computing" ProductName="Lib Grid InQuest II" ProductVersion="0.10A"/>
     </VersionInfo>
@@ -34,6 +34,7 @@
     <RunParams>
       <local>
         <FormatVersion Value="1"/>
+        <HostApplicationFilename Value="C:\Program Files (x86)\Microsoft Office\Office15\MSACCESS.EXE"/>
       </local>
     </RunParams>
     <Units Count="1">
@@ -57,6 +58,9 @@
       <RelocatableUnit Value="True"/>
     </CodeGeneration>
     <Linking>
+      <Debugging>
+        <UseExternalDbgSyms Value="True"/>
+      </Debugging>
       <Options>
         <ExecutableType Value="Library"/>
       </Options>

@@ -24,7 +24,7 @@ Uses
     cthreads,
     cmem,
   {$ENDIF}
-  Classes, Geodesy, ETRS, BNG, IG, ITM;
+  Geodesy, ETRS, BNG, IG, ITM;
 
 {$R *.res}
 
