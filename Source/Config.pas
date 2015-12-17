@@ -134,7 +134,7 @@ Begin
   With IGCoordinateSystem Do
     PreferredVerticalDatum := VerticalDataNameToCode(XMLConfig.GetValue(IGPreferredDatumKey,
                                                      VerticalDataCodeToName(PreferredVerticalDatum)));
-  With ITMCoordinateSystem Do
+  With ITM15CoordinateSystem Do
     PreferredVerticalDatum := VerticalDataNameToCode(XMLConfig.GetValue(ITMPreferredDatumKey,
                                                      VerticalDataCodeToName(PreferredVerticalDatum)));
   XMLConfig.CloseKey;
@@ -201,7 +201,7 @@ Begin
   XMLConfig.OpenKey(IrishSettingsKey);
   With IGCoordinateSystem Do
     XMLConfig.SetValue(IGPreferredDatumKey, VerticalDataCodeToName(PreferredVerticalDatum));
-  With ITMCoordinateSystem Do
+  With ITM15CoordinateSystem Do
     XMLConfig.SetValue(ITMPreferredDatumKey, VerticalDataCodeToName(PreferredVerticalDatum));
   XMLConfig.CloseKey;
   XMLConfig.Flush;

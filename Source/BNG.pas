@@ -22,7 +22,7 @@ Unit BNG;
 Interface
 
 Uses
-  SysUtils, Math, Geometry, Geodesy, OSTab;
+  Classes, SysUtils, Math, Geometry, Geodesy, OSTab;
 
 { Define British National Grid accuracy level options. }
 
@@ -48,7 +48,10 @@ Uses
 {$DEFINE LEVEL4}
 
 { Define to embed the data table within the executable. }
-//{$DEFINE EMBED}
+{$DEFINE EMBED}
+
+{ Define to include BNG using GM02 as an additional coordinate system. }
+//{$DEFINE BNG02}
 
 Type
   TBNGCoordinateSystem = Object(TCoordinateSystem)
@@ -83,35 +86,53 @@ Implementation
 {$IFDEF EMBED}
   {$IFDEF LEVEL2}
     {$IFDEF Darwin}
-      {$R TN02GB100.res}
-      {$R VRF10GB100.res}
-      {$R GM02GB100.res}
+      {$IFDEF BNG02}
+        {$R TN02GB100.res}
+        {$R GM02GB100.res}
+      {$ENDIF}
+      {$R TN15GB100.res}
+      {$R GM15GB100.res}
     {$ELSE}
-      {$R TN02GB100.rc}
-      {$R VRF10GB100.rc}
-      {$R GM02GB100.rc}
+      {$IFDEF BNG02}
+        {$R TN02GB100.rc}
+        {$R GM02GB100.rc}
+      {$ENDIF}
+      {$R TN15GB100.rc}
+      {$R GM15GB100.rc}
     {$ENDIF}
   {$ENDIF}
   {$IFDEF LEVEL3}
     {$IFDEF Darwin}
-      {$R TN02GB10.res}
-      {$R VRF10GB10.res}
-      {$R GM02GB10.res}
+      {$IFDEF BNG02}
+        {$R TN02GB10.res}
+        {$R GM02GB10.res}
+      {$ENDIF}
+      {$R TN15GB10.res}
+      {$R GM15GB10.res}
     {$ELSE}
-      {$R TN02GB10.rc}
-      {$R VRF10GB10.rc}
-      {$R GM02GB10.rc}
+      {$IFDEF BNG02}
+        {$R TN02GB10.rc}
+        {$R GM02GB10.rc}
+      {$ENDIF}
+      {$R TN15GB10.rc}
+      {$R GM15GB10.rc}
     {$ENDIF}
   {$ENDIF}
   {$IFDEF LEVEL4}
     {$IFDEF Darwin}
-      {$R TN02GB.res}
-      {$R VRF10GB.res}
-      {$R GM02GB.res}
+      {$IFDEF BNG02}
+        {$R TN02GB.res}
+        {$R GM02GB.res}
+      {$ENDIF}
+      {$R TN15GB.res}
+      {$R GM15GB.res}
     {$ELSE}
-      {$R TN02GB.rc}
-      {$R VRF10GB.rc}
-      {$R GM02GB.rc}
+      {$IFDEF BNG02}
+        {$R TN02GB.rc}
+        {$R GM02GB.rc}
+      {$ENDIF}
+      {$R TN15GB.rc}
+      {$R GM15GB.rc}
     {$ENDIF}
   {$ENDIF}
 {$ENDIF}
@@ -119,12 +140,12 @@ Implementation
 Var
   ProgramFolder: String;
   TN02FileName: String;
-  TN15FileName: String;
   GM02FileName: String;
+  TN15FileName: String;
   GM15FileName: String;
   TN02DataFound: Boolean;
-  TN15DataFound: Boolean;
   GM02DataFound: Boolean;
+  TN15DataFound: Boolean;
   GM15DataFound: Boolean;
 
 Constructor TBNGCoordinateSystem.Initialize(NewName: String; NewAbbreviation: String; NewDescription: String;
@@ -259,16 +280,11 @@ Var
   ResourceStream: TStream;
 Begin
   { If no external data files found, load the tables from the embedded resources. }
+  {$IFDEF BNG02}
   If Not TN02DataFound Then
     Begin
       ResourceStream := TResourceStream.Create(hInstance, 'TN02GB', 'DATA');
       TN02DataFound := TN02GBData.LoadFromStream(ResourceStream);
-      FreeAndNil(ResourceStream);
-    End;
-  If Not TN15DataFound Then
-    Begin
-      ResourceStream := TResourceStream.Create(hInstance, 'TN15GB', 'DATA');
-      VRF10DataFound := GM02GBData.LoadFromStream(ResourceStream);
       FreeAndNil(ResourceStream);
     End;
   If Not GM02DataFound Then
@@ -277,10 +293,17 @@ Begin
       GM02DataFound := GM02GBData.LoadFromStream(ResourceStream);
       FreeAndNil(ResourceStream);
     End;
+  {$ENDIF}
+  If Not TN15DataFound Then
+    Begin
+      ResourceStream := TResourceStream.Create(hInstance, 'TN15GB', 'DATA');
+      TN15DataFound := TN15GBData.LoadFromStream(ResourceStream);
+      FreeAndNil(ResourceStream);
+    End;
   If Not GM15DataFound Then
     Begin
       ResourceStream := TResourceStream.Create(hInstance, 'GM15GB', 'DATA');
-      GM02DataFound := GM02GBData.LoadFromStream(ResourceStream);
+      GM15DataFound := GM15GBData.LoadFromStream(ResourceStream);
       FreeAndNil(ResourceStream);
     End;
 End;
@@ -291,46 +314,51 @@ Initialization
 ProgramFolder := IncludeTrailingPathDelimiter(ExtractFilePath(GetModuleName(HInstance))); // TODO: Does this work cross-platform? Or is ParamStr(0) better?
 {$IFDEF LEVEL1}
 TN02DataFound := False;
-TN15DataFound := False;
 GM02DataFound := False;
+TN15DataFound := False;
 GM15DataFound := False;
 {$ENDIF}
 {$IFDEF LEVEL2}
 TN02FileName := ProgramFolder+'TN02GB100.dat';
-TN15FileName := ProgramFolder+'TN15GB100.dat';
 GM02FileName := ProgramFolder+'GM02GB100.dat';
+TN15FileName := ProgramFolder+'TN15GB100.dat';
 GM15FileName := ProgramFolder+'GM15GB100.dat';
 {$ENDIF}
 {$IFDEF LEVEL3}
 TN02FileName := ProgramFolder+'TN02GB10.dat';
-TN15FileName := ProgramFolder+'TN15GB10.dat';
 GM02FileName := ProgramFolder+'GM02GB10.dat';
+TN15FileName := ProgramFolder+'TN15GB10.dat';
 GM15FileName := ProgramFolder+'GM15GB10.dat';
 {$ENDIF}
 {$IFDEF LEVEL4}
 TN02FileName := ProgramFolder+'TN02GB.dat';
-TN15FileName := ProgramFolder+'TN15GB.dat';
 GM02FileName := ProgramFolder+'GM02GB.dat';
+TN15FileName := ProgramFolder+'TN15GB.dat';
 GM15FileName := ProgramFolder+'GM15GB.dat';
 {$ENDIF}
 {$IFNDEF LEVEL1}
+{$IFDEF BNG02}
 TN02GBData.Initialize;
 TN02DataFound := TN02GBData.LoadFromFile(TN02FileName);
-TN15GBData.Initialize;
-TN15DataFound := TN15GBData.LoadFromFile(TN15FileName);
 GM02GBData.Initialize;
 GM02DataFound := GM02GBData.LoadFromFile(GM02FileName);
+{$ENDIF}
+TN15GBData.Initialize;
+TN15DataFound := TN15GBData.LoadFromFile(TN15FileName);
 GM15GBData.Initialize;
 GM15DataFound := GM15GBData.LoadFromFile(GM15FileName);
 {$ENDIF}
+
 {$IFDEF EMBED}
 LoadResourceTables;
 {$ENDIF}
 
 GRS80Ellipsoid.Initialize(6378137.0000, 6356752.314140);
 BNGGridProjection.Initialize(0.9996012717, DegToRad(49), DegToRad(-2), 400000, -100000, GRS80Ellipsoid);
+{$IFDEF BNG02}
 BNG02CoordinateSystem.Initialize('British National Grid (2002)', 'OSGB36',
                                  'OSGB36 / British National Grid (TN02/GM02)', 27700, ctProjected, aoXYZ, BNGBounds, TN02GBData, GM02GBData);
+{$ENDIF}
 BNG15CoordinateSystem.Initialize('British National Grid (2015)', 'OSGB36',
                                  'OSGB36 / British National Grid (TN15/GM15)', 27701, ctProjected, aoXYZ, BNGBounds, TN15GBData, GM15GBData);
 CoordinateSystems.Register(BNG02CoordinateSystem);

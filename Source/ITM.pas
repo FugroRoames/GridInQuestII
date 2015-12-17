@@ -24,6 +24,9 @@ Interface
 Uses
   SysUtils, Math, Geodesy, OSTab;
 
+{ Define to include ITM using GM02 as an additional coordinate system. }
+//{$DEFINE ITM02}
+
 Type
   TITMCoordinateSystem = Object(TCoordinateSystem)
 //    PreferredVerticalDatum: TVerticalDatumCode; { These fields should be define here but have been moved to the parent object in the Geodesy unit. }
@@ -42,7 +45,8 @@ Var
   GM15RoIData: TVerticalTable;
   GRS80Ellipsoid: TEllipsoid;
   ITMProjection: TProjection;
-  ITMCoordinateSystem: TITMCoordinateSystem;
+  ITM02CoordinateSystem: TITMCoordinateSystem;
+  ITM15CoordinateSystem: TITMCoordinateSystem;
 
 Const
   ITMBounds: TGeodeticBounds = (Western: -10.56*PI/180; Southern: 51.39*PI/180; Eastern: -5.34*PI/180; Northern: 55.43*PI/180);
@@ -236,16 +240,25 @@ GM02NIFileName := ProgramFolder+'GM02NI.dat';
 GM02RoIFileName := ProgramFolder+'GM02RoI.dat';
 GM15NIFileName := ProgramFolder+'GM15NI.dat';
 GM15RoIFileName := ProgramFolder+'GM15RoI.dat';
+{$IFDEF ITM02}
 GM02NIDataFound := GM02NIData.LoadFromFile(GM02NIFileName);
 GM02RoIDataFound := GM02RoIData.LoadFromFile(GM02RoIFileName);
+{$ENDIF}
 GM15NIDataFound := GM15NIData.LoadFromFile(GM15NIFileName);
 GM15RoIDataFound := GM15RoIData.LoadFromFile(GM15RoIFileName);
 GRS80Ellipsoid.Initialize(6378137.0000, 6356752.314140);
 ITMProjection.Initialize(0.99982, DegToRad(53.5), DegToRad(-8), 600000, 750000, GRS80Ellipsoid);
-ITMCoordinateSystem.Initialize('Irish Transverse Mercator', 'IRENET95',
-                                 'Irish Transverse Mercator (ITM)', 2157,
+{$IFDEF ITM02}
+// TODO: EPSG number needes to be distinct from GM15 for this to work.
+ITM02CoordinateSystem.Initialize('Irish Transverse Mercator', 'IRENET95',
+                                 'Irish Transverse Mercator (ITM/GM02)', 2157,
                                  ctProjected, aoXYZ, ITMBounds, vdMalinHead);
-CoordinateSystems.Register(ITMCoordinateSystem);
+{$ENDIF}
+
+ITM15CoordinateSystem.Initialize('Irish Transverse Mercator', 'IRENET95',
+                                 'Irish Transverse Mercator (ITM/GM15)', 2157,
+                                 ctProjected, aoXYZ, ITMBounds, vdMalinHead);
+CoordinateSystems.Register(ITM15CoordinateSystem);
 
 End.
 

@@ -165,7 +165,7 @@ Begin
       DatumSuffixOutputCheckBox.Checked := HeightDatumSuffix;
     End;
   IGDatumComboBox.Text := DatumCodeToText(IGCoordinateSystem.PreferredVerticalDatum);
-  ITMDatumComboBox.Text := DatumCodeToText(ITMCoordinateSystem.PreferredVerticalDatum);
+  ITMDatumComboBox.Text := DatumCodeToText(ITM15CoordinateSystem.PreferredVerticalDatum);
 End;
 
 Procedure TOptionsForm.OptionsPageControlResize(Sender: TObject);
@@ -268,7 +268,7 @@ Begin
       HeightDatumSuffix := DatumSuffixOutputCheckBox.Checked;
     End;
   IGCoordinateSystem.PreferredVerticalDatum := DatumTextToCode(IGDatumComboBox.Text);
-  ITMCoordinateSystem.PreferredVerticalDatum := DatumTextToCode(ITMDatumComboBox.Text);
+  ITM15CoordinateSystem.PreferredVerticalDatum := DatumTextToCode(ITMDatumComboBox.Text);
   WriteConfigOptions;
 End;
 
