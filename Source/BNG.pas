@@ -358,10 +358,10 @@ BNGGridProjection.Initialize(0.9996012717, DegToRad(49), DegToRad(-2), 400000, -
 {$IFDEF BNG02}
 BNG02CoordinateSystem.Initialize('British National Grid (2002)', 'OSGB36',
                                  'OSGB36 / British National Grid (TN02/GM02)', 27700, ctProjected, aoXYZ, BNGBounds, TN02GBData, GM02GBData);
+CoordinateSystems.Register(BNG02CoordinateSystem);
 {$ENDIF}
 BNG15CoordinateSystem.Initialize('British National Grid (2015)', 'OSGB36',
                                  'OSGB36 / British National Grid (TN15/GM15)', 27701, ctProjected, aoXYZ, BNGBounds, TN15GBData, GM15GBData);
-CoordinateSystems.Register(BNG02CoordinateSystem);
 CoordinateSystems.Register(BNG15CoordinateSystem);
 
 End.
