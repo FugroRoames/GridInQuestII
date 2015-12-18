@@ -22,7 +22,7 @@ Unit BNG;
 Interface
 
 Uses
-  Classes, SysUtils, Math, Geometry, Geodesy, OSTab;
+  SysUtils, Math, Geometry, Geodesy, OSTab;
 
 { Define British National Grid accuracy level options. }
 
@@ -48,7 +48,7 @@ Uses
 {$DEFINE LEVEL4}
 
 { Define to embed the data table within the executable. }
-{$DEFINE EMBED}
+//{$DEFINE EMBED}
 
 { Define to include BNG using GM02 as an additional coordinate system. }
 //{$DEFINE BNG02}
@@ -274,41 +274,6 @@ Begin
   {$ENDIF}
 End;
 
-{$IFDEF EMBED}
-Procedure LoadResourceTables;
-Var
-  ResourceStream: TStream;
-Begin
-  { If no external data files found, load the tables from the embedded resources. }
-  {$IFDEF BNG02}
-  If Not TN02DataFound Then
-    Begin
-      ResourceStream := TResourceStream.Create(hInstance, 'TN02GB', 'DATA');
-      TN02DataFound := TN02GBData.LoadFromStream(ResourceStream);
-      FreeAndNil(ResourceStream);
-    End;
-  If Not GM02DataFound Then
-    Begin
-      ResourceStream := TResourceStream.Create(hInstance, 'GM02GB', 'DATA');
-      GM02DataFound := GM02GBData.LoadFromStream(ResourceStream);
-      FreeAndNil(ResourceStream);
-    End;
-  {$ENDIF}
-  If Not TN15DataFound Then
-    Begin
-      ResourceStream := TResourceStream.Create(hInstance, 'TN15GB', 'DATA');
-      TN15DataFound := TN15GBData.LoadFromStream(ResourceStream);
-      FreeAndNil(ResourceStream);
-    End;
-  If Not GM15DataFound Then
-    Begin
-      ResourceStream := TResourceStream.Create(hInstance, 'GM15GB', 'DATA');
-      GM15DataFound := GM15GBData.LoadFromStream(ResourceStream);
-      FreeAndNil(ResourceStream);
-    End;
-End;
-{$ENDIF}
-
 Initialization
 
 ProgramFolder := IncludeTrailingPathDelimiter(ExtractFilePath(GetModuleName(HInstance))); // TODO: Does this work cross-platform? Or is ParamStr(0) better?
@@ -336,21 +301,39 @@ GM02FileName := ProgramFolder+'GM02GB.dat';
 TN15FileName := ProgramFolder+'TN15GB.dat';
 GM15FileName := ProgramFolder+'GM15GB.dat';
 {$ENDIF}
+
+{ Prepare any required data table structures. }
 {$IFNDEF LEVEL1}
 {$IFDEF BNG02}
 TN02GBData.Initialize;
-TN02DataFound := TN02GBData.LoadFromFile(TN02FileName);
 GM02GBData.Initialize;
-GM02DataFound := GM02GBData.LoadFromFile(GM02FileName);
 {$ENDIF}
 TN15GBData.Initialize;
-TN15DataFound := TN15GBData.LoadFromFile(TN15FileName);
 GM15GBData.Initialize;
+{$ENDIF}
+
+{ Attempt to load the data tables from external files. }
+{$IFNDEF LEVEL1}
+{$IFDEF BNG02}
+TN02DataFound := TN02GBData.LoadFromFile(TN02FileName);
+GM02DataFound := GM02GBData.LoadFromFile(GM02FileName);
+{$ENDIF}
+TN15DataFound := TN15GBData.LoadFromFile(TN15FileName);
 GM15DataFound := GM15GBData.LoadFromFile(GM15FileName);
 {$ENDIF}
 
+{ If no external data files found, load the tables from the embedded resources. }
 {$IFDEF EMBED}
-LoadResourceTables;
+{$IFDEF BNG02}
+If Not TN02DataFound Then
+  TN02DataFound := TN02GBData.LoadFromResource('TN02GB', 'DATA');
+If Not GM02DataFound Then
+  GM02DataFound := GM02GBData.LoadFromResource('GM02GB', 'DATA');
+{$ENDIF}
+If Not TN15DataFound Then
+  TN15DataFound := TN15GBData.LoadFromResource('TN15GB', 'DATA');
+If Not GM15DataFound Then
+  GM15DataFound := GM15GBData.LoadFromResource('GM15GB', 'DATA');
 {$ENDIF}
 
 GRS80Ellipsoid.Initialize(6378137.0000, 6356752.314140);
@@ -363,5 +346,17 @@ CoordinateSystems.Register(BNG02CoordinateSystem);
 BNG15CoordinateSystem.Initialize('British National Grid (2015)', 'OSGB36',
                                  'OSGB36 / British National Grid (TN15/GM15)', 27701, ctProjected, aoXYZ, BNGBounds, TN15GBData, GM15GBData);
 CoordinateSystems.Register(BNG15CoordinateSystem);
+
+Finalization
+
+{ Release any required data table structures. }
+{$IFNDEF LEVEL1}
+{$IFDEF BNG02}
+TN02GBData.Release;
+GM02GBData.Release;
+{$ENDIF}
+TN15GBData.Release;
+GM15GBData.Release;
+{$ENDIF}
 
 End.

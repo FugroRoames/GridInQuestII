@@ -22,7 +22,7 @@ Unit OSTab;
 Interface
 
 Uses
-  SysUtils, Classes, Geometry, Geodesy; // TODO: Remove Classes dependency by replacing TStreams code.
+  SysUtils, Geometry, Geodesy;
 
 Type
   TSmallCoordinate = Single; { Defined to keep storage space of tables compact. }
@@ -58,12 +58,14 @@ Type
   End;
   THorizontalRecordArray = Array Of THorizontalRecord;
   THorizontalTable = Packed Object
+    Handle: TFPResourceHGLOBAL;
     Header: TDataHeader;
     Records: THorizontalRecordArray;
     Constructor Initialize;
+    Destructor Release;
     Function Data(X, Y: Integer): THorizontalRecord;
     Function LoadFromFile(FileName: String): Boolean;
-    Function LoadFromStream(Source: TStream): Boolean;
+    Function LoadFromResource(Name, DataType: String): Boolean;
   End;
   THorizontalTablePointer = ^THorizontalTable;
   TVerticalRecord = Packed Record
@@ -72,12 +74,14 @@ Type
   End;
   TVerticalRecordArray = Array Of TVerticalRecord;
   TVerticalTable = Packed Object
+    Handle: TFPResourceHGLOBAL;
     Header: TDataHeader;
     Records: TVerticalRecordArray;
     Constructor Initialize;
+    Destructor Release;
     Function Data(X, Y: Integer): TVerticalRecord;
     Function LoadFromFile(FileName: String): Boolean;
-    Function LoadFromStream(Source: TStream): Boolean;
+    Function LoadFromResource(Name, DataType: String): Boolean;
   End;
   TVerticalTablePointer = ^TVerticalTable;
 
@@ -232,7 +236,13 @@ End;
 
 Constructor THorizontalTable.Initialize;
 Begin
-  { Nothing required here. }
+  Handle := 0;
+End;
+
+Destructor THorizontalTable.Release;
+Begin
+  UnlockResource(Handle);
+  FreeResource(Handle);
 End;
 
 Function THorizontalTable.Data(X, Y: Integer): THorizontalRecord;
@@ -242,39 +252,71 @@ End;
 
 Function THorizontalTable.LoadFromFile(FileName: String): Boolean;
 Var
-  FileStream: TFileStream;
+  FileHandle: THandle;
+  RecordCount: Integer;
+  DataSize: Int64;
 Begin
   Result := FileExists(FileName);
   If Result Then
     Begin
-      FileStream := TFileStream.Create(FileName, fmOpenRead);
-      Result := LoadFromStream(FileStream);
-      FileStream.Free;
+      FileHandle := FileOpen(FileName, fmOpenRead);
+      If (THandle(FileHandle)<>feInvalidHandle) Then
+        Begin
+          DataSize := FileRead(FileHandle, Self.Header, SizeOf(Header));
+          If DataSize=SizeOf(Header) Then
+            Begin
+              RecordCount := Header.RowCount*Header.ColumnCount;
+              SetLength(Records, RecordCount);
+              DataSize := RecordCount*SizeOf(THorizontalRecord);
+              FileRead(FileHandle, Records[0], DataSize);
+              Result := True;
+            End;
+        End;
+      FileClose(FileHandle);
     End;
 End;
 
-Function THorizontalTable.LoadFromStream(Source: TStream): Boolean;
+Function THorizontalTable.LoadFromResource(Name, DataType: String): Boolean;
 Var
+  ResourceHandle: TFPResourceHandle;
+  DataPointer: Pointer;
+  HeaderPointer: Pointer;
   DataSize: Int64;
   RecordCount: Integer;
 Begin
-  DataSize := Source.Size;
-  If DataSize>SizeOf(Header) Then
+  Result := False;
+  ResourceHandle := FindResource(hInstance, PChar(Name), PChar(DataType));
+  Handle := LoadResource(hInstance, ResourceHandle);
+  If Handle<>0 Then
     Begin
-      Source.Read(Header, SizeOf(Header));
-      DataSize := DataSize-SizeOf(Header);
-      RecordCount := DataSize Div SizeOf(THorizontalRecord);
-      SetLength(Records, RecordCount);
-      Source.Read(Records[0], DataSize);
-      Result := True;
-    End
-  Else
-    Result := False;
+      DataPointer := LockResource(Handle);
+      If DataPointer<>Nil Then
+        Begin
+          DataSize := SizeOfResource(hInstance, ResourceHandle);
+          If DataSize>SizeOf(Header) Then
+             Begin
+               HeaderPointer := @Self.Header;
+               Move(DataPointer^, HeaderPointer^, SizeOf(Header));
+               Inc(DataPointer, SizeOf(Header));
+               DataSize := DataSize-SizeOf(Header);
+               RecordCount := DataSize Div SizeOf(THorizontalRecord);
+               SetLength(Records, RecordCount);
+               Move(DataPointer^, Records[0], DataSize);
+               Result := True;
+             End;
+        End;
+    End;
 End;
 
 Constructor TVerticalTable.Initialize;
 Begin
-  { Nothing required here. }
+  Handle := 0;
+End;
+
+Destructor TVerticalTable.Release;
+Begin
+  UnlockResource(Handle);
+  FreeResource(Handle);
 End;
 
 Function TVerticalTable.Data(X, Y: Integer): TVerticalRecord;
@@ -284,34 +326,60 @@ End;
 
 Function TVerticalTable.LoadFromFile(FileName: String): Boolean;
 Var
-  FileStream: TFileStream;
+  FileHandle: THandle;
+  RecordCount: Integer;
+  DataSize: Int64;
 Begin
   Result := FileExists(FileName);
   If Result Then
     Begin
-      FileStream := TFileStream.Create(FileName, fmOpenRead);
-      Result := LoadFromStream(FileStream);
-      FileStream.Free;
+      FileHandle := FileOpen(FileName, fmOpenRead);
+      If (THandle(FileHandle)<>feInvalidHandle) Then
+        Begin
+          DataSize := FileRead(FileHandle, Self.Header, SizeOf(Header));
+          If DataSize=SizeOf(Header) Then
+            Begin
+              RecordCount := Header.RowCount*Header.ColumnCount;
+              SetLength(Records, RecordCount);
+              DataSize := RecordCount*SizeOf(TVerticalRecord);
+              FileRead(FileHandle, Records[0], DataSize);
+              Result := True;
+            End;
+        End;
+      FileClose(FileHandle);
     End;
 End;
 
-Function TVerticalTable.LoadFromStream(Source: TStream): Boolean;
+Function TVerticalTable.LoadFromResource(Name, DataType: String): Boolean;
 Var
+  ResourceHandle: TFPResourceHandle;
+  DataPointer: Pointer;
+  HeaderPointer: Pointer;
   DataSize: Int64;
   RecordCount: Integer;
 Begin
-  DataSize := Source.Size;
-  If DataSize>SizeOf(Header) Then
+  Result := False;
+  ResourceHandle := FindResource(hInstance, PChar(Name), PChar(DataType));
+  Handle := LoadResource(hInstance, ResourceHandle);
+  If Handle<>0 Then
     Begin
-      Source.Read(Header, SizeOf(Header));
-      DataSize := DataSize-SizeOf(Header);
-      RecordCount := DataSize Div SizeOf(TVerticalRecord);
-      SetLength(Records, RecordCount);
-      Source.Read(Records[0], DataSize);
-      Result := True;
-    End
-  Else
-    Result := False;
+      DataPointer := LockResource(Handle);
+      If DataPointer<>Nil Then
+        Begin
+          DataSize := SizeOfResource(hInstance, ResourceHandle);
+          If DataSize>SizeOf(Header) Then
+             Begin
+               HeaderPointer := @Self.Header;
+               Move(DataPointer^, HeaderPointer^, SizeOf(Header));
+               Inc(DataPointer, SizeOf(Header));
+               DataSize := DataSize-SizeOf(Header);
+               RecordCount := DataSize Div SizeOf(TVerticalRecord);
+               SetLength(Records, RecordCount);
+               Move(DataPointer^, Records[0], DataSize);
+               Result := True;
+             End;
+        End;
+    End;
 End;
 
 End.
