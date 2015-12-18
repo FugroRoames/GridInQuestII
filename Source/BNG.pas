@@ -48,7 +48,7 @@ Uses
 {$DEFINE LEVEL4}
 
 { Define to embed the data table within the executable. }
-//{$DEFINE EMBED}
+{$DEFINE EMBED}
 
 { Define to include BNG using GM02 as an additional coordinate system. }
 //{$DEFINE BNG02}

@@ -56,11 +56,11 @@ Type
     ShiftEast: TSmallCoordinate;
     ShiftNorth: TSmallCoordinate;
   End;
-  THorizontalRecordArray = Array Of THorizontalRecord;
+  THorizontalRecordsPointer = ^THorizontalRecord;
   THorizontalTable = Packed Object
     Handle: TFPResourceHGLOBAL;
     Header: TDataHeader;
-    Records: THorizontalRecordArray;
+    RecordsPointer: THorizontalRecordsPointer;
     Constructor Initialize;
     Destructor Release;
     Function Data(X, Y: Integer): THorizontalRecord;
@@ -72,11 +72,11 @@ Type
     GeoidHeight: TSmallCoordinate;
     DatumCode: Byte;
   End;
-  TVerticalRecordArray = Array Of TVerticalRecord;
+  TVerticalRecordsPointer = ^TVerticalRecord;
   TVerticalTable = Packed Object
     Handle: TFPResourceHGLOBAL;
     Header: TDataHeader;
-    Records: TVerticalRecordArray;
+    RecordsPointer: TVerticalRecordsPointer;
     Constructor Initialize;
     Destructor Release;
     Function Data(X, Y: Integer): TVerticalRecord;
@@ -241,13 +241,14 @@ End;
 
 Destructor THorizontalTable.Release;
 Begin
+  FreeMem(RecordsPointer);
   UnlockResource(Handle);
   FreeResource(Handle);
 End;
 
 Function THorizontalTable.Data(X, Y: Integer): THorizontalRecord;
 Begin
-  Result := Records[X+Y*Header.ColumnCount];
+  Result := (RecordsPointer+(X+Y*Header.ColumnCount))^;
 End;
 
 Function THorizontalTable.LoadFromFile(FileName: String): Boolean;
@@ -266,9 +267,9 @@ Begin
           If DataSize=SizeOf(Header) Then
             Begin
               RecordCount := Header.RowCount*Header.ColumnCount;
-              SetLength(Records, RecordCount);
               DataSize := RecordCount*SizeOf(THorizontalRecord);
-              FileRead(FileHandle, Records[0], DataSize);
+              RecordsPointer := GetMem(DataSize);
+              FileRead(FileHandle, RecordsPointer^, DataSize);
               Result := True;
             End;
         End;
@@ -282,7 +283,6 @@ Var
   DataPointer: Pointer;
   HeaderPointer: Pointer;
   DataSize: Int64;
-  RecordCount: Integer;
 Begin
   Result := False;
   ResourceHandle := FindResource(hInstance, PChar(Name), PChar(DataType));
@@ -298,10 +298,7 @@ Begin
                HeaderPointer := @Self.Header;
                Move(DataPointer^, HeaderPointer^, SizeOf(Header));
                Inc(DataPointer, SizeOf(Header));
-               DataSize := DataSize-SizeOf(Header);
-               RecordCount := DataSize Div SizeOf(THorizontalRecord);
-               SetLength(Records, RecordCount);
-               Move(DataPointer^, Records[0], DataSize);
+               RecordsPointer := DataPointer;
                Result := True;
              End;
         End;
@@ -315,13 +312,14 @@ End;
 
 Destructor TVerticalTable.Release;
 Begin
+  FreeMem(RecordsPointer);
   UnlockResource(Handle);
   FreeResource(Handle);
 End;
 
 Function TVerticalTable.Data(X, Y: Integer): TVerticalRecord;
 Begin
-  Result := Records[X+Y*Header.ColumnCount];
+  Result := (RecordsPointer+(X+Y*Header.ColumnCount))^;
 End;
 
 Function TVerticalTable.LoadFromFile(FileName: String): Boolean;
@@ -340,9 +338,9 @@ Begin
           If DataSize=SizeOf(Header) Then
             Begin
               RecordCount := Header.RowCount*Header.ColumnCount;
-              SetLength(Records, RecordCount);
               DataSize := RecordCount*SizeOf(TVerticalRecord);
-              FileRead(FileHandle, Records[0], DataSize);
+              RecordsPointer := GetMem(DataSize);
+              FileRead(FileHandle, RecordsPointer^, DataSize);
               Result := True;
             End;
         End;
@@ -356,7 +354,6 @@ Var
   DataPointer: Pointer;
   HeaderPointer: Pointer;
   DataSize: Int64;
-  RecordCount: Integer;
 Begin
   Result := False;
   ResourceHandle := FindResource(hInstance, PChar(Name), PChar(DataType));
@@ -372,10 +369,7 @@ Begin
                HeaderPointer := @Self.Header;
                Move(DataPointer^, HeaderPointer^, SizeOf(Header));
                Inc(DataPointer, SizeOf(Header));
-               DataSize := DataSize-SizeOf(Header);
-               RecordCount := DataSize Div SizeOf(TVerticalRecord);
-               SetLength(Records, RecordCount);
-               Move(DataPointer^, Records[0], DataSize);
+               RecordsPointer := DataPointer;
                Result := True;
              End;
         End;
