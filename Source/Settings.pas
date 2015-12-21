@@ -28,6 +28,10 @@ Uses
 Type
   TSettingsForm = Class(TForm)
     BottomPanel: TPanel;
+    LoadSettingsButton: TButton;
+    OpenDialog: TOpenDialog;
+    SaveDialog: TSaveDialog;
+    SaveSettingsButton: TButton;
     TextDelimiterCheckBox: TCheckBox;
     ConsecutiveDelimitersCheckBox: TCheckBox;
     VerticalDataCheckBox: TCheckBox;
