@@ -25,7 +25,7 @@ Uses
   SysUtils, Math, Geodesy, OSTab;
 
 { Define to embed the data table within the executable. }
-{$DEFINE EMBED}
+//{$DEFINE EMBED}
 
 { Define to include ITM using GM02 as an additional coordinate system. }
 //{$DEFINE ITM02}
