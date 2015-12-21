@@ -317,13 +317,13 @@ Begin
           Data.TextDelimiter := String(GetValue(ValueKey, #0))[1];
         CloseKey;
         OpenKey(NameRowKey);
-          Data.NameRow := GetValue(ValueKey, 0);
+          Data.NameRow := GetValue(ValueKey, -1);
         CloseKey;
         OpenKey(FirstRowKey);
           Data.FirstRow := GetValue(ValueKey, 0);
         CloseKey;
         OpenKey(LastRowKey);
-          Data.LastRow := GetValue(ValueKey, 0);
+          Data.LastRow := GetValue(ValueKey, -1);
         CloseKey;
         OpenKey(EPSGNumberKey);
           MainForm.InputSystemIndex := CoordinateSystems.FindEPSGNumber(GetValue(ValueKey, 0));
@@ -384,9 +384,12 @@ Begin
         OpenKey(FirstRowKey);
           SetValue(ValueKey, Data.FirstRow);
         CloseKey;
-        OpenKey(LastRowKey);
-          SetValue(ValueKey, Data.LastRow);
-        CloseKey;
+        If Data.LastRow<>-1 Then
+          Begin
+            OpenKey(LastRowKey);
+              SetValue(ValueKey, Data.LastRow);
+            CloseKey;
+          End;
         If MainForm.InputSystemIndex<>-1 Then
           Begin
             OpenKey(EPSGNumberKey);

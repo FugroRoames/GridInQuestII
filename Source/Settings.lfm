@@ -594,7 +594,7 @@ object SettingsForm: TSettingsForm
     Title = 'Open Settings File'
     DefaultExt = '.set'
     Filter = 'GridInQuestII Settings|*.set'
-    Options = [ofFileMustExist, ofEnableSizing, ofViewDetail]
+    Options = [ofFileMustExist, ofEnableSizing]
     left = 40
     top = 416
   end
@@ -602,7 +602,7 @@ object SettingsForm: TSettingsForm
     Title = 'Save Settings File As'
     DefaultExt = '.set'
     Filter = 'GridInQuestII Settings|*.set'
-    Options = [ofOverwritePrompt, ofPathMustExist, ofEnableSizing, ofViewDetail]
+    Options = [ofOverwritePrompt, ofPathMustExist, ofEnableSizing]
     left = 144
     top = 416
   end
