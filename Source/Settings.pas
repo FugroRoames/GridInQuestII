@@ -125,6 +125,14 @@ Const
   FormatKey = 'Format';
   DelimitedKey = 'Delimited';
   FixedKey = 'Fixed';
+  FieldTerminatorKey = 'FieldTerminator';
+  FieldBreaksKey = 'FieldBreaks';
+  ConsecutiveDelimitersKey = 'ConsecutiveDelimiters';
+  TextDelimiterKey = 'TextDelimiter';
+  NameRowKey = 'NameRow';
+  FirstRowKey = 'FirstRow';
+  LastRowKey = 'LastRow';
+  ValueKey = 'Value';
 
 Function ShowSettingsForm(NewData: TDataStream): Boolean;
 Begin
@@ -290,25 +298,45 @@ Begin
       Filename := LoadFileName;
       { Read input settings. }
       OpenKey(InputKey);
-      Case GetValue(FormatKey, DelimitedKey) Of
-      DelimitedKey: Data.FormatType := ftDelimited;
-      FixedKey: Data.FormatType := ftFixed;
-      End;
-      //Data.FieldTerminator := OldFieldTerminator;
-      //Data.ConsecutiveDelimiters := OldConsecutiveDelimiters;
-      //ParseBreaksList(OldBreaksList);
-      //Data.TextDelimiter := OldTextDelimiter;
-      //Data.NameRow := OldNameRow;
-      //Data.FirstRow := OldFirstRow;
-      //Data.LastRow := OldLastRow;
-      MainForm.InputSystemIndex := CoordinateSystems.FindEPSGNumber(GetValue(EPSGNumberKey, 0));
-      //MainForm.InputFirstFieldIndex := OldFirstFieldIndex;
-      //MainForm.InputSecondFieldIndex := OldSecondFieldIndex;
-      //MainForm.InputThirdFieldIndex := OldThirdFieldIndex;
+        OpenKey(FormatKey);
+          Case GetValue(ValueKey, DelimitedKey) Of
+          DelimitedKey: Data.FormatType := ftDelimited;
+          FixedKey: Data.FormatType := ftFixed;
+          End;
+        CloseKey;
+        OpenKey(FieldTerminatorKey);
+          Data.FieldTerminator := String(GetValue(ValueKey, ','))[1];
+        CloseKey;
+        OpenKey(ConsecutiveDelimitersKey);
+          Data.ConsecutiveDelimiters := GetValue(ValueKey, False);
+        CloseKey;
+        OpenKey(FieldBreaksKey);
+          ParseBreaksList(GetValue(ValueKey, EmptyStr));
+        CloseKey;
+        OpenKey(TextDelimiterKey);
+          Data.TextDelimiter := String(GetValue(ValueKey, #0))[1];
+        CloseKey;
+        OpenKey(NameRowKey);
+          Data.NameRow := GetValue(ValueKey, 0);
+        CloseKey;
+        OpenKey(FirstRowKey);
+          Data.FirstRow := GetValue(ValueKey, 0);
+        CloseKey;
+        OpenKey(LastRowKey);
+          Data.LastRow := GetValue(ValueKey, 0);
+        CloseKey;
+        OpenKey(EPSGNumberKey);
+          MainForm.InputSystemIndex := CoordinateSystems.FindEPSGNumber(GetValue(ValueKey, 0));
+        CloseKey;
+        //MainForm.InputFirstFieldIndex := OldFirstFieldIndex;
+        //MainForm.InputSecondFieldIndex := OldSecondFieldIndex;
+        //MainForm.InputThirdFieldIndex := OldThirdFieldIndex;
       CloseKey;
       { Read output settings. }
       OpenKey(OutputKey);
-      MainForm.OutputSystemIndex := CoordinateSystems.FindEPSGNumber(GetValue(EPSGNumberKey, 0));
+        OpenKey(EPSGNumberKey);
+          MainForm.OutputSystemIndex := CoordinateSystems.FindEPSGNumber(GetValue(ValueKey, 0));
+        CloseKey;
       CloseKey;
       { Close settings configuration file. }
       Free;
@@ -326,19 +354,59 @@ Begin
       { Open settings configuration file. }
       RootName := 'Settings';
       Filename := SaveFileName;
+      Clear;
       { Write input settings. }
       OpenKey(InputKey);
-      Case Data.FormatType Of
-      ftDelimited: SetValue(FormatKey, DelimitedKey);
-      ftFixed: SetValue(FormatKey, FixedKey);
-      End;
-      With CoordinateSystems Do
-        SetValue(EPSGNumberKey, Items(FindEPSGNumber(MainForm.InputSystemIndex)).EPSGNumber);
+        OpenKey(FormatKey);
+          Case Data.FormatType Of
+          ftDelimited: SetValue(ValueKey, DelimitedKey);
+          ftFixed: SetValue(ValueKey, FixedKey);
+          End;
+        CloseKey;
+        OpenKey(FieldTerminatorKey);
+          SetValue(ValueKey, Data.FieldTerminator);
+        CloseKey;
+        OpenKey(ConsecutiveDelimitersKey);
+          SetValue(ValueKey, Data.ConsecutiveDelimiters);
+        CloseKey;
+        If FixedColumnBreaksEdit.Text<>EmptyStr Then
+          Begin
+            OpenKey(FieldBreaksKey);
+              SetValue(ValueKey, FixedColumnBreaksEdit.Text);
+            CloseKey;
+          End;
+        OpenKey(TextDelimiterKey);
+          SetValue(ValueKey, Data.TextDelimiter);
+        CloseKey;
+        OpenKey(NameRowKey);
+          SetValue(ValueKey, Data.NameRow);
+        CloseKey;
+        OpenKey(FirstRowKey);
+          SetValue(ValueKey, Data.FirstRow);
+        CloseKey;
+        OpenKey(LastRowKey);
+          SetValue(ValueKey, Data.LastRow);
+        CloseKey;
+        If MainForm.InputSystemIndex<>-1 Then
+          Begin
+            OpenKey(EPSGNumberKey);
+              With CoordinateSystems Do
+                SetValue(ValueKey, Items(MainForm.InputSystemIndex).EPSGNumber);
+            CloseKey;
+          End;
+        //MainForm.InputFirstFieldIndex := OldFirstFieldIndex;
+        //MainForm.InputSecondFieldIndex := OldSecondFieldIndex;
+        //MainForm.InputThirdFieldIndex := OldThirdFieldIndex;
       CloseKey;
       { Write output settings. }
       OpenKey(OutputKey);
-      With CoordinateSystems Do
-        SetValue(EPSGNumberKey, Items(FindEPSGNumber(MainForm.OutputSystemIndex)).EPSGNumber);
+        If MainForm.OutputSystemIndex<>-1 Then
+          Begin
+            OpenKey(EPSGNumberKey);
+              With CoordinateSystems Do
+                SetValue(ValueKey, Items(MainForm.OutputSystemIndex).EPSGNumber);
+            CloseKey;
+          End;
       CloseKey;
       { Close settings configuration file. }
       Flush;
