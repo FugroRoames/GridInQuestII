@@ -65,14 +65,14 @@ Type
   End;
 
 Var
+  BNGGridProjection: TProjection;
+  BNG02CoordinateSystem: TBNGCoordinateSystem;
+  BNG15CoordinateSystem: TBNGCoordinateSystem;
+  GRS80Ellipsoid: TEllipsoid;
   GM02GBData: TVerticalTable;
   GM15GBData: TVerticalTable;
   TN02GBData: THorizontalTable;
   TN15GBData: THorizontalTable;
-  GRS80Ellipsoid: TEllipsoid;
-  BNGGridProjection: TProjection;
-  BNG02CoordinateSystem: TBNGCoordinateSystem;
-  BNG15CoordinateSystem: TBNGCoordinateSystem;
 
 Const
   BNGBounds: TGeodeticBounds = (Western: -8.74*PI/180; Southern: 49.81*PI/180; Eastern: 1.84*PI/180; Northern: 60.9*PI/180);
@@ -87,66 +87,66 @@ Implementation
   {$IFDEF LEVEL2}
     {$IFDEF Darwin}
       {$IFDEF BNG02}
-        {$R TN02GB100.res}
         {$R GM02GB100.res}
+        {$R TN02GB100.res}
       {$ENDIF}
-      {$R TN15GB100.res}
       {$R GM15GB100.res}
+      {$R TN15GB100.res}
     {$ELSE}
       {$IFDEF BNG02}
-        {$R TN02GB100.rc}
         {$R GM02GB100.rc}
+        {$R TN02GB100.rc}
       {$ENDIF}
-      {$R TN15GB100.rc}
       {$R GM15GB100.rc}
+      {$R TN15GB100.rc}
     {$ENDIF}
   {$ENDIF}
   {$IFDEF LEVEL3}
     {$IFDEF Darwin}
       {$IFDEF BNG02}
-        {$R TN02GB10.res}
         {$R GM02GB10.res}
+        {$R TN02GB10.res}
       {$ENDIF}
-      {$R TN15GB10.res}
       {$R GM15GB10.res}
+      {$R TN15GB10.res}
     {$ELSE}
       {$IFDEF BNG02}
-        {$R TN02GB10.rc}
         {$R GM02GB10.rc}
+        {$R TN02GB10.rc}
       {$ENDIF}
-      {$R TN15GB10.rc}
       {$R GM15GB10.rc}
+      {$R TN15GB10.rc}
     {$ENDIF}
   {$ENDIF}
   {$IFDEF LEVEL4}
     {$IFDEF Darwin}
       {$IFDEF BNG02}
-        {$R TN02GB.res}
         {$R GM02GB.res}
+        {$R TN02GB.res}
       {$ENDIF}
-      {$R TN15GB.res}
       {$R GM15GB.res}
+      {$R TN15GB.res}
     {$ELSE}
       {$IFDEF BNG02}
-        {$R TN02GB.rc}
         {$R GM02GB.rc}
+        {$R TN02GB.rc}
       {$ENDIF}
-      {$R TN15GB.rc}
       {$R GM15GB.rc}
+      {$R TN15GB.rc}
     {$ENDIF}
   {$ENDIF}
 {$ENDIF}
 
 Var
   ProgramFolder: String;
-  TN02FileName: String;
   GM02FileName: String;
-  TN15FileName: String;
+  TN02FileName: String;
   GM15FileName: String;
-  TN02DataFound: Boolean;
+  TN15FileName: String;
   GM02DataFound: Boolean;
-  TN15DataFound: Boolean;
+  TN02DataFound: Boolean;
   GM15DataFound: Boolean;
+  TN15DataFound: Boolean;
 
 Constructor TBNGCoordinateSystem.Initialize(NewName: String; NewAbbreviation: String; NewDescription: String;
                                             NewEPSGNumber: Integer; NewCoordinateType: TCoordinateType;
@@ -278,62 +278,62 @@ Initialization
 
 ProgramFolder := IncludeTrailingPathDelimiter(ExtractFilePath(GetModuleName(HInstance))); // TODO: Does this work cross-platform? Or is ParamStr(0) better?
 {$IFDEF LEVEL1}
-TN02DataFound := False;
 GM02DataFound := False;
-TN15DataFound := False;
+TN02DataFound := False;
 GM15DataFound := False;
+TN15DataFound := False;
 {$ENDIF}
 {$IFDEF LEVEL2}
-TN02FileName := ProgramFolder+'TN02GB100.dat';
 GM02FileName := ProgramFolder+'GM02GB100.dat';
-TN15FileName := ProgramFolder+'TN15GB100.dat';
+TN02FileName := ProgramFolder+'TN02GB100.dat';
 GM15FileName := ProgramFolder+'GM15GB100.dat';
+TN15FileName := ProgramFolder+'TN15GB100.dat';
 {$ENDIF}
 {$IFDEF LEVEL3}
-TN02FileName := ProgramFolder+'TN02GB10.dat';
 GM02FileName := ProgramFolder+'GM02GB10.dat';
-TN15FileName := ProgramFolder+'TN15GB10.dat';
+TN02FileName := ProgramFolder+'TN02GB10.dat';
 GM15FileName := ProgramFolder+'GM15GB10.dat';
+TN15FileName := ProgramFolder+'TN15GB10.dat';
 {$ENDIF}
 {$IFDEF LEVEL4}
-TN02FileName := ProgramFolder+'TN02GB.dat';
 GM02FileName := ProgramFolder+'GM02GB.dat';
-TN15FileName := ProgramFolder+'TN15GB.dat';
+TN02FileName := ProgramFolder+'TN02GB.dat';
 GM15FileName := ProgramFolder+'GM15GB.dat';
+TN15FileName := ProgramFolder+'TN15GB.dat';
 {$ENDIF}
 
 { Prepare any required data table structures. }
 {$IFNDEF LEVEL1}
 {$IFDEF BNG02}
-TN02GBData.Initialize;
 GM02GBData.Initialize;
+TN02GBData.Initialize;
 {$ENDIF}
-TN15GBData.Initialize;
 GM15GBData.Initialize;
+TN15GBData.Initialize;
 {$ENDIF}
 
 { Attempt to load the data tables from external files. }
 {$IFNDEF LEVEL1}
 {$IFDEF BNG02}
-TN02DataFound := TN02GBData.LoadFromFile(TN02FileName);
 GM02DataFound := GM02GBData.LoadFromFile(GM02FileName);
+TN02DataFound := TN02GBData.LoadFromFile(TN02FileName);
 {$ENDIF}
-TN15DataFound := TN15GBData.LoadFromFile(TN15FileName);
 GM15DataFound := GM15GBData.LoadFromFile(GM15FileName);
+TN15DataFound := TN15GBData.LoadFromFile(TN15FileName);
 {$ENDIF}
 
 { If no external data files found, load the tables from the embedded resources. }
 {$IFDEF EMBED}
 {$IFDEF BNG02}
-If Not TN02DataFound Then
-  TN02DataFound := TN02GBData.LoadFromResource('TN02GB', 'DATA');
 If Not GM02DataFound Then
   GM02DataFound := GM02GBData.LoadFromResource('GM02GB', 'DATA');
+If Not TN02DataFound Then
+  TN02DataFound := TN02GBData.LoadFromResource('TN02GB', 'DATA');
 {$ENDIF}
-If Not TN15DataFound Then
-  TN15DataFound := TN15GBData.LoadFromResource('TN15GB', 'DATA');
 If Not GM15DataFound Then
   GM15DataFound := GM15GBData.LoadFromResource('GM15GB', 'DATA');
+If Not TN15DataFound Then
+  TN15DataFound := TN15GBData.LoadFromResource('TN15GB', 'DATA');
 {$ENDIF}
 
 GRS80Ellipsoid.Initialize(6378137.0000, 6356752.314140);
@@ -352,11 +352,11 @@ Finalization
 { Release any required data table structures. }
 {$IFNDEF LEVEL1}
 {$IFDEF BNG02}
-TN02GBData.Release;
 GM02GBData.Release;
+TN02GBData.Release;
 {$ENDIF}
-TN15GBData.Release;
 GM15GBData.Release;
+TN15GBData.Release;
 {$ENDIF}
 
 End.
