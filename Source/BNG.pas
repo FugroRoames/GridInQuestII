@@ -276,7 +276,12 @@ End;
 
 Initialization
 
-ProgramFolder := IncludeTrailingPathDelimiter(ExtractFilePath(GetModuleName(HInstance))); // TODO: Does this work cross-platform? Or is ParamStr(0) better?
+{$IFDEF WINDOWS}
+ProgramFolder := IncludeTrailingPathDelimiter(ExtractFilePath(GetModuleName(HInstance)));
+{$ELSE}
+ProgramFolder := IncludeTrailingPathDelimiter(ExtractFilePath(ParamStr(0)));
+{$ENDIF}
+
 {$IFDEF LEVEL1}
 TN02DataFound := False;
 GM02DataFound := False;
