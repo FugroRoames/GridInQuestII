@@ -48,7 +48,7 @@ Uses
 {$DEFINE LEVEL4}
 
 { Define to embed the data table within the executable. }
-{$DEFINE EMBED}
+//{$DEFINE EMBED}
 
 { Define to include BNG using GM02 as an additional coordinate system. }
 //{$DEFINE BNG02}
@@ -276,7 +276,12 @@ End;
 
 Initialization
 
-ProgramFolder := IncludeTrailingPathDelimiter(ExtractFilePath(GetModuleName(HInstance))); // TODO: Does this work cross-platform? Or is ParamStr(0) better?
+{$IFDEF WINDOWS}
+ProgramFolder := IncludeTrailingPathDelimiter(ExtractFilePath(GetModuleName(HInstance)));
+{$ELSE}
+ProgramFolder := IncludeTrailingPathDelimiter(ExtractFilePath(ParamStr(0)));
+{$ENDIF}
+
 {$IFDEF LEVEL1}
 GM02DataFound := False;
 TN02DataFound := False;
