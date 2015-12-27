@@ -784,7 +784,10 @@ End;
 
 Function TCoordinateSystems.Pointers(Index: Integer): TCoordinateSystemPointer;
 Begin
-  Result := CoordinateSystemsList[Index];
+  If (Index>=Low(CoordinateSystemsList)) And (Index<=High(CoordinateSystemsList)) Then
+    Result := CoordinateSystemsList[Index]
+  Else
+    Result := Nil;
 End;
 
 Procedure TCoordinateSystems.Register(Const CoordinateSystem: TCoordinateSystem);

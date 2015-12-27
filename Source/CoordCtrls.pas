@@ -354,9 +354,8 @@ End;
 
 Procedure TCoordinateSystemPanel.DoOnChange(Sender: TObject);
 Var
- SelectedSystem: String;
-  CurrentSystemList: String;
-  CoordinateSystem: TCoordinateSystem;
+  SelectedSystem: String;
+  CoordinateSystemPointer: TCoordinateSystemPointer;
   Procedure SetAxisCaptionAndType(CoordinatePanel: TCoordinatePanel; Index: Integer; AxisOrder: TAxisOrder; AxisNames: TAxisNames);
   Begin
     CoordinatePanel.AxisType := AxisTypeFromIndex(Index, AxisOrder);
@@ -368,23 +367,21 @@ Var
   End;
 Begin
   SelectedSystem := FComboBox.Text;
-  CurrentSystemList := FComboBox.Items.Text;
-  With CoordinateSystems Do
-    CoordinateSystem := Items(FindByDescription(SelectedSystem));
-  TCoordinatesEntryPanel(Parent).Clear;
+  TCoordinatesEntryPanel(Parent).ClearCoordinates;
   TCoordinatesEntryPanel(Parent).Locked := (SelectedSystem='') Or (TCoordinatesEntryPanel(Parent).FPanelType=ptOutput);
-  FComboBox.Items.Text := CurrentSystemList;
-  FComboBox.Text := SelectedSystem;
-  With TCoordinatesEntryPanel(Parent) Do
-    Begin
-      CoordinateType := CoordinateSystem.CoordinateType;
-      With CoordinateSystem Do
-        Begin
-          SetAxisCaptionAndType(FFirstCoordinatePanel, 0, AxisOrder, AxisNames);
-          SetAxisCaptionAndType(FSecondCoordinatePanel, 1, AxisOrder, AxisNames);
-          SetAxisCaptionAndType(FThirdCoordinatePanel, 2, AxisOrder, AxisNames);
-        End;
-    End;
+  With CoordinateSystems Do
+    CoordinateSystemPointer := Pointers(FindByDescription(SelectedSystem));
+  If CoordinateSystemPointer<>Nil Then
+    With TCoordinatesEntryPanel(Parent) Do
+      Begin
+        CoordinateType := CoordinateSystemPointer^.CoordinateType;
+        With CoordinateSystemPointer^ Do
+          Begin
+            SetAxisCaptionAndType(FFirstCoordinatePanel, 0, AxisOrder, AxisNames);
+            SetAxisCaptionAndType(FSecondCoordinatePanel, 1, AxisOrder, AxisNames);
+            SetAxisCaptionAndType(FThirdCoordinatePanel, 2, AxisOrder, AxisNames);
+          End;
+      End;
   With TCoordinatesEntryPanel(Parent) Do
     If Assigned(OnChangeSystem) Then
       OnChangeSystem(Self);
