@@ -8,7 +8,7 @@ object AboutForm: TAboutForm
   ClientHeight = 359
   ClientWidth = 564
   Position = poScreenCenter
-  LCLVersion = '1.5'
+  LCLVersion = '1.6.0.1'
   object IconPanel: TPanel
     Left = 5
     Height = 68
@@ -536,24 +536,28 @@ object AboutForm: TAboutForm
     Width = 564
     ActivePage = InformationTabSheet
     Align = alClient
-    Font.Height = -14
+    Font.Height = -16
     Font.Name = 'Helvetica Neue'
     ParentFont = False
     TabIndex = 0
     TabOrder = 1
     object InformationTabSheet: TTabSheet
       Caption = 'Information'
-      ClientHeight = 241
-      ClientWidth = 556
+      ClientHeight = 237
+      ClientWidth = 558
+      Font.Height = -16
+      Font.Name = 'Arial'
+      ParentFont = False
       object VersionLabel: TLabel
         Left = 5
         Height = 1
         Top = 21
-        Width = 546
+        Width = 548
         Align = alTop
         BorderSpacing.Bottom = 10
         BorderSpacing.Around = 5
         Font.Height = -16
+        Font.Name = 'Arial'
         ParentColor = False
         ParentFont = False
         WordWrap = True
@@ -562,11 +566,12 @@ object AboutForm: TAboutForm
         Left = 5
         Height = 1
         Top = 5
-        Width = 546
+        Width = 548
         Align = alTop
         BorderSpacing.Bottom = 10
         BorderSpacing.Around = 5
         Font.Height = -16
+        Font.Name = 'Arial'
         ParentColor = False
         ParentFont = False
         WordWrap = True
@@ -575,11 +580,12 @@ object AboutForm: TAboutForm
         Left = 5
         Height = 1
         Top = 37
-        Width = 546
+        Width = 548
         Align = alTop
         BorderSpacing.Bottom = 10
         BorderSpacing.Around = 5
         Font.Height = -16
+        Font.Name = 'Arial'
         ParentColor = False
         ParentFont = False
         WordWrap = True
@@ -587,34 +593,38 @@ object AboutForm: TAboutForm
     end
     object Trademarks: TTabSheet
       Caption = 'Trademarks'
-      ClientHeight = 244
-      ClientWidth = 556
+      ClientHeight = 237
+      ClientWidth = 558
       object TrademarksLabel: TLabel
         Left = 5
-        Height = 234
+        Height = 227
         Top = 5
-        Width = 546
+        Width = 548
         Align = alClient
         BorderSpacing.Around = 5
         Caption = 'This application is supplied as freeware, please see the licence agreement for further details.'#13#10#13#10'Ordnance Survey, the OS Symbol and OSTN02 are registered trademarks of Ordnance Survey.'#13#10#13#10'OSGM02 and OSVRF10 are registered trademarks of Ordnance Survey Great Britain, Ordnance Survey Ireland and Land and Property Services Northern Ireland.'
+        Font.Height = -16
+        Font.Name = 'Arial'
         ParentColor = False
+        ParentFont = False
         WordWrap = True
       end
     end
     object LicenceTabSheet: TTabSheet
       Caption = 'Licence'
-      ClientHeight = 239
-      ClientWidth = 556
+      ClientHeight = 237
+      ClientWidth = 558
       object LicenceLabel: TLabel
         Left = 5
-        Height = 229
+        Height = 227
         Top = 5
-        Width = 546
+        Width = 548
         Align = alClient
         AutoSize = False
         BorderSpacing.Around = 5
         Caption = 'This library is free software; you can redistribute it and/or modify it  under the terms of the GNU Library General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.'#10#10'This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Library General Public License for more details. '
         Font.Height = -16
+        Font.Name = 'Arial'
         ParentColor = False
         ParentFont = False
         WordWrap = True
