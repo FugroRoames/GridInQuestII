@@ -33,8 +33,6 @@ Uses
 
 {$R *.res}
 
-{TODO: Remove local copy of 'fileinfo.pp' once Lazarus is update to use FPC 3 on all platforms. }
-
 Begin
   {$IFDEF LOGDEBUG}SetHeapTraceOutput(ChangeFileExt(ParamStr(0), '.log'));{$ENDIF}
   Application.Title:='Grid InQuest II';
