@@ -1,32 +1,188 @@
 object AboutForm: TAboutForm
-  Left = 534
-  Height = 359
-  Top = 231
-  Width = 564
+  Left = 823
+  Height = 247
+  Top = 207
+  Width = 470
   BorderStyle = bsDialog
   Caption = 'About'
-  ClientHeight = 359
-  ClientWidth = 564
+  ClientHeight = 247
+  ClientWidth = 470
+  Font.Quality = fqCleartype
   Position = poScreenCenter
   LCLVersion = '1.6.0.1'
+  object InformationPageControl: TPageControl
+    Left = 0
+    Height = 177
+    Top = 0
+    Width = 470
+    ActivePage = InformationTabSheet
+    Align = alClient
+    TabIndex = 0
+    TabOrder = 1
+    object InformationTabSheet: TTabSheet
+      Caption = 'Information'
+      ClientHeight = 151
+      ClientWidth = 462
+      ParentFont = False
+      object NameLabel: TLabel
+        AnchorSideLeft.Control = InformationTabSheet
+        AnchorSideTop.Control = InformationTabSheet
+        AnchorSideRight.Control = InformationTabSheet
+        AnchorSideRight.Side = asrBottom
+        Left = 5
+        Height = 1
+        Top = 5
+        Width = 452
+        Anchors = [akTop, akLeft, akRight]
+        BorderSpacing.Left = 5
+        BorderSpacing.Top = 5
+        BorderSpacing.Right = 5
+        BorderSpacing.Bottom = 10
+        Font.Quality = fqCleartype
+        Font.Style = [fsBold]
+        ParentColor = False
+        ParentFont = False
+      end
+      object CopyrightLabel: TLabel
+        AnchorSideLeft.Control = InformationTabSheet
+        AnchorSideTop.Control = NameLabel
+        AnchorSideTop.Side = asrBottom
+        AnchorSideRight.Control = InformationTabSheet
+        AnchorSideRight.Side = asrBottom
+        Left = 5
+        Height = 1
+        Top = 16
+        Width = 452
+        Anchors = [akTop, akLeft, akRight]
+        BorderSpacing.Left = 5
+        BorderSpacing.Top = 5
+        BorderSpacing.Right = 5
+        BorderSpacing.Bottom = 10
+        Font.Quality = fqCleartype
+        ParentColor = False
+        ParentFont = False
+        WordWrap = True
+      end
+      object CommentsLabel: TLabel
+        AnchorSideLeft.Control = InformationTabSheet
+        AnchorSideTop.Control = CopyrightLabel
+        AnchorSideTop.Side = asrBottom
+        AnchorSideRight.Control = InformationTabSheet
+        AnchorSideRight.Side = asrBottom
+        Left = 5
+        Height = 1
+        Top = 27
+        Width = 452
+        Anchors = [akTop, akLeft, akRight]
+        BorderSpacing.Left = 5
+        BorderSpacing.Top = 5
+        BorderSpacing.Right = 5
+        BorderSpacing.Bottom = 10
+        Font.Quality = fqCleartype
+        ParentColor = False
+        ParentFont = False
+        WordWrap = True
+      end
+      object VersionLabel: TLabel
+        AnchorSideLeft.Control = InformationTabSheet
+        AnchorSideTop.Control = CommentsLabel
+        AnchorSideTop.Side = asrBottom
+        AnchorSideRight.Control = InformationTabSheet
+        AnchorSideRight.Side = asrBottom
+        Left = 5
+        Height = 1
+        Top = 38
+        Width = 452
+        Anchors = [akTop, akLeft, akRight]
+        BorderSpacing.Left = 5
+        BorderSpacing.Top = 5
+        BorderSpacing.Right = 5
+        BorderSpacing.Bottom = 10
+        Font.Quality = fqCleartype
+        ParentColor = False
+        ParentFont = False
+        WordWrap = True
+      end
+      object MemoryLabel: TLabel
+        AnchorSideLeft.Control = InformationTabSheet
+        AnchorSideTop.Control = VersionLabel
+        AnchorSideTop.Side = asrBottom
+        AnchorSideRight.Control = InformationTabSheet
+        AnchorSideRight.Side = asrBottom
+        Left = 5
+        Height = 1
+        Top = 49
+        Width = 452
+        Anchors = [akTop, akLeft, akRight]
+        BorderSpacing.Left = 5
+        BorderSpacing.Top = 5
+        BorderSpacing.Right = 5
+        BorderSpacing.Bottom = 10
+        Font.Quality = fqCleartype
+        ParentColor = False
+        ParentFont = False
+        WordWrap = True
+      end
+    end
+    object Trademarks: TTabSheet
+      Caption = 'Trademarks'
+      ClientHeight = 202
+      ClientWidth = 556
+      object TrademarksLabel: TLabel
+        Left = 5
+        Height = 78
+        Top = 5
+        Width = 546
+        Align = alTop
+        BorderSpacing.Around = 5
+        Caption = 'This application is supplied as freeware, please see the licence agreement for further details.'#13#10#13#10'Ordnance Survey, the OS Symbol and OSTN02 are registered trademarks of Ordnance Survey.'#13#10#13#10'OSGM02 and OSVRF10 are registered trademarks of Ordnance Survey Great Britain, Ordnance Survey Ireland and Land and Property Services Northern Ireland.'
+        Font.Quality = fqCleartype
+        ParentColor = False
+        ParentFont = False
+        WordWrap = True
+      end
+    end
+    object LicenceTabSheet: TTabSheet
+      Caption = 'Licence'
+      ClientHeight = 202
+      ClientWidth = 556
+      object LicenceLabel: TLabel
+        Left = 5
+        Height = 91
+        Top = 5
+        Width = 546
+        Align = alTop
+        BorderSpacing.Around = 5
+        Caption = 'This library is free software; you can redistribute it and/or modify it  under the terms of the GNU Library General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.'#10#10'This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Library General Public License for more details. '
+        Font.Quality = fqCleartype
+        ParentColor = False
+        ParentFont = False
+        WordWrap = True
+      end
+    end
+  end
   object IconPanel: TPanel
-    Left = 5
-    Height = 68
-    Top = 286
-    Width = 554
+    Left = 0
+    Height = 60
+    Top = 182
+    Width = 470
     Align = alBottom
+    AutoSize = True
     BorderSpacing.Top = 5
-    BorderSpacing.Around = 5
+    BorderSpacing.Bottom = 5
     BevelOuter = bvNone
-    ClientHeight = 68
-    ClientWidth = 554
+    ChildSizing.EnlargeHorizontal = crsHomogenousSpaceResize
+    ChildSizing.EnlargeVertical = crsHomogenousSpaceResize
+    ChildSizing.Layout = cclLeftToRightThenTopToBottom
+    ChildSizing.ControlsPerLine = 3
+    ClientHeight = 60
+    ClientWidth = 470
     TabOrder = 0
     object LPSImage: TImage
       Left = 0
-      Height = 68
+      Height = 60
       Top = 0
       Width = 172
-      Align = alLeft
       AutoSize = True
       Center = True
       Picture.Data = {
@@ -159,10 +315,9 @@ object AboutForm: TAboutForm
     end
     object OSImage: TImage
       Left = 172
-      Height = 68
+      Height = 60
       Top = 0
-      Width = 211
-      Align = alClient
+      Width = 171
       AutoSize = True
       Center = True
       Picture.Data = {
@@ -326,11 +481,10 @@ object AboutForm: TAboutForm
       }
     end
     object OSiImage: TImage
-      Left = 383
-      Height = 68
+      Left = 343
+      Height = 60
       Top = 0
       Width = 171
-      Align = alRight
       AutoSize = True
       Center = True
       Picture.Data = {
@@ -527,108 +681,6 @@ object AboutForm: TAboutForm
         D279AB4EAFF9BE864E53DA25F875929552231C5EF0641A809F3EF2B89C88FF00
         C31503D59DFF0047ACE6D1D06CF0F58585A0201FE0FFD9
       }
-    end
-  end
-  object InformationPageControl: TPageControl
-    Left = 0
-    Height = 276
-    Top = 0
-    Width = 564
-    ActivePage = InformationTabSheet
-    Align = alClient
-    Font.Height = -16
-    Font.Name = 'Helvetica Neue'
-    ParentFont = False
-    TabIndex = 0
-    TabOrder = 1
-    object InformationTabSheet: TTabSheet
-      Caption = 'Information'
-      ClientHeight = 237
-      ClientWidth = 558
-      Font.Height = -16
-      Font.Name = 'Arial'
-      ParentFont = False
-      object VersionLabel: TLabel
-        Left = 5
-        Height = 1
-        Top = 21
-        Width = 548
-        Align = alTop
-        BorderSpacing.Bottom = 10
-        BorderSpacing.Around = 5
-        Font.Height = -16
-        Font.Name = 'Arial'
-        ParentColor = False
-        ParentFont = False
-        WordWrap = True
-      end
-      object CopyrightLabel: TLabel
-        Left = 5
-        Height = 1
-        Top = 5
-        Width = 548
-        Align = alTop
-        BorderSpacing.Bottom = 10
-        BorderSpacing.Around = 5
-        Font.Height = -16
-        Font.Name = 'Arial'
-        ParentColor = False
-        ParentFont = False
-        WordWrap = True
-      end
-      object MemoryLabel: TLabel
-        Left = 5
-        Height = 1
-        Top = 37
-        Width = 548
-        Align = alTop
-        BorderSpacing.Bottom = 10
-        BorderSpacing.Around = 5
-        Font.Height = -16
-        Font.Name = 'Arial'
-        ParentColor = False
-        ParentFont = False
-        WordWrap = True
-      end
-    end
-    object Trademarks: TTabSheet
-      Caption = 'Trademarks'
-      ClientHeight = 237
-      ClientWidth = 558
-      object TrademarksLabel: TLabel
-        Left = 5
-        Height = 227
-        Top = 5
-        Width = 548
-        Align = alClient
-        BorderSpacing.Around = 5
-        Caption = 'This application is supplied as freeware, please see the licence agreement for further details.'#13#10#13#10'Ordnance Survey, the OS Symbol and OSTN02 are registered trademarks of Ordnance Survey.'#13#10#13#10'OSGM02 and OSVRF10 are registered trademarks of Ordnance Survey Great Britain, Ordnance Survey Ireland and Land and Property Services Northern Ireland.'
-        Font.Height = -16
-        Font.Name = 'Arial'
-        ParentColor = False
-        ParentFont = False
-        WordWrap = True
-      end
-    end
-    object LicenceTabSheet: TTabSheet
-      Caption = 'Licence'
-      ClientHeight = 237
-      ClientWidth = 558
-      object LicenceLabel: TLabel
-        Left = 5
-        Height = 227
-        Top = 5
-        Width = 548
-        Align = alClient
-        AutoSize = False
-        BorderSpacing.Around = 5
-        Caption = 'This library is free software; you can redistribute it and/or modify it  under the terms of the GNU Library General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.'#10#10'This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Library General Public License for more details. '
-        Font.Height = -16
-        Font.Name = 'Arial'
-        ParentColor = False
-        ParentFont = False
-        WordWrap = True
-      end
     end
   end
 end

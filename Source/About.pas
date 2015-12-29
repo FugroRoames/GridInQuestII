@@ -27,6 +27,8 @@ Uses
 
 Type
   TAboutForm = Class(TForm)
+    CommentsLabel: TLabel;
+    NameLabel: TLabel;
     VersionLabel: TLabel;
     CopyrightLabel: TLabel;
     MemoryLabel: TLabel;
@@ -59,7 +61,7 @@ Var
   {$IFDEF Windows}
   MemoryStatus: TMemoryStatus;
   {$ENDIF}
-  //HeapStatus: TFPCHeapStatus;
+  ImageWidth, TextWidth: Integer;
 Begin
   With TAboutForm.Create(Application.MainForm) Do
     Begin
@@ -68,9 +70,14 @@ Begin
         VersionInfo.FileName := Application.ExeName;
         VersionInfo.ReadFileInfo;
         With VersionInfo.VersionStrings Do
-          MessageText := Values['ProductName']+' '+Values['FileDescription']+LineEnding+
-                         Values['LegalCopyright']+LineEnding+Values['Comments'];
+          MessageText := Values['ProductName']+' '+Values['FileDescription'];
+        NameLabel.Caption := MessageText;
+        With VersionInfo.VersionStrings Do
+          MessageText := Values['LegalCopyright'];
         CopyrightLabel.Caption := MessageText;
+        With VersionInfo.VersionStrings Do
+          MessageText := Values['Comments'];
+        CommentsLabel.Caption := MessageText;
         With VersionInfo.VersionStrings Do
           MessageText := 'Version: '+Values['FileVersion']+'  Date: '+{$I %DATE%}+'  Time: '+{$I %TIME%}+LineEnding+
                          'Built with Lazarus '+lcl_version+' and Free Pascal '+{$I %FPCVERSION%};
@@ -78,19 +85,46 @@ Begin
       Finally
         VersionInfo.Free;
       End;
-      MessageText := EmptyStr;
       {$IFDEF Windows}
       MemoryStatus.dwLength := SizeOf(MemoryStatus);
       GlobalMemoryStatus(MemoryStatus);
-      MessageText := 'RAM Installed: '+IntToStr(MemoryStatus.dwTotalPhys Div 1024)+'Kb '+ //HeapStatus.CurrHeapSize
-                     'RAM Available: '+IntToStr(MemoryStatus.dwAvailPhys Div 1024)+'Kb '+LineEnding;  //HeapStatus.CurrHeapFree
+      MessageText := 'RAM Installed: '+IntToStr(MemoryStatus.dwTotalPhys Div 1024)+'Kb '+
+                     'RAM Available: '+IntToStr(MemoryStatus.dwAvailPhys Div 1024)+'Kb '+LineEnding;
+      {$ELSE}
+      MessageText := EmptyStr;
       {$ENDIF}
-{ TODO: Get this working!
-      HeapStatus := GetFPCHeapStatus;
-      MessageText := MessageText+
-                     'Current RAM Used: '+IntToStr(HeapStatus.CurrHeapUsed Div 1024)+'Kb '+
-                     'Highest RAM Used: '+IntToStr(HeapStatus.MaxHeapUsed Div 1024)+'Kb';
-      MemoryLabel.Caption := MessageText;    }
+      MemoryLabel.Caption := MessageText;
+      {$IFDEF Windows}
+      NameLabel.Font.Name := 'Arial';
+      CopyrightLabel.Font.Name := 'Arial';
+      CommentsLabel.Font.Name := 'Arial';
+      VersionLabel.Font.Name := 'Arial';
+      MemoryLabel.Font.Name := 'Arial';
+      TrademarksLabel.Font.Name := 'Arial';
+      LicenceLabel.Font.Name := 'Arial';
+      NameLabel.Font.Size := 14;
+      CopyrightLabel.Font.Size := 12;
+      CommentsLabel.Font.Size := 12;
+      VersionLabel.Font.Size := 12;
+      MemoryLabel.Font.Size := 12;
+      TrademarksLabel.Font.Size := 12;
+      LicenceLabel.Font.Size := 12;
+      {$ELSE}
+      NameLabel.Font.Size := 18;
+      CopyrightLabel.Font.Size := 16;
+      CommentsLabel.Font.Size := 16;
+      VersionLabel.Font.Size := 16;
+      MemoryLabel.Font.Size := 16;
+      TrademarksLabel.Font.Size := 16;
+      LicenceLabel.Font.Size := 16;
+      {$ENDIF}
+      ImageWidth := LPSImage.Picture.Width+OSImage.Picture.Width+OSiImage.Picture.Width+50;
+      TextWidth := NameLabel.Canvas.TextWidth(NameLabel.Caption)+50;
+      If ImageWidth>TextWidth Then
+        Width := ImageWidth
+      Else
+        Width := TextWidth;
+      Height := InformationPageControl.Height+IconPanel.Height+50;
       ShowModal;
       Free;
     End;
