@@ -21,7 +21,7 @@
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
       <MinorVersionNr Value="1"/>
-      <BuildNr Value="55"/>
+      <BuildNr Value="56"/>
       <Language Value="0809"/>
       <StringTable Comments="Developed for the three Ordnance Surveys of Britain and Ireland." CompanyName="Michell Computing" FileDescription="Coordinate Transformation Library" LegalCopyright="(c) 2015 Michell Computing" ProductName="Lib Grid InQuest II" ProductVersion="0.10A"/>
     </VersionInfo>

@@ -1,27 +1,28 @@
 object OptionsForm: TOptionsForm
-  Left = 559
-  Height = 382
-  Top = 227
-  Width = 720
+  Left = 540
+  Height = 376
+  Top = 216
+  Width = 477
   AutoSize = True
   BorderStyle = bsDialog
   Caption = 'Options'
-  ClientHeight = 382
-  ClientWidth = 720
+  ClientHeight = 376
+  ClientWidth = 477
+  Font.Quality = fqCleartype
   OnShow = FormShow
   Position = poScreenCenter
-  LCLVersion = '1.4.4.0'
+  LCLVersion = '1.6.0.1'
   object IrishSettingsGroupBox: TGroupBox
     Left = 5
     Height = 49
     Top = 285
-    Width = 710
+    Width = 467
     Align = alTop
     AutoSize = True
     BorderSpacing.Around = 5
     Caption = 'Irish Preferred Vertical Datums'
     ClientHeight = 31
-    ClientWidth = 706
+    ClientWidth = 463
     TabOrder = 0
     OnResize = IrishSettingsGroupBoxResize
     object IGDatumLabel: TLabel
@@ -95,7 +96,7 @@ object OptionsForm: TOptionsForm
     Left = 0
     Height = 280
     Top = 0
-    Width = 720
+    Width = 477
     ActivePage = InteractiveTabSheet
     Align = alTop
     TabIndex = 0
@@ -104,18 +105,18 @@ object OptionsForm: TOptionsForm
     object InteractiveTabSheet: TTabSheet
       Caption = 'Interactive Settings'
       ClientHeight = 254
-      ClientWidth = 712
+      ClientWidth = 469
       object GeodeticDisplayGroupBox: TGroupBox
         Left = 5
         Height = 73
         Top = 5
-        Width = 702
+        Width = 459
         Align = alTop
         AutoSize = True
         BorderSpacing.Around = 5
         Caption = 'Geodetic Display Format Settings'
         ClientHeight = 55
-        ClientWidth = 698
+        ClientWidth = 455
         TabOrder = 0
         OnResize = GeodeticDisplayGroupBoxResize
         object GeodeticStyleLabel: TLabel
@@ -283,13 +284,13 @@ object OptionsForm: TOptionsForm
         Left = 5
         Height = 49
         Top = 83
-        Width = 702
+        Width = 459
         Align = alTop
         AutoSize = True
         BorderSpacing.Around = 5
         Caption = 'Projected Display Format Settings'
         ClientHeight = 31
-        ClientWidth = 698
+        ClientWidth = 455
         TabOrder = 1
         OnResize = ProjectedDisplayGroupBoxResize
         object ProjectedStyleLabel: TLabel
@@ -357,13 +358,13 @@ object OptionsForm: TOptionsForm
         Left = 5
         Height = 49
         Top = 137
-        Width = 702
+        Width = 459
         Align = alTop
         AutoSize = True
         BorderSpacing.Around = 5
         Caption = 'Cartesian Display Format Settings'
         ClientHeight = 31
-        ClientWidth = 698
+        ClientWidth = 455
         TabOrder = 2
         OnResize = CartesianDisplayGroupBoxResize
         object CartesianStyleLabel: TLabel
@@ -432,13 +433,13 @@ object OptionsForm: TOptionsForm
         Left = 5
         Height = 49
         Top = 191
-        Width = 702
+        Width = 459
         Align = alTop
         AutoSize = True
         BorderSpacing.Around = 5
         Caption = 'Height Display Format Settings'
         ClientHeight = 31
-        ClientWidth = 698
+        ClientWidth = 455
         TabOrder = 3
         OnResize = HeightDisplayGroupBoxResize
         object HeightStyleLabel: TLabel
@@ -520,18 +521,18 @@ object OptionsForm: TOptionsForm
     object OutputTabSheet: TTabSheet
       Caption = 'Output File Settings'
       ClientHeight = 254
-      ClientWidth = 712
+      ClientWidth = 469
       object GeodeticOutputGroupBox: TGroupBox
         Left = 5
         Height = 73
         Top = 5
-        Width = 702
+        Width = 459
         Align = alTop
         AutoSize = True
         BorderSpacing.Around = 5
         Caption = 'Geodetic Output Format Settings'
         ClientHeight = 55
-        ClientWidth = 698
+        ClientWidth = 455
         TabOrder = 0
         OnResize = GeodeticOutputGroupBoxResize
         object GeodeticStyleOutputLabel: TLabel
@@ -699,13 +700,13 @@ object OptionsForm: TOptionsForm
         Left = 5
         Height = 49
         Top = 83
-        Width = 702
+        Width = 459
         Align = alTop
         AutoSize = True
         BorderSpacing.Around = 5
         Caption = 'Projected Output Format Settings'
         ClientHeight = 31
-        ClientWidth = 698
+        ClientWidth = 455
         TabOrder = 1
         OnResize = ProjectedOutputGroupBoxResize
         object ProjectedStyleOutputLabel: TLabel
@@ -773,13 +774,13 @@ object OptionsForm: TOptionsForm
         Left = 5
         Height = 49
         Top = 137
-        Width = 702
+        Width = 459
         Align = alTop
         AutoSize = True
         BorderSpacing.Around = 5
         Caption = 'Cartesian Output Format Settings'
         ClientHeight = 31
-        ClientWidth = 698
+        ClientWidth = 455
         TabOrder = 2
         OnResize = CartesianOutputGroupBoxResize
         object CartesianStyleOutputLabel: TLabel
@@ -848,13 +849,13 @@ object OptionsForm: TOptionsForm
         Left = 5
         Height = 49
         Top = 191
-        Width = 702
+        Width = 459
         Align = alTop
         AutoSize = True
         BorderSpacing.Around = 5
         Caption = 'Height Output Format Settings'
         ClientHeight = 31
-        ClientWidth = 698
+        ClientWidth = 455
         TabOrder = 3
         OnResize = HeightOutputGroupBoxResize
         object HeightStyleOutputLabel: TLabel
@@ -936,23 +937,41 @@ object OptionsForm: TOptionsForm
   end
   object BottomPanel: TPanel
     Left = 0
-    Height = 43
+    Height = 37
     Top = 339
-    Width = 720
+    Width = 477
     Align = alClient
     AutoSize = True
+    BorderSpacing.InnerBorder = 2
     BevelOuter = bvNone
-    ClientHeight = 43
-    ClientWidth = 720
+    ClientHeight = 37
+    ClientWidth = 477
     TabOrder = 2
-    object OKButton: TButton
+    object BlankButton: TButton
+      AnchorSideLeft.Control = BottomPanel
       AnchorSideTop.Control = BottomPanel
-      Left = 510
-      Height = 30
+      Left = 5
+      Height = 23
+      Top = 5
+      Width = 51
+      AutoSize = True
+      BorderSpacing.Around = 5
+      Caption = 'Blank'
+      TabOrder = 2
+      Visible = False
+    end
+    object OKButton: TButton
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = BlankButton
+      AnchorSideRight.Control = CancelButton
+      AnchorSideBottom.Control = CancelButton
+      AnchorSideBottom.Side = asrBottom
+      Left = 267
+      Height = 23
       Top = 5
       Width = 100
-      Anchors = [akTop, akRight]
-      BorderSpacing.Around = 5
+      Anchors = [akTop, akRight, akBottom]
+      BorderSpacing.Right = 5
       Caption = 'OK'
       Default = True
       ModalResult = 1
@@ -960,13 +979,17 @@ object OptionsForm: TOptionsForm
       TabOrder = 0
     end
     object CancelButton: TButton
-      AnchorSideTop.Control = BottomPanel
-      Left = 615
-      Height = 30
+      AnchorSideTop.Control = BlankButton
+      AnchorSideRight.Control = BottomPanel
+      AnchorSideRight.Side = asrBottom
+      AnchorSideBottom.Control = BlankButton
+      AnchorSideBottom.Side = asrBottom
+      Left = 372
+      Height = 23
       Top = 5
       Width = 100
       Anchors = [akTop, akRight]
-      BorderSpacing.Around = 5
+      BorderSpacing.Right = 5
       Cancel = True
       Caption = 'Cancel'
       ModalResult = 2

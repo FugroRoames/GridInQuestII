@@ -176,6 +176,12 @@ Begin
   { Panels must be created in reverse order for top alignment to work correctly. }
   OutputPanel := TCoordinatesEntryPanel.Create(SidePanel, ptOutput);
   InputPanel := TCoordinatesEntryPanel.Create(SidePanel, ptInput);
+  {$IFDEF Windows}
+  SidePanel.Font.Name := 'Arial';
+  SidePanel.Font.Size := 12;
+  {$ELSE}
+  SidePanel.Font.Size := 14;
+  {$ENDIF}
   InputPanel.TabOrder := 0;
   OutputPanel.TabOrder := 1;
   InputPanel.OnValid := @DoInputValid;

@@ -21,7 +21,7 @@
       </Unit1>
       <Unit2>
         <Filename Value="Geodesy.pas"/>
-        <EditorIndex Value="7"/>
+        <EditorIndex Value="6"/>
         <TopLine Value="7"/>
         <CursorPos X="93" Y="178"/>
         <UsageCount Value="18"/>
@@ -29,15 +29,14 @@
       </Unit2>
       <Unit3>
         <Filename Value="IG.pas"/>
-        <EditorIndex Value="5"/>
+        <EditorIndex Value="3"/>
         <CursorPos X="25" Y="2"/>
         <UsageCount Value="18"/>
         <Loaded Value="True"/>
       </Unit3>
       <Unit4>
         <Filename Value="ITM.pas"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="6"/>
+        <EditorIndex Value="4"/>
         <TopLine Value="13"/>
         <CursorPos X="13" Y="23"/>
         <UsageCount Value="18"/>
@@ -53,7 +52,6 @@
       <Unit6>
         <Filename Value="BNG.pas"/>
         <EditorIndex Value="2"/>
-        <TopLine Value="34"/>
         <CursorPos Y="51"/>
         <UsageCount Value="18"/>
         <Loaded Value="True"/>
@@ -81,7 +79,8 @@
       </Unit9>
       <Unit10>
         <Filename Value="OSTab.pas"/>
-        <EditorIndex Value="3"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="5"/>
         <TopLine Value="245"/>
         <CursorPos X="37" Y="250"/>
         <UsageCount Value="13"/>
@@ -96,11 +95,10 @@
       </Unit11>
       <Unit12>
         <Filename Value="C:\lazarus\fpc\2.6.4\source\rtl\objpas\classes\classesh.inc"/>
-        <EditorIndex Value="4"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="916"/>
         <CursorPos X="21" Y="929"/>
         <UsageCount Value="10"/>
-        <Loaded Value="True"/>
       </Unit12>
       <Unit13>
         <Filename Value="C:\lazarus\fpc\2.6.4\source\rtl\objpas\classes\streams.inc"/>

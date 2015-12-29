@@ -28,6 +28,7 @@ Uses
 Type
   TOptionsForm = Class(TForm)
     BottomPanel: TPanel;
+    BlankButton: TButton;
     CancelButton: TButton;
     CartesianDisplayGroupBox: TGroupBox;
     CartesianOutputGroupBox: TGroupBox;

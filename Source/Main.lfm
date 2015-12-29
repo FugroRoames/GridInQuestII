@@ -1,11 +1,11 @@
 object MainForm: TMainForm
-  Left = 449
-  Height = 661
-  Top = 147
-  Width = 1190
+  Left = 358
+  Height = 714
+  Top = 85
+  Width = 1086
   Caption = 'Grid InQuest II'
-  ClientHeight = 641
-  ClientWidth = 1190
+  ClientHeight = 694
+  ClientWidth = 1086
   Font.Name = 'Arial'
   Font.Quality = fqCleartype
   Icon.Data = {
@@ -416,29 +416,32 @@ object MainForm: TMainForm
   Menu = MainMenu
   OnCreate = FormCreate
   OnDestroy = FormDestroy
-  Position = poScreenCenter
-  LCLVersion = '1.4.4.0'
+  Position = poDesktopCenter
+  LCLVersion = '1.6.0.1'
   object SidePanel: TPanel
     Left = 0
-    Height = 641
+    Height = 694
     Top = 0
-    Width = 523
+    Width = 547
     Align = alLeft
     BevelOuter = bvNone
-    ClientHeight = 641
-    ClientWidth = 523
+    ClientHeight = 694
+    ClientWidth = 547
     TabOrder = 0
     object DataDrawGrid: TDrawGrid
       Left = 0
-      Height = 641
+      Height = 694
       Top = 0
-      Width = 523
+      Width = 547
       Align = alClient
+      Color = clDefault
       ColCount = 0
       ExtendedSelect = False
       FixedCols = 0
       FixedRows = 0
+      Font.Quality = fqCleartype
       Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goColSizing, goRowSelect, goThumbTracking, goFixedRowNumbering, goFixedColSizing]
+      ParentFont = False
       RowCount = 0
       TabOrder = 0
       TitleFont.Name = 'Arial'
@@ -449,8 +452,8 @@ object MainForm: TMainForm
     end
   end
   object PanelSplitter: TSplitter
-    Left = 523
-    Height = 641
+    Left = 547
+    Height = 694
     Top = 0
     Width = 5
     ParentColor = False

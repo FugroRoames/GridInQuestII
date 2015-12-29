@@ -162,7 +162,7 @@ Begin
       ReadOnly := Locked;
       TabStop := Not Locked;
     End;
-    FLabel := TLabel.Create(TheOwner);
+  FLabel := TLabel.Create(TheOwner);
   With FLabel Do
     Begin
       Align := alLeft;
@@ -173,8 +173,6 @@ Begin
       Layout := tlCenter;
       Parent := ThisPanel;
     End;
-  If TheOwner Is TWinControl Then
-    Parent := TWinControl(TheOwner);
 End;
 
 Procedure TCoordinatePanel.Clear;
@@ -323,8 +321,6 @@ Begin
       Layout := tlCenter;
       Parent := ThisPanel;
     End;
-  If TheOwner Is TWinControl Then
-    Parent := TWinControl(TheOwner);
 End;
 
 Procedure TCoordinateSystemPanel.Clear(CompatibleIndex: Integer = -1);
