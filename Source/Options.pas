@@ -23,13 +23,13 @@ Interface
 
 Uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs,
-  StdCtrls, ExtCtrls, ComCtrls, CtrlUtils, Config, OSTab, Geodesy, IG, ITM;
+  StdCtrls, ExtCtrls, ComCtrls, CtrlUtils, Config, OSTab, Geodesy, IG, ITM, Types;
 
 Type
   TOptionsForm = Class(TForm)
+    OKButton: TButton;
     BottomPanel: TPanel;
     BlankButton: TButton;
-    CancelButton: TButton;
     CartesianDisplayGroupBox: TGroupBox;
     CartesianOutputGroupBox: TGroupBox;
     CartesianPlacesEdit: TEdit;
@@ -68,7 +68,7 @@ Type
     HeightStyleOutputLabel: TLabel;
     LongitudeCheckBox: TCheckBox;
     LongitudeOutputCheckBox: TCheckBox;
-    OKButton: TButton;
+    CancelButton: TButton;
     OptionsPageControl: TPageControl;
     IrishSettingsGroupBox: TGroupBox;
     IGDatumComboBox: TComboBox;
@@ -174,7 +174,7 @@ Begin
   OptionsPageControl.ClientHeight := GeodeticDisplayGroupBox.Height+
                                      ProjectedDisplayGroupBox.Height+
                                      CartesianDisplayGroupBox.Height+
-                                     HeightDisplayGroupBox.Height+25;
+                                     HeightDisplayGroupBox.Height+20;
 End;
 
 Procedure TOptionsForm.GeodeticDisplayGroupBoxResize(Sender: TObject);

@@ -118,8 +118,8 @@ Begin
       TrademarksLabel.Font.Size := 16;
       LicenceLabel.Font.Size := 16;
       {$ENDIF}
-      ImageWidth := LPSImage.Picture.Width+OSImage.Picture.Width+OSiImage.Picture.Width+50;
-      TextWidth := NameLabel.Canvas.TextWidth(NameLabel.Caption)+50;
+      ImageWidth := LPSImage.Picture.Width+OSImage.Picture.Width+OSiImage.Picture.Width+60;
+      TextWidth := NameLabel.Canvas.TextWidth(NameLabel.Caption)+60;
       If ImageWidth>TextWidth Then
         Width := ImageWidth
       Else

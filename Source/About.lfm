@@ -21,8 +21,8 @@ object AboutForm: TAboutForm
     TabOrder = 1
     object InformationTabSheet: TTabSheet
       Caption = 'Information'
-      ClientHeight = 151
-      ClientWidth = 462
+      ClientHeight = 138
+      ClientWidth = 464
       ParentFont = False
       object NameLabel: TLabel
         AnchorSideLeft.Control = InformationTabSheet
@@ -32,7 +32,7 @@ object AboutForm: TAboutForm
         Left = 5
         Height = 1
         Top = 5
-        Width = 452
+        Width = 454
         Anchors = [akTop, akLeft, akRight]
         BorderSpacing.Left = 5
         BorderSpacing.Top = 5
@@ -52,7 +52,7 @@ object AboutForm: TAboutForm
         Left = 5
         Height = 1
         Top = 16
-        Width = 452
+        Width = 454
         Anchors = [akTop, akLeft, akRight]
         BorderSpacing.Left = 5
         BorderSpacing.Top = 5
@@ -72,7 +72,7 @@ object AboutForm: TAboutForm
         Left = 5
         Height = 1
         Top = 27
-        Width = 452
+        Width = 454
         Anchors = [akTop, akLeft, akRight]
         BorderSpacing.Left = 5
         BorderSpacing.Top = 5
@@ -92,7 +92,7 @@ object AboutForm: TAboutForm
         Left = 5
         Height = 1
         Top = 38
-        Width = 452
+        Width = 454
         Anchors = [akTop, akLeft, akRight]
         BorderSpacing.Left = 5
         BorderSpacing.Top = 5
@@ -112,7 +112,7 @@ object AboutForm: TAboutForm
         Left = 5
         Height = 1
         Top = 49
-        Width = 452
+        Width = 454
         Anchors = [akTop, akLeft, akRight]
         BorderSpacing.Left = 5
         BorderSpacing.Top = 5
