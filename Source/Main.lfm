@@ -1,11 +1,11 @@
 object MainForm: TMainForm
-  Left = 358
+  Left = 389
   Height = 714
-  Top = 85
-  Width = 1086
+  Top = 140
+  Width = 1200
   Caption = 'Grid InQuest II'
-  ClientHeight = 694
-  ClientWidth = 1086
+  ClientHeight = 684
+  ClientWidth = 1200
   Font.Name = 'Arial'
   Font.Quality = fqCleartype
   Icon.Data = {
@@ -417,22 +417,22 @@ object MainForm: TMainForm
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   Position = poDesktopCenter
-  LCLVersion = '1.6.0.1'
+  LCLVersion = '1.7'
   object SidePanel: TPanel
     Left = 0
-    Height = 694
+    Height = 684
     Top = 0
-    Width = 547
+    Width = 571
     Align = alLeft
     BevelOuter = bvNone
-    ClientHeight = 694
-    ClientWidth = 547
+    ClientHeight = 684
+    ClientWidth = 571
     TabOrder = 0
     object DataDrawGrid: TDrawGrid
       Left = 0
-      Height = 694
+      Height = 684
       Top = 0
-      Width = 547
+      Width = 571
       Align = alClient
       Color = clDefault
       ColCount = 0
@@ -452,8 +452,8 @@ object MainForm: TMainForm
     end
   end
   object PanelSplitter: TSplitter
-    Left = 547
-    Height = 694
+    Left = 571
+    Height = 684
     Top = 0
     Width = 5
     ParentColor = False

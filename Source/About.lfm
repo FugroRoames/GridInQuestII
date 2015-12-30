@@ -1,18 +1,18 @@
 object AboutForm: TAboutForm
-  Left = 823
-  Height = 247
-  Top = 208
+  Left = 654
+  Height = 400
+  Top = 253
   Width = 470
   BorderStyle = bsDialog
   Caption = 'About'
-  ClientHeight = 247
+  ClientHeight = 400
   ClientWidth = 470
   Font.Quality = fqCleartype
   Position = poScreenCenter
-  LCLVersion = '1.6.0.1'
+  LCLVersion = '1.7'
   object InformationPageControl: TPageControl
     Left = 0
-    Height = 177
+    Height = 330
     Top = 0
     Width = 470
     ActivePage = InformationTabSheet
@@ -21,8 +21,8 @@ object AboutForm: TAboutForm
     TabOrder = 1
     object InformationTabSheet: TTabSheet
       Caption = 'Information'
-      ClientHeight = 138
-      ClientWidth = 464
+      ClientHeight = 294
+      ClientWidth = 466
       ParentFont = False
       object NameLabel: TLabel
         AnchorSideLeft.Control = InformationTabSheet
@@ -32,7 +32,7 @@ object AboutForm: TAboutForm
         Left = 5
         Height = 1
         Top = 5
-        Width = 454
+        Width = 456
         Anchors = [akTop, akLeft, akRight]
         BorderSpacing.Left = 5
         BorderSpacing.Top = 5
@@ -52,7 +52,7 @@ object AboutForm: TAboutForm
         Left = 5
         Height = 1
         Top = 16
-        Width = 454
+        Width = 456
         Anchors = [akTop, akLeft, akRight]
         BorderSpacing.Left = 5
         BorderSpacing.Top = 5
@@ -72,7 +72,7 @@ object AboutForm: TAboutForm
         Left = 5
         Height = 1
         Top = 27
-        Width = 454
+        Width = 456
         Anchors = [akTop, akLeft, akRight]
         BorderSpacing.Left = 5
         BorderSpacing.Top = 5
@@ -92,7 +92,7 @@ object AboutForm: TAboutForm
         Left = 5
         Height = 1
         Top = 38
-        Width = 454
+        Width = 456
         Anchors = [akTop, akLeft, akRight]
         BorderSpacing.Left = 5
         BorderSpacing.Top = 5
@@ -112,7 +112,7 @@ object AboutForm: TAboutForm
         Left = 5
         Height = 1
         Top = 49
-        Width = 454
+        Width = 456
         Anchors = [akTop, akLeft, akRight]
         BorderSpacing.Left = 5
         BorderSpacing.Top = 5
@@ -126,8 +126,8 @@ object AboutForm: TAboutForm
     end
     object Trademarks: TTabSheet
       Caption = 'Trademarks'
-      ClientHeight = 202
-      ClientWidth = 556
+      ClientHeight = 294
+      ClientWidth = 466
       object TrademarksLabel: TLabel
         Left = 5
         Height = 78
@@ -144,8 +144,8 @@ object AboutForm: TAboutForm
     end
     object LicenceTabSheet: TTabSheet
       Caption = 'Licence'
-      ClientHeight = 202
-      ClientWidth = 556
+      ClientHeight = 294
+      ClientWidth = 466
       object LicenceLabel: TLabel
         Left = 5
         Height = 91
@@ -164,7 +164,7 @@ object AboutForm: TAboutForm
   object IconPanel: TPanel
     Left = 0
     Height = 60
-    Top = 182
+    Top = 335
     Width = 470
     Align = alBottom
     AutoSize = True

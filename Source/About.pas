@@ -110,13 +110,23 @@ Begin
       TrademarksLabel.Font.Size := 12;
       LicenceLabel.Font.Size := 12;
       {$ELSE}
-      NameLabel.Font.Size := 18;
-      CopyrightLabel.Font.Size := 16;
-      CommentsLabel.Font.Size := 16;
-      VersionLabel.Font.Size := 16;
-      MemoryLabel.Font.Size := 16;
-      TrademarksLabel.Font.Size := 16;
-      LicenceLabel.Font.Size := 16;
+        {$IFDEF Darwin}
+        NameLabel.Font.Size := 18;
+        CopyrightLabel.Font.Size := 16;
+        CommentsLabel.Font.Size := 16;
+        VersionLabel.Font.Size := 16;
+        MemoryLabel.Font.Size := 16;
+        TrademarksLabel.Font.Size := 16;
+        LicenceLabel.Font.Size := 16;
+        {$ELSE}
+        NameLabel.Font.Size := 12;
+        CopyrightLabel.Font.Size := 10;
+        CommentsLabel.Font.Size := 10;
+        VersionLabel.Font.Size := 10;
+        MemoryLabel.Font.Size := 10;
+        TrademarksLabel.Font.Size := 10;
+        LicenceLabel.Font.Size := 10;
+        {$ENDIF}
       {$ENDIF}
       ImageWidth := LPSImage.Picture.Width+OSImage.Picture.Width+OSiImage.Picture.Width+60;
       TextWidth := NameLabel.Canvas.TextWidth(NameLabel.Caption)+60;
@@ -124,7 +134,6 @@ Begin
         Width := ImageWidth
       Else
         Width := TextWidth;
-      Height := InformationPageControl.Height+IconPanel.Height+50;
       ShowModal;
       Free;
     End;

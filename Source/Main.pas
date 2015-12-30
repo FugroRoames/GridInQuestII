@@ -162,6 +162,8 @@ Type
 Procedure TMainForm.FormCreate(Sender: TObject);
 Begin
   ReadConfigOptions;
+  If Screen.Width<1200 Then
+    Width := Screen.Width;
   ProgressDisplay := CreateProgressDisplay();
   {$IFDEF Darwin}
     ManualFileName := Copy(Application.ExeName, 1, Pos('.app', Application.ExeName)+3);
@@ -180,7 +182,11 @@ Begin
   SidePanel.Font.Name := 'Arial';
   SidePanel.Font.Size := 12;
   {$ELSE}
-  SidePanel.Font.Size := 14;
+    {$IFDEF Darwin}
+    SidePanel.Font.Size := 14;
+    {$ELSE}
+    SidePanel.Font.Size := 10;
+    {$ENDIF}
   {$ENDIF}
   InputPanel.TabOrder := 0;
   OutputPanel.TabOrder := 1;
