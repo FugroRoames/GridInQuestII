@@ -115,6 +115,7 @@ Type
     MainGlobe: TGlobeControl;
     InputPanel: TCoordinatesEntryPanel;
     OutputPanel: TCoordinatesEntryPanel;
+    BlankPanel: TPanel;
     InputData: TDataStream;
     ProgressDisplay: TProgressDisplay;
     Function AxisShortName(SystemIndex, AxisIndex: Integer): String;
@@ -178,6 +179,9 @@ Begin
   { Panels must be created in reverse order for top alignment to work correctly. }
   OutputPanel := TCoordinatesEntryPanel.Create(SidePanel, ptOutput);
   InputPanel := TCoordinatesEntryPanel.Create(SidePanel, ptInput);
+  BlankPanel := TPanel.Create(SidePanel);
+  BlankPanel.Parent := SidePanel;
+  BlankPanel.Align := alClient;
   {$IFDEF Windows}
   SidePanel.Font.Name := 'Arial';
   SidePanel.Font.Size := 12;
