@@ -8,7 +8,7 @@ object AboutForm: TAboutForm
   ClientHeight = 400
   ClientWidth = 470
   Font.Quality = fqCleartype
-  Position = poScreenCenter
+  Position = poMainFormCenter
   LCLVersion = '1.7'
   object InformationPageControl: TPageControl
     Left = 0
