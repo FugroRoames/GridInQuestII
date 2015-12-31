@@ -29,8 +29,6 @@ Type
   TProgressDisplay = Class
   Private
     FCaption: String;
-    FDisplayHeight: Integer;
-    FDisplayWidth: Integer;
     FProgress: Integer;
     FProgressForm: TForm;
     FProgressRect: TRect;
@@ -42,8 +40,6 @@ Type
     Procedure Hide;
     Procedure Show(NewCaption: String = '');
     Property Caption: String Read FCaption Write FCaption;
-    Property DisplayHeight: Integer Read FDisplayHeight Write FDisplayHeight;
-    Property DisplayWidth: Integer Read FDisplayWidth Write FDisplayWidth;
     Property Progress: Integer Read FProgress Write SetProgress;
   End;
 
@@ -58,13 +54,14 @@ End;
 
 Constructor TProgressDisplay.Create;
 Begin
-  FDisplayHeight := Screen.Height Div 15;
-  FDisplayWidth := Screen.Width Div 5;
   FProgressForm := TForm.Create(Nil);
   With FProgressForm Do
     Begin
       BorderStyle := bsNone;
       FormStyle := fsStayOnTop;
+      Height := Screen.Height Div 15;
+      Width := Screen.Width Div 5;
+      Position := poMainFormCenter;
       OnPaint := @DoPaint;
     End;
 End;
@@ -95,8 +92,6 @@ Begin
       If Not Showing Then
         Begin
           Application.MainForm.Update;
-          SetBounds((Screen.Width-DisplayWidth) Div 2, (Screen.Height-DisplayHeight) Div 2,
-                                    DisplayWidth, DisplayHeight);
           With FProgressRect Do
             Begin
               Left := 5;
