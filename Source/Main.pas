@@ -116,7 +116,6 @@ Type
     InputPanel: TCoordinatesEntryPanel;
     OutputPanel: TCoordinatesEntryPanel;
     BlankPanel: TPanel;
-    InputData: TDataStream;
     ProgressDisplay: TProgressDisplay;
     Function AxisShortName(SystemIndex, AxisIndex: Integer): String;
     Function DataDrawGridCoordinates(Row: Integer): TCoordinates;
@@ -135,6 +134,7 @@ Type
                                                                  Out Options: TTypedOptions; Out DecimalPlaces, HeightDecimalPlaces: Integer);
   Public
     { Public declarations. }
+    InputData: TDataStream;
     GlobeSystemIndex: Integer;
     InputSystemIndex: Integer;
     InputFirstFieldIndex: Integer;
