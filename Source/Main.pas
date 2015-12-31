@@ -737,15 +737,16 @@ Begin
   DataDrawGrid.BeginUpdate;
   ClearDataGrid;
   DataDrawGrid.RowCount := InputData.RecordCount+1; { Records plus header row. }
-  Canvas.Font := DataDrawGrid.Font;
   LastCol := InputData.FieldCount-1;
   For Col := 0 To LastCol Do
     With DataDrawGrid.Columns.Add Do
       Begin
         Title.Caption := InputData.Names[Col];
         { Calculate the width of the caption plus a couple of spaces. }
+        Canvas.Font := DataDrawGrid.TitleFont;
         NewWidth := Canvas.TextWidth('  '+Title.Caption);
         { Calculate the width of the first data item plus a couple of spaces. }
+        Canvas.Font := DataDrawGrid.Font;
         AlternativeWidth := Canvas.TextWidth('  '+InputData.Values[0, Col]);
         { Choose the wider of the two widths. }
         If AlternativeWidth>NewWidth Then
