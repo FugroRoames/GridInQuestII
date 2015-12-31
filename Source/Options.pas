@@ -133,6 +133,7 @@ Procedure TOptionsForm.FormShow(Sender: TObject);
     End;
   End;
 Begin
+  OptionsPageControlResize(Self);
   With InteractiveSettings Do
     Begin
       GeodeticStyleComboBox.Text := GeodeticStyle;
@@ -174,7 +175,7 @@ Begin
   OptionsPageControl.ClientHeight := GeodeticDisplayGroupBox.Height+
                                      ProjectedDisplayGroupBox.Height+
                                      CartesianDisplayGroupBox.Height+
-                                     HeightDisplayGroupBox.Height+20;
+                                     HeightDisplayGroupBox.Height+25;
 End;
 
 Procedure TOptionsForm.GeodeticDisplayGroupBoxResize(Sender: TObject);
