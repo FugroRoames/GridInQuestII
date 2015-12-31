@@ -1,7 +1,7 @@
 object OptionsForm: TOptionsForm
-  Left = 540
+  Left = 411
   Height = 419
-  Top = 216
+  Top = 245
   Width = 477
   AutoSize = True
   BorderStyle = bsDialog
@@ -11,7 +11,7 @@ object OptionsForm: TOptionsForm
   Font.Quality = fqCleartype
   OnShow = FormShow
   Position = poMainFormCenter
-  LCLVersion = '1.6.0.1'
+  LCLVersion = '1.7'
   object OptionsPageControl: TPageControl
     Left = 0
     Height = 280
@@ -24,19 +24,19 @@ object OptionsForm: TOptionsForm
     OnResize = OptionsPageControlResize
     object InteractiveTabSheet: TTabSheet
       Caption = 'Interactive Settings'
-      ClientHeight = 254
-      ClientWidth = 469
+      ClientHeight = 244
+      ClientWidth = 473
       object GeodeticDisplayGroupBox: TGroupBox
         Left = 5
-        Height = 73
+        Height = 95
         Top = 5
-        Width = 459
+        Width = 463
         Align = alTop
         AutoSize = True
         BorderSpacing.Around = 5
         Caption = 'Geodetic Display Format Settings'
-        ClientHeight = 55
-        ClientWidth = 455
+        ClientHeight = 72
+        ClientWidth = 461
         TabOrder = 0
         OnResize = GeodeticDisplayGroupBoxResize
         object GeodeticStyleLabel: TLabel
@@ -44,9 +44,9 @@ object OptionsForm: TOptionsForm
           AnchorSideTop.Control = GeodeticStyleComboBox
           AnchorSideTop.Side = asrCenter
           Left = 5
-          Height = 13
+          Height = 22
           Top = 9
-          Width = 28
+          Width = 51
           BorderSpacing.Around = 5
           Caption = 'Style:'
           Layout = tlCenter
@@ -56,12 +56,12 @@ object OptionsForm: TOptionsForm
           AnchorSideLeft.Control = GeodeticStyleLabel
           AnchorSideLeft.Side = asrBottom
           AnchorSideTop.Control = GeodeticDisplayGroupBox
-          Left = 38
-          Height = 21
+          Left = 61
+          Height = 30
           Top = 5
           Width = 162
           BorderSpacing.Around = 5
-          ItemHeight = 13
+          ItemHeight = 0
           ItemIndex = 0
           Items.Strings = (
             'Degrees, Minutes, Seconds'
@@ -77,10 +77,10 @@ object OptionsForm: TOptionsForm
           AnchorSideLeft.Side = asrBottom
           AnchorSideTop.Control = GeodeticStyleLabel
           AnchorSideTop.Side = asrCenter
-          Left = 210
-          Height = 13
+          Left = 233
+          Height = 22
           Top = 9
-          Width = 28
+          Width = 51
           BorderSpacing.Left = 5
           BorderSpacing.Around = 5
           Caption = 'Units:'
@@ -92,12 +92,12 @@ object OptionsForm: TOptionsForm
           AnchorSideLeft.Side = asrBottom
           AnchorSideTop.Control = GeodeticStyleComboBox
           AnchorSideTop.Side = asrCenter
-          Left = 243
-          Height = 21
+          Left = 289
+          Height = 30
           Top = 5
           Width = 79
           BorderSpacing.Around = 5
-          ItemHeight = 13
+          ItemHeight = 0
           ItemIndex = 0
           Items.Strings = (
             'Symbols'
@@ -113,10 +113,10 @@ object OptionsForm: TOptionsForm
           AnchorSideLeft.Side = asrBottom
           AnchorSideTop.Control = GeodeticStyleComboBox
           AnchorSideTop.Side = asrCenter
-          Left = 332
-          Height = 13
+          Left = 378
+          Height = 22
           Top = 9
-          Width = 55
+          Width = 96
           BorderSpacing.Left = 5
           BorderSpacing.Around = 5
           Caption = 'Quadrants:'
@@ -128,12 +128,12 @@ object OptionsForm: TOptionsForm
           AnchorSideLeft.Side = asrBottom
           AnchorSideTop.Control = GeodeticStyleComboBox
           AnchorSideTop.Side = asrCenter
-          Left = 392
-          Height = 21
+          Left = 479
+          Height = 30
           Top = 5
           Width = 63
           BorderSpacing.Around = 5
-          ItemHeight = 13
+          ItemHeight = 0
           ItemIndex = 0
           Items.Strings = (
             'Signs'
@@ -149,9 +149,9 @@ object OptionsForm: TOptionsForm
           AnchorSideTop.Control = GeodeticPlacesEdit
           AnchorSideTop.Side = asrCenter
           Left = 5
-          Height = 13
-          Top = 35
-          Width = 73
+          Height = 22
+          Top = 43
+          Width = 137
           BorderSpacing.Around = 5
           Caption = 'Decimal Places:'
           Layout = tlCenter
@@ -162,9 +162,9 @@ object OptionsForm: TOptionsForm
           AnchorSideLeft.Side = asrBottom
           AnchorSideTop.Control = GeodeticStyleComboBox
           AnchorSideTop.Side = asrBottom
-          Left = 83
-          Height = 21
-          Top = 31
+          Left = 147
+          Height = 28
+          Top = 40
           Width = 40
           TabOrder = 3
           Text = '3'
@@ -174,10 +174,10 @@ object OptionsForm: TOptionsForm
           AnchorSideLeft.Side = asrBottom
           AnchorSideTop.Control = GeodeticPlacesLabel
           AnchorSideTop.Side = asrCenter
-          Left = 133
-          Height = 17
-          Top = 33
-          Width = 119
+          Left = 197
+          Height = 26
+          Top = 41
+          Width = 212
           BorderSpacing.Left = 5
           BorderSpacing.Around = 5
           Caption = 'Compact Whitespace'
@@ -190,10 +190,10 @@ object OptionsForm: TOptionsForm
           AnchorSideLeft.Side = asrBottom
           AnchorSideTop.Control = CompactCheckBox
           AnchorSideTop.Side = asrCenter
-          Left = 262
-          Height = 17
-          Top = 33
-          Width = 119
+          Left = 419
+          Height = 26
+          Top = 41
+          Width = 216
           BorderSpacing.Left = 5
           BorderSpacing.Around = 5
           Caption = 'All Positive Longitude'
@@ -202,15 +202,15 @@ object OptionsForm: TOptionsForm
       end
       object ProjectedDisplayGroupBox: TGroupBox
         Left = 5
-        Height = 49
-        Top = 83
-        Width = 459
+        Height = 63
+        Top = 105
+        Width = 463
         Align = alTop
         AutoSize = True
         BorderSpacing.Around = 5
         Caption = 'Projected Display Format Settings'
-        ClientHeight = 31
-        ClientWidth = 455
+        ClientHeight = 40
+        ClientWidth = 461
         TabOrder = 1
         OnResize = ProjectedDisplayGroupBoxResize
         object ProjectedStyleLabel: TLabel
@@ -218,9 +218,9 @@ object OptionsForm: TOptionsForm
           AnchorSideTop.Control = ProjectedStyleComboBox
           AnchorSideTop.Side = asrCenter
           Left = 5
-          Height = 13
+          Height = 22
           Top = 9
-          Width = 28
+          Width = 51
           BorderSpacing.Around = 5
           Caption = 'Style:'
           Layout = tlCenter
@@ -230,12 +230,12 @@ object OptionsForm: TOptionsForm
           AnchorSideLeft.Control = ProjectedStyleLabel
           AnchorSideLeft.Side = asrBottom
           AnchorSideTop.Control = ProjectedDisplayGroupBox
-          Left = 38
-          Height = 21
+          Left = 61
+          Height = 30
           Top = 5
           Width = 136
           BorderSpacing.Around = 5
-          ItemHeight = 13
+          ItemHeight = 0
           ItemIndex = 0
           Items.Strings = (
             'Value Only'
@@ -251,10 +251,10 @@ object OptionsForm: TOptionsForm
           AnchorSideLeft.Side = asrBottom
           AnchorSideTop.Control = ProjectedStyleComboBox
           AnchorSideTop.Side = asrCenter
-          Left = 184
-          Height = 13
+          Left = 207
+          Height = 22
           Top = 9
-          Width = 73
+          Width = 137
           BorderSpacing.Left = 5
           BorderSpacing.Around = 5
           Caption = 'Decimal Places:'
@@ -266,9 +266,9 @@ object OptionsForm: TOptionsForm
           AnchorSideLeft.Side = asrBottom
           AnchorSideTop.Control = ProjectedStyleComboBox
           AnchorSideTop.Side = asrCenter
-          Left = 262
-          Height = 21
-          Top = 5
+          Left = 349
+          Height = 28
+          Top = 6
           Width = 40
           TabOrder = 1
           Text = '2'
@@ -276,15 +276,15 @@ object OptionsForm: TOptionsForm
       end
       object CartesianDisplayGroupBox: TGroupBox
         Left = 5
-        Height = 49
-        Top = 137
-        Width = 459
+        Height = 63
+        Top = 173
+        Width = 463
         Align = alTop
         AutoSize = True
         BorderSpacing.Around = 5
         Caption = 'Cartesian Display Format Settings'
-        ClientHeight = 31
-        ClientWidth = 455
+        ClientHeight = 40
+        ClientWidth = 461
         TabOrder = 2
         OnResize = CartesianDisplayGroupBoxResize
         object CartesianStyleLabel: TLabel
@@ -292,9 +292,9 @@ object OptionsForm: TOptionsForm
           AnchorSideTop.Control = CartesianStyleComboBox
           AnchorSideTop.Side = asrCenter
           Left = 5
-          Height = 13
+          Height = 22
           Top = 9
-          Width = 28
+          Width = 51
           BorderSpacing.Around = 5
           Caption = 'Style:'
           Layout = tlCenter
@@ -304,12 +304,12 @@ object OptionsForm: TOptionsForm
           AnchorSideLeft.Control = CartesianStyleLabel
           AnchorSideLeft.Side = asrBottom
           AnchorSideTop.Control = CartesianDisplayGroupBox
-          Left = 38
-          Height = 21
+          Left = 61
+          Height = 30
           Top = 5
           Width = 136
           BorderSpacing.Around = 5
-          ItemHeight = 13
+          ItemHeight = 0
           ItemIndex = 0
           Items.Strings = (
             'Value Only'
@@ -325,10 +325,10 @@ object OptionsForm: TOptionsForm
           AnchorSideLeft.Side = asrBottom
           AnchorSideTop.Control = CartesianStyleComboBox
           AnchorSideTop.Side = asrCenter
-          Left = 184
-          Height = 13
+          Left = 207
+          Height = 22
           Top = 9
-          Width = 73
+          Width = 137
           BorderSpacing.Left = 5
           BorderSpacing.Around = 5
           Caption = 'Decimal Places:'
@@ -340,9 +340,9 @@ object OptionsForm: TOptionsForm
           AnchorSideLeft.Side = asrBottom
           AnchorSideTop.Control = CartesianStyleComboBox
           AnchorSideTop.Side = asrCenter
-          Left = 262
-          Height = 21
-          Top = 5
+          Left = 349
+          Height = 28
+          Top = 6
           Width = 40
           BorderSpacing.Around = 5
           TabOrder = 1
@@ -351,15 +351,15 @@ object OptionsForm: TOptionsForm
       end
       object HeightDisplayGroupBox: TGroupBox
         Left = 5
-        Height = 49
-        Top = 191
-        Width = 459
+        Height = 63
+        Top = 240
+        Width = 463
         Align = alTop
         AutoSize = True
         BorderSpacing.Around = 5
         Caption = 'Height Display Format Settings'
-        ClientHeight = 31
-        ClientWidth = 455
+        ClientHeight = 40
+        ClientWidth = 461
         TabOrder = 3
         OnResize = HeightDisplayGroupBoxResize
         object HeightStyleLabel: TLabel
@@ -367,9 +367,9 @@ object OptionsForm: TOptionsForm
           AnchorSideTop.Control = HeightStyleComboBox
           AnchorSideTop.Side = asrCenter
           Left = 5
-          Height = 13
+          Height = 22
           Top = 9
-          Width = 28
+          Width = 51
           BorderSpacing.Around = 5
           Caption = 'Style:'
           Layout = tlCenter
@@ -379,12 +379,12 @@ object OptionsForm: TOptionsForm
           AnchorSideLeft.Control = HeightStyleLabel
           AnchorSideLeft.Side = asrBottom
           AnchorSideTop.Control = HeightDisplayGroupBox
-          Left = 38
-          Height = 21
+          Left = 61
+          Height = 30
           Top = 5
           Width = 136
           BorderSpacing.Around = 5
-          ItemHeight = 13
+          ItemHeight = 0
           ItemIndex = 0
           Items.Strings = (
             'Value Only'
@@ -399,10 +399,10 @@ object OptionsForm: TOptionsForm
           AnchorSideLeft.Side = asrBottom
           AnchorSideTop.Control = HeightStyleComboBox
           AnchorSideTop.Side = asrCenter
-          Left = 184
-          Height = 13
+          Left = 207
+          Height = 22
           Top = 9
-          Width = 73
+          Width = 137
           BorderSpacing.Left = 5
           BorderSpacing.Around = 5
           Caption = 'Decimal Places:'
@@ -414,9 +414,9 @@ object OptionsForm: TOptionsForm
           AnchorSideLeft.Side = asrBottom
           AnchorSideTop.Control = HeightStyleComboBox
           AnchorSideTop.Side = asrCenter
-          Left = 262
-          Height = 21
-          Top = 5
+          Left = 349
+          Height = 28
+          Top = 6
           Width = 40
           BorderSpacing.Around = 5
           TabOrder = 1
@@ -427,10 +427,10 @@ object OptionsForm: TOptionsForm
           AnchorSideLeft.Side = asrBottom
           AnchorSideTop.Control = HeightStyleComboBox
           AnchorSideTop.Side = asrCenter
-          Left = 312
-          Height = 17
+          Left = 399
+          Height = 26
           Top = 7
-          Width = 109
+          Width = 197
           BorderSpacing.Left = 5
           BorderSpacing.Around = 5
           Caption = 'Show Datum Suffix'
@@ -451,8 +451,8 @@ object OptionsForm: TOptionsForm
         AutoSize = True
         BorderSpacing.Around = 5
         Caption = 'Geodetic Output Format Settings'
-        ClientHeight = 60
-        ClientWidth = 457
+        ClientHeight = 55
+        ClientWidth = 459
         TabOrder = 0
         OnResize = GeodeticOutputGroupBoxResize
         object GeodeticStyleOutputLabel: TLabel
@@ -477,7 +477,7 @@ object OptionsForm: TOptionsForm
           Top = 5
           Width = 162
           BorderSpacing.Around = 5
-          ItemHeight = 13
+          ItemHeight = 0
           ItemIndex = 0
           Items.Strings = (
             'Degrees, Minutes, Seconds'
@@ -513,7 +513,7 @@ object OptionsForm: TOptionsForm
           Top = 5
           Width = 79
           BorderSpacing.Around = 5
-          ItemHeight = 13
+          ItemHeight = 0
           ItemIndex = 0
           Items.Strings = (
             'Symbols'
@@ -549,7 +549,7 @@ object OptionsForm: TOptionsForm
           Top = 5
           Width = 63
           BorderSpacing.Around = 5
-          ItemHeight = 13
+          ItemHeight = 0
           ItemIndex = 0
           Items.Strings = (
             'Signs'
@@ -625,8 +625,8 @@ object OptionsForm: TOptionsForm
         AutoSize = True
         BorderSpacing.Around = 5
         Caption = 'Projected Output Format Settings'
-        ClientHeight = 35
-        ClientWidth = 457
+        ClientHeight = 30
+        ClientWidth = 459
         TabOrder = 1
         OnResize = ProjectedOutputGroupBoxResize
         object ProjectedStyleOutputLabel: TLabel
@@ -651,7 +651,7 @@ object OptionsForm: TOptionsForm
           Top = 5
           Width = 136
           BorderSpacing.Around = 5
-          ItemHeight = 13
+          ItemHeight = 0
           ItemIndex = 0
           Items.Strings = (
             'Value Only'
@@ -699,8 +699,8 @@ object OptionsForm: TOptionsForm
         AutoSize = True
         BorderSpacing.Around = 5
         Caption = 'Cartesian Output Format Settings'
-        ClientHeight = 36
-        ClientWidth = 457
+        ClientHeight = 31
+        ClientWidth = 459
         TabOrder = 2
         OnResize = CartesianOutputGroupBoxResize
         object CartesianStyleOutputLabel: TLabel
@@ -725,7 +725,7 @@ object OptionsForm: TOptionsForm
           Top = 5
           Width = 136
           BorderSpacing.Around = 5
-          ItemHeight = 13
+          ItemHeight = 0
           ItemIndex = 0
           Items.Strings = (
             'Value Only'
@@ -774,8 +774,8 @@ object OptionsForm: TOptionsForm
         AutoSize = True
         BorderSpacing.Around = 5
         Caption = 'Height Output Format Settings'
-        ClientHeight = 36
-        ClientWidth = 457
+        ClientHeight = 31
+        ClientWidth = 459
         TabOrder = 3
         OnResize = HeightOutputGroupBoxResize
         object HeightStyleOutputLabel: TLabel
@@ -800,7 +800,7 @@ object OptionsForm: TOptionsForm
           Top = 5
           Width = 136
           BorderSpacing.Around = 5
-          ItemHeight = 13
+          ItemHeight = 0
           ItemIndex = 0
           Items.Strings = (
             'Value Only'
@@ -857,15 +857,15 @@ object OptionsForm: TOptionsForm
   end
   object IrishSettingsGroupBox: TGroupBox
     Left = 5
-    Height = 49
+    Height = 65
     Top = 285
     Width = 467
     Align = alTop
     AutoSize = True
     BorderSpacing.Around = 5
     Caption = 'Irish Preferred Vertical Datums'
-    ClientHeight = 31
-    ClientWidth = 463
+    ClientHeight = 42
+    ClientWidth = 465
     TabOrder = 0
     OnResize = IrishSettingsGroupBoxResize
     object IGDatumLabel: TLabel
@@ -873,9 +873,9 @@ object OptionsForm: TOptionsForm
       AnchorSideTop.Control = IGDatumComboBox
       AnchorSideTop.Side = asrCenter
       Left = 5
-      Height = 13
-      Top = 9
-      Width = 49
+      Height = 22
+      Top = 10
+      Width = 91
       BorderSpacing.Around = 5
       Caption = 'IG Datum:'
       Layout = tlCenter
@@ -885,12 +885,12 @@ object OptionsForm: TOptionsForm
       AnchorSideLeft.Control = IGDatumLabel
       AnchorSideLeft.Side = asrBottom
       AnchorSideTop.Control = IrishSettingsGroupBox
-      Left = 59
-      Height = 21
+      Left = 101
+      Height = 32
       Top = 5
       Width = 106
       BorderSpacing.Around = 5
-      ItemHeight = 13
+      ItemHeight = 0
       ItemIndex = 0
       Items.Strings = (
         'Belfast'
@@ -905,10 +905,10 @@ object OptionsForm: TOptionsForm
       AnchorSideLeft.Side = asrBottom
       AnchorSideTop.Control = IGDatumComboBox
       AnchorSideTop.Side = asrCenter
-      Left = 175
-      Height = 13
-      Top = 9
-      Width = 56
+      Left = 217
+      Height = 22
+      Top = 10
+      Width = 105
       BorderSpacing.Left = 5
       BorderSpacing.Around = 5
       Caption = 'ITM Datum:'
@@ -920,11 +920,11 @@ object OptionsForm: TOptionsForm
       AnchorSideLeft.Side = asrBottom
       AnchorSideTop.Control = IGDatumComboBox
       AnchorSideTop.Side = asrCenter
-      Left = 236
-      Height = 21
+      Left = 327
+      Height = 32
       Top = 5
       Width = 106
-      ItemHeight = 13
+      ItemHeight = 0
       ItemIndex = 0
       Items.Strings = (
         'Belfast'
@@ -937,64 +937,51 @@ object OptionsForm: TOptionsForm
   end
   object BottomPanel: TPanel
     Left = 5
-    Height = 75
-    Top = 339
+    Height = 59
+    Top = 355
     Width = 467
     Align = alClient
+    Anchors = [akTop, akLeft, akRight]
     AutoSize = True
     BorderSpacing.Around = 5
     BevelOuter = bvNone
-    ClientHeight = 75
+    ClientHeight = 59
     ClientWidth = 467
     TabOrder = 2
-    object BlankButton: TButton
-      AnchorSideLeft.Control = BottomPanel
-      AnchorSideTop.Control = BottomPanel
-      Left = 0
-      Height = 23
-      Top = 0
-      Width = 51
-      AutoSize = True
-      Caption = 'Blank'
-      TabOrder = 0
-      Visible = False
-    end
     object OKButton: TButton
-      AnchorSideTop.Control = BlankButton
+      AnchorSideTop.Control = BottomPanel
       AnchorSideRight.Control = CancelButton
-      AnchorSideBottom.Control = BlankButton
-      AnchorSideBottom.Side = asrBottom
-      Left = 262
+      Left = 364
       Height = 23
       Top = 0
-      Width = 100
-      Anchors = [akTop, akRight, akBottom]
+      Width = 40
+      Anchors = [akTop, akRight]
       BidiMode = bdRightToLeft
       BorderSpacing.Right = 5
       Caption = 'OK'
       Default = True
       ParentBidiMode = False
       ModalResult = 1
+      OnChangeBounds = OKButtonChangeBounds
       OnClick = OKButtonClick
-      TabOrder = 1
+      TabOrder = 0
     end
     object CancelButton: TButton
-      AnchorSideTop.Control = BlankButton
+      AnchorSideTop.Control = BottomPanel
       AnchorSideRight.Control = BottomPanel
       AnchorSideRight.Side = asrBottom
-      AnchorSideBottom.Control = BlankButton
-      AnchorSideBottom.Side = asrBottom
-      Left = 367
+      Left = 409
       Height = 23
       Top = 0
-      Width = 100
-      Anchors = [akTop, akRight, akBottom]
+      Width = 58
+      Anchors = [akTop, akRight]
       BidiMode = bdRightToLeft
       Cancel = True
       Caption = 'Cancel'
       ParentBidiMode = False
       ModalResult = 2
-      TabOrder = 2
+      OnChangeBounds = CancelButtonChangeBounds
+      TabOrder = 1
     end
   end
 end

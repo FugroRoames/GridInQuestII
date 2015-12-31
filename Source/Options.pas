@@ -29,7 +29,6 @@ Type
   TOptionsForm = Class(TForm)
     OKButton: TButton;
     BottomPanel: TPanel;
-    BlankButton: TButton;
     CartesianDisplayGroupBox: TGroupBox;
     CartesianOutputGroupBox: TGroupBox;
     CartesianPlacesEdit: TEdit;
@@ -93,12 +92,14 @@ Type
     OutputTabSheet: TTabSheet;
     CompactCheckBox: TCheckBox;
     CompactOutputCheckBox: TCheckBox;
+    Procedure CancelButtonChangeBounds(Sender: TObject);
     Procedure CartesianDisplayGroupBoxResize(Sender: TObject);
     Procedure CartesianOutputGroupBoxResize(Sender: TObject);
     Procedure FormShow(Sender: TObject);
     Procedure GeodeticOutputGroupBoxResize(Sender: TObject);
     Procedure HeightDisplayGroupBoxResize(Sender: TObject);
     Procedure HeightOutputGroupBoxResize(Sender: TObject);
+    Procedure OKButtonChangeBounds(Sender: TObject);
     Procedure OptionsPageControlResize(Sender: TObject);
     Procedure GeodeticDisplayGroupBoxResize(Sender: TObject);
     Procedure IrishSettingsGroupBoxResize(Sender: TObject);
@@ -195,6 +196,11 @@ Begin
   CheckComboBoxWidth(CartesianStyleComboBox);
 End;
 
+Procedure TOptionsForm.CancelButtonChangeBounds(Sender: TObject);
+Begin
+  CheckButtonSize(CancelButton);
+End;
+
 Procedure TOptionsForm.HeightDisplayGroupBoxResize(Sender: TObject);
 Begin
   CheckComboBoxWidth(HeightStyleComboBox);
@@ -220,6 +226,11 @@ End;
 Procedure TOptionsForm.HeightOutputGroupBoxResize(Sender: TObject);
 Begin
   CheckComboBoxWidth(HeightStyleOutputComboBox);
+End;
+
+Procedure TOptionsForm.OKButtonChangeBounds(Sender: TObject);
+Begin
+  CheckButtonSize(OKButton);
 End;
 
 Procedure TOptionsForm.IrishSettingsGroupBoxResize(Sender: TObject);
