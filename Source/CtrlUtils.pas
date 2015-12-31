@@ -29,11 +29,13 @@ Uses
   Classes, SysUtils, StdCtrls;
 
 Procedure CheckComboBoxWidth(ThisComboBox: TComboBox; LimitWidth: Integer = 0);
+Procedure CheckButtonSize(ThisButton: TButton);
 
 Implementation
 
 Const
   ComboButtonWidth = 40;
+  MinButtonWidth = 100;
 
 Procedure CheckComboBoxWidth(ThisComboBox: TComboBox; LimitWidth: Integer = 0);
 Var
@@ -53,6 +55,17 @@ Begin
     End;
   If MaximumWidth>ThisComboBox.Width Then
     ThisComboBox.Width := MaximumWidth;
+End;
+
+Procedure CheckButtonSize(ThisButton: TButton);
+Var
+  PreferredWidth, PreferredHeight: Integer;
+Begin
+  ThisButton.GetPreferredSize(PreferredWidth, PreferredHeight);
+  ThisButton.Height := PreferredHeight;
+  If PreferredWidth<MinButtonWidth Then
+    PreferredWidth := MinButtonWidth;
+  ThisButton.Width := PreferredWidth;
 End;
 
 End.
