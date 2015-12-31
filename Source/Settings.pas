@@ -65,6 +65,7 @@ Type
     FileFormatComboBox: TComboBox;
     InputSystemLabel: TLabel;
     ThirdColumnComboBox: TComboBox;
+    Procedure CancelButtonChangeBounds(Sender: TObject);
     Procedure ColumnDelimiterComboBoxChange(Sender: TObject);
     Procedure ConsecutiveDelimitersCheckBoxChange(Sender: TObject);
     Procedure EndRowEditEditingDone(Sender: TObject);
@@ -77,9 +78,10 @@ Type
     Procedure InputDataGroupBoxResize(Sender: TObject);
     Procedure InputFileGroupBoxResize(Sender: TObject);
     Procedure InputSystemComboBoxChange(Sender: TObject);
-    procedure LoadSettingsButtonClick(Sender: TObject);
+    Procedure LoadSettingsButtonClick(Sender: TObject);
+    Procedure OKButtonChangeBounds(Sender: TObject);
     Procedure OutputSystemComboBoxChange(Sender: TObject);
-    procedure SaveSettingsButtonClick(Sender: TObject);
+    Procedure SaveSettingsButtonClick(Sender: TObject);
     Procedure SecondColumnComboBoxChange(Sender: TObject);
     Procedure StartRowEditEditingDone(Sender: TObject);
     Procedure TextDelimiterCheckBoxChange(Sender: TObject);
@@ -155,7 +157,7 @@ Begin
     End;
 End;
 
-procedure TSettingsForm.DisplayDataInformation;
+Procedure TSettingsForm.DisplayDataInformation;
 Var
   Index, LastIndex: Integer;
   BreaksListText: String;
@@ -269,7 +271,7 @@ Begin
   MainForm.SetupDataGrid;
 End;
 
-procedure TSettingsForm.CacheSettings;
+Procedure TSettingsForm.CacheSettings;
 Begin
   OldFormatType := Data.FormatType;
   OldFieldTerminator := Data.FieldTerminator;
@@ -417,7 +419,7 @@ Begin
     End;
 End;
 
-procedure TSettingsForm.RestoreSettings;
+Procedure TSettingsForm.RestoreSettings;
 Begin
   Data.FormatType := OldFormatType;
   Data.FieldTerminator := OldFieldTerminator;
@@ -435,7 +437,7 @@ Begin
   MainForm.SetupDataGrid;
 End;
 
-procedure TSettingsForm.ParseBreaksList(BreaksText: String);
+Procedure TSettingsForm.ParseBreaksList(BreaksText: String);
 Var
   BreaksList: TStringList;
   Index, LastIndex: Integer;
@@ -457,7 +459,7 @@ Begin
     End;
 End;
 
-procedure TSettingsForm.FileFormatComboBoxChange(Sender: TObject);
+Procedure TSettingsForm.FileFormatComboBoxChange(Sender: TObject);
 Begin
   Case FileFormatComboBox.ItemIndex Of
   0:
@@ -468,7 +470,7 @@ Begin
   DisplayDataInformation;
 End;
 
-procedure TSettingsForm.ColumnDelimiterComboBoxChange(Sender: TObject);
+Procedure TSettingsForm.ColumnDelimiterComboBoxChange(Sender: TObject);
 Var
   InputText: String;
 Begin
@@ -491,27 +493,31 @@ Begin
   DisplayDataInformation;
 End;
 
+Procedure TSettingsForm.CancelButtonChangeBounds(Sender: TObject);
+Begin
+  CheckButtonSize(CancelButton);
+End;
+
 procedure TSettingsForm.ConsecutiveDelimitersCheckBoxChange(Sender: TObject);
 Begin
   Data.ConsecutiveDelimiters := ConsecutiveDelimitersCheckBox.Checked;
   DisplayDataInformation;
 End;
 
-procedure TSettingsForm.FixedColumnBreaksEditEditingDone(Sender: TObject);
+Procedure TSettingsForm.FixedColumnBreaksEditEditingDone(Sender: TObject);
 Begin
   ParseBreaksList(FixedColumnBreaksEdit.Text);
   DisplayDataInformation;
 End;
 
-procedure TSettingsForm.FixedColumnBreaksEditKeyPress(Sender: TObject;
-  var Key: char);
+Procedure TSettingsForm.FixedColumnBreaksEditKeyPress(Sender: TObject; var Key: char);
 Begin
   { Only preserve backspace, numbers, spaces and commas. }
   If Not (Key In [#8, '0'..'9',' ',',']) Then
     Key := #0;
 End;
 
-procedure TSettingsForm.TextDelimiterCheckBoxChange(Sender: TObject);
+Procedure TSettingsForm.TextDelimiterCheckBoxChange(Sender: TObject);
 Begin
   TextDelimiterComboBox.Enabled := TextDelimiterCheckBox.Checked;
   If TextDelimiterComboBox.Enabled Then
@@ -521,7 +527,7 @@ Begin
   DisplayDataInformation;
 End;
 
-procedure TSettingsForm.TextDelimiterComboBoxChange(Sender: TObject);
+Procedure TSettingsForm.TextDelimiterComboBoxChange(Sender: TObject);
 Var
   InputText: String;
 Begin
@@ -542,7 +548,7 @@ Begin
   DisplayDataInformation;
 End;
 
-procedure TSettingsForm.HeaderRowCheckBoxChange(Sender: TObject);
+Procedure TSettingsForm.HeaderRowCheckBoxChange(Sender: TObject);
 Begin
   HeaderRowEdit.Enabled := HeaderRowCheckBox.Checked;
   If HeaderRowEdit.Enabled Then
@@ -552,20 +558,20 @@ Begin
   DisplayDataInformation;
 End;
 
-procedure TSettingsForm.HeaderRowEditEditingDone(Sender: TObject);
+Procedure TSettingsForm.HeaderRowEditEditingDone(Sender: TObject);
 Begin
   Data.NameRow := StrToIntDef(HeaderRowEdit.Text, 1)-1;
   DisplayDataInformation;
 End;
 
-procedure TSettingsForm.InputFileGroupBoxResize(Sender: TObject);
+Procedure TSettingsForm.InputFileGroupBoxResize(Sender: TObject);
 Begin
   CheckComboBoxWidth(FileFormatComboBox);
   CheckComboBoxWidth(ColumnDelimiterComboBox);
   CheckComboBoxWidth(TextDelimiterComboBox);
 End;
 
-procedure TSettingsForm.InputDataGroupBoxResize(Sender: TObject);
+Procedure TSettingsForm.InputDataGroupBoxResize(Sender: TObject);
 Var
   MaxWidth: Integer;
 Begin
@@ -575,32 +581,37 @@ Begin
   CheckComboBoxWidth(ThirdColumnComboBox, MaxWidth);
 End;
 
-procedure TSettingsForm.StartRowEditEditingDone(Sender: TObject);
+Procedure TSettingsForm.StartRowEditEditingDone(Sender: TObject);
 Begin
   Data.FirstRow := StrToIntDef(StartRowEdit.Text, 1)-1;
   DisplayDataInformation;
 End;
 
-procedure TSettingsForm.EndRowEditEditingDone(Sender: TObject);
+Procedure TSettingsForm.EndRowEditEditingDone(Sender: TObject);
 Begin
   Data.LastRow := StrToIntDef(EndRowEdit.Text, 0)-1;
   DisplayDataInformation;
 End;
 
-procedure TSettingsForm.InputSystemComboBoxChange(Sender: TObject);
+Procedure TSettingsForm.InputSystemComboBoxChange(Sender: TObject);
 Begin
   MainForm.InputSystemIndex := CoordinateSystems.FindByDescription(InputSystemComboBox.Text);
   DisplayDataInformation;
 End;
 
-procedure TSettingsForm.LoadSettingsButtonClick(Sender: TObject);
+Procedure TSettingsForm.LoadSettingsButtonClick(Sender: TObject);
 Begin
   With OpenDialog Do
     If Execute Then
       LoadSettings(FileName);
 End;
 
-procedure TSettingsForm.FirstColumnComboBoxChange(Sender: TObject);
+Procedure TSettingsForm.OKButtonChangeBounds(Sender: TObject);
+Begin
+  CheckButtonSize(OKButton);
+End;
+
+Procedure TSettingsForm.FirstColumnComboBoxChange(Sender: TObject);
 Begin
   MainForm.InputFirstFieldIndex := FirstColumnComboBox.ItemIndex;
   DisplayDataInformation;
@@ -612,7 +623,7 @@ Begin
   DisplayDataInformation;
 End;
 
-procedure TSettingsForm.VerticalDataCheckBoxChange(Sender: TObject);
+Procedure TSettingsForm.VerticalDataCheckBoxChange(Sender: TObject);
 Begin
   ThirdColumnComboBox.Enabled := VerticalDataCheckBox.Checked;
   If Not ThirdColumnComboBox.Enabled Then
@@ -622,19 +633,19 @@ Begin
     End;
 End;
 
-procedure TSettingsForm.ThirdColumnComboBoxChange(Sender: TObject);
+Procedure TSettingsForm.ThirdColumnComboBoxChange(Sender: TObject);
 Begin
   MainForm.InputThirdFieldIndex := ThirdColumnComboBox.ItemIndex;
   DisplayDataInformation;
 End;
 
-procedure TSettingsForm.OutputSystemComboBoxChange(Sender: TObject);
+Procedure TSettingsForm.OutputSystemComboBoxChange(Sender: TObject);
 Begin
   MainForm.OutputSystemIndex := CoordinateSystems.FindByDescription(OutputSystemComboBox.Text);
   DisplayDataInformation;
 End;
 
-procedure TSettingsForm.SaveSettingsButtonClick(Sender: TObject);
+Procedure TSettingsForm.SaveSettingsButtonClick(Sender: TObject);
 Begin
   With SaveDialog Do
     If Execute Then
