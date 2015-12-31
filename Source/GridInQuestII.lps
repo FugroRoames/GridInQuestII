@@ -53,13 +53,11 @@
         <ComponentName Value="SettingsForm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="2"/>
         <TopLine Value="322"/>
         <CursorPos Y="322"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
       </Unit5>
       <Unit6>
         <Filename Value="../Controls/CoordCtrls.pas"/>
@@ -276,9 +274,9 @@
         <ComponentName Value="OptionsForm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="3"/>
-        <TopLine Value="188"/>
-        <CursorPos X="18" Y="201"/>
+        <CursorPos X="37" Y="192"/>
         <UsageCount Value="100"/>
         <Loaded Value="True"/>
       </Unit34>
@@ -322,9 +320,9 @@
       <Unit40>
         <Filename Value="Settings.lfm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="35"/>
-        <CursorPos X="56" Y="49"/>
-        <UsageCount Value="7"/>
+        <TopLine Value="571"/>
+        <CursorPos Y="571"/>
+        <UsageCount Value="10"/>
         <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit40>
       <Unit41>
@@ -350,9 +348,9 @@
       <Unit44>
         <Filename Value="Options.lfm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="956"/>
-        <CursorPos Y="946"/>
-        <UsageCount Value="9"/>
+        <TopLine Value="970"/>
+        <CursorPos X="18" Y="989"/>
+        <UsageCount Value="10"/>
         <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit44>
       <Unit45>
