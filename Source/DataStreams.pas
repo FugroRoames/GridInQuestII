@@ -95,6 +95,7 @@ Type
     Property FieldStarts[Index: Integer]: Integer Read GetFieldStarts Write SetFieldStarts;
     Property Fields[Index: Integer]: String Read GetField;
     Property FieldTerminator: Char Read FFieldTerminator Write SetFieldTerminator;
+    Property FileName: String Read FFileName;
     Property FirstRow: Integer Read FFirstRow Write SetFirstRow;
     Property FormatType: TFormatType Read FFormatType Write FFormatType;
     Property LastRow: Integer Read FLastRow Write SetLastRow;
