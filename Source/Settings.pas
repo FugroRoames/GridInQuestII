@@ -135,6 +135,9 @@ Const
   FirstRowKey = 'FirstRow';
   LastRowKey = 'LastRow';
   ValueKey = 'Value';
+  XColumnKey = 'XColumn';
+  YColumnKey = 'YColumn';
+  ZColumnKey = 'ZColumn';
 
 Function ShowSettingsForm(NewData: TDataStream): Boolean;
 Begin
@@ -291,6 +294,9 @@ End;
 Procedure TSettingsForm.LoadSettings(LoadFileName: String);
 Var
   XMLSettings: TXMLConfig;
+  XColumnIndex: Integer;
+  YColumnIndex: Integer;
+  ZColumnIndex: Integer;
 Begin
   XMLSettings := TXMLConfig.Create(Nil);
   With XMLSettings Do
@@ -319,21 +325,50 @@ Begin
           Data.TextDelimiter := String(GetValue(ValueKey, #0))[1];
         CloseKey;
         OpenKey(NameRowKey);
-          Data.NameRow := GetValue(ValueKey, -1);
+          Data.NameRow := GetValue(ValueKey, 0)-1;
         CloseKey;
         OpenKey(FirstRowKey);
-          Data.FirstRow := GetValue(ValueKey, 0);
+          Data.FirstRow := GetValue(ValueKey, 1)-1;
         CloseKey;
         OpenKey(LastRowKey);
-          Data.LastRow := GetValue(ValueKey, -1);
+          Data.LastRow := GetValue(ValueKey, 0)-1;
         CloseKey;
         OpenKey(EPSGNumberKey);
           MainForm.InputSystemIndex := CoordinateSystems.FindEPSGNumber(GetValue(ValueKey, 0));
         CloseKey;
-        //MainForm.InputFirstFieldIndex := OldFirstFieldIndex;
-        //MainForm.InputSecondFieldIndex := OldSecondFieldIndex;
-        //MainForm.InputThirdFieldIndex := OldThirdFieldIndex;
+        OpenKey(XColumnKey);
+          XColumnIndex := GetValue(ValueKey, 0)-1;
+        CloseKey;
+        OpenKey(YColumnKey);
+          YColumnIndex := GetValue(ValueKey, 0)-1;
+        CloseKey;
+        OpenKey(ZColumnKey);
+          ZColumnIndex := GetValue(ValueKey, 0)-1;
+        CloseKey;
       CloseKey;
+      If MainForm.InputSystemIndex=-1 Then
+        Begin
+          MainForm.InputFirstFieldIndex := -1;
+          MainForm.InputSecondFieldIndex := -1;
+          MainForm.InputThirdFieldIndex := -1;
+        End
+      Else
+        Begin
+          { Assign the required column indicies. }
+          Case CoordinateSystems.Items(MainForm.InputSystemIndex).AxisOrder Of
+          aoXYZ:
+            Begin
+              MainForm.InputFirstFieldIndex := XColumnIndex;
+              MainForm.InputSecondFieldIndex := YColumnIndex;
+            End;
+          aoYXZ:
+            Begin
+              MainForm.InputFirstFieldIndex := YColumnIndex;
+              MainForm.InputSecondFieldIndex := XColumnIndex;
+            End;
+          End;
+          MainForm.InputThirdFieldIndex := ZColumnIndex;
+        End;
       { Read output settings. }
       OpenKey(OutputKey);
         OpenKey(EPSGNumberKey);
@@ -349,6 +384,9 @@ End;
 Procedure TSettingsForm.SaveSettings(SaveFileName: String);
 Var
   XMLSettings: TXMLConfig;
+  XColumnIndex: Integer;
+  YColumnIndex: Integer;
+  ZColumnIndex: Integer;
 Begin
   XMLSettings := TXMLConfig.Create(Nil);
   With XMLSettings Do
@@ -365,9 +403,12 @@ Begin
           ftFixed: SetValue(ValueKey, FixedKey);
           End;
         CloseKey;
-        OpenKey(FieldTerminatorKey);
-          SetValue(ValueKey, Data.FieldTerminator);
-        CloseKey;
+        If Data.FieldTerminator<>#0 Then
+          Begin
+            OpenKey(FieldTerminatorKey);
+              SetValue(ValueKey, Data.FieldTerminator);
+            CloseKey;
+          End;
         OpenKey(ConsecutiveDelimitersKey);
           SetValue(ValueKey, Data.ConsecutiveDelimiters);
         CloseKey;
@@ -377,19 +418,28 @@ Begin
               SetValue(ValueKey, FixedColumnBreaksEdit.Text);
             CloseKey;
           End;
-        OpenKey(TextDelimiterKey);
-          SetValue(ValueKey, Data.TextDelimiter);
-        CloseKey;
-        OpenKey(NameRowKey);
-          SetValue(ValueKey, Data.NameRow);
-        CloseKey;
-        OpenKey(FirstRowKey);
-          SetValue(ValueKey, Data.FirstRow);
-        CloseKey;
+        If Data.TextDelimiter<>#0 Then
+          Begin
+            OpenKey(TextDelimiterKey);
+              SetValue(ValueKey, Data.TextDelimiter);
+            CloseKey;
+          End;
+        If Data.NameRow<>-1 Then
+          Begin
+            OpenKey(NameRowKey);
+              SetValue(ValueKey, Data.NameRow+1);
+            CloseKey;
+          End;
+        If Data.FirstRow<>0 Then
+          Begin
+            OpenKey(FirstRowKey);
+              SetValue(ValueKey, Data.FirstRow+1);
+            CloseKey;
+          End;
         If Data.LastRow<>-1 Then
           Begin
             OpenKey(LastRowKey);
-              SetValue(ValueKey, Data.LastRow);
+              SetValue(ValueKey, Data.LastRow+1);
             CloseKey;
           End;
         If MainForm.InputSystemIndex<>-1 Then
@@ -398,10 +448,39 @@ Begin
               With CoordinateSystems Do
                 SetValue(ValueKey, Items(MainForm.InputSystemIndex).EPSGNumber);
             CloseKey;
+            { Assign the required column indicies. }
+            Case CoordinateSystems.Items(MainForm.InputSystemIndex).AxisOrder Of
+            aoXYZ:
+              Begin
+                XColumnIndex := MainForm.InputFirstFieldIndex;
+                YColumnIndex := MainForm.InputSecondFieldIndex;
+              End;
+            aoYXZ:
+              Begin
+                YColumnIndex := MainForm.InputFirstFieldIndex;
+                XColumnIndex := MainForm.InputSecondFieldIndex;
+              End;
+            End;
+            ZColumnIndex := MainForm.InputThirdFieldIndex;
+            If XColumnIndex<>-1 Then
+              Begin
+                OpenKey(XColumnKey);
+                  SetValue(ValueKey, XColumnIndex+1);
+                CloseKey;
+              End;
+            If YColumnIndex<>-1 Then
+              Begin
+                OpenKey(YColumnKey);
+                  SetValue(ValueKey, YColumnIndex+1);
+                CloseKey;
+              End;
+            If ZColumnIndex<>-1 Then
+              Begin
+                OpenKey(ZColumnKey);
+                  SetValue(ValueKey, ZColumnIndex+1);
+                CloseKey;
+              End;
           End;
-        //MainForm.InputFirstFieldIndex := OldFirstFieldIndex;
-        //MainForm.InputSecondFieldIndex := OldSecondFieldIndex;
-        //MainForm.InputThirdFieldIndex := OldThirdFieldIndex;
       CloseKey;
       { Write output settings. }
       OpenKey(OutputKey);
@@ -648,8 +727,12 @@ End;
 Procedure TSettingsForm.SaveSettingsButtonClick(Sender: TObject);
 Begin
   With SaveDialog Do
-    If Execute Then
-      SaveSettings(FileName);
+    Begin
+      FileName := MainForm.InputData.FileName;
+      FileName := ChangeFileExt(FileName, DefaultExt);
+      If Execute Then
+        SaveSettings(FileName);
+    End;
 End;
 
 End.

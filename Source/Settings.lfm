@@ -13,7 +13,7 @@ object SettingsForm: TSettingsForm
   LCLVersion = '1.7'
   object InputFileGroupBox: TGroupBox
     Left = 5
-    Height = 232
+    Height = 236
     Top = 5
     Width = 592
     Align = alTop
@@ -21,7 +21,7 @@ object SettingsForm: TSettingsForm
     BorderSpacing.Around = 5
     BorderSpacing.InnerBorder = 5
     Caption = 'Input File Details'
-    ClientHeight = 209
+    ClientHeight = 213
     ClientWidth = 590
     ParentColor = False
     TabOrder = 1
@@ -143,7 +143,7 @@ object SettingsForm: TSettingsForm
       AnchorSideTop.Side = asrCenter
       Left = 201
       Height = 26
-      Top = 104
+      Top = 106
       Width = 199
       Caption = 'Has Text Delimiters'
       OnChange = TextDelimiterCheckBoxChange
@@ -157,7 +157,7 @@ object SettingsForm: TSettingsForm
       AnchorSideRight.Control = TextDelimiterComboBox
       Left = 405
       Height = 22
-      Top = 106
+      Top = 108
       Width = 200
       Alignment = taRightJustify
       Anchors = [akTop, akLeft, akRight]
@@ -174,7 +174,7 @@ object SettingsForm: TSettingsForm
       AnchorSideRight.Control = ColumnDelimiterComboBox
       AnchorSideRight.Side = asrBottom
       Left = 610
-      Height = 32
+      Height = 36
       Top = 101
       Width = 115
       Anchors = [akTop, akRight]
@@ -196,7 +196,7 @@ object SettingsForm: TSettingsForm
       AnchorSideTop.Side = asrCenter
       Left = 201
       Height = 26
-      Top = 139
+      Top = 143
       Width = 174
       Caption = 'Has Header Row'
       Checked = True
@@ -212,7 +212,7 @@ object SettingsForm: TSettingsForm
       AnchorSideRight.Control = HeaderRowEdit
       Left = 380
       Height = 22
-      Top = 141
+      Top = 145
       Width = 225
       Alignment = taRightJustify
       Anchors = [akTop, akLeft, akRight]
@@ -229,7 +229,7 @@ object SettingsForm: TSettingsForm
       AnchorSideTop.Side = asrBottom
       Left = 610
       Height = 28
-      Top = 138
+      Top = 142
       Width = 80
       BorderSpacing.Top = 5
       NumbersOnly = True
@@ -243,7 +243,7 @@ object SettingsForm: TSettingsForm
       AnchorSideRight.Control = StartRowEdit
       Left = 56
       Height = 22
-      Top = 174
+      Top = 178
       Width = 140
       Alignment = taRightJustify
       Anchors = [akTop, akRight]
@@ -258,7 +258,7 @@ object SettingsForm: TSettingsForm
       AnchorSideTop.Control = EndRowEdit
       Left = 201
       Height = 28
-      Top = 171
+      Top = 175
       Width = 80
       NumbersOnly = True
       OnEditingDone = StartRowEditEditingDone
@@ -271,7 +271,7 @@ object SettingsForm: TSettingsForm
       AnchorSideRight.Control = EndRowEdit
       Left = 475
       Height = 22
-      Top = 174
+      Top = 178
       Width = 130
       Alignment = taRightJustify
       Anchors = [akTop, akRight]
@@ -287,7 +287,7 @@ object SettingsForm: TSettingsForm
       AnchorSideTop.Side = asrBottom
       Left = 610
       Height = 28
-      Top = 171
+      Top = 175
       Width = 80
       BorderSpacing.Top = 5
       NumbersOnly = True
@@ -312,7 +312,7 @@ object SettingsForm: TSettingsForm
   object InputDataGroupBox: TGroupBox
     Left = 5
     Height = 151
-    Top = 242
+    Top = 246
     Width = 592
     Align = alTop
     AutoSize = True
@@ -474,7 +474,7 @@ object SettingsForm: TSettingsForm
   object OuputDataGroupBox: TGroupBox
     Left = 5
     Height = 69
-    Top = 398
+    Top = 402
     Width = 592
     Align = alTop
     AutoSize = True
@@ -522,14 +522,14 @@ object SettingsForm: TSettingsForm
   end
   object BottomPanel: TPanel
     Left = 5
-    Height = 33
-    Top = 472
+    Height = 29
+    Top = 476
     Width = 592
     Align = alClient
     AutoSize = True
     BorderSpacing.Around = 5
     BevelOuter = bvNone
-    ClientHeight = 33
+    ClientHeight = 29
     ClientWidth = 592
     TabOrder = 0
     object OKButton: TButton
