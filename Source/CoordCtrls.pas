@@ -491,6 +491,7 @@ Procedure TCoordinatesEntryPanel.SetCoordinates(Value: TCoordinates);
         atZAxis: FCoordinate := Coordinates.Z;
         End;
         FEdit.Text := FormatCoordinate(Coordinate);
+        FValid := True;
         Format(True);
       End;
   End;
