@@ -166,12 +166,7 @@ Begin
   If Screen.Width<1200 Then
     Width := Screen.Width;
   ProgressDisplay := CreateProgressDisplay();
-  {$IFDEF Darwin}
-    ManualFileName := Copy(Application.ExeName, 1, Pos('.app', Application.ExeName)+3);
-  {$ELSE}
-    ManualFileName := Application.ExeName;
-  {$ENDIF}
-  ManualFileName := ChangeFileExt(ManualFileName, '.pdf');
+  ManualFileName := ChangeFileExt(Application.ExeName, '.pdf');
   ManualAction.Enabled := FileExists(ManualFileName);
   MainGlobe := TGlobeControl.Create(Self);
   MainGlobe.Align := alClient;
