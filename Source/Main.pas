@@ -145,6 +145,7 @@ Type
     OutputData: Array Of TVerticalDatumCode;
     OutputFieldTerminator: Char;
     OutputTextDelimiter: Char;
+    Procedure ClearOutputData;
     Procedure SetupDataGrid;
   End;
 
@@ -445,8 +446,7 @@ Begin
   FreeAndNil(InputData);
   InputFirstFieldIndex := -1;
   InputSecondFieldIndex := -1;
-  SetLength(OutputCoordinates, 0);
-  SetLength(OutputData, 0);
+  ClearOutputData;
 End;
 
 Procedure TMainForm.ExitActionExecute(Sender: TObject);
@@ -503,6 +503,17 @@ End;
 
 Procedure TMainForm.DataSettingsActionExecute(Sender: TObject);
 Begin
+  { If output data has been generated, warn the user about its removal. }
+  If Length(OutputCoordinates)>0 Then
+    If MessageDlg('Transformed data must be cleared before settings can be changed.'+LineEnding+
+                  'Do you want to continue?',
+                  mtConfirmation, [mbYes, mbNo], 0)=mrYes Then
+      Begin
+        ClearOutputData;
+        SetupDataGrid;
+      End
+    Else
+      Exit;
   ShowSettingsForm(InputData);
 End;
 
@@ -661,6 +672,12 @@ Begin
   DataDrawGrid.FixedCols := 1;
   DataDrawGrid.Row := 0;
   DataDrawGrid.Col := 0;
+End;
+
+Procedure TMainForm.ClearOutputData;
+Begin
+  SetLength(OutputCoordinates, 0);
+  SetLength(OutputData, 0);
 End;
 
 Procedure TMainForm.LocateOnMap(Const Coordinates: TCoordinates; CoordinateSystemIndex: Integer);
