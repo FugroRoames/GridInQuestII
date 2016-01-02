@@ -537,7 +537,7 @@ object SettingsForm: TSettingsForm
       Left = 0
       Height = 20
       Top = 0
-      Width = 109
+      Width = 113
       AutoSize = True
       Caption = 'Load Settings'
       OnClick = LoadSettingsButtonClick
@@ -547,10 +547,10 @@ object SettingsForm: TSettingsForm
       AnchorSideLeft.Control = LoadSettingsButton
       AnchorSideLeft.Side = asrBottom
       AnchorSideTop.Control = BottomPanel
-      Left = 114
+      Left = 118
       Height = 20
       Top = 0
-      Width = 107
+      Width = 111
       AutoSize = True
       BorderSpacing.Left = 5
       Caption = 'Save Settings'

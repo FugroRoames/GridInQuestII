@@ -109,6 +109,7 @@ Type
     Procedure ParseBreaksList(BreaksText: String);
     Procedure RestoreSettings;
     Procedure SaveSettings(SaveFileName: String);
+    Procedure PopulateDataLists;
   End;
 
 Function ShowSettingsForm(NewData: TDataStream): Boolean;
@@ -144,6 +145,7 @@ Begin
   With TSettingsForm.Create(Application.MainForm) Do
     Begin
       Data := NewData;
+      PopulateDataLists;
       DisplayDataInformation;
       CacheSettings;
       Result := (ShowModal=mrOK);
@@ -233,7 +235,6 @@ Begin
     HeaderRowEdit.Text := EmptyStr
   Else
     HeaderRowEdit.Text := IntToStr(Data.NameRow+1);
-  InputSystemComboBox.Items.Text := CoordinateSystems.AvailableSystemsList();
   If MainForm.InputSystemIndex=-1 Then
     InputSystemComboBox.Text := EmptyStr
   Else
@@ -259,13 +260,9 @@ Begin
     EndRowEdit.Text := EmptyStr
   Else
     EndRowEdit.Text := IntToStr(Data.LastRow+1);
-  FirstColumnComboBox.Items.Text := Data.NamesList;
   FirstColumnComboBox.ItemIndex := MainForm.InputFirstFieldIndex;
-  SecondColumnComboBox.Items.Text := Data.NamesList;
   SecondColumnComboBox.ItemIndex := MainForm.InputSecondFieldIndex;
-  ThirdColumnComboBox.Items.Text := Data.NamesList;
   ThirdColumnComboBox.ItemIndex := MainForm.InputThirdFieldIndex;
-  OutputSystemComboBox.Items.Text := CoordinateSystems.CompatibleSystemsList(InputSystemComboBox.ItemIndex);
   If (MainForm.OutputSystemIndex=-1) Or (MainForm.OutputSystemIndex=MainForm.InputSystemIndex) Then
     OutputSystemComboBox.Text := EmptyStr
   Else
@@ -498,6 +495,15 @@ Begin
     End;
 End;
 
+Procedure TSettingsForm.PopulateDataLists;
+Begin
+  InputSystemComboBox.Items.Text := CoordinateSystems.AvailableSystemsList();
+  OutputSystemComboBox.Items.Text := CoordinateSystems.AvailableSystemsList();
+  FirstColumnComboBox.Items.Text := Data.NamesList;
+  SecondColumnComboBox.Items.Text := Data.NamesList;
+  ThirdColumnComboBox.Items.Text := Data.NamesList;
+End;
+
 Procedure TSettingsForm.RestoreSettings;
 Begin
   Data.FormatType := OldFormatType;
@@ -577,7 +583,7 @@ Begin
   CheckButtonSize(CancelButton);
 End;
 
-procedure TSettingsForm.ConsecutiveDelimitersCheckBoxChange(Sender: TObject);
+Procedure TSettingsForm.ConsecutiveDelimitersCheckBoxChange(Sender: TObject);
 Begin
   Data.ConsecutiveDelimiters := ConsecutiveDelimitersCheckBox.Checked;
   DisplayDataInformation;
@@ -589,7 +595,8 @@ Begin
   DisplayDataInformation;
 End;
 
-Procedure TSettingsForm.FixedColumnBreaksEditKeyPress(Sender: TObject; var Key: char);
+Procedure TSettingsForm.FixedColumnBreaksEditKeyPress(Sender: TObject;
+  Var Key: char);
 Begin
   { Only preserve backspace, numbers, spaces and commas. }
   If Not (Key In [#8, '0'..'9',' ',',']) Then
@@ -675,6 +682,11 @@ End;
 Procedure TSettingsForm.InputSystemComboBoxChange(Sender: TObject);
 Begin
   MainForm.InputSystemIndex := CoordinateSystems.FindByDescription(InputSystemComboBox.Text);
+  If OutputSystemComboBox.Items.Text<>CoordinateSystems.CompatibleSystemsList(InputSystemComboBox.ItemIndex) Then
+    OutputSystemComboBox.Items.Text := CoordinateSystems.CompatibleSystemsList(InputSystemComboBox.ItemIndex);
+  MainForm.InputFirstFieldIndex := -1;
+  MainForm.InputSecondFieldIndex := -1;
+  MainForm.InputThirdFieldIndex := -1;
   DisplayDataInformation;
 End;
 
@@ -696,7 +708,7 @@ Begin
   DisplayDataInformation;
 End;
 
-procedure TSettingsForm.SecondColumnComboBoxChange(Sender: TObject);
+Procedure TSettingsForm.SecondColumnComboBoxChange(Sender: TObject);
 Begin
   MainForm.InputSecondFieldIndex := SecondColumnComboBox.ItemIndex;
   DisplayDataInformation;
