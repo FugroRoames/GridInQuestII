@@ -505,7 +505,7 @@ Procedure TMainForm.DataSettingsActionExecute(Sender: TObject);
 Begin
   { If output data has been generated, warn the user about its removal. }
   If Length(OutputCoordinates)>0 Then
-    If MessageDlg('Transformed data must be cleared before settings can be changed.'+LineEnding+
+    If MessageDlg('Confirmation', 'Transformed data must be cleared before settings can be changed.'+LineEnding+
                   'Do you want to continue?',
                   mtConfirmation, [mbYes, mbNo], 0)=mrYes Then
       Begin
