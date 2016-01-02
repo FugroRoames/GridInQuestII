@@ -1,7 +1,7 @@
 object SettingsForm: TSettingsForm
-  Left = 594
+  Left = 374
   Height = 510
-  Top = 164
+  Top = 148
   Width = 602
   AutoSize = True
   BorderStyle = bsDialog
