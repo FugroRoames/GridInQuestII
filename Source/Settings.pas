@@ -109,7 +109,8 @@ Type
     Procedure ParseBreaksList(BreaksText: String);
     Procedure RestoreSettings;
     Procedure SaveSettings(SaveFileName: String);
-    Procedure PopulateDataLists;
+    Procedure PopulateSystemLists;
+    Procedure PopulateNameLists;
   End;
 
 Function ShowSettingsForm(NewData: TDataStream): Boolean;
@@ -145,7 +146,8 @@ Begin
   With TSettingsForm.Create(Application.MainForm) Do
     Begin
       Data := NewData;
-      PopulateDataLists;
+      PopulateSystemLists;
+      PopulateNameLists;
       DisplayDataInformation;
       CacheSettings;
       Result := (ShowModal=mrOK);
@@ -153,7 +155,7 @@ Begin
       If Result Then
         With MainForm Do
           Begin
-            SetLength(OutputCoordinates, 0);
+            ClearOutputData;
             SetupDataGrid;
           End
       Else
@@ -260,6 +262,7 @@ Begin
     EndRowEdit.Text := EmptyStr
   Else
     EndRowEdit.Text := IntToStr(Data.LastRow+1);
+  WriteLn(FirstColumnComboBox.ItemIndex, ' ', MainForm.InputFirstFieldIndex);
   FirstColumnComboBox.ItemIndex := MainForm.InputFirstFieldIndex;
   SecondColumnComboBox.ItemIndex := MainForm.InputSecondFieldIndex;
   ThirdColumnComboBox.ItemIndex := MainForm.InputThirdFieldIndex;
@@ -495,10 +498,14 @@ Begin
     End;
 End;
 
-Procedure TSettingsForm.PopulateDataLists;
+Procedure TSettingsForm.PopulateSystemLists;
 Begin
   InputSystemComboBox.Items.Text := CoordinateSystems.AvailableSystemsList();
   OutputSystemComboBox.Items.Text := CoordinateSystems.AvailableSystemsList();
+End;
+
+Procedure TSettingsForm.PopulateNameLists;
+Begin
   FirstColumnComboBox.Items.Text := Data.NamesList;
   SecondColumnComboBox.Items.Text := Data.NamesList;
   ThirdColumnComboBox.Items.Text := Data.NamesList;
@@ -641,12 +648,14 @@ Begin
     Data.NameRow := 0
   Else
     Data.NameRow := -1;
+  PopulateNameLists;
   DisplayDataInformation;
 End;
 
 Procedure TSettingsForm.HeaderRowEditEditingDone(Sender: TObject);
 Begin
   Data.NameRow := StrToIntDef(HeaderRowEdit.Text, 1)-1;
+  PopulateNameLists;
   DisplayDataInformation;
 End;
 
