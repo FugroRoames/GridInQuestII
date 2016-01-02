@@ -73,6 +73,7 @@ Type
     Procedure ParseRow(Const Data: TStringList; Const RowIndex: Integer);
     Procedure ParseRows;
     Procedure ParseFields;
+    Procedure UpdateRecordCount;
   Public
     Constructor Create;
     Constructor Create(InputStream: TStream);
@@ -314,23 +315,27 @@ Begin
       { Remove any named row setting if at or after the new first row. }
       If FNameRow>=FFirstRow Then
         FNameRow := -1;
+      UpdateRecordCount;
     End;
 End;
 
 Procedure TDataStream.SetLastRow(Value: Integer);
 Begin
   If FLastRow<>Value Then
-    If Value=-1 Then { Treat -1 as a flag for unlimited. }
-      FLastRow := Value
-    Else
-      Begin
-        If (Value<0) Or (Value>=FRows.Count) Then
-          Value := FRows.Count-1;
-        FLastRow := Value;
-        { If Last row is before the first row, make them equal. }
-        If FLastRow<FFirstRow Then
-          FLastRow := FFirstRow;
-      End;
+    Begin
+      If Value=-1 Then { Treat -1 as a flag for unlimited. }
+        FLastRow := Value
+      Else
+        Begin
+          If (Value<0) Or (Value>=FRows.Count) Then
+            Value := FRows.Count-1;
+          FLastRow := Value;
+          { If Last row is before the first row, make them equal. }
+          If FLastRow<FFirstRow Then
+            FLastRow := FFirstRow;
+        End;
+      UpdateRecordCount;
+    End;
 End;
 
 Procedure TDataStream.SetNameRow(Value: Integer);
@@ -345,6 +350,7 @@ Begin
       { Force any invalid first row value to the next row after the named row. }
       If FFirstRow<=FNameRow Then
         FFirstRow := FNameRow+1;
+      UpdateRecordCount;
       ParseFields;
     End;
 End;
@@ -589,11 +595,8 @@ Begin
       End;
   { Add a row record for the end of the buffer. }
   FRows.Add(BufferEndPointer);
-  { Set the found record count, or truncate to the last row if one given. }
-  FRecordCount := FRows.Count-FirstRow-1;
-  If LastRow<>-1 Then
-    If 1+LastRow-FirstRow<FRecordCount Then
-      FRecordCount := 1+LastRow-FirstRow;
+  { Calculate the record count. }
+  UpdateRecordCount;
   { Analyse the field structure. }
   ParseFields;
   { Setup the first record if there are records. }
@@ -665,6 +668,15 @@ Begin
                 UpdateFieldCount(FoundFields);
             End;
         End;
+End;
+
+Procedure TDataStream.UpdateRecordCount;
+Begin
+  { Set the found record count, or truncate to the last row if one given. }
+  FRecordCount := FRows.Count-FirstRow-1;
+  If LastRow<>-1 Then
+    If 1+LastRow-FirstRow<FRecordCount Then
+      FRecordCount := 1+LastRow-FirstRow;
 End;
 
 End.
