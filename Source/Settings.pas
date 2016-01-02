@@ -73,6 +73,7 @@ Type
     Procedure FirstColumnComboBoxChange(Sender: TObject);
     Procedure FixedColumnBreaksEditEditingDone(Sender: TObject);
     Procedure FixedColumnBreaksEditKeyPress(Sender: TObject; Var Key: char);
+    Procedure FormShow(Sender: TObject);
     Procedure HeaderRowCheckBoxChange(Sender: TObject);
     Procedure HeaderRowEditEditingDone(Sender: TObject);
     Procedure InputDataGroupBoxResize(Sender: TObject);
@@ -89,6 +90,7 @@ Type
     Procedure ThirdColumnComboBoxChange(Sender: TObject);
     Procedure VerticalDataCheckBoxChange(Sender: TObject);
   Private
+    AllowNameReset: Boolean;
     Data: TDataStream;
     OldFormatType: TFormatType;
     OldFieldTerminator: Char;
@@ -146,6 +148,7 @@ Begin
   With TSettingsForm.Create(Application.MainForm) Do
     Begin
       Data := NewData;
+      AllowNameReset := False;
       PopulateSystemLists;
       PopulateNameLists;
       DisplayDataInformation;
@@ -262,7 +265,6 @@ Begin
     EndRowEdit.Text := EmptyStr
   Else
     EndRowEdit.Text := IntToStr(Data.LastRow+1);
-  WriteLn(FirstColumnComboBox.ItemIndex, ' ', MainForm.InputFirstFieldIndex);
   FirstColumnComboBox.ItemIndex := MainForm.InputFirstFieldIndex;
   SecondColumnComboBox.ItemIndex := MainForm.InputSecondFieldIndex;
   ThirdColumnComboBox.ItemIndex := MainForm.InputThirdFieldIndex;
@@ -378,7 +380,9 @@ Begin
       { Close settings configuration file. }
       Free;
     End;
+  AllowNameReset := False;
   DisplayDataInformation;
+  AllowNameReset := True;
 End;
 
 Procedure TSettingsForm.SaveSettings(SaveFileName: String);
@@ -610,6 +614,11 @@ Begin
     Key := #0;
 End;
 
+Procedure TSettingsForm.FormShow(Sender: TObject);
+Begin
+  AllowNameReset := True;
+End;
+
 Procedure TSettingsForm.TextDelimiterCheckBoxChange(Sender: TObject);
 Begin
   TextDelimiterComboBox.Enabled := TextDelimiterCheckBox.Checked;
@@ -693,9 +702,13 @@ Begin
   MainForm.InputSystemIndex := CoordinateSystems.FindByDescription(InputSystemComboBox.Text);
   If OutputSystemComboBox.Items.Text<>CoordinateSystems.CompatibleSystemsList(InputSystemComboBox.ItemIndex) Then
     OutputSystemComboBox.Items.Text := CoordinateSystems.CompatibleSystemsList(InputSystemComboBox.ItemIndex);
-  MainForm.InputFirstFieldIndex := -1;
-  MainForm.InputSecondFieldIndex := -1;
-  MainForm.InputThirdFieldIndex := -1;
+  If AllowNameReset Then
+    Begin
+      { Reset the input field names. }
+      MainForm.InputFirstFieldIndex := -1;
+      MainForm.InputSecondFieldIndex := -1;
+      MainForm.InputThirdFieldIndex := -1;
+    End;
   DisplayDataInformation;
 End;
 
