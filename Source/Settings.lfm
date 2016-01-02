@@ -9,6 +9,7 @@ object SettingsForm: TSettingsForm
   ClientHeight = 510
   ClientWidth = 602
   Font.Quality = fqCleartype
+  OnShow = FormShow
   Position = poMainFormCenter
   LCLVersion = '1.6.0.1'
   object InputFileGroupBox: TGroupBox
