@@ -59,7 +59,7 @@ Type
     TNDataPointer: THorizontalTablePointer;
     Constructor Initialize(NewName: String; NewAbbreviation: String; NewDescription: String; NewEPSGNumber: Integer;
                            NewCoordinateType: TCoordinateType; NewAxisOrder: TAxisOrder;
-                           NewBounds: TGeodeticBounds; Var NewTNData: THorizontalTable; Var NewGMData: TVerticalTable);
+                           NewBounds: TGeodeticBounds; Const NewTNData: THorizontalTable; Const NewGMData: TVerticalTable);
     Function ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
     Function ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
   End;
@@ -151,7 +151,7 @@ Var
 Constructor TBNGCoordinateSystem.Initialize(NewName: String; NewAbbreviation: String; NewDescription: String;
                                             NewEPSGNumber: Integer; NewCoordinateType: TCoordinateType;
                                             NewAxisOrder: TAxisOrder; NewBounds: TGeodeticBounds;
-                                            Var NewTNData: THorizontalTable; Var NewGMData: TVerticalTable);
+                                            Const NewTNData: THorizontalTable; Const NewGMData: TVerticalTable);
 Begin
   Inherited Initialize(NewName, NewAbbreviation, NewDescription, NewEPSGNumber,
                              NewCoordinateType, NewAxisOrder, NewBounds);
