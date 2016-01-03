@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="9"/>
+    <BuildModes Active="Debug"/>
+    <Units Count="18">
+      <Unit0>
+        <Filename Value="LibGIQ.pas"/>
+        <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
+        <CursorPos X="19" Y="5"/>
+        <UsageCount Value="45"/>
+        <Loaded Value="True"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="GridInQuestII.lpr"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="20"/>
+        <CursorPos Y="35"/>
+        <UsageCount Value="9"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value="Geodesy.pas"/>
+        <EditorIndex Value="6"/>
+        <TopLine Value="193"/>
+        <CursorPos X="22" Y="207"/>
+        <UsageCount Value="21"/>
+        <Loaded Value="True"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="IG.pas"/>
+        <EditorIndex Value="3"/>
+        <CursorPos X="25" Y="2"/>
+        <UsageCount Value="21"/>
+        <Loaded Value="True"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="ITM.pas"/>
+        <EditorIndex Value="4"/>
+        <TopLine Value="13"/>
+        <CursorPos X="13" Y="23"/>
+        <UsageCount Value="21"/>
+        <Loaded Value="True"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="ETRS.pas"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="112"/>
+        <CursorPos X="132" Y="131"/>
+        <UsageCount Value="21"/>
+        <Loaded Value="True"/>
+      </Unit5>
+      <Unit6>
+        <Filename Value="BNG.pas"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="169"/>
+        <CursorPos X="7" Y="178"/>
+        <UsageCount Value="21"/>
+        <Loaded Value="True"/>
+      </Unit6>
+      <Unit7>
+        <Filename Value="C:\lazarus\fpc\2.6.4\source\rtl\objpas\sysutils\sysutilh.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="286"/>
+        <CursorPos X="12" Y="298"/>
+        <UsageCount Value="11"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="C:\lazarus\fpc\2.6.4\source\rtl\objpas\sysutils\sysutils.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="723"/>
+        <CursorPos X="5" Y="727"/>
+        <UsageCount Value="11"/>
+      </Unit8>
+      <Unit9>
+        <Filename Value="C:\lazarus\fpc\2.6.4\source\rtl\inc\resh.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="44"/>
+        <CursorPos X="10" Y="56"/>
+        <UsageCount Value="11"/>
+      </Unit9>
+      <Unit10>
+        <Filename Value="OSTab.pas"/>
+        <EditorIndex Value="5"/>
+        <TopLine Value="238"/>
+        <CursorPos Y="251"/>
+        <UsageCount Value="16"/>
+        <Loaded Value="True"/>
+      </Unit10>
+      <Unit11>
+        <Filename Value="C:\lazarus\fpc\2.6.4\source\packages\fcl-base\src\eventlog.pp"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="228"/>
+        <CursorPos X="3" Y="231"/>
+        <UsageCount Value="10"/>
+      </Unit11>
+      <Unit12>
+        <Filename Value="C:\lazarus\fpc\2.6.4\source\rtl\objpas\classes\classesh.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="916"/>
+        <CursorPos X="21" Y="929"/>
+        <UsageCount Value="10"/>
+      </Unit12>
+      <Unit13>
+        <Filename Value="C:\lazarus\fpc\2.6.4\source\rtl\objpas\classes\streams.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="542"/>
+        <CursorPos X="16" Y="549"/>
+        <UsageCount Value="10"/>
+      </Unit13>
+      <Unit14>
+        <Filename Value="C:\lazarus\fpc\2.6.4\source\rtl\win\wininc\ascdef.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="25"/>
+        <CursorPos X="10" Y="79"/>
+        <UsageCount Value="10"/>
+      </Unit14>
+      <Unit15>
+        <Filename Value="C:\lazarus\fpc\2.6.4\source\rtl\objpas\sysutils\filutilh.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="70"/>
+        <CursorPos X="13" Y="85"/>
+        <UsageCount Value="10"/>
+      </Unit15>
+      <Unit16>
+        <Filename Value="C:\lazarus\fpc\2.6.4\source\rtl\win\sysutils.pp"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="252"/>
+        <CursorPos X="10" Y="256"/>
+        <UsageCount Value="10"/>
+      </Unit16>
+      <Unit17>
+        <Filename Value="C:\lazarus\fpc\2.6.4\source\rtl\win\wininc\redef.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="756"/>
+        <CursorPos X="33" Y="765"/>
+        <UsageCount Value="10"/>
+      </Unit17>
+    </Units>
+    <JumpHistory Count="30" HistoryIndex="29">
+      <Position1>
+        <Filename Value="LibGIQ.pas"/>
+        <Caret Line="41" Column="34" TopLine="31"/>
+      </Position1>
+      <Position2>
+        <Filename Value="ETRS.pas"/>
+        <Caret Line="129" TopLine="108"/>
+      </Position2>
+      <Position3>
+        <Filename Value="ETRS.pas"/>
+        <Caret Line="92" TopLine="79"/>
+      </Position3>
+      <Position4>
+        <Filename Value="ETRS.pas"/>
+        <Caret Line="93" TopLine="79"/>
+      </Position4>
+      <Position5>
+        <Filename Value="ETRS.pas"/>
+        <Caret Line="91" Column="40" TopLine="79"/>
+      </Position5>
+      <Position6>
+        <Filename Value="ETRS.pas"/>
+        <Caret Line="124" Column="34" TopLine="112"/>
+      </Position6>
+      <Position7>
+        <Filename Value="ETRS.pas"/>
+        <Caret Line="129" Column="26" TopLine="112"/>
+      </Position7>
+      <Position8>
+        <Filename Value="LibGIQ.pas"/>
+        <Caret Line="38" TopLine="31"/>
+      </Position8>
+      <Position9>
+        <Filename Value="LibGIQ.pas"/>
+        <Caret Line="39" TopLine="31"/>
+      </Position9>
+      <Position10>
+        <Filename Value="LibGIQ.pas"/>
+        <Caret Line="38" TopLine="31"/>
+      </Position10>
+      <Position11>
+        <Filename Value="LibGIQ.pas"/>
+        <Caret Line="40" TopLine="31"/>
+      </Position11>
+      <Position12>
+        <Filename Value="LibGIQ.pas"/>
+        <Caret Line="41" TopLine="31"/>
+      </Position12>
+      <Position13>
+        <Filename Value="LibGIQ.pas"/>
+        <Caret Line="40" TopLine="31"/>
+      </Position13>
+      <Position14>
+        <Filename Value="LibGIQ.pas"/>
+        <Caret Line="43" Column="44" TopLine="31"/>
+      </Position14>
+      <Position15>
+        <Filename Value="LibGIQ.pas"/>
+        <Caret Line="38" TopLine="31"/>
+      </Position15>
+      <Position16>
+        <Filename Value="LibGIQ.pas"/>
+        <Caret Line="41" TopLine="31"/>
+      </Position16>
+      <Position17>
+        <Filename Value="LibGIQ.pas"/>
+        <Caret Line="40" TopLine="31"/>
+      </Position17>
+      <Position18>
+        <Filename Value="LibGIQ.pas"/>
+        <Caret Line="42" TopLine="31"/>
+      </Position18>
+      <Position19>
+        <Filename Value="LibGIQ.pas"/>
+        <Caret Line="37" Column="28" TopLine="31"/>
+      </Position19>
+      <Position20>
+        <Filename Value="LibGIQ.pas"/>
+        <Caret Line="38" TopLine="31"/>
+      </Position20>
+      <Position21>
+        <Filename Value="LibGIQ.pas"/>
+        <Caret Line="41" TopLine="31"/>
+      </Position21>
+      <Position22>
+        <Filename Value="LibGIQ.pas"/>
+        <Caret Line="40" TopLine="31"/>
+      </Position22>
+      <Position23>
+        <Filename Value="LibGIQ.pas"/>
+        <Caret Line="42" TopLine="31"/>
+      </Position23>
+      <Position24>
+        <Filename Value="LibGIQ.pas"/>
+        <Caret Line="43" TopLine="31"/>
+      </Position24>
+      <Position25>
+        <Filename Value="LibGIQ.pas"/>
+        <Caret Line="46" TopLine="31"/>
+      </Position25>
+      <Position26>
+        <Filename Value="LibGIQ.pas"/>
+        <Caret Line="48" TopLine="31"/>
+      </Position26>
+      <Position27>
+        <Filename Value="LibGIQ.pas"/>
+        <Caret Line="49" TopLine="31"/>
+      </Position27>
+      <Position28>
+        <Filename Value="OSTab.pas"/>
+        <Caret Line="251" TopLine="238"/>
+      </Position28>
+      <Position29>
+        <Filename Value="ETRS.pas"/>
+        <Caret Line="44" Column="62" TopLine="31"/>
+      </Position29>
+      <Position30>
+        <Filename Value="ETRS.pas"/>
+        <Caret Line="91" Column="24" TopLine="88"/>
+      </Position30>
+    </JumpHistory>
+  </ProjectSession>
+  <Debugging>
+    <BreakPoints Count="1">
+      <Item1>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="BNG.pas"/>
+        <Line Value="180"/>
+      </Item1>
+    </BreakPoints>
+  </Debugging>
+</CONFIG>

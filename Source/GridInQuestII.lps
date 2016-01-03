@@ -7,8 +7,6 @@
       <Unit0>
         <Filename Value="GridInQuestII.lpr"/>
         <IsPartOfProject Value="True"/>
-        <IsVisibleTab Value="True"/>
-        <TopLine Value="24"/>
         <CursorPos Y="46"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
@@ -106,10 +104,12 @@
       <Unit11>
         <Filename Value="ETRS.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="11"/>
-        <CursorPos X="9" Y="25"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="13"/>
+        <TopLine Value="116"/>
+        <CursorPos X="96" Y="128"/>
         <UsageCount Value="202"/>
+        <Loaded Value="True"/>
       </Unit11>
       <Unit12>
         <Filename Value="OSTab.pas"/>
@@ -131,7 +131,7 @@
         <Filename Value="Config.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="12"/>
-        <TopLine Value="10"/>
+        <TopLine Value="39"/>
         <CursorPos X="16" Y="61"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
@@ -142,26 +142,26 @@
         <EditorIndex Value="8"/>
         <TopLine Value="22"/>
         <CursorPos X="11" Y="32"/>
-        <UsageCount Value="155"/>
+        <UsageCount Value="161"/>
         <Loaded Value="True"/>
       </Unit15>
       <Unit16>
         <Filename Value="TN02.pas"/>
         <EditorIndex Value="-1"/>
         <CursorPos Y="26"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="8"/>
       </Unit16>
       <Unit17>
         <Filename Value="GM02.pas"/>
         <EditorIndex Value="-1"/>
         <CursorPos Y="26"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="8"/>
       </Unit17>
       <Unit18>
         <Filename Value="WKT.pas"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="23" Y="25"/>
-        <UsageCount Value="89"/>
+        <UsageCount Value="88"/>
       </Unit18>
       <Unit19>
         <Filename Value="DataStreams.pas"/>
@@ -175,7 +175,7 @@
         <Filename Value="VRF10.pas"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="4" Y="24"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="8"/>
       </Unit20>
       <Unit21>
         <Filename Value="../../FreePascal/Lazarus/lcl/controls.pp"/>
@@ -183,7 +183,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="1462"/>
         <CursorPos X="80" Y="1472"/>
-        <UsageCount Value="8"/>
+        <UsageCount Value="7"/>
       </Unit21>
       <Unit22>
         <Filename Value="GlobeCtrl.pas"/>
@@ -201,7 +201,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="142"/>
         <CursorPos Y="164"/>
-        <UsageCount Value="87"/>
+        <UsageCount Value="86"/>
       </Unit23>
       <Unit24>
         <Filename Value="About.pas"/>
@@ -211,7 +211,7 @@
         <EditorIndex Value="7"/>
         <TopLine Value="116"/>
         <CursorPos Y="137"/>
-        <UsageCount Value="97"/>
+        <UsageCount Value="100"/>
         <Loaded Value="True"/>
       </Unit24>
       <Unit25>
@@ -225,7 +225,7 @@
       <Unit26>
         <Filename Value="GeodUtils.pas"/>
         <EditorIndex Value="11"/>
-        <TopLine Value="208"/>
+        <TopLine Value="431"/>
         <CursorPos X="3" Y="453"/>
         <UsageCount Value="100"/>
         <Loaded Value="True"/>
@@ -242,40 +242,40 @@
         <Filename Value="../../../GISUtils.pas"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="21"/>
-        <UsageCount Value="72"/>
+        <UsageCount Value="71"/>
       </Unit28>
       <Unit29>
         <Filename Value="ITM.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="6"/>
         <CursorPos X="3" Y="28"/>
-        <UsageCount Value="98"/>
+        <UsageCount Value="97"/>
       </Unit29>
       <Unit30>
         <Filename Value="IG.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="221"/>
         <CursorPos X="73" Y="245"/>
-        <UsageCount Value="98"/>
+        <UsageCount Value="97"/>
       </Unit30>
       <Unit31>
         <Filename Value="GridUtils.pas"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="62" Y="3"/>
-        <UsageCount Value="96"/>
+        <UsageCount Value="95"/>
       </Unit31>
       <Unit32>
         <Filename Value="OSTN02R1K.inc"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="69" Y="5"/>
-        <UsageCount Value="5"/>
+        <UsageCount Value="4"/>
       </Unit32>
       <Unit33>
         <Filename Value="../../../Applications/FreePascal/2.6.4/source/rtl/objpas/sysutils/finah.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="11"/>
         <CursorPos X="10" Y="24"/>
-        <UsageCount Value="3"/>
+        <UsageCount Value="2"/>
       </Unit33>
       <Unit34>
         <Filename Value="Options.pas"/>
@@ -283,7 +283,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="6"/>
-        <TopLine Value="166"/>
+        <TopLine Value="170"/>
         <CursorPos X="37" Y="192"/>
         <UsageCount Value="100"/>
         <Loaded Value="True"/>
@@ -293,7 +293,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="183"/>
         <CursorPos Y="187"/>
-        <UsageCount Value="3"/>
+        <UsageCount Value="2"/>
       </Unit35>
       <Unit36>
         <Filename Value="../../FreePascal/Lazarus/lcl/stdctrls.pp"/>
@@ -301,14 +301,14 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="247"/>
         <CursorPos X="33" Y="260"/>
-        <UsageCount Value="7"/>
+        <UsageCount Value="6"/>
       </Unit36>
       <Unit37>
         <Filename Value="/usr/share/fpcsrc/rtl/objpas/math.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="192"/>
         <CursorPos X="29" Y="202"/>
-        <UsageCount Value="1"/>
+        <UsageCount Value="0"/>
       </Unit37>
       <Unit38>
         <Filename Value="/usr/share/fpcsrc/packages/fcl-xml/src/xmlconf.pp"/>
@@ -316,49 +316,49 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="31"/>
         <CursorPos X="27" Y="43"/>
-        <UsageCount Value="5"/>
+        <UsageCount Value="4"/>
       </Unit38>
       <Unit39>
         <Filename Value="fileinfo.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="360"/>
         <CursorPos X="31" Y="374"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="8"/>
       </Unit39>
       <Unit40>
         <Filename Value="Settings.lfm"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="571"/>
         <CursorPos Y="571"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="8"/>
         <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit40>
       <Unit41>
         <Filename Value="../../FreePascal/Lazarus/lcl/include/winapih.inc"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="10" Y="147"/>
-        <UsageCount Value="7"/>
+        <UsageCount Value="6"/>
       </Unit41>
       <Unit42>
         <Filename Value="../../FreePascal/Lazarus/lcl/include/winapi.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="483"/>
         <CursorPos X="3" Y="485"/>
-        <UsageCount Value="7"/>
+        <UsageCount Value="6"/>
       </Unit42>
       <Unit43>
         <Filename Value="../../../Applications/Lazarus/components/lazutils/fileutil.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="359"/>
         <CursorPos X="11" Y="373"/>
-        <UsageCount Value="7"/>
+        <UsageCount Value="6"/>
       </Unit43>
       <Unit44>
         <Filename Value="Options.lfm"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="970"/>
         <CursorPos X="18" Y="989"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="8"/>
         <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit44>
       <Unit45>
@@ -367,35 +367,35 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="168"/>
         <CursorPos X="14" Y="174"/>
-        <UsageCount Value="4"/>
+        <UsageCount Value="3"/>
       </Unit45>
       <Unit46>
         <Filename Value="../../../Applications/LazarusSnapshot/fpc/2.6.4/source/rtl/objpas/strutils.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="318"/>
         <CursorPos X="24" Y="332"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
       </Unit46>
       <Unit47>
         <Filename Value="../../../Applications/LazarusSnapshot/fpc/2.6.4/source/rtl/objpas/sysutils/sysstrh.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="13"/>
         <CursorPos X="94" Y="13"/>
-        <UsageCount Value="4"/>
+        <UsageCount Value="3"/>
       </Unit47>
       <Unit48>
         <Filename Value="../../../Applications/LazarusSnapshot/fpc/2.6.4/source/rtl/objpas/sysutils/sysstr.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="918"/>
         <CursorPos X="9" Y="919"/>
-        <UsageCount Value="7"/>
+        <UsageCount Value="6"/>
       </Unit48>
       <Unit49>
         <Filename Value="../../../Applications/LazarusSnapshot/fpc/2.6.4/source/rtl/objpas/sysutils/sysformt.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="216"/>
         <CursorPos X="19" Y="219"/>
-        <UsageCount Value="7"/>
+        <UsageCount Value="6"/>
       </Unit49>
       <Unit50>
         <Filename Value="../../../Applications/LazarusSnapshot/lcl/controls.pp"/>
@@ -403,31 +403,31 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="2178"/>
         <CursorPos X="15" Y="2192"/>
-        <UsageCount Value="8"/>
+        <UsageCount Value="7"/>
       </Unit50>
       <Unit51>
         <Filename Value="../../../Applications/LazarusSnapshot/lcl/include/wincontrol.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="4353"/>
         <CursorPos X="3" Y="4355"/>
-        <UsageCount Value="8"/>
+        <UsageCount Value="7"/>
       </Unit51>
       <Unit52>
         <Filename Value="../../../Applications/LazarusSnapshot/lcl/include/customedit.inc"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="31" Y="21"/>
-        <UsageCount Value="4"/>
+        <UsageCount Value="3"/>
       </Unit52>
       <Unit53>
         <Filename Value="../../../Applications/LazarusSnapshot/lcl/include/customcombobox.inc"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="3"/>
+        <UsageCount Value="2"/>
       </Unit53>
       <Unit54>
         <Filename Value="../../../Applications/LazarusSnapshot/lcl/interfaces/win32/win32int.pp"/>
         <UnitName Value="Win32Int"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="3"/>
+        <UsageCount Value="2"/>
       </Unit54>
       <Unit55>
         <Filename Value="../../FreePascal/Lazarus/lcl/lclclasses.pp"/>
@@ -435,35 +435,35 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="124"/>
         <CursorPos Y="140"/>
-        <UsageCount Value="3"/>
+        <UsageCount Value="2"/>
       </Unit55>
       <Unit56>
         <Filename Value="../../FreePascal/Lazarus/lcl/include/custompanel.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="55"/>
         <CursorPos Y="69"/>
-        <UsageCount Value="3"/>
+        <UsageCount Value="2"/>
       </Unit56>
       <Unit57>
         <Filename Value="../../FreePascal/Lazarus/lcl/include/customcontrol.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="79"/>
         <CursorPos Y="93"/>
-        <UsageCount Value="3"/>
+        <UsageCount Value="2"/>
       </Unit57>
       <Unit58>
         <Filename Value="../../FreePascal/Lazarus/lcl/include/wincontrol.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="5373"/>
         <CursorPos Y="5384"/>
-        <UsageCount Value="3"/>
+        <UsageCount Value="2"/>
       </Unit58>
       <Unit59>
         <Filename Value="../../FreePascal/Lazarus/lcl/include/control.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="2112"/>
         <CursorPos Y="2123"/>
-        <UsageCount Value="3"/>
+        <UsageCount Value="2"/>
       </Unit59>
       <Unit60>
         <Filename Value="../../FreePascal/Lazarus/lcl/interfaces/gtk2/gtk2wsstdctrls.pp"/>
@@ -471,7 +471,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="1629"/>
         <CursorPos Y="1640"/>
-        <UsageCount Value="3"/>
+        <UsageCount Value="2"/>
       </Unit60>
       <Unit61>
         <Filename Value="../../FreePascal/Lazarus/lcl/lclmessageglue.pas"/>
@@ -479,21 +479,21 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="488"/>
         <CursorPos Y="500"/>
-        <UsageCount Value="3"/>
+        <UsageCount Value="2"/>
       </Unit61>
       <Unit62>
         <Filename Value="../../FreePascal/Lazarus/lcl/interfaces/gtk2/gtk2widgetset.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="2392"/>
         <CursorPos Y="2404"/>
-        <UsageCount Value="3"/>
+        <UsageCount Value="2"/>
       </Unit62>
       <Unit63>
         <Filename Value="../../../Applications/LazarusSnapshot/components/lazutils/winlazutf8.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="497"/>
         <CursorPos X="3" Y="514"/>
-        <UsageCount Value="6"/>
+        <UsageCount Value="5"/>
       </Unit63>
       <Unit64>
         <Filename Value="../../../Applications/LazarusSnapshot/components/lazutils/lazfileutils.pas"/>
@@ -501,12 +501,12 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="94"/>
         <CursorPos Y="97"/>
-        <UsageCount Value="6"/>
+        <UsageCount Value="5"/>
       </Unit64>
       <Unit65>
         <Filename Value="../../Procura/Source/Mapping/MapVectLyr.pas"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="6"/>
+        <UsageCount Value="5"/>
       </Unit65>
       <Unit66>
         <Filename Value="C:/Applications/LazarusSnapshot/lcl/controls.pp"/>
@@ -514,18 +514,18 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="1629"/>
         <CursorPos X="14" Y="1641"/>
-        <UsageCount Value="8"/>
+        <UsageCount Value="7"/>
       </Unit66>
       <Unit67>
         <Filename Value="../../../test3.set"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="8"/>
         <DefaultSyntaxHighlighter Value="None"/>
       </Unit67>
       <Unit68>
         <Filename Value="../Sample Files/worldcitiespop.set"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="8"/>
         <DefaultSyntaxHighlighter Value="None"/>
       </Unit68>
       <Unit69>
@@ -534,7 +534,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="72"/>
         <CursorPos X="10" Y="82"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="8"/>
       </Unit69>
       <Unit70>
         <Filename Value="/Developer/lazarus/lcl/menus.pp"/>
@@ -542,7 +542,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="422"/>
         <CursorPos X="10" Y="433"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
       </Unit70>
       <Unit71>
         <Filename Value="/Developer/lazarus/lcl/dialogs.pp"/>
@@ -550,7 +550,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="495"/>
         <CursorPos X="20" Y="501"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
       </Unit71>
       <Unit72>
         <Filename Value="/Developer/lazarus/lcl/forms.pp"/>
@@ -558,20 +558,20 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="329"/>
         <CursorPos X="15" Y="329"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
       </Unit72>
       <Unit73>
         <Filename Value="/usr/local/share/fpcsrc/rtl/unix/sysutils.pp"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="28" Y="759"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
       </Unit73>
       <Unit74>
         <Filename Value="/usr/local/share/fpcsrc/rtl/unix/sysunixh.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="17"/>
         <CursorPos X="2" Y="28"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
       </Unit74>
       <Unit75>
         <Filename Value="/Developer/lazarus/lcl/controls.pp"/>
@@ -579,21 +579,21 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="41"/>
         <CursorPos X="3" Y="52"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
       </Unit75>
       <Unit76>
         <Filename Value="/Developer/lazarus/lcl/include/buttoncontrol.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="37"/>
         <CursorPos Y="48"/>
-        <UsageCount Value="11"/>
+        <UsageCount Value="10"/>
       </Unit76>
       <Unit77>
         <Filename Value="/Developer/lazarus/lcl/include/promptdialog.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="928"/>
         <CursorPos Y="941"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
       </Unit77>
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
