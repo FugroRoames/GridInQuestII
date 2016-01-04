@@ -257,9 +257,17 @@ End;
 
 Initialization
 
+{$IFDEF WINDOWS}
+ProgramFolder := IncludeTrailingPathDelimiter(ExtractFilePath(GetModuleName(HInstance)));
+{$ELSE}
 ProgramFolder := IncludeTrailingPathDelimiter(ExtractFilePath(ParamStr(0)));
+{$ENDIF}
+
+{ Construct data table filenames. }
+{$IFDEF ITM02}
 GM02NIFileName := ProgramFolder+'GM02NI.dat';
 GM02RoIFileName := ProgramFolder+'GM02RoI.dat';
+{$ENDIF}
 GM15NIFileName := ProgramFolder+'GM15NI.dat';
 GM15RoIFileName := ProgramFolder+'GM15RoI.dat';
 
