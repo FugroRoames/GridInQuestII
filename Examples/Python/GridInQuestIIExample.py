@@ -36,7 +36,7 @@ convert.restype = bool
 # Setup the calling parameter values.
 SRIDsource = c_int(4937) # ETRS89 Geodetic
 SRIDtarget = c_int(2157) # Irish Transverse Mercator (ITM/GM15)
-source = coordinates(deg2rad(-3), deg2rad(53), 100) # Longitude, Latitude, Altitude
+source = coordinates(deg2rad(-7), deg2rad(53), 100) # Longitude, Latitude, Altitude
 target = coordinates(0, 0, 0)
 datum = c_int(0)
 callok = bool(False)
@@ -44,6 +44,7 @@ callok = bool(False)
 # Call coordinate converter.
 callok = convert(SRIDsource, SRIDtarget, source, target, datum)
 
+# Output the result.
 if callok:
   print "Conversion results:"
   print "X: ",target.x
