@@ -46,9 +46,9 @@ callok = convert(SRIDsource, SRIDtarget, source, target, datum)
 
 # Output the result.
 if callok:
-  print "Conversion results:"
-  print "X: ",target.x
-  print "Y: ",target.y
-  print "Z: ",target.z
+  print("Conversion results:")
+  print("X: "+str(target.x))
+  print("Y: "+str(target.y))
+  print("Z: "+str(target.z))
 else:
-  print "Error converting coordinates"
+  print("Error converting coordinates")
