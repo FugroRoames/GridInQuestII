@@ -9,8 +9,9 @@
         <Filename Value="LibGIQ.pas"/>
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
-        <CursorPos Y="53"/>
-        <UsageCount Value="54"/>
+        <TopLine Value="21"/>
+        <CursorPos Y="37"/>
+        <UsageCount Value="55"/>
         <Loaded Value="True"/>
       </Unit0>
       <Unit1>
@@ -24,35 +25,35 @@
         <Filename Value="Geodesy.pas"/>
         <EditorIndex Value="6"/>
         <CursorPos Y="427"/>
-        <UsageCount Value="24"/>
+        <UsageCount Value="25"/>
         <Loaded Value="True"/>
       </Unit2>
       <Unit3>
         <Filename Value="IG.pas"/>
         <EditorIndex Value="3"/>
         <CursorPos X="25" Y="2"/>
-        <UsageCount Value="24"/>
+        <UsageCount Value="25"/>
         <Loaded Value="True"/>
       </Unit3>
       <Unit4>
         <Filename Value="ITM.pas"/>
         <EditorIndex Value="4"/>
         <CursorPos X="102" Y="293"/>
-        <UsageCount Value="24"/>
+        <UsageCount Value="25"/>
         <Loaded Value="True"/>
       </Unit4>
       <Unit5>
         <Filename Value="ETRS.pas"/>
         <EditorIndex Value="1"/>
         <CursorPos X="53" Y="127"/>
-        <UsageCount Value="24"/>
+        <UsageCount Value="25"/>
         <Loaded Value="True"/>
       </Unit5>
       <Unit6>
         <Filename Value="BNG.pas"/>
         <EditorIndex Value="2"/>
         <CursorPos Y="186"/>
-        <UsageCount Value="24"/>
+        <UsageCount Value="25"/>
         <Loaded Value="True"/>
       </Unit6>
       <Unit7>
@@ -80,7 +81,7 @@
         <Filename Value="OSTab.pas"/>
         <EditorIndex Value="5"/>
         <CursorPos Y="229"/>
-        <UsageCount Value="19"/>
+        <UsageCount Value="20"/>
         <Loaded Value="True"/>
       </Unit10>
       <Unit11>
@@ -256,4 +257,15 @@
       </Position30>
     </JumpHistory>
   </ProjectSession>
+  <Debugging>
+    <BreakPoints Count="1">
+      <Item1>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="LibGIQ.pas"/>
+        <Line Value="37"/>
+      </Item1>
+    </BreakPoints>
+  </Debugging>
 </CONFIG>

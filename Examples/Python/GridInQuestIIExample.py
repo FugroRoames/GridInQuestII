@@ -46,9 +46,28 @@ callok = convert(SRIDsource, SRIDtarget, source, target, datum)
 
 # Output the result.
 if callok:
-  print("Conversion results:")
-  print("X: "+str(target.x))
-  print("Y: "+str(target.y))
-  print("Z: "+str(target.z))
+  print("Conversion result...")
+  print("ITM Easting: "+str(target.x))
+  print("ITM Northing: "+str(target.y))
+  print("Elevation: "+str(target.z))
+  Datums = {
+            0: "None",
+            1: "Ordnance Datum Newlyn",
+            2: "St. Marys",
+            3: "Douglas02",
+            4: "Stornoway",
+            5: "St. Kilda",
+            6: "Lerwick",
+            7: "Newlyn",
+            8: "FairIsle",
+            9: "FlannanIsles",
+            10: "North Rona",
+            11: "Sule Skerry",
+            12: "Foula",
+            13: "Malin Head",
+            14: "Belfast",
+            15: "Offshore",
+           }
+  print("Vertical Datum: "+Datums[datum.value])
 else:
   print("Error converting coordinates")
