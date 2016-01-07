@@ -1,0 +1,8 @@
+Installing the Grid InQuest II Point Reprojector Transformer
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+First ensure there is a working FME Workbench installation on the target system.  Then from the unzipped Grid InQuest II folder, copy the 'LibGIQ.dll' file and all of the files with a '.dat' extension to the FME transformers folder which is usually found here on Windows:
+
+C:\apps\FME\transformers
+
+Next copy the 'GridInQuestIIPointReprojector.fmx' file from the Examples/FME subfolder of to the FME transformers folder as well. When FME is restarted, the new transformer will be installed in the Coordinate Systems category. Do not confuse this with the GridInQuestReprojector which is the transformer for the first version of GridInQuest that cannot perform OSTN15/OSGM15 based transformations.

@@ -1,0 +1,393 @@
+#! <?xml version="1.0" encoding="utf-8" ?>
+#! <TRANSFORMER
+# TRANSFORMER_BEGIN GridInQuestIIPointReprojector,1,"Coordinate Systems",8ab1c921-d873-4915-b843-bc82377ea20a,"Linked Always",No,NO_PARALLELISM,,No,15573,YES,No
+# <p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">
+#     <span style=" font-weight:600;">Grid InQuest II Point Reprojector</span>
+# </p>
+# <p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">
+#     <br/>
+# </p>
+# <p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">
+#     <span style=" font-family:'Verdana'; font-size:13px; color:#000000;">Reprojects point feature coordinates from ETRS89 (WGS84)</span>
+#     <span style=" font-family:'Verdana'; font-size:13px; color:#000000;">to one of the national coordinate systems of Great Britain, Northern Ireland and the Republic of Ireland.</span>
+#     <span style=" font-family:'Verdana'; font-size:13px; color:#000000;">This transformer always reprojects from the source coordinate system to the destination coordinate system, tagging the features with the destination coordinate system on output. Any coordinate system set on the input features is assumed to be compatable with ETRS89.</span>
+# </p>
+# 
+# TRANSFORMER_END
+#! BLOCKED_LOOPING="No"
+#! DOC_TOP_LEFT="-1248.01 -1173.01"
+#! CATEGORY="Coordinate Systems"
+#! LAST_SAVE_BUILD="FME(R) 2015.1.3.1 (20151117 - Build 15573 - WIN32)"
+#! FME_BUILD_NUM="15573"
+#! MAX_LOOP_ITERATIONS=""
+#! LAST_SAVE_DATE="2016-01-07T15:30:41"
+#! SHOW_INFO_NODES="true"
+#! SHOW_ANNOTATIONS="true"
+#! ZOOM_SCALE="100"
+#! FME_DOCUMENT_PRIORGUID="803efa05-3a20-4a0e-aa8c-7226aa407017,59b1109d-9e5b-460c-ac26-b254203751aa,8efba726-4397-4189-ba3f-9edff8ca171a,091f3634-2b7e-4dc3-8b0a-381b807dacc3,6283ff23-6a90-43bb-ac2d-dfd9cf5e1030,8454d42b-d011-4b1b-a748-b9ea1a7ad1ae,7368b09f-0417-4a6b-b863-b552a29831f5,1fa682af-8055-4260-a80f-e50e72d42730,e6cbae14-32c6-4385-b7cd-e3223bbfbf57,0d82ac85-0990-491d-9b99-3a689bf1fd16,4957dbb4-3063-4eab-8d0b-c3064adf86ed,3d226193-56c5-4dc0-97af-4f40ab87c23d,a5ee6db1-233c-4757-ab5c-9d48ebe94576,13cc066e-3b1e-4c78-ba3e-e3af7f95cbd3,4ebd0a3a-8beb-455d-8290-5c76548a660e,b50ea3ae-fb36-4789-b091-1e709367ca0e,34c909d6-4c50-4019-8d67-e7fa6013af8e,f453825d-66b1-46e1-8e63-f02458eb4529,71d27b2c-2ee7-485a-b932-3c1b4ca5b225,669dffdb-7de4-489f-a096-52d0677741ba,7cab1401-7b96-4770-a9e8-5af37123c709,3932927a-dab4-4e62-b579-f1b0e0e737f6"
+#! DESCRIPTION="&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&#10;    &lt;span style=&quot; font-weight:600;&quot;&gt;Grid InQuest II Point Reprojector&lt;/span&gt;&#10;&lt;/p&gt;&#10;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&#10;    &lt;br/&gt;&#10;&lt;/p&gt;&#10;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&#10;    &lt;span style=&quot; font-family:&apos;Verdana&apos;; font-size:13px; color:#000000;&quot;&gt;Reprojects point feature coordinates from ETRS89 (WGS84)&lt;/span&gt;&#10;    &lt;span style=&quot; font-family:&apos;Verdana&apos;; font-size:13px; color:#000000;&quot;&gt;to one of the national coordinate systems of Great Britain, Northern Ireland and the Republic of Ireland.&lt;/span&gt;&#10;    &lt;span style=&quot; font-family:&apos;Verdana&apos;; font-size:13px; color:#000000;&quot;&gt;This transformer always reprojects from the source coordinate system to the destination coordinate system, tagging the features with the destination coordinate system on output. Any coordinate system set on the input features is assumed to be compatable with ETRS89.&lt;/span&gt;&#10;&lt;/p&gt;&#10;"
+#! USAGE="&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&#10;    &lt;br/&gt;&#10;&lt;/p&gt;&#10;"
+#! REQUIREMENTS_KEYWORD="none"
+#! TITLE="GridInQuestIIPointReprojector"
+#! ITERATION_COUNT_ATTR=""
+#! FMX_INSERT_MODE="Linked Always"
+#! XFORM_DEPRECATED="No"
+#! HISTORY=""
+#! FME_LINKED_TRANSFORMER_VERSION="1"
+#! FME_PROCESS_GROUP_BY=""
+#! FME_DOCUMENT_GUID="8ab1c921-d873-4915-b843-bc82377ea20a"
+#! FME_PROCESS_GROUPS_ORDERED="No"
+#! WORKSPACE_VERSION="1"
+#! WARN_INVALID_XFORM_PARAM="Yes"
+#! REQUIREMENTS="&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;This transformer requires the Grid InQuest II utility library LibGIQ.dll. &lt;/p&gt;&#10;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;It must be installed in the plugin folder along with the required &apos;.dat&apos; files. &lt;/p&gt;&#10;"
+#! VIEW_POSITION="-1290.01 234.002"
+#! PASSWORD=""
+#! DOC_EXTENTS="3736.05 1306.25"
+#! LEGAL_TERMS_CONDITIONS="&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Copyright (C) 2016 Paul Michell, Michell Computing.&lt;/p&gt;&#10;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&#10;    &lt;br/&gt;&#10;&lt;/p&gt;&#10;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;This library is free software; you can redistribute it and/or modify it&lt;/p&gt;&#10;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;under the terms of the GNU Library General Public License as published by&lt;/p&gt;&#10;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;the Free Software Foundation; either version 2 of the License, or &lt;/p&gt;&#10;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;(at your option) any later version.&lt;/p&gt;&#10;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&#10;    &lt;br/&gt;&#10;&lt;/p&gt;&#10;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;This program is distributed in the hope that it will be useful, but WITHOUT&lt;/p&gt;&#10;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or&lt;/p&gt;&#10;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;FITNESS FOR A PARTICULAR PURPOSE. See the GNU Library General &lt;/p&gt;&#10;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Public License for more details.&lt;/p&gt;&#10;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&#10;    &lt;br/&gt;&#10;&lt;/p&gt;&#10;"
+#! ATTR_TYPE_ENCODING="SDF"
+#! FME_SERVER_SERVICES=""
+#! FME_PROCESS_COUNT="NO_PARALLELISM"
+#! >
+#! <DATASETS>
+#! </DATASETS>
+#! <DATA_TYPES>
+#! </DATA_TYPES>
+#! <GEOM_TYPES>
+#! </GEOM_TYPES>
+#! <FEATURE_TYPES>
+#! </FEATURE_TYPES>
+#! <FMESERVER>
+#! </FMESERVER>
+#! <GLOBAL_PARAMETERS>
+#! <GLOBAL_PARAMETER
+#! GUI_LINE="GUI CHOICE_OR_ATTR Output_System &quot;OSGB36 / British National Grid (TN15/GM15)&quot;%&quot;Irish Grid (IG/GM15)&quot;%&quot;Irish Transverse Mercator (ITM/GM15)&quot;%&quot;ETRS89 / UTM Zone 29N&quot;%&quot;ETRS89 / UTM Zone 30N&quot;%&quot;ETRS89 / UTM Zone 31N&quot; Output Coordinate System:"
+#! DEFAULT_VALUE=""
+#! IS_STAND_ALONE="true"
+#! />
+#! <GLOBAL_PARAMETER
+#! GUI_LINE="GUI OPTIONAL CHOICE_OR_ATTR Preferred_Datum Belfast%&quot;Malin Head&quot; Preferred Irish Datum:"
+#! DEFAULT_VALUE=""
+#! IS_STAND_ALONE="true"
+#! />
+#! </GLOBAL_PARAMETERS>
+#! <COMMENTS>
+#! </COMMENTS>
+#! <CONSTANTS>
+#! </CONSTANTS>
+#! <BOOKMARKS>
+#! </BOOKMARKS>
+#! <TRANSFORMERS>
+#! <TRANSFORMER
+#! IDENTIFIER="1"
+#! TYPE="PythonCaller"
+#! VERSION="4"
+#! POSITION="278.994 25.2362"
+#! BOUNDING_RECT="278.994 25.2362 630.015 71"
+#! ORDER="5e+014"
+#! PARMS_EDITED="true"
+#! ENABLED="true"
+#! LAST_PARM_EDIT="15573"
+#! >
+#! <OUTPUT_FEAT NAME="OUTPUT"/>
+#! <XFORM_ATTR ATTR_NAME="OutputSystem" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="PreferredDatum" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="VerticalDatum" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_PARM PARM_NAME="ADVANCED_GROUP" PARM_VALUE=""/>
+#! <XFORM_PARM PARM_NAME="LIST_ATTRS" PARM_VALUE=""/>
+#! <XFORM_PARM PARM_NAME="PYTHONSOURCE" PARM_VALUE="#&lt;space&gt;Setup&lt;space&gt;required&lt;space&gt;library&lt;space&gt;imports.&lt;lf&gt;import&lt;space&gt;os&lt;lf&gt;import&lt;space&gt;fme&lt;lf&gt;from&lt;space&gt;math&lt;space&gt;import&lt;space&gt;radians&lt;space&gt;as&lt;space&gt;deg2rad&lt;lf&gt;from&lt;space&gt;fmeobjects&lt;space&gt;import&lt;space&gt;*&lt;lf&gt;from&lt;space&gt;ctypes&lt;space&gt;import&lt;space&gt;*&lt;lf&gt;&lt;space&gt;&lt;lf&gt;def&lt;space&gt;ProcessFeature&lt;openparen&gt;feature&lt;closeparen&gt;:&lt;lf&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;#&lt;space&gt;Load&lt;space&gt;the&lt;space&gt;FME&lt;space&gt;logger.&lt;lf&gt;&lt;space&gt;&lt;space&gt;Logger&lt;space&gt;=&lt;space&gt;FMELogFile&lt;openparen&gt;&lt;closeparen&gt;&lt;space&gt;&lt;space&gt;&lt;lf&gt;&lt;space&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;#&lt;space&gt;Construct&lt;space&gt;the&lt;space&gt;full&lt;space&gt;LibGIQ&lt;space&gt;library&lt;space&gt;path&lt;space&gt;name.&lt;lf&gt;&lt;space&gt;&lt;space&gt;LibraryFileName&lt;space&gt;=&lt;space&gt;os.path.join&lt;openparen&gt;os.environ&lt;openbracket&gt;&lt;apos&gt;FME_HOME&lt;apos&gt;&lt;closebracket&gt;&lt;comma&gt;&lt;space&gt;&lt;quote&gt;transformers&lt;backslash&gt;LibGIQ.dll&lt;quote&gt;&lt;closeparen&gt;&lt;space&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;#&lt;space&gt;Test&lt;space&gt;for&lt;space&gt;presence&lt;space&gt;of&lt;space&gt;the&lt;space&gt;LibGIQ&lt;space&gt;library.&lt;lf&gt;&lt;space&gt;&lt;space&gt;if&lt;space&gt;os.path.exists&lt;openparen&gt;LibraryFileName&lt;closeparen&gt;:&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;Logger.logMessageString&lt;openparen&gt;&lt;quote&gt;LibGIQ&lt;space&gt;loaded&lt;space&gt;from&lt;space&gt;&lt;quote&gt;+LibraryFileName&lt;closeparen&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;else:&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;Logger.logMessageString&lt;openparen&gt;&lt;quote&gt;LibGIQ&lt;space&gt;not&lt;space&gt;installed&lt;space&gt;at&lt;space&gt;&lt;quote&gt;+LibraryFileName&lt;comma&gt;&lt;space&gt;FME_ERROR&lt;closeparen&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;return&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;#&lt;space&gt;Load&lt;space&gt;the&lt;space&gt;LibGIQ&lt;space&gt;library.&lt;lf&gt;&lt;space&gt;&lt;space&gt;giqdll&lt;space&gt;=&lt;space&gt;WinDLL&lt;openparen&gt;LibraryFileName&lt;closeparen&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;#&lt;space&gt;Define&lt;space&gt;the&lt;space&gt;library&lt;space&gt;coordinate&lt;space&gt;structure.&lt;lf&gt;&lt;space&gt;&lt;space&gt;class&lt;space&gt;coordinates&lt;openparen&gt;Structure&lt;closeparen&gt;:&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;_fields_&lt;space&gt;=&lt;space&gt;&lt;openbracket&gt;&lt;openparen&gt;&lt;quote&gt;x&lt;quote&gt;&lt;comma&gt;&lt;space&gt;c_double&lt;closeparen&gt;&lt;comma&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;openparen&gt;&lt;quote&gt;y&lt;quote&gt;&lt;comma&gt;&lt;space&gt;c_double&lt;closeparen&gt;&lt;comma&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;openparen&gt;&lt;quote&gt;z&lt;quote&gt;&lt;comma&gt;&lt;space&gt;c_double&lt;closeparen&gt;&lt;closebracket&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;#&lt;space&gt;Reference&lt;space&gt;the&lt;space&gt;library&lt;space&gt;convert&lt;space&gt;function.&lt;lf&gt;&lt;space&gt;&lt;space&gt;convert&lt;space&gt;=&lt;space&gt;giqdll.ConvertCoordinates&lt;lf&gt;&lt;space&gt;&lt;space&gt;convert.argtypes&lt;space&gt;=&lt;space&gt;&lt;openbracket&gt;c_int&lt;comma&gt;&lt;space&gt;c_int&lt;comma&gt;&lt;space&gt;POINTER&lt;openparen&gt;coordinates&lt;closeparen&gt;&lt;comma&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;POINTER&lt;openparen&gt;coordinates&lt;closeparen&gt;&lt;comma&gt;&lt;space&gt;POINTER&lt;openparen&gt;c_int&lt;closeparen&gt;&lt;closebracket&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;convert.restype&lt;space&gt;=&lt;space&gt;bool&lt;lf&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;#&lt;space&gt;Fetch&lt;space&gt;the&lt;space&gt;input&lt;space&gt;parameters.&lt;lf&gt;&lt;space&gt;&lt;space&gt;OutputSystem&lt;space&gt;=&lt;space&gt;feature.getAttribute&lt;openparen&gt;&lt;apos&gt;OutputSystem&lt;apos&gt;&lt;closeparen&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;PreferredDatum&lt;space&gt;=&lt;space&gt;feature.getAttribute&lt;openparen&gt;&lt;apos&gt;PreferredDatum&lt;apos&gt;&lt;closeparen&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;#&lt;space&gt;Set&lt;space&gt;the&lt;space&gt;input&lt;space&gt;coordinate&lt;space&gt;system.&lt;lf&gt;&lt;space&gt;&lt;space&gt;SRIDsource&lt;space&gt;=&lt;space&gt;c_int&lt;openparen&gt;4937&lt;closeparen&gt;&lt;space&gt;#&lt;space&gt;Assume&lt;space&gt;ETRS89&lt;space&gt;Geodetic&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;#&lt;space&gt;Set&lt;space&gt;the&lt;space&gt;output&lt;space&gt;coordinate&lt;space&gt;system.&lt;lf&gt;&lt;space&gt;&lt;space&gt;Names&lt;space&gt;=&lt;space&gt;&lt;opencurly&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;quote&gt;OSGB36&lt;space&gt;&lt;solidus&gt;&lt;space&gt;British&lt;space&gt;National&lt;space&gt;Grid&lt;space&gt;&lt;openparen&gt;TN15&lt;solidus&gt;GM15&lt;closeparen&gt;&lt;quote&gt;:&lt;space&gt;27701&lt;comma&gt;&lt;space&gt;#&lt;space&gt;TODO:&lt;space&gt;Change&lt;space&gt;to&lt;space&gt;the&lt;space&gt;official&lt;space&gt;code!&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;quote&gt;Irish&lt;space&gt;Grid&lt;space&gt;&lt;openparen&gt;IG&lt;solidus&gt;GM15&lt;closeparen&gt;&lt;quote&gt;:&lt;space&gt;29903&lt;comma&gt;&lt;space&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;quote&gt;Irish&lt;space&gt;Transverse&lt;space&gt;Mercator&lt;space&gt;&lt;openparen&gt;ITM&lt;solidus&gt;GM15&lt;closeparen&gt;&lt;quote&gt;:&lt;space&gt;2157&lt;comma&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;quote&gt;ETRS89&lt;space&gt;&lt;solidus&gt;&lt;space&gt;UTM&lt;space&gt;Zone&lt;space&gt;29N&lt;quote&gt;:&lt;space&gt;25829&lt;comma&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;quote&gt;ETRS89&lt;space&gt;&lt;solidus&gt;&lt;space&gt;UTM&lt;space&gt;Zone&lt;space&gt;30N&lt;quote&gt;:&lt;space&gt;25830&lt;comma&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;quote&gt;ETRS89&lt;space&gt;&lt;solidus&gt;&lt;space&gt;UTM&lt;space&gt;Zone&lt;space&gt;31N&lt;quote&gt;:&lt;space&gt;25831&lt;comma&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;closecurly&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;SRIDtarget&lt;space&gt;=&lt;space&gt;c_int&lt;openparen&gt;Names&lt;openbracket&gt;OutputSystem&lt;closebracket&gt;&lt;closeparen&gt;&lt;space&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;#&lt;space&gt;Prepare&lt;space&gt;the&lt;space&gt;source&lt;space&gt;coordinates.&lt;lf&gt;&lt;space&gt;&lt;space&gt;Geometry&lt;space&gt;=&lt;space&gt;feature.getGeometry&lt;openparen&gt;&lt;closeparen&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;Coords&lt;space&gt;=&lt;space&gt;Geometry.getXYZ&lt;openparen&gt;&lt;closeparen&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;source&lt;space&gt;=&lt;space&gt;coordinates&lt;openparen&gt;deg2rad&lt;openparen&gt;Coords&lt;openbracket&gt;0&lt;closebracket&gt;&lt;closeparen&gt;&lt;comma&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;deg2rad&lt;openparen&gt;Coords&lt;openbracket&gt;1&lt;closebracket&gt;&lt;closeparen&gt;&lt;comma&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;Coords&lt;openbracket&gt;2&lt;closebracket&gt;&lt;closeparen&gt;&lt;space&gt;&lt;lf&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;#&lt;space&gt;Clear&lt;space&gt;the&lt;space&gt;target&lt;space&gt;coordinates&lt;comma&gt;&lt;space&gt;datum&lt;space&gt;code&lt;space&gt;and&lt;space&gt;status.&lt;lf&gt;&lt;space&gt;&lt;space&gt;target&lt;space&gt;=&lt;space&gt;coordinates&lt;openparen&gt;0&lt;comma&gt;&lt;space&gt;0&lt;comma&gt;&lt;space&gt;0&lt;closeparen&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;Names&lt;space&gt;=&lt;space&gt;&lt;opencurly&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;quote&gt;&lt;quote&gt;:&lt;space&gt;0&lt;comma&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;quote&gt;Malin&lt;space&gt;Head&lt;quote&gt;:&lt;space&gt;13&lt;comma&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;quote&gt;Belfast&lt;quote&gt;:&lt;space&gt;14&lt;comma&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;closecurly&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;datum&lt;space&gt;=&lt;space&gt;c_int&lt;openparen&gt;Names&lt;openbracket&gt;PreferredDatum&lt;closebracket&gt;&lt;closeparen&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;callok&lt;space&gt;=&lt;space&gt;bool&lt;openparen&gt;False&lt;closeparen&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;#&lt;space&gt;Call&lt;space&gt;coordinate&lt;space&gt;converter.&lt;lf&gt;&lt;space&gt;&lt;space&gt;callok&lt;space&gt;=&lt;space&gt;convert&lt;openparen&gt;SRIDsource&lt;comma&gt;&lt;space&gt;SRIDtarget&lt;comma&gt;&lt;space&gt;source&lt;comma&gt;&lt;space&gt;target&lt;comma&gt;&lt;space&gt;datum&lt;closeparen&gt;&lt;lf&gt;&lt;space&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;#&lt;space&gt;Output&lt;space&gt;the&lt;space&gt;result.&lt;lf&gt;&lt;space&gt;&lt;space&gt;if&lt;space&gt;callok:&lt;lf&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;#&lt;space&gt;Set&lt;space&gt;the&lt;space&gt;target&lt;space&gt;coordinate&lt;space&gt;system&lt;space&gt;from&lt;space&gt;the&lt;space&gt;EPSG&lt;space&gt;Number.&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;feature.setCoordSys&lt;openparen&gt;&lt;quote&gt;EPSG:&lt;quote&gt;+str&lt;openparen&gt;SRIDtarget.value&lt;closeparen&gt;&lt;closeparen&gt;&lt;semicolon&gt;&lt;space&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;#&lt;space&gt;Store&lt;space&gt;the&lt;space&gt;output&lt;space&gt;geometry.&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;Geometry.setX&lt;openparen&gt;target.x&lt;closeparen&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;Geometry.setY&lt;openparen&gt;target.y&lt;closeparen&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;Geometry.setZ&lt;openparen&gt;target.z&lt;closeparen&gt;&lt;space&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;feature.setGeometry&lt;openparen&gt;Geometry&lt;closeparen&gt;&lt;lf&gt;&lt;space&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;#&lt;space&gt;Set&lt;space&gt;the&lt;space&gt;output&lt;space&gt;vertical&lt;space&gt;datum&lt;space&gt;attribute.&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;Datums&lt;space&gt;=&lt;space&gt;&lt;opencurly&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;0:&lt;space&gt;&lt;quote&gt;None&lt;quote&gt;&lt;comma&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;1:&lt;space&gt;&lt;quote&gt;Ordnance&lt;space&gt;Datum&lt;space&gt;Newlyn&lt;quote&gt;&lt;comma&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;2:&lt;space&gt;&lt;quote&gt;St.&lt;space&gt;Marys&lt;quote&gt;&lt;comma&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;3:&lt;space&gt;&lt;quote&gt;Douglas02&lt;quote&gt;&lt;comma&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;4:&lt;space&gt;&lt;quote&gt;Stornoway&lt;quote&gt;&lt;comma&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;5:&lt;space&gt;&lt;quote&gt;St.&lt;space&gt;Kilda&lt;quote&gt;&lt;comma&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;6:&lt;space&gt;&lt;quote&gt;Lerwick&lt;quote&gt;&lt;comma&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;7:&lt;space&gt;&lt;quote&gt;Newlyn&lt;quote&gt;&lt;comma&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;8:&lt;space&gt;&lt;quote&gt;FairIsle&lt;quote&gt;&lt;comma&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;9:&lt;space&gt;&lt;quote&gt;FlannanIsles&lt;quote&gt;&lt;comma&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;10:&lt;space&gt;&lt;quote&gt;North&lt;space&gt;Rona&lt;quote&gt;&lt;comma&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;11:&lt;space&gt;&lt;quote&gt;Sule&lt;space&gt;Skerry&lt;quote&gt;&lt;comma&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;12:&lt;space&gt;&lt;quote&gt;Foula&lt;quote&gt;&lt;comma&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;13:&lt;space&gt;&lt;quote&gt;Malin&lt;space&gt;Head&lt;quote&gt;&lt;comma&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;14:&lt;space&gt;&lt;quote&gt;Belfast&lt;quote&gt;&lt;comma&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;15:&lt;space&gt;&lt;quote&gt;Offshore&lt;quote&gt;&lt;comma&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;closecurly&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;feature.setAttribute&lt;openparen&gt;&lt;quote&gt;VerticalDatum&lt;quote&gt;&lt;comma&gt;&lt;space&gt;Datums&lt;openbracket&gt;datum.value&lt;closebracket&gt;&lt;closeparen&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;else:&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;feature.setAttribute&lt;openparen&gt;&lt;quote&gt;VerticalDatum&lt;quote&gt;&lt;comma&gt;&lt;space&gt;&lt;quote&gt;ERROR&lt;quote&gt;&lt;closeparen&gt;&lt;lf&gt;&lt;lf&gt;"/>
+#! <XFORM_PARM PARM_NAME="TRANSFORMER_GROUP" PARM_VALUE=""/>
+#! <XFORM_PARM PARM_NAME="XFORMER_NAME" PARM_VALUE="GridInQuestIIPointProcessor"/>
+#! <XFORM_PARM PARM_NAME="PYTHONSYMBOL" PARM_VALUE="ProcessFeature"/>
+#! <XFORM_PARM PARM_NAME="NEW_ATTRIBUTES" PARM_VALUE="VerticalDatum"/>
+#! <XFORM_PARM PARM_NAME="PARAMETERS_GROUP" PARM_VALUE=""/>
+#! <XFORM_PARM PARM_NAME="HIDE_ATTRIBUTES" PARM_VALUE=""/>
+#! </TRANSFORMER>
+#! <TRANSFORMER
+#! IDENTIFIER="2"
+#! TYPE="GeometryFilter"
+#! VERSION="7"
+#! POSITION="-748.008 -133.764"
+#! BOUNDING_RECT="-748.008 -133.764 -1 -1"
+#! ORDER="5e+014"
+#! PARMS_EDITED="false"
+#! ENABLED="true"
+#! LAST_PARM_EDIT="15573"
+#! >
+#! <OUTPUT_FEAT NAME="POINT"/>
+#! <FEAT_COLLAPSED COLLAPSED="0"/>
+#! <OUTPUT_FEAT NAME="&lt;UNFILTERED&gt;"/>
+#! <FEAT_COLLAPSED COLLAPSED="1"/>
+#! <XFORM_PARM PARM_NAME="TRANSFORMER_GROUP" PARM_VALUE=""/>
+#! <XFORM_PARM PARM_NAME="XFORMER_NAME" PARM_VALUE="GeometryFilter"/>
+#! <XFORM_PARM PARM_NAME="PARAMETERS_GROUP" PARM_VALUE=""/>
+#! <XFORM_PARM PARM_NAME="GEOM_PORT_NAMES" PARM_VALUE="Point"/>
+#! <XFORM_PARM PARM_NAME="INSTANTIATE" PARM_VALUE="&lt;Unused&gt;"/>
+#! <XFORM_PARM PARM_NAME="BREAK_AGG" PARM_VALUE="No"/>
+#! </TRANSFORMER>
+#! <TRANSFORMER
+#! IDENTIFIER="3"
+#! TYPE="MessageLogger"
+#! VERSION="1"
+#! POSITION="506.997 -541.768"
+#! BOUNDING_RECT="506.997 -541.768 -1 -1"
+#! ORDER="5e+014"
+#! PARMS_EDITED="false"
+#! ENABLED="true"
+#! LAST_PARM_EDIT="15573"
+#! >
+#! <OUTPUT_FEAT NAME="OUTPUT"/>
+#! <FEAT_COLLAPSED COLLAPSED="0"/>
+#! <XFORM_ATTR ATTR_NAME="_notificationType" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="_logMessage" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="_result" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_PARM PARM_NAME="TRANSFORMER_GROUP" PARM_VALUE=""/>
+#! <XFORM_PARM PARM_NAME="MESSAGE" PARM_VALUE="Non-point data input."/>
+#! <XFORM_PARM PARM_NAME="XFORMER_NAME" PARM_VALUE="MessageLogger"/>
+#! <XFORM_PARM PARM_NAME="__COMPOUND_PARAMETERS" PARM_VALUE=""/>
+#! <XFORM_PARM PARM_NAME="TYPE" PARM_VALUE="ERROR"/>
+#! </TRANSFORMER>
+#! <TRANSFORMER
+#! IDENTIFIER="10"
+#! TYPE="ParameterFetcher"
+#! VERSION="4"
+#! POSITION="-286.503 133.238"
+#! BOUNDING_RECT="-286.503 133.238 0 0"
+#! ORDER="6"
+#! PARMS_EDITED="true"
+#! ENABLED="true"
+#! LAST_PARM_EDIT="15573"
+#! >
+#! <OUTPUT_FEAT NAME="OUTPUT"/>
+#! <FEAT_COLLAPSED COLLAPSED="0"/>
+#! <XFORM_ATTR ATTR_NAME="OutputSystem" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_ATTR ATTR_NAME="PreferredDatum" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_PARM PARM_NAME="ATTR_LIST" PARM_VALUE="OutputSystem {$(Output_System)} PreferredDatum {$(Preferred_Datum)}"/>
+#! <XFORM_PARM PARM_NAME="XFORMER_NAME" PARM_VALUE="ParameterFetcher"/>
+#! </TRANSFORMER>
+#! <TRANSFORMER
+#! IDENTIFIER="12"
+#! TYPE="AttributeRemover"
+#! VERSION="0"
+#! POSITION="1153.01 -133.764"
+#! BOUNDING_RECT="1153.01 -133.764 0 0"
+#! ORDER="8"
+#! PARMS_EDITED="true"
+#! ENABLED="true"
+#! LAST_PARM_EDIT="15573"
+#! >
+#! <OUTPUT_FEAT NAME="OUTPUT"/>
+#! <FEAT_COLLAPSED COLLAPSED="0"/>
+#! <XFORM_ATTR ATTR_NAME="VerticalDatum" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#! <XFORM_PARM PARM_NAME="LIST_ATTRS" PARM_VALUE=""/>
+#! <XFORM_PARM PARM_NAME="TRANSFORMER_GROUP" PARM_VALUE=""/>
+#! <XFORM_PARM PARM_NAME="XFORMER_NAME" PARM_VALUE="AttributeRemover"/>
+#! <XFORM_PARM PARM_NAME="REMOVE_ATTRS" PARM_VALUE="OutputSystem,PreferredDatum"/>
+#! <XFORM_PARM PARM_NAME="PARAMETERS_GROUP" PARM_VALUE=""/>
+#! </TRANSFORMER>
+#! <TRANSFORMER
+#! IDENTIFIER="18"
+#! TYPE="AggregateFilter"
+#! VERSION="1"
+#! POSITION="-1147.01 -541.768"
+#! BOUNDING_RECT="-1147.01 -541.768 0 0"
+#! ORDER="5e+014"
+#! PARMS_EDITED="false"
+#! ENABLED="true"
+#! LAST_PARM_EDIT="14433"
+#! >
+#! <OUTPUT_FEAT NAME="AGGREGATE"/>
+#! <FEAT_COLLAPSED COLLAPSED="0"/>
+#! <OUTPUT_FEAT NAME="NOT_AGGREGATE"/>
+#! <FEAT_COLLAPSED COLLAPSED="1"/>
+#! <XFORM_PARM PARM_NAME="TRANSFORMER_GROUP" PARM_VALUE=""/>
+#! <XFORM_PARM PARM_NAME="XFORMER_NAME" PARM_VALUE="AggregateFilter"/>
+#! </TRANSFORMER>
+#! </TRANSFORMERS>
+#! <SUBDOCUMENT_IOS>
+#! <SUBDOCUMENT_IO
+#! IDENTIFIER="6"
+#! NAME="GeometryFilter_Input"
+#! POSITION="-1248.01 133.238"
+#! BOUNDING_RECT="-1248.01 133.238 555 71"
+#! COLLAPSED="true"
+#! PUBLISHED="true"
+#! IS_SOURCE="true"
+#! ATTR_MODE="0"
+#! >
+#! </SUBDOCUMENT_IO>
+#! <SUBDOCUMENT_IO
+#! IDENTIFIER="8"
+#! NAME="GridInQuestIIPointProcessor_Output"
+#! POSITION="1668.02 -511.768"
+#! BOUNDING_RECT="1668.02 -511.768 820.016 71"
+#! COLLAPSED="true"
+#! IS_SOURCE="false"
+#! ATTR_MODE="0"
+#! >
+#! <XFORM_ATTR ATTR_NAME="VerticalDatum" />
+#! </SUBDOCUMENT_IO>
+#! <SUBDOCUMENT_IO
+#! IDENTIFIER="16"
+#! NAME="&lt;Rejected&gt;"
+#! POSITION="2037.04 -1173.01"
+#! BOUNDING_RECT="2037.04 -1173.01 0 0"
+#! COLLAPSED="true"
+#! IS_SOURCE="false"
+#! ATTR_MODE="0"
+#! >
+#! </SUBDOCUMENT_IO>
+#! </SUBDOCUMENT_IOS>
+#! <FEAT_LINKS>
+#! <FEAT_LINK
+#! IDENTIFIER="4"
+#! SOURCE_NODE="2"
+#! TARGET_NODE="10"
+#! SOURCE_PORT_DESC="fo 0"
+#! TARGET_PORT_DESC="fi 0"
+#! ENABLED="true"
+#! EXTRA_POINTS=""
+#! />
+#! <FEAT_LINK
+#! IDENTIFIER="5"
+#! SOURCE_NODE="2"
+#! TARGET_NODE="3"
+#! SOURCE_PORT_DESC="fo 1"
+#! TARGET_PORT_DESC="fi 0"
+#! ENABLED="true"
+#! EXTRA_POINTS=""
+#! />
+#! <FEAT_LINK
+#! IDENTIFIER="7"
+#! SOURCE_NODE="6"
+#! TARGET_NODE="18"
+#! SOURCE_PORT_DESC="0"
+#! TARGET_PORT_DESC="fi 0"
+#! ENABLED="true"
+#! EXTRA_POINTS=""
+#! />
+#! <FEAT_LINK
+#! IDENTIFIER="9"
+#! SOURCE_NODE="1"
+#! TARGET_NODE="12"
+#! SOURCE_PORT_DESC="fo 0"
+#! TARGET_PORT_DESC="fi 0"
+#! ENABLED="true"
+#! EXTRA_POINTS=""
+#! />
+#! <FEAT_LINK
+#! IDENTIFIER="17"
+#! SOURCE_NODE="3"
+#! TARGET_NODE="16"
+#! SOURCE_PORT_DESC="fo 0"
+#! TARGET_PORT_DESC="0"
+#! ENABLED="true"
+#! EXTRA_POINTS=""
+#! />
+#! <FEAT_LINK
+#! IDENTIFIER="20"
+#! SOURCE_NODE="10"
+#! TARGET_NODE="1"
+#! SOURCE_PORT_DESC="fo 0"
+#! TARGET_PORT_DESC="fi 0"
+#! ENABLED="true"
+#! EXTRA_POINTS=""
+#! />
+#! <FEAT_LINK
+#! IDENTIFIER="23"
+#! SOURCE_NODE="18"
+#! TARGET_NODE="3"
+#! SOURCE_PORT_DESC="fo 0"
+#! TARGET_PORT_DESC="fi 0"
+#! ENABLED="true"
+#! EXTRA_POINTS=""
+#! />
+#! <FEAT_LINK
+#! IDENTIFIER="19"
+#! SOURCE_NODE="18"
+#! TARGET_NODE="2"
+#! SOURCE_PORT_DESC="fo 1"
+#! TARGET_PORT_DESC="fi 0"
+#! ENABLED="true"
+#! EXTRA_POINTS=""
+#! />
+#! <FEAT_LINK
+#! IDENTIFIER="22"
+#! SOURCE_NODE="12"
+#! TARGET_NODE="8"
+#! SOURCE_PORT_DESC="fo 0"
+#! TARGET_PORT_DESC="0"
+#! ENABLED="true"
+#! EXTRA_POINTS=""
+#! />
+#! </FEAT_LINKS>
+#! <BREAKPOINTS>
+#! </BREAKPOINTS>
+#! <ATTR_LINKS>
+#! </ATTR_LINKS>
+#! <SUBDOCUMENTS>
+#! </SUBDOCUMENTS>
+#! <LOOKUP_TABLES>
+#! </LOOKUP_TABLES>
+#! </TRANSFORMER>
+#! 
+DEFAULT_MACRO $(GridInQuestIIPointReprojector_WORKSPACE_NAME)_Output_System 
+DEFAULT_MACRO $(GridInQuestIIPointReprojector_WORKSPACE_NAME)_Preferred_Datum 
+#! START_HEADER
+#! END_HEADER
+
+LOG_FILTER_MASK -1
+DEFAULT_MACRO WB_CURRENT_CONTEXT
+DEFAULT_MACRO GridInQuestIIPointReprojector_WORKSPACE_NAME ""
+INCLUDE [puts {MACRO WB_OLD_CONTEXT_$(GridInQuestIIPointReprojector_WORKSPACE_NAME) $(WB_CURRENT_CONTEXT)};          puts {MACRO WB_CURRENT_CONTEXT $(GridInQuestIIPointReprojector_WORKSPACE_NAME)}]
+FACTORY_DEF * TeeFactory   FACTORY_NAME "$(GridInQuestIIPointReprojector_WORKSPACE_NAME)_GeometryFilter_Input1452180641 Input Splitter"   INPUT FEATURE_TYPE "$(GridInQuestIIPointReprojector_WORKSPACE_NAME)_GeometryFilter_Input"   OUTPUT FEATURE_TYPE "$(GridInQuestIIPointReprojector_WORKSPACE_NAME)_GeometryFilter_Input"
+# -------------------------------------------------------------------------
+
+FACTORY_DEF * TestFactory    FACTORY_NAME $(GridInQuestIIPointReprojector_WORKSPACE_NAME)_AggregateFilter    INPUT  FEATURE_TYPE "$(GridInQuestIIPointReprojector_WORKSPACE_NAME)_GeometryFilter_Input"    TEST @Geometry(IS_COLLECTION) = 1    OUTPUT PASSED FEATURE_TYPE "$(GridInQuestIIPointReprojector_WORKSPACE_NAME)_AggregateFilter_AGGREGATE"    OUTPUT FAILED FEATURE_TYPE "$(GridInQuestIIPointReprojector_WORKSPACE_NAME)_AggregateFilter_NOT_AGGREGATE"
+
+# -------------------------------------------------------------------------
+MACRO OUTPUT_POINT_FTYPE not_selected
+MACRO OUTPUT_POINT_FTYPE $(GridInQuestIIPointReprojector_WORKSPACE_NAME)_GeometryFilter_POINT
+MACRO OUTPUT_INSTANCE_FTYPE not_selected
+
+Lookup $(GridInQuestIIPointReprojector_WORKSPACE_NAME)_GeometryFilter_RouterTable   ""  "not_selected"   fme_point $(OUTPUT_POINT_FTYPE)
+
+MACRO COLLECTION_HANDLING NOT_THIS_TIME
+MACRO INSTANCE_FILTERING *
+INCLUDE [    if 0 {       puts "MACRO COLLECTION_HANDLING *";       if <Unused> {          puts "MACRO INSTANCE_FILTERING NOT_THIS_TIME";       };    };    if {{$(OUTPUT_INSTANCE_FTYPE)} == "not_selected"} {       puts "MACRO INSTANCE_FILTERING NOT_THIS_TIME";    }; ]
+FACTORY_DEF * TeeFactory    FACTORY_NAME $(GridInQuestIIPointReprojector_WORKSPACE_NAME)_GeometryFilter_InputPassThrough    INPUT  FEATURE_TYPE "$(GridInQuestIIPointReprojector_WORKSPACE_NAME)_AggregateFilter_NOT_AGGREGATE"    OUTPUT FEATURE_TYPE $(GridInQuestIIPointReprojector_WORKSPACE_NAME)_GeometryFilter___Input___       @Geometry(FIX_FMETYPE_FMEGEOMETRY)
+FACTORY_DEF $(INSTANCE_FILTERING) TestFactory    FACTORY_NAME $(GridInQuestIIPointReprojector_WORKSPACE_NAME)_GeometryFilter_InstanceTest    INPUT FEATURE_TYPE $(GridInQuestIIPointReprojector_WORKSPACE_NAME)_GeometryFilter___Input___    TEST @Geometry(IS_GEOMETRY_INSTANCE) == 1    OUTPUT PASSED FEATURE_TYPE $(OUTPUT_INSTANCE_FTYPE)    OUTPUT FAILED FEATURE_TYPE $(GridInQuestIIPointReprojector_WORKSPACE_NAME)_GeometryFilter___Input___
+FACTORY_DEF $(COLLECTION_HANDLING) TestFactory    FACTORY_NAME $(GridInQuestIIPointReprojector_WORKSPACE_NAME)_GeometryFilter_CollectionTest    INPUT FEATURE_TYPE $(GridInQuestIIPointReprojector_WORKSPACE_NAME)_GeometryFilter___Input___    TEST &fme_type == "fme_collection"    OUTPUT FAILED FEATURE_TYPE $(GridInQuestIIPointReprojector_WORKSPACE_NAME)_GeometryFilter___Not_Collection___    OUTPUT PASSED FEATURE_TYPE $(GridInQuestIIPointReprojector_WORKSPACE_NAME)_GeometryFilter___Collection___
+FACTORY_DEF $(COLLECTION_HANDLING) DeaggregateFactory    FACTORY_NAME $(GridInQuestIIPointReprojector_WORKSPACE_NAME)_GeometryFilter_Deagg    INPUT FEATURE_TYPE $(GridInQuestIIPointReprojector_WORKSPACE_NAME)_GeometryFilter___Collection___    HOMOGENIZE_COLLECTIONS YES    RECURSIVE YES    SET_FME_TYPE YES    INSTANTIATE_GEOMETRY_INSTANCES_NEW <Unused>    OUTPUT POINT FEATURE_TYPE $(GridInQuestIIPointReprojector_WORKSPACE_NAME)_GeometryFilter___HomogeneousAggregate___    OUTPUT LINE FEATURE_TYPE $(GridInQuestIIPointReprojector_WORKSPACE_NAME)_GeometryFilter___HomogeneousAggregate___    OUTPUT POLYGON FEATURE_TYPE $(GridInQuestIIPointReprojector_WORKSPACE_NAME)_GeometryFilter___HomogeneousAggregate___    OUTPUT DONUT FEATURE_TYPE $(GridInQuestIIPointReprojector_WORKSPACE_NAME)_GeometryFilter___HomogeneousAggregate___    OUTPUT AGGREGATE FEATURE_TYPE $(GridInQuestIIPointReprojector_WORKSPACE_NAME)_GeometryFilter___HomogeneousAggregate___
+FACTORY_DEF * TeeFactory    FACTORY_NAME $(GridInQuestIIPointReprojector_WORKSPACE_NAME)_GeometryFilter_RouterPrepper    INPUT FEATURE_TYPE $(GridInQuestIIPointReprojector_WORKSPACE_NAME)_GeometryFilter___HomogeneousAggregate___    INPUT FEATURE_TYPE $(GridInQuestIIPointReprojector_WORKSPACE_NAME)_GeometryFilter___Not_Collection___    INPUT FEATURE_TYPE $(GridInQuestIIPointReprojector_WORKSPACE_NAME)_GeometryFilter___Input___    OUTPUT FEATURE_TYPE $(GridInQuestIIPointReprojector_WORKSPACE_NAME)_GeometryFilter___Prepped___        $(GridInQuestIIPointReprojector_WORKSPACE_NAME)_GeometryFilter_70f944a0_706c_4dbb_af8b_968a6bae8cac28_targetFeatureType @Lookup($(GridInQuestIIPointReprojector_WORKSPACE_NAME)_GeometryFilter_RouterTable,&fme_type)
+FACTORY_DEF * TestFactory    FACTORY_NAME $(GridInQuestIIPointReprojector_WORKSPACE_NAME)_GeometryFilter_Router    INPUT FEATURE_TYPE $(GridInQuestIIPointReprojector_WORKSPACE_NAME)_GeometryFilter___Prepped___    TEST @Value($(GridInQuestIIPointReprojector_WORKSPACE_NAME)_GeometryFilter_70f944a0_706c_4dbb_af8b_968a6bae8cac28_targetFeatureType) != "not_selected"    OUTPUT PASSED FEATURE_TYPE * @FeatureType(@Value($(GridInQuestIIPointReprojector_WORKSPACE_NAME)_GeometryFilter_70f944a0_706c_4dbb_af8b_968a6bae8cac28_targetFeatureType))                                 @RemoveAttributes($(GridInQuestIIPointReprojector_WORKSPACE_NAME)_GeometryFilter_70f944a0_706c_4dbb_af8b_968a6bae8cac28_targetFeatureType)    OUTPUT FAILED FEATURE_TYPE "$(GridInQuestIIPointReprojector_WORKSPACE_NAME)_GeometryFilter_<UNFILTERED>"        @RemoveAttributes($(GridInQuestIIPointReprojector_WORKSPACE_NAME)_GeometryFilter_70f944a0_706c_4dbb_af8b_968a6bae8cac28_targetFeatureType)
+
+# -------------------------------------------------------------------------
+
+Tcl2 proc $(GridInQuestIIPointReprojector_WORKSPACE_NAME)_ParameterFetcher_doFetch {} {    foreach {name val} {"OutputSystem {$($(GridInQuestIIPointReprojector_WORKSPACE_NAME)_Output_System$encode)} PreferredDatum {$($(GridInQuestIIPointReprojector_WORKSPACE_NAME)_Preferred_Datum$encode)}"} {         if { [string match {*<at>*} $val] == 1 } {             set val [FME_Execute EvaluateExpression {STRING} $val {$(GridInQuestIIPointReprojector_WORKSPACE_NAME)_ParameterFetcher}];         } elseif {[string match {*FME_CONDITIONAL*} $val] == 1} {             set val [FME_Execute EvaluateExpression {STRING} $val {$(GridInQuestIIPointReprojector_WORKSPACE_NAME)_ParameterFetcher}];         } else {             set val [FME_DecodeTextOrAttr $val];         };       FME_SetAttribute [FME_DecodeText $name] $val    } }
+FACTORY_DEF * TeeFactory    FACTORY_NAME $(GridInQuestIIPointReprojector_WORKSPACE_NAME)_ParameterFetcher    INPUT  FEATURE_TYPE "$(GridInQuestIIPointReprojector_WORKSPACE_NAME)_GeometryFilter_POINT"    OUTPUT FEATURE_TYPE "$(GridInQuestIIPointReprojector_WORKSPACE_NAME)_ParameterFetcher_OUTPUT"         @Tcl2($(GridInQuestIIPointReprojector_WORKSPACE_NAME)_ParameterFetcher_doFetch)
+
+# -------------------------------------------------------------------------
+
+
+FME_PYTHON_PATH "$(FME_MF_DIR)"
+
+FACTORY_DEF * PythonFactory    FACTORY_NAME $(GridInQuestIIPointReprojector_WORKSPACE_NAME)_GridInQuestIIPointProcessor    INPUT  FEATURE_TYPE "$(GridInQuestIIPointReprojector_WORKSPACE_NAME)_ParameterFetcher_OUTPUT"    SYMBOL_NAME ProcessFeature    PYTHON_NAMESPACE FMEOBJECTS    SOURCE_CODE #<space>Setup<space>required<space>library<space>imports.<lf>import<space>os<lf>import<space>fme<lf>from<space>math<space>import<space>radians<space>as<space>deg2rad<lf>from<space>fmeobjects<space>import<space>*<lf>from<space>ctypes<space>import<space>*<lf><space><lf>def<space>ProcessFeature<openparen>feature<closeparen>:<lf><lf><space><space>#<space>Load<space>the<space>FME<space>logger.<lf><space><space>Logger<space>=<space>FMELogFile<openparen><closeparen><space><space><lf><space><lf><space><space>#<space>Construct<space>the<space>full<space>LibGIQ<space>library<space>path<space>name.<lf><space><space>LibraryFileName<space>=<space>os.path.join<openparen>os.environ<openbracket><apos>FME_HOME<apos><closebracket><comma><space><quote>transformers<backslash>LibGIQ.dll<quote><closeparen><space><lf><space><space><lf><space><space>#<space>Test<space>for<space>presence<space>of<space>the<space>LibGIQ<space>library.<lf><space><space>if<space>os.path.exists<openparen>LibraryFileName<closeparen>:<lf><space><space><space><space>Logger.logMessageString<openparen><quote>LibGIQ<space>loaded<space>from<space><quote>+LibraryFileName<closeparen><lf><space><space>else:<lf><space><space><space><space>Logger.logMessageString<openparen><quote>LibGIQ<space>not<space>installed<space>at<space><quote>+LibraryFileName<comma><space>FME_ERROR<closeparen><lf><space><space><space><space>return<lf><space><space><space><space><lf><space><space>#<space>Load<space>the<space>LibGIQ<space>library.<lf><space><space>giqdll<space>=<space>WinDLL<openparen>LibraryFileName<closeparen><lf><space><space><lf><space><space>#<space>Define<space>the<space>library<space>coordinate<space>structure.<lf><space><space>class<space>coordinates<openparen>Structure<closeparen>:<lf><space><space><space><space><space>_fields_<space>=<space><openbracket><openparen><quote>x<quote><comma><space>c_double<closeparen><comma><lf><space><space><space><space><space><space><space><space><space><space><space><space><space><space><space><space><space><openparen><quote>y<quote><comma><space>c_double<closeparen><comma><lf><space><space><space><space><space><space><space><space><space><space><space><space><space><space><space><space><space><openparen><quote>z<quote><comma><space>c_double<closeparen><closebracket><lf><space><space><lf><space><space>#<space>Reference<space>the<space>library<space>convert<space>function.<lf><space><space>convert<space>=<space>giqdll.ConvertCoordinates<lf><space><space>convert.argtypes<space>=<space><openbracket>c_int<comma><space>c_int<comma><space>POINTER<openparen>coordinates<closeparen><comma><lf><space><space><space><space><space><space><space><space><space><space><space><space><space><space><space><space><space><space><space><space><space><space>POINTER<openparen>coordinates<closeparen><comma><space>POINTER<openparen>c_int<closeparen><closebracket><lf><space><space>convert.restype<space>=<space>bool<lf><lf><space><space>#<space>Fetch<space>the<space>input<space>parameters.<lf><space><space>OutputSystem<space>=<space>feature.getAttribute<openparen><apos>OutputSystem<apos><closeparen><lf><space><space>PreferredDatum<space>=<space>feature.getAttribute<openparen><apos>PreferredDatum<apos><closeparen><lf><space><space><lf><space><space>#<space>Set<space>the<space>input<space>coordinate<space>system.<lf><space><space>SRIDsource<space>=<space>c_int<openparen>4937<closeparen><space>#<space>Assume<space>ETRS89<space>Geodetic<lf><space><space><lf><space><space>#<space>Set<space>the<space>output<space>coordinate<space>system.<lf><space><space>Names<space>=<space><opencurly><lf><space><space><space><space><space><space><space><space><space><space><space><quote>OSGB36<space><solidus><space>British<space>National<space>Grid<space><openparen>TN15<solidus>GM15<closeparen><quote>:<space>27701<comma><space>#<space>TODO:<space>Change<space>to<space>the<space>official<space>code!<lf><space><space><space><space><space><space><space><space><space><space><space><quote>Irish<space>Grid<space><openparen>IG<solidus>GM15<closeparen><quote>:<space>29903<comma><space><lf><space><space><space><space><space><space><space><space><space><space><space><quote>Irish<space>Transverse<space>Mercator<space><openparen>ITM<solidus>GM15<closeparen><quote>:<space>2157<comma><lf><space><space><space><space><space><space><space><space><space><space><space><quote>ETRS89<space><solidus><space>UTM<space>Zone<space>29N<quote>:<space>25829<comma><lf><space><space><space><space><space><space><space><space><space><space><space><quote>ETRS89<space><solidus><space>UTM<space>Zone<space>30N<quote>:<space>25830<comma><lf><space><space><space><space><space><space><space><space><space><space><space><quote>ETRS89<space><solidus><space>UTM<space>Zone<space>31N<quote>:<space>25831<comma><lf><space><space><space><space><space><space><space><space><space><space><closecurly><lf><space><space>SRIDtarget<space>=<space>c_int<openparen>Names<openbracket>OutputSystem<closebracket><closeparen><space><lf><space><space><lf><space><space>#<space>Prepare<space>the<space>source<space>coordinates.<lf><space><space>Geometry<space>=<space>feature.getGeometry<openparen><closeparen><lf><space><space>Coords<space>=<space>Geometry.getXYZ<openparen><closeparen><lf><space><space>source<space>=<space>coordinates<openparen>deg2rad<openparen>Coords<openbracket>0<closebracket><closeparen><comma><lf><space><space><space><space><space><space><space><space><space><space><space><space><space><space><space><space><space><space><space><space><space><space><space>deg2rad<openparen>Coords<openbracket>1<closebracket><closeparen><comma><lf><space><space><space><space><space><space><space><space><space><space><space><space><space><space><space><space><space><space><space><space><space><space><space>Coords<openbracket>2<closebracket><closeparen><space><lf><lf><space><space>#<space>Clear<space>the<space>target<space>coordinates<comma><space>datum<space>code<space>and<space>status.<lf><space><space>target<space>=<space>coordinates<openparen>0<comma><space>0<comma><space>0<closeparen><lf><space><space>Names<space>=<space><opencurly><lf><space><space><space><space><space><space><space><space><space><space><space><quote><quote>:<space>0<comma><lf><space><space><space><space><space><space><space><space><space><space><space><quote>Malin<space>Head<quote>:<space>13<comma><lf><space><space><space><space><space><space><space><space><space><space><space><quote>Belfast<quote>:<space>14<comma><lf><space><space><space><space><space><space><space><space><space><space><space><closecurly><lf><space><space>datum<space>=<space>c_int<openparen>Names<openbracket>PreferredDatum<closebracket><closeparen><lf><space><space>callok<space>=<space>bool<openparen>False<closeparen><lf><space><space><lf><space><space>#<space>Call<space>coordinate<space>converter.<lf><space><space>callok<space>=<space>convert<openparen>SRIDsource<comma><space>SRIDtarget<comma><space>source<comma><space>target<comma><space>datum<closeparen><lf><space><lf><space><space>#<space>Output<space>the<space>result.<lf><space><space>if<space>callok:<lf><lf><space><space><space><space>#<space>Set<space>the<space>target<space>coordinate<space>system<space>from<space>the<space>EPSG<space>Number.<lf><space><space><space><space>feature.setCoordSys<openparen><quote>EPSG:<quote>+str<openparen>SRIDtarget.value<closeparen><closeparen><semicolon><space><lf><space><space><space><space><lf><space><space><space><space>#<space>Store<space>the<space>output<space>geometry.<lf><space><space><space><space>Geometry.setX<openparen>target.x<closeparen><lf><space><space><space><space>Geometry.setY<openparen>target.y<closeparen><lf><space><space><space><space>Geometry.setZ<openparen>target.z<closeparen><space><lf><space><space><space><space>feature.setGeometry<openparen>Geometry<closeparen><lf><space><lf><space><space><space><space>#<space>Set<space>the<space>output<space>vertical<space>datum<space>attribute.<lf><space><space><space><space>Datums<space>=<space><opencurly><lf><space><space><space><space><space><space><space><space><space><space><space><space><space><space>0:<space><quote>None<quote><comma><lf><space><space><space><space><space><space><space><space><space><space><space><space><space><space>1:<space><quote>Ordnance<space>Datum<space>Newlyn<quote><comma><lf><space><space><space><space><space><space><space><space><space><space><space><space><space><space>2:<space><quote>St.<space>Marys<quote><comma><lf><space><space><space><space><space><space><space><space><space><space><space><space><space><space>3:<space><quote>Douglas02<quote><comma><lf><space><space><space><space><space><space><space><space><space><space><space><space><space><space>4:<space><quote>Stornoway<quote><comma><lf><space><space><space><space><space><space><space><space><space><space><space><space><space><space>5:<space><quote>St.<space>Kilda<quote><comma><lf><space><space><space><space><space><space><space><space><space><space><space><space><space><space>6:<space><quote>Lerwick<quote><comma><lf><space><space><space><space><space><space><space><space><space><space><space><space><space><space>7:<space><quote>Newlyn<quote><comma><lf><space><space><space><space><space><space><space><space><space><space><space><space><space><space>8:<space><quote>FairIsle<quote><comma><lf><space><space><space><space><space><space><space><space><space><space><space><space><space><space>9:<space><quote>FlannanIsles<quote><comma><lf><space><space><space><space><space><space><space><space><space><space><space><space><space><space>10:<space><quote>North<space>Rona<quote><comma><lf><space><space><space><space><space><space><space><space><space><space><space><space><space><space>11:<space><quote>Sule<space>Skerry<quote><comma><lf><space><space><space><space><space><space><space><space><space><space><space><space><space><space>12:<space><quote>Foula<quote><comma><lf><space><space><space><space><space><space><space><space><space><space><space><space><space><space>13:<space><quote>Malin<space>Head<quote><comma><lf><space><space><space><space><space><space><space><space><space><space><space><space><space><space>14:<space><quote>Belfast<quote><comma><lf><space><space><space><space><space><space><space><space><space><space><space><space><space><space>15:<space><quote>Offshore<quote><comma><lf><space><space><space><space><space><space><space><space><space><space><space><space><space><closecurly><lf><space><space><space><space>feature.setAttribute<openparen><quote>VerticalDatum<quote><comma><space>Datums<openbracket>datum.value<closebracket><closeparen><lf><space><space><space><space><lf><space><space>else:<lf><space><space><space><space>feature.setAttribute<openparen><quote>VerticalDatum<quote><comma><space><quote>ERROR<quote><closeparen><lf><lf>    OUTPUT PYOUTPUT FEATURE_TYPE "$(GridInQuestIIPointReprojector_WORKSPACE_NAME)_GridInQuestIIPointProcessor_OUTPUT"
+
+# -------------------------------------------------------------------------
+
+INCLUDE [    set macroLine "MACRO $(GridInQuestIIPointReprojector_WORKSPACE_NAME)_AttributeRemover_LIST_EXP ";    foreach attr [split ""] {       set attr [FME_DecodeText $attr];       set attr [regsub "{}$" $attr "{}.*"];       set attr [regsub -all "{}" $attr "{\[0-9\]+}"];       append macroLine ",^$attr$";    };    puts $macroLine; ]
+FACTORY_DEF * TeeFactory    FACTORY_NAME $(GridInQuestIIPointReprojector_WORKSPACE_NAME)_AttributeRemover    INPUT  FEATURE_TYPE "$(GridInQuestIIPointReprojector_WORKSPACE_NAME)_GridInQuestIIPointProcessor_OUTPUT"    OUTPUT FEATURE_TYPE "$(GridInQuestIIPointReprojector_WORKSPACE_NAME)_AttributeRemover_OUTPUT"        @RemoveAttributes(OutputSystem,PreferredDatum)        @RemoveAttributes(fme_regexp_match"$($(GridInQuestIIPointReprojector_WORKSPACE_NAME)_AttributeRemover_LIST_EXP)")
+
+# -------------------------------------------------------------------------
+FACTORY_DEF * TeeFactory   FACTORY_NAME "$(GridInQuestIIPointReprojector_WORKSPACE_NAME)_MessageLogger INPUT Input Collector"   INPUT FEATURE_TYPE "$(GridInQuestIIPointReprojector_WORKSPACE_NAME)_GeometryFilter_<UNFILTERED>"   INPUT FEATURE_TYPE "$(GridInQuestIIPointReprojector_WORKSPACE_NAME)_AggregateFilter_AGGREGATE"   OUTPUT FEATURE_TYPE "$(GridInQuestIIPointReprojector_WORKSPACE_NAME)_MessageLogger_INPUT"
+MACRO MessageLogger_WORKSPACE_NAME $(GridInQuestIIPointReprojector_WORKSPACE_NAME)_MessageLogger
+MACRO $(MessageLogger_WORKSPACE_NAME)_XFORMER_NAME $(GridInQuestIIPointReprojector_WORKSPACE_NAME)_MessageLogger
+MACRO $(MessageLogger_WORKSPACE_NAME)_TRANSFORMER_GROUP 
+MACRO $(MessageLogger_WORKSPACE_NAME)___COMPOUND_PARAMETERS 
+MACRO $(MessageLogger_WORKSPACE_NAME)_TYPE ERROR
+MACRO $(MessageLogger_WORKSPACE_NAME)_MESSAGE Non-point data input.
+INCLUDE_CUSTOM_TRANSFORMER_VER MessageLogger:1
+FACTORY_DEF * TeeFactory   FACTORY_NAME "$(GridInQuestIIPointReprojector_WORKSPACE_NAME)_MessageLogger OUTPUT Output Renamer/Nuker"   INPUT FEATURE_TYPE "$(GridInQuestIIPointReprojector_WORKSPACE_NAME)_MessageLogger_OUTPUT"   OUTPUT FEATURE_TYPE "$(GridInQuestIIPointReprojector_WORKSPACE_NAME)_MessageLogger_OUTPUT"
+FACTORY_DEF * TeeFactory   FACTORY_NAME "$(GridInQuestIIPointReprojector_WORKSPACE_NAME)_GridInQuestIIPointProcessor_Output1452180641 Output Collector"   INPUT FEATURE_TYPE "$(GridInQuestIIPointReprojector_WORKSPACE_NAME)_AttributeRemover_OUTPUT"   OUTPUT FEATURE_TYPE "$(GridInQuestIIPointReprojector_WORKSPACE_NAME)_GridInQuestIIPointProcessor_Output"
+FACTORY_DEF * TeeFactory   FACTORY_NAME "$(GridInQuestIIPointReprojector_WORKSPACE_NAME)_<Rejected>1452180641 Output Collector"   INPUT FEATURE_TYPE "$(GridInQuestIIPointReprojector_WORKSPACE_NAME)_MessageLogger_OUTPUT"   OUTPUT FEATURE_TYPE "$(GridInQuestIIPointReprojector_WORKSPACE_NAME)_<Rejected>"
+INCLUDE [puts {MACRO WB_CURRENT_CONTEXT $(WB_OLD_CONTEXT_$(GridInQuestIIPointReprojector_WORKSPACE_NAME))}]
