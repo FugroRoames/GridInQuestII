@@ -39,7 +39,7 @@ Procedure ProcessFileTransformation(Const InputFileName: String; Const OutputFil
 Begin
   WriteLn('File input from: '+InputFileName);
   WriteLn('File output to: '+OutputFileName);
-  WriteLn(ITMCoordinateSystem.PreferredVerticalDatum);
+  WriteLn(ITM15CoordinateSystem.PreferredVerticalDatum);
 End;
 
 Procedure ProcessCGIRequest(Const Query: String);
@@ -48,14 +48,14 @@ Var
   GeoJSON: String;
   HasHeight: Boolean;
 Begin
-  HasHeight := False;
-  Coordinates.X := 1.1234567890123456;
-  Coordinates.Y := 2;
-  Coordinates.Z := 3;
+  HasHeight := True;
+  Coordinates.X := 500000;
+  Coordinates.Y := 400000.123456789;
+  Coordinates.Z := 100.1234;
   If HasHeight Then
-    GeoJSON := Format('{ "type": "Point", "coordinates": [%f, %f, %f] }',[Coordinates.X, Coordinates.Y, Coordinates.Z])
+    GeoJSON := Format('{ "type": "Point", "coordinates": [%G, %G, %G] }',[Coordinates.X, Coordinates.Y, Coordinates.Z])
   Else
-    GeoJSON := Format('{ "type": "Point", "coordinates": [%f, %f] }',[Coordinates.X, Coordinates.Y]);
+    GeoJSON := Format('{ "type": "Point", "coordinates": [%G, %G] }',[Coordinates.X, Coordinates.Y]);
   writeLn('Content-type: application/json');
   writeLn;
   writeLn(GeoJSON);
