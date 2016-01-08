@@ -28,7 +28,7 @@ Uses
 
 {$R *.res}
 
-Function ConvertCoordinates(SourceEPSG, TargetEPSG: Integer; Var InputCoordinates: TCoordinates; Out OutputCoordinates: TCoordinates; Out OutputDatum: Integer): Boolean;{$IFDEF WINDOWS}StdCall;{$ELSE} CDecl;{$ENDIF}
+Function ConvertCoordinates(SourceEPSG, TargetEPSG: Integer; Var InputCoordinates: TCoordinates; Var OutputCoordinates: TCoordinates; Var DatumCode: Integer): Boolean;{$IFDEF WINDOWS}StdCall;{$ELSE} CDecl;{$ENDIF}
 Var
   SourcePointer: TCoordinateSystemPointer;
   TargetPointer: TCoordinateSystemPointer;
@@ -45,8 +45,9 @@ Begin
     Exit;
   If Assigned(TargetPointer) Then
     Begin
+      TargetPointer^.PreferredVerticalDatum := TVerticalDatumCode(DatumCode);
       OutputCoordinates := TargetPointer^.ConvertFromGeocentric(GeocentricCoordinates);
-      OutputDatum := Integer(TargetPointer^.LastVerticalDatum);
+      DatumCode := Integer(TargetPointer^.LastVerticalDatum);
     End
   Else
     Exit;

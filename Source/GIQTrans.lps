@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <Version Value="9"/>
+    <BuildModes Active="Release"/>
+    <Units Count="18">
+      <Unit0>
+        <Filename Value="GIQTrans.pas"/>
+        <IsPartOfProject Value="True"/>
+        <TopLine Value="12"/>
+        <CursorPos X="45" Y="23"/>
+        <UsageCount Value="34"/>
+        <Loaded Value="True"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="TransMain.pas"/>
+        <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="41"/>
+        <CursorPos X="61" Y="58"/>
+        <UsageCount Value="32"/>
+        <Loaded Value="True"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value="../Examples/Web/GITrans.js"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="10"/>
+        <CursorPos Y="32"/>
+        <UsageCount Value="30"/>
+        <DefaultSyntaxHighlighter Value="JScript"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="/usr/share/fpcsrc/tests/webtbs/tw17907/main/main.pas"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="9"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="/usr/share/fpcsrc/rtl/objpas/sysutils/filutilh.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="134"/>
+        <CursorPos X="10" Y="144"/>
+        <UsageCount Value="10"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="/usr/share/fpcsrc/rtl/unix/sysutils.pp"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="584"/>
+        <CursorPos X="3" Y="588"/>
+        <UsageCount Value="10"/>
+      </Unit5>
+      <Unit6>
+        <Filename Value="BNG.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="7"/>
+        <CursorPos X="23" Y="22"/>
+        <UsageCount Value="9"/>
+      </Unit6>
+      <Unit7>
+        <Filename Value="Main.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="13"/>
+        <UsageCount Value="9"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="GridInQuestII.lpr"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="16"/>
+        <CursorPos X="64" Y="27"/>
+        <UsageCount Value="9"/>
+      </Unit8>
+      <Unit9>
+        <Filename Value="Geodesy.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="43" Y="183"/>
+        <UsageCount Value="10"/>
+      </Unit9>
+      <Unit10>
+        <Filename Value="ITM.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="293"/>
+        <CursorPos X="21" Y="302"/>
+        <UsageCount Value="10"/>
+      </Unit10>
+      <Unit11>
+        <Filename Value="/usr/share/fpcsrc/rtl/objpas/objpas.pp"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="129"/>
+        <CursorPos X="13" Y="139"/>
+        <UsageCount Value="9"/>
+      </Unit11>
+      <Unit12>
+        <Filename Value="/usr/share/fpcsrc/rtl/unix/sysunixh.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="51"/>
+        <CursorPos X="5" Y="61"/>
+        <UsageCount Value="9"/>
+      </Unit12>
+      <Unit13>
+        <Filename Value="/usr/share/fpcsrc/packages/fcl-base/src/custapp.pp"/>
+        <UnitName Value="CustApp"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="75"/>
+        <CursorPos X="41" Y="83"/>
+        <UsageCount Value="9"/>
+      </Unit13>
+      <Unit14>
+        <Filename Value="../Examples/Web/index.html"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="62" Y="8"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="HTML"/>
+      </Unit14>
+      <Unit15>
+        <Filename Value="OSTrans.lpr"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="136"/>
+        <UsageCount Value="9"/>
+      </Unit15>
+      <Unit16>
+        <Filename Value="../Examples/Web/GIQTrans.js"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="14"/>
+        <CursorPos X="21" Y="25"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="JScript"/>
+      </Unit16>
+      <Unit17>
+        <Filename Value="../../FreePascal/3.1.1/rtl/objpas/sysutils/sysstrh.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="113"/>
+        <CursorPos X="10" Y="124"/>
+        <UsageCount Value="10"/>
+      </Unit17>
+    </Units>
+    <JumpHistory Count="9" HistoryIndex="8">
+      <Position1>
+        <Filename Value="TransMain.pas"/>
+        <Caret Line="27" Column="21" TopLine="10"/>
+      </Position1>
+      <Position2>
+        <Filename Value="TransMain.pas"/>
+        <Caret Line="25" Column="50" TopLine="18"/>
+      </Position2>
+      <Position3>
+        <Filename Value="TransMain.pas"/>
+        <Caret Line="27" Column="18" TopLine="18"/>
+      </Position3>
+      <Position4>
+        <Filename Value="TransMain.pas"/>
+        <Caret Line="34" Column="40" TopLine="25"/>
+      </Position4>
+      <Position5>
+        <Filename Value="TransMain.pas"/>
+        <Caret Line="29" Column="21" TopLine="21"/>
+      </Position5>
+      <Position6>
+        <Filename Value="TransMain.pas"/>
+        <Caret Line="58" Column="99"/>
+      </Position6>
+      <Position7>
+        <Filename Value="TransMain.pas"/>
+        <Caret Line="42" Column="20" TopLine="28"/>
+      </Position7>
+      <Position8>
+        <Filename Value="GIQTrans.pas"/>
+        <Caret Line="198" Column="18" TopLine="108"/>
+      </Position8>
+      <Position9>
+        <Filename Value="TransMain.pas"/>
+        <Caret Line="56" Column="22" TopLine="41"/>
+      </Position9>
+    </JumpHistory>
+  </ProjectSession>
+</CONFIG>

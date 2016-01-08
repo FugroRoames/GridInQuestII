@@ -2,8 +2,8 @@
 <CONFIG>
   <ProjectSession>
     <Version Value="9"/>
-    <BuildModes Active="Release 64 Bit"/>
-    <Units Count="78">
+    <BuildModes Active="Release 32 Bit"/>
+    <Units Count="79">
       <Unit0>
         <Filename Value="GridInQuestII.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -17,8 +17,7 @@
         <ComponentName Value="MainForm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="2"/>
-        <TopLine Value="500"/>
+        <EditorIndex Value="1"/>
         <CursorPos X="13" Y="510"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
@@ -54,8 +53,7 @@
         <ComponentName Value="SettingsForm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="4"/>
-        <TopLine Value="617"/>
+        <EditorIndex Value="2"/>
         <CursorPos X="71" Y="630"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
@@ -104,9 +102,7 @@
       <Unit11>
         <Filename Value="ETRS.pas"/>
         <IsPartOfProject Value="True"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="13"/>
-        <TopLine Value="116"/>
+        <EditorIndex Value="11"/>
         <CursorPos X="96" Y="128"/>
         <UsageCount Value="202"/>
         <Loaded Value="True"/>
@@ -114,7 +110,8 @@
       <Unit12>
         <Filename Value="OSTab.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="3"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="13"/>
         <TopLine Value="241"/>
         <CursorPos X="18" Y="243"/>
         <UsageCount Value="201"/>
@@ -130,8 +127,7 @@
       <Unit14>
         <Filename Value="Config.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="12"/>
-        <TopLine Value="39"/>
+        <EditorIndex Value="9"/>
         <CursorPos X="16" Y="61"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
@@ -139,8 +135,7 @@
       <Unit15>
         <Filename Value="CtrlUtils.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="8"/>
-        <TopLine Value="22"/>
+        <EditorIndex Value="5"/>
         <CursorPos X="11" Y="32"/>
         <UsageCount Value="161"/>
         <Loaded Value="True"/>
@@ -165,8 +160,7 @@
       </Unit18>
       <Unit19>
         <Filename Value="DataStreams.pas"/>
-        <EditorIndex Value="5"/>
-        <TopLine Value="337"/>
+        <EditorIndex Value="10"/>
         <CursorPos X="25" Y="353"/>
         <UsageCount Value="101"/>
         <Loaded Value="True"/>
@@ -187,8 +181,7 @@
       </Unit21>
       <Unit22>
         <Filename Value="GlobeCtrl.pas"/>
-        <EditorIndex Value="9"/>
-        <TopLine Value="55"/>
+        <EditorIndex Value="6"/>
         <CursorPos X="15" Y="69"/>
         <UsageCount Value="100"/>
         <Loaded Value="True"/>
@@ -208,32 +201,28 @@
         <ComponentName Value="AboutForm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="7"/>
-        <TopLine Value="116"/>
+        <EditorIndex Value="4"/>
         <CursorPos Y="137"/>
         <UsageCount Value="100"/>
         <Loaded Value="True"/>
       </Unit24>
       <Unit25>
         <Filename Value="CoordCtrls.pas"/>
-        <EditorIndex Value="10"/>
-        <TopLine Value="46"/>
+        <EditorIndex Value="7"/>
         <CursorPos X="25" Y="49"/>
         <UsageCount Value="100"/>
         <Loaded Value="True"/>
       </Unit25>
       <Unit26>
         <Filename Value="GeodUtils.pas"/>
-        <EditorIndex Value="11"/>
-        <TopLine Value="431"/>
+        <EditorIndex Value="8"/>
         <CursorPos X="3" Y="453"/>
         <UsageCount Value="100"/>
         <Loaded Value="True"/>
       </Unit26>
       <Unit27>
         <Filename Value="BNG.pas"/>
-        <EditorIndex Value="1"/>
-        <TopLine Value="134"/>
+        <EditorIndex Value="12"/>
         <CursorPos X="10" Y="141"/>
         <UsageCount Value="100"/>
         <Loaded Value="True"/>
@@ -282,8 +271,7 @@
         <ComponentName Value="OptionsForm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="6"/>
-        <TopLine Value="170"/>
+        <EditorIndex Value="3"/>
         <CursorPos X="37" Y="192"/>
         <UsageCount Value="100"/>
         <Loaded Value="True"/>
@@ -308,7 +296,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="192"/>
         <CursorPos X="29" Y="202"/>
-        <UsageCount Value="0"/>
+        <UsageCount Value="10"/>
       </Unit37>
       <Unit38>
         <Filename Value="/usr/share/fpcsrc/packages/fcl-xml/src/xmlconf.pp"/>
@@ -595,6 +583,13 @@
         <CursorPos Y="941"/>
         <UsageCount Value="9"/>
       </Unit77>
+      <Unit78>
+        <Filename Value="GITrans.lpi"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="94"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="XML"/>
+      </Unit78>
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
