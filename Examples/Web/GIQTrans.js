@@ -19,10 +19,10 @@ GIQRequest.onload = function()
   {
   var OutputPoint = JSON.parse(this.responseText);
   var CoordForm = document.forms["OutputForm"];
-  CoordForm["Easting"].value = OutputPoint.coordinates[0];
-  CoordForm["Northing"].value = OutputPoint.coordinates[1];
+  CoordForm["Easting"].value = OutputPoint.coordinates[0].toFixed(2);
+  CoordForm["Northing"].value = OutputPoint.coordinates[1].toFixed(2);
   if (OutputPoint.coordinates.length==3)
-    CoordForm["Elevation"].value = OutputPoint.coordinates[2];
+    CoordForm["Elevation"].value = OutputPoint.coordinates[2].toFixed(3);
   };
 var Parameters = 'SourceSRID=4937&TargetSRID=25830&PreferredDatum=0&Geometry='+JSON.stringify(InputPoint);
 GIQRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");

@@ -11,11 +11,11 @@
       <fieldset style="display: inline-block;">
         <legend>Input Geodetic Coordinates</legend>
         <label>Latitude:</label>
-        <input type="text" name="Latitude" placeholder="Decimal Degrees">
+        <input type="text" name="Latitude" type="number" placeholder="Decimal Degrees">
         <label>Longitude:</label>
-        <input type="text" name="Longitude" placeholder="Decimal Degrees">
+        <input type="text" name="Longitude" type="number" placeholder="Decimal Degrees">
         <label>Altitude:</label>
-        <input type="text" name="Altitude" placeholder="Metres">
+        <input type="text" name="Altitude" type="number" placeholder="Metres">
       </fieldset>
       <p><button type="button" onclick="GIQTransRequest()">Transform</button></p>
     </form>
@@ -23,11 +23,11 @@
       <fieldset style="display: inline-block;">
         <legend>Output UTM30 Coordinates</legend>
         <label>Easting:</label>
-        <input type="text" name="Easting">
+        <input type="text" name="Easting" type="number" placeholder="000000.00" readonly>
         <label>Northing:</label>
-        <input type="text" name="Northing">
+        <input type="text" name="Northing" type="number" placeholder="0000000.00" readonly>
         <label>Elevation:</label>
-        <input type="text" name="Elevation">
+        <input type="text" name="Elevation" type="number" placeholder="0.000" readonly>
       </fieldset>
     </form>
   </body>
