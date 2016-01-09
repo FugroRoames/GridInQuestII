@@ -18,14 +18,25 @@ GIQRequest.open("POST", "giqtrans", true);
 GIQRequest.onload = function()
   {
   var OutputPoint = JSON.parse(this.responseText);
-  var CoordForm = document.forms["OutputForm"];
-  CoordForm["Easting"].value = OutputPoint.coordinates[0].toFixed(2);
-  CoordForm["Northing"].value = OutputPoint.coordinates[1].toFixed(2);
+  var OutputForm = document.forms["OutputForm"];
+  OutputForm["Easting"].value = OutputPoint.coordinates[0].toFixed(2);
+  OutputForm["Northing"].value = OutputPoint.coordinates[1].toFixed(2);
   if (OutputPoint.coordinates.length==3)
-    CoordForm["Elevation"].value = OutputPoint.coordinates[2].toFixed(3);
+    OutputForm["Elevation"].value = OutputPoint.coordinates[2].toFixed(3);
   };
-var Parameters = 'SourceSRID=4937&TargetSRID=25830&PreferredDatum=0&Geometry='+JSON.stringify(InputPoint);
+var Parameters = 'SourceSRID=4937&TargetSRID=25830&PreferredDatum=0&Geometry='+InputPoint;
 GIQRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 GIQRequest.send(Parameters);
 };
 
+function ClearFormData()
+{
+var InputForm = document.forms["InputForm"];
+InputForm["Longitude"].value = null;
+InputForm["Latitude"].value = null;
+InputForm["Altitude"].value = null;
+var OutputForm = document.forms["OutputForm"];
+OutputForm["Easting"].value = null;
+OutputForm["Northing"].value = null;
+OutputForm["Elevation"].value = null;
+}
