@@ -57,10 +57,10 @@
     <RunParams>
       <local>
         <FormatVersion Value="1"/>
-        <CommandLineParams Value="&quot;/home/paul/Projects/GridInQuestII/Sample Files/Test.txt&quot;  Test.out"/>
+        <CommandLineParams Value="&quot;/home/paul/Projects/GridInQuestII/Sample Files/worldcitiespop.csv&quot; &quot;/home/paul/Projects/GridInQuestII/Sample Files/uktownslist-sample-out.csv&quot;"/>
       </local>
     </RunParams>
-    <Units Count="4">
+    <Units Count="5">
       <Unit0>
         <Filename Value="GIQTrans.pas"/>
         <IsPartOfProject Value="True"/>
@@ -77,12 +77,16 @@
         <Filename Value="GeodProc.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit3>
+      <Unit4>
+        <Filename Value="GeoJSON.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit4>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
     <Version Value="11"/>
     <Target>
-      <Filename Value="../GIQTrans"/>
+      <Filename Value="../giqtrans"/>
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>

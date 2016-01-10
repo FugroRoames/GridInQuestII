@@ -22,32 +22,45 @@ Unit GeodProc;
 Interface
 
 Uses
-  Math, Geometry, Geodesy, ETRS, BNG, ITM, IG;
+  Math, Geometry, Geodesy, ETRS, BNG, ITM, IG, DataStreams;
 
-Function TransformCoordinates(SourceEPSG, TargetEPSG: Integer; Var InputCoordinates: TCoordinates; Var OutputCoordinates: TCoordinates; Var DatumCode: Integer): Boolean;
+Function IsSRIDGeodeticSystem(SRID: Integer): Boolean;
+Function TransformCoordinates(SourceSRID, TargetSRID: Integer; Var InputCoordinates: TCoordinates; Var OutputCoordinates: TCoordinates; Var DatumCode: Integer): Boolean;
 
 Implementation
 
-Function TransformCoordinates(SourceEPSG, TargetEPSG: Integer; Var InputCoordinates: TCoordinates; Var OutputCoordinates: TCoordinates; Var DatumCode: Integer): Boolean;
+Function IsSRIDGeodeticSystem(SRID: Integer): Boolean;
 Var
-  SourcePointer: TCoordinateSystemPointer;
-  TargetPointer: TCoordinateSystemPointer;
+  SystemPointer: TCoordinateSystemPointer;
+Begin
+  With CoordinateSystems Do
+    SystemPointer := Pointers(FindSRIDNumber(SRID));
+  If Assigned(SystemPointer) Then
+    Result := (SystemPointer^.CoordinateType=ctGeodetic)
+  Else
+    Result := False;
+End;
+
+Function TransformCoordinates(SourceSRID, TargetSRID: Integer; Var InputCoordinates: TCoordinates; Var OutputCoordinates: TCoordinates; Var DatumCode: Integer): Boolean;
+Var
+  SourceSystemPointer: TCoordinateSystemPointer;
+  TargetSystemPointer: TCoordinateSystemPointer;
   GeocentricCoordinates: TCoordinates;
 Begin
   Result := False;
   With CoordinateSystems Do
-    SourcePointer := Pointers(FindEPSGNumber(SourceEPSG));
+    SourceSystemPointer := Pointers(FindSRIDNumber(SourceSRID));
   With CoordinateSystems Do
-    TargetPointer := Pointers(FindEPSGNumber(TargetEPSG));
-  If Assigned(SourcePointer) Then
-    GeocentricCoordinates := SourcePointer^.ConvertToGeocentric(InputCoordinates)
+    TargetSystemPointer := Pointers(FindSRIDNumber(TargetSRID));
+  If Assigned(SourceSystemPointer) Then
+    GeocentricCoordinates := SourceSystemPointer^.ConvertToGeocentric(InputCoordinates)
   Else
     Exit;
-  If Assigned(TargetPointer) Then
+  If Assigned(TargetSystemPointer) Then
     Begin
-      TargetPointer^.PreferredVerticalDatum := TVerticalDatumCode(DatumCode);
-      OutputCoordinates := TargetPointer^.ConvertFromGeocentric(GeocentricCoordinates);
-      DatumCode := Integer(TargetPointer^.LastVerticalDatum);
+      TargetSystemPointer^.PreferredVerticalDatum := TVerticalDatumCode(DatumCode);
+      OutputCoordinates := TargetSystemPointer^.ConvertFromGeocentric(GeocentricCoordinates);
+      DatumCode := Integer(TargetSystemPointer^.LastVerticalDatum);
     End
   Else
     Exit;

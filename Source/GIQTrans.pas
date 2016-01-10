@@ -20,7 +20,7 @@ Program GIQTrans;
 {$ENDIF}
 
 Uses
-  Classes, SysUtils, CustApp, DOS, TransMain, GeodProc;
+  Classes, SysUtils, CustApp, DOS, TransMain, GeodProc, GeoJSON;
 
 Type
   TOperatingMode = (omIO, omCGI);
@@ -28,6 +28,7 @@ Type
 Type
   TGITransApplication = Class(TCustomApplication)
   Public
+    FileNames: TStringArray;
     InputFileName: String;
     OutputFileName: String;
     ProtectOutputMode: Boolean;
@@ -72,11 +73,8 @@ Begin
   WriteLn('--help (-h):  This help information.');
   WriteLn('--list (-l):  List available coordinate reference systems.');
   WriteLn('--protect (-p):  Prevent output file from being over-written if it exists.');
-  WriteLn('--silent (-s):  Supress all command line output.');
-  WriteLn('--iformat (-i)<csv|tab|txt>:  Input format selection, csv by default.');
-  WriteLn('--oformat (-o)<csv|tab|txt>:  Output format selection, csv by default.');
-  WriteLn('--source (-s)<EPSG>:  Source coordinate system EPSG number.');
-  WriteLn('--target (-t)<EPSG>:  Target coordinate system EPSG number.');
+  WriteLn('--silent (-i):  Supress all command line output.');
+  WriteLn('--settings (-s) File Name of transformation settings XML file.');
   WriteLn;
   WriteLn('CGI command mode');
   WriteLn;
@@ -86,7 +84,7 @@ Begin
   WriteLn('SourceSRID:  Input coordinate system SRID number.');
   WriteLn('TargetSRID:  Output coordinate system SRID number.');
   WriteLn('PreferredDatum:  Preferred Irish vertical datum code (13 - Malin Head or 14 - Belfast).');
-  WriteLn('Geometry:  Input geometry in GeoJSON format.');
+  WriteLn('Geometry:  Input point geometry in GeoJSON format.');
 End;
 
 Procedure TGITransApplication.WriteToConsole(Text: String);
@@ -108,11 +106,24 @@ Begin
     End;
 End;
 
+Function LoadFileAsText(FileName: String): String;
+Var
+  TextBuffer: TMemoryStream;
+Begin
+  TextBuffer := TMemoryStream.Create;
+  TextBuffer.Create;
+  TextBuffer.LoadFromFile(FileName);
+  SetLength(Result, TextBuffer.Size);
+  TextBuffer.Read(Result[1], TextBuffer.Size);
+  TextBuffer.Free;
+End;
+
 Var
   IsGetRequest: Boolean;
   IsPostRequest: Boolean;
   InputChar: Char;
   RequestText: String;
+  FileName: String;
 
 {$R *.res}
 
@@ -136,7 +147,24 @@ Begin
       Case OperatingMode Of
       omIO:
         Begin
-          SilentMode := HasOption('s', 'silent');
+          If HasOption('CGI') Then
+            Begin
+              { Simulate CGI mode from file input. }
+              FileName := GetOptionValue('CGI');
+              FileName := ExpandFileName(FileName);
+              If FileExists(FileName) Then
+                Begin
+                  RequestText := LoadFileAsText(FileName);
+                  ProcessCGIRequest(RequestText);
+                End
+              Else
+                Begin
+                  WriteToConsole('Input file not found: '+InputFileName);
+                  Exit;
+                End;
+              Exit;
+            End;
+          SilentMode := HasOption('i', 'silent');
           WriteHeader;
           If HasOption('h', 'help') Then
             Begin
@@ -150,16 +178,29 @@ Begin
               Exit;
             End;
           ProtectOutputMode := HasOption('p', 'protect');
-          { Read the input file name parameter. }
-          InputFileName := ParamStr(1);
+          { Retrieve the IO filenames from the command-line parameters. }
+          FileNames := GetNonOptions('',[]);
+          If Length(FileNames)>=2 Then
+            Begin
+              InputFileName := FileNames[0];
+              OutputFileName := FileNames[1];
+            End
+          Else
+          Begin
+            If Length(FileNames)=0 Then
+              WriteToConsole('Input and output filenames not given.')
+            Else
+              WriteToConsole('Output filename not given.');
+            Exit;
+          End;
+          { Validate the input file name parameter. }
           InputFileName := ExpandFileName(InputFileName);
           If Not FileExists(InputFileName) Then
             Begin
               WriteToConsole('Input file not found: '+InputFileName);
               Exit;
             End;
-          { Read the output file name parameter. }
-          OutputFileName := ParamStr(2);
+          { Validate the output file name parameter. }
           OutputFileName := ExpandFileName(OutputFileName);
           If FileExists(OutputFileName) And ProtectOutputMode Then
             Begin
@@ -171,30 +212,12 @@ Begin
               WriteToConsole('Output file name invalid: '+OutputFileName);
               Exit;
             End;
-    {
-            Begin
-              PackageCode := StrToIntDef(GetOptionValue('k', 'package'), 0);
-            End
-          Else
-            PackageCode := 0;
-          If HasOption('i', 'iformat') Then
-            Begin
-              FormatName := GetOptionValue('f', 'format');
-              If SameText(FormatName, 'TXT') Then
-                OutputFormat := ofTXT
-              Else If SameText(FormatName, 'TAB') Then
-                OutputFormat := ofTAB
-              Else If SameText(FormatName, 'CSV') Then
-                OutputFormat := ofCSV
-              Else
-                OutputFormat := ofCSV;
-            End
-          Else
-            OutputFormat := ofCSV;}
-          ProcessFile(InputFileName, OutputFileName);
+          { Process the file transformation. }
+          ProcessFile(InputFileName, OutputFileName, Not SilentMode);
         End;
       omCGI:
         Begin
+          { Fetch the CGI request parameters. }
           If IsGetRequest Then
             RequestText := GetEnv('QUERY_STRING');
           If IsPostRequest Then
@@ -203,6 +226,7 @@ Begin
                 Read(InputChar);
                 RequestText += InputChar;
               End;
+          { Process the CGI request. }
           ProcessCGIRequest(RequestText);
         End;
       End;
