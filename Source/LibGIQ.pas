@@ -28,7 +28,7 @@ Uses
 
 {$R *.res}
 
-Function ConvertCoordinates(SourceEPSG, TargetEPSG: Integer; Var InputCoordinates: TCoordinates; Var OutputCoordinates: TCoordinates; Var DatumCode: Integer): Boolean;{$IFDEF WINDOWS}StdCall;{$ELSE} CDecl;{$ENDIF}
+Function ConvertCoordinates(SourceSRID, TargetSRID: Integer; Var InputCoordinates: TCoordinates; Var OutputCoordinates: TCoordinates; Var DatumCode: Integer): Boolean;{$IFDEF WINDOWS}StdCall;{$ELSE} CDecl;{$ENDIF}
 Var
   SourcePointer: TCoordinateSystemPointer;
   TargetPointer: TCoordinateSystemPointer;
@@ -36,9 +36,9 @@ Var
 Begin
   Result := False;
   With CoordinateSystems Do
-    SourcePointer := Pointers(FindEPSGNumber(SourceEPSG));
+    SourcePointer := Pointers(FindSRIDNumber(SourceSRID));
   With CoordinateSystems Do
-    TargetPointer := Pointers(FindEPSGNumber(TargetEPSG));
+    TargetPointer := Pointers(FindSRIDNumber(TargetSRID));
   If Assigned(SourcePointer) Then
     GeocentricCoordinates := SourcePointer^.ConvertToGeocentric(InputCoordinates)
   Else

@@ -28,9 +28,6 @@ Uses
 //{$DEFINE LEVEL1}  { 2m horizontal accuracy using mean offset adjustments. }
 {$DEFINE LEVEL2}  { 0.4m horizontal accuracy using the OSi/OSNI polynomial transformation. }
 
-{ Define to embed the data table within the executable. }
-//{$DEFINE EMBED} // TODO If needed?
-
 { Define to uses inline optimisation. }
 //{$DEFINE USE_INLINE}
 

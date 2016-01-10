@@ -127,7 +127,7 @@ Uses
 Const
   InputKey = 'InputSettings';
   OutputKey = 'OutputSettings';
-  EPSGNumberKey = 'EPSGNumber';
+  SRIDNumberKey = 'SRIDNumber';
   FormatKey = 'Format';
   DelimitedKey = 'Delimited';
   FixedKey = 'Fixed';
@@ -335,8 +335,8 @@ Begin
         OpenKey(LastRowKey);
           Data.LastRow := GetValue(ValueKey, 0)-1;
         CloseKey;
-        OpenKey(EPSGNumberKey);
-          MainForm.InputSystemIndex := CoordinateSystems.FindEPSGNumber(GetValue(ValueKey, 0));
+        OpenKey(SRIDNumberKey);
+          MainForm.InputSystemIndex := CoordinateSystems.FindSRIDNumber(GetValue(ValueKey, 0));
         CloseKey;
         OpenKey(XColumnKey);
           XColumnIndex := GetValue(ValueKey, 0)-1;
@@ -373,8 +373,8 @@ Begin
         End;
       { Read output settings. }
       OpenKey(OutputKey);
-        OpenKey(EPSGNumberKey);
-          MainForm.OutputSystemIndex := CoordinateSystems.FindEPSGNumber(GetValue(ValueKey, 0));
+        OpenKey(SRIDNumberKey);
+          MainForm.OutputSystemIndex := CoordinateSystems.FindSRIDNumber(GetValue(ValueKey, 0));
         CloseKey;
       CloseKey;
       { Close settings configuration file. }
@@ -448,9 +448,9 @@ Begin
           End;
         If MainForm.InputSystemIndex<>-1 Then
           Begin
-            OpenKey(EPSGNumberKey);
+            OpenKey(SRIDNumberKey);
               With CoordinateSystems Do
-                SetValue(ValueKey, Items(MainForm.InputSystemIndex).EPSGNumber);
+                SetValue(ValueKey, Items(MainForm.InputSystemIndex).SRIDNumber);
             CloseKey;
             { Assign the required column indicies. }
             Case CoordinateSystems.Items(MainForm.InputSystemIndex).AxisOrder Of
@@ -490,9 +490,9 @@ Begin
       OpenKey(OutputKey);
         If MainForm.OutputSystemIndex<>-1 Then
           Begin
-            OpenKey(EPSGNumberKey);
+            OpenKey(SRIDNumberKey);
               With CoordinateSystems Do
-                SetValue(ValueKey, Items(MainForm.OutputSystemIndex).EPSGNumber);
+                SetValue(ValueKey, Items(MainForm.OutputSystemIndex).SRIDNumber);
             CloseKey;
           End;
       CloseKey;

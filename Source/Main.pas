@@ -199,7 +199,7 @@ Begin
   InputSecondFieldIndex := -1;
   InputThirdFieldIndex := -1;
   OutputSystemIndex := -1;
-  GlobeSystemIndex := CoordinateSystems.FindEPSGNumber(4937); { Globe uses WGS84/ETRS89. }
+  GlobeSystemIndex := CoordinateSystems.FindSRIDNumber(4937); { Globe uses WGS84/ETRS89. }
 End;
 
 Procedure TMainForm.FormDestroy(Sender: TObject);
@@ -298,7 +298,7 @@ Procedure TMainForm.SaveActionExecute(Sender: TObject);
 Var
   OutputFile: TFileStream;
   OutputText: String;
-  EPSGText: String;
+  SRIDText: String;
   RecordIndex, LastRecordIndex: Integer;
   Function AddDelimiters(Text: String): String;
   Begin
@@ -343,16 +343,16 @@ Begin
         OutputText := InputData.NamesAsText(OutputFieldTerminator, OutputTextDelimiter);
         With CoordinateSystems.Items(OutputSystemIndex) Do
           Begin
-            EPSGText := IntToStr(EPSGNumber);
+            SRIDText := IntToStr(SRIDNumber);
             OutputText := OutputText+OutputFieldTerminator;
-            OutputText := OutputText+AddDelimiters(EPSGText+'-'+AxisShortName(OutputSystemIndex, 0));
+            OutputText := OutputText+AddDelimiters(SRIDText+'-'+AxisShortName(OutputSystemIndex, 0));
             OutputText := OutputText+OutputFieldTerminator;
-            OutputText := OutputText+AddDelimiters(EPSGText+'-'+AxisShortName(OutputSystemIndex, 1));
+            OutputText := OutputText+AddDelimiters(SRIDText+'-'+AxisShortName(OutputSystemIndex, 1));
             { Output the third coordinate name if needed. }
             If (InputThirdFieldIndex<>-1) Or (CoordinateType=ctCartesian) Then
               Begin
                 OutputText := OutputText+OutputFieldTerminator;
-                OutputText := OutputText+AddDelimiters(EPSGText+'-'+AxisShortName(OutputSystemIndex, 2));
+                OutputText := OutputText+AddDelimiters(SRIDText+'-'+AxisShortName(OutputSystemIndex, 2));
               End;
             OutputText := OutputText+LineEnding;
           End;
@@ -744,7 +744,7 @@ Procedure TMainForm.SetupDataGrid;
 Var
   Col, LastCol: Integer;
   NewWidth, AlternativeWidth: Integer;
-  EPSGText: String;
+  SRIDText: String;
 Begin
   DataDrawGrid.BeginUpdate;
   ClearDataGrid;
@@ -772,22 +772,22 @@ Begin
       Begin
         { Calculate the width of a 10 character column. }
         NewWidth := Canvas.TextWidth('0123456789');
-        EPSGText := IntToStr(EPSGNumber);
+        SRIDText := IntToStr(SRIDNumber);
         With DataDrawGrid.Columns.Add Do
           Begin
-            Title.Caption := EPSGText+'-'+AxisShortName(OutputSystemIndex, 0);
+            Title.Caption := SRIDText+'-'+AxisShortName(OutputSystemIndex, 0);
             Width := NewWidth;
           End;
         With DataDrawGrid.Columns.Add Do
           Begin
-            Title.Caption := EPSGText+'-'+AxisShortName(OutputSystemIndex, 1);
+            Title.Caption := SRIDText+'-'+AxisShortName(OutputSystemIndex, 1);
             Width := NewWidth;
           End;
         { Add an elevation column if required. }
         If (InputThirdFieldIndex<>-1) Or (CoordinateType=ctCartesian) Then
           With DataDrawGrid.Columns.Add Do
             Begin
-              Title.Caption := EPSGText+'-'+AxisShortName(OutputSystemIndex, 2);
+              Title.Caption := SRIDText+'-'+AxisShortName(OutputSystemIndex, 2);
               Width := NewWidth;
             End;
       End;

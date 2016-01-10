@@ -36,7 +36,7 @@ Type
 //                        vdStornoway, vdStKilda, vdLerwick, vdNewlyn, vdFairIsle,
 //                        vdFlannanIsles, vdNorthRona, vdSuleSkerry, vdFoula,
 //                        vdMalinHead, vdBelfast, vdOffshore);
-//
+
 Type
   TDatumRecord = Packed Record
     Code: TVerticalDatumCode;

@@ -3,12 +3,11 @@
   <ProjectSession>
     <Version Value="9"/>
     <BuildModes Active="Release 32 Bit"/>
-    <Units Count="79">
+    <Units Count="83">
       <Unit0>
         <Filename Value="GridInQuestII.lpr"/>
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="24"/>
         <CursorPos Y="46"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
@@ -20,8 +19,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="488"/>
-        <CursorPos X="13" Y="510"/>
+        <CursorPos X="36" Y="790"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -30,8 +28,8 @@
         <Filename Value="Geodesy.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="758"/>
-        <CursorPos X="3" Y="764"/>
+        <TopLine Value="411"/>
+        <CursorPos X="57" Y="495"/>
         <UsageCount Value="201"/>
       </Unit2>
       <Unit3>
@@ -46,8 +44,8 @@
         <Filename Value="Splash.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="93"/>
-        <CursorPos Y="118"/>
+        <TopLine Value="20"/>
+        <CursorPos X="2" Y="32"/>
         <UsageCount Value="201"/>
       </Unit4>
       <Unit5>
@@ -57,8 +55,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="2"/>
-        <TopLine Value="608"/>
-        <CursorPos X="71" Y="630"/>
+        <CursorPos X="25" Y="493"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -106,20 +103,18 @@
       <Unit11>
         <Filename Value="ETRS.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="11"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="106"/>
         <CursorPos X="96" Y="128"/>
         <UsageCount Value="202"/>
-        <Loaded Value="True"/>
       </Unit11>
       <Unit12>
         <Filename Value="OSTab.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="13"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="241"/>
         <CursorPos X="18" Y="243"/>
         <UsageCount Value="201"/>
-        <Loaded Value="True"/>
       </Unit12>
       <Unit13>
         <Filename Value="OSTab.inc"/>
@@ -131,20 +126,16 @@
       <Unit14>
         <Filename Value="Config.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="9"/>
-        <TopLine Value="39"/>
-        <CursorPos X="16" Y="61"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="72" Y="40"/>
         <UsageCount Value="200"/>
-        <Loaded Value="True"/>
       </Unit14>
       <Unit15>
         <Filename Value="CtrlUtils.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="5"/>
-        <TopLine Value="10"/>
+        <EditorIndex Value="-1"/>
         <CursorPos X="11" Y="32"/>
-        <UsageCount Value="161"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="163"/>
       </Unit15>
       <Unit16>
         <Filename Value="TN02.pas"/>
@@ -166,11 +157,9 @@
       </Unit18>
       <Unit19>
         <Filename Value="DataStreams.pas"/>
-        <EditorIndex Value="10"/>
-        <TopLine Value="331"/>
-        <CursorPos X="25" Y="353"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="6" Y="7"/>
         <UsageCount Value="101"/>
-        <Loaded Value="True"/>
       </Unit19>
       <Unit20>
         <Filename Value="VRF10.pas"/>
@@ -188,11 +177,10 @@
       </Unit21>
       <Unit22>
         <Filename Value="GlobeCtrl.pas"/>
-        <EditorIndex Value="6"/>
-        <TopLine Value="48"/>
-        <CursorPos X="15" Y="69"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="81"/>
+        <CursorPos X="2" Y="93"/>
         <UsageCount Value="100"/>
-        <Loaded Value="True"/>
       </Unit22>
       <Unit23>
         <Filename Value="Progress.pas"/>
@@ -217,27 +205,24 @@
       </Unit24>
       <Unit25>
         <Filename Value="CoordCtrls.pas"/>
-        <EditorIndex Value="7"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="27"/>
         <CursorPos X="25" Y="49"/>
         <UsageCount Value="100"/>
-        <Loaded Value="True"/>
       </Unit25>
       <Unit26>
         <Filename Value="GeodUtils.pas"/>
-        <EditorIndex Value="8"/>
-        <TopLine Value="431"/>
-        <CursorPos X="3" Y="453"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="132"/>
+        <CursorPos X="49" Y="134"/>
         <UsageCount Value="100"/>
-        <Loaded Value="True"/>
       </Unit26>
       <Unit27>
         <Filename Value="BNG.pas"/>
-        <EditorIndex Value="12"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="119"/>
         <CursorPos X="10" Y="141"/>
         <UsageCount Value="100"/>
-        <Loaded Value="True"/>
       </Unit27>
       <Unit28>
         <Filename Value="../../../GISUtils.pas"/>
@@ -248,15 +233,15 @@
       <Unit29>
         <Filename Value="ITM.pas"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="6"/>
-        <CursorPos X="3" Y="28"/>
+        <TopLine Value="295"/>
+        <CursorPos X="4" Y="307"/>
         <UsageCount Value="97"/>
       </Unit29>
       <Unit30>
         <Filename Value="IG.pas"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="221"/>
-        <CursorPos X="73" Y="245"/>
+        <TopLine Value="22"/>
+        <CursorPos Y="31"/>
         <UsageCount Value="97"/>
       </Unit30>
       <Unit31>
@@ -284,8 +269,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="3"/>
-        <TopLine Value="170"/>
-        <CursorPos X="37" Y="192"/>
+        <CursorPos X="47" Y="2"/>
         <UsageCount Value="100"/>
         <Loaded Value="True"/>
       </Unit34>
@@ -603,128 +587,111 @@
         <UsageCount Value="10"/>
         <DefaultSyntaxHighlighter Value="XML"/>
       </Unit78>
+      <Unit79>
+        <Filename Value="Backup/Geodesy.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="485"/>
+        <CursorPos X="57" Y="495"/>
+        <UsageCount Value="10"/>
+      </Unit79>
+      <Unit80>
+        <Filename Value="Backup/ITM.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="287"/>
+        <CursorPos X="4" Y="299"/>
+        <UsageCount Value="10"/>
+      </Unit80>
+      <Unit81>
+        <Filename Value="Backup/Splash.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="20"/>
+        <CursorPos X="2" Y="32"/>
+        <UsageCount Value="10"/>
+      </Unit81>
+      <Unit82>
+        <Filename Value="Backup/BNG.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="94" Y="279"/>
+        <UsageCount Value="10"/>
+      </Unit82>
     </Units>
-    <JumpHistory Count="30" HistoryIndex="29">
+    <JumpHistory Count="19" HistoryIndex="18">
       <Position1>
-        <Filename Value="Main.pas"/>
-        <Caret Line="506" Column="96" TopLine="504"/>
+        <Filename Value="GridInQuestII.lpr"/>
+        <Caret Line="46" TopLine="24"/>
       </Position1>
       <Position2>
         <Filename Value="Main.pas"/>
-        <Caret Line="508" Column="55" TopLine="504"/>
+        <Caret Line="510" Column="13" TopLine="488"/>
       </Position2>
       <Position3>
         <Filename Value="Main.pas"/>
-        <Caret Line="506" Column="11" TopLine="504"/>
+        <Caret Line="217" Column="14" TopLine="210"/>
       </Position3>
       <Position4>
-        <Filename Value="OSTab.pas"/>
-        <Caret Line="243" Column="18" TopLine="241"/>
+        <Filename Value="Main.pas"/>
+        <Caret Line="137" Column="19" TopLine="130"/>
       </Position4>
       <Position5>
-        <Filename Value="Settings.pas"/>
-        <Caret Line="150" Column="20" TopLine="146"/>
+        <Filename Value="Main.pas"/>
+        <Caret Line="814"/>
       </Position5>
       <Position6>
-        <Filename Value="Settings.pas"/>
-        <Caret Line="715" Column="3" TopLine="713"/>
+        <Filename Value="Main.pas"/>
+        <Caret Line="202" Column="49" TopLine="191"/>
       </Position6>
       <Position7>
-        <Filename Value="Settings.pas"/>
-        <Caret Line="692" Column="3"/>
+        <Filename Value="Main.pas"/>
+        <Caret Line="301" Column="7" TopLine="295"/>
       </Position7>
       <Position8>
-        <Filename Value="Settings.pas"/>
-        <Caret Line="657" Column="10" TopLine="643"/>
+        <Filename Value="Main.pas"/>
+        <Caret Line="350" Column="56" TopLine="337"/>
       </Position8>
       <Position9>
-        <Filename Value="Settings.pas"/>
-        <Caret Line="508" TopLine="504"/>
+        <Filename Value="Main.pas"/>
+        <Caret Line="355" Column="60" TopLine="344"/>
       </Position9>
       <Position10>
-        <Filename Value="Settings.pas"/>
-        <Caret Line="150" TopLine="139"/>
+        <Filename Value="Main.pas"/>
+        <Caret Line="783" Column="34" TopLine="767"/>
       </Position10>
       <Position11>
         <Filename Value="Settings.pas"/>
-        <Caret Line="508" TopLine="497"/>
+        <Caret Line="630" Column="71" TopLine="608"/>
       </Position11>
       <Position12>
         <Filename Value="Settings.pas"/>
-        <Caret Line="266" TopLine="256"/>
+        <Caret Line="339" Column="66" TopLine="328"/>
       </Position12>
       <Position13>
         <Filename Value="Settings.pas"/>
-        <Caret Line="621" TopLine="610"/>
+        <Caret Line="377" Column="67" TopLine="366"/>
       </Position13>
       <Position14>
         <Filename Value="Settings.pas"/>
-        <Caret Line="271" TopLine="262"/>
+        <Caret Line="453" Column="73" TopLine="442"/>
       </Position14>
       <Position15>
         <Filename Value="Settings.pas"/>
-        <Caret Line="569" TopLine="558"/>
+        <Caret Line="493" Column="25" TopLine="484"/>
       </Position15>
       <Position16>
         <Filename Value="Settings.pas"/>
-        <Caret Line="271" TopLine="261"/>
+        <Caret Line="338" Column="21" TopLine="327"/>
       </Position16>
       <Position17>
         <Filename Value="Settings.pas"/>
-        <Caret Line="592" TopLine="582"/>
+        <Caret Line="376" Column="21" TopLine="365"/>
       </Position17>
       <Position18>
         <Filename Value="Settings.pas"/>
-        <Caret Line="271" TopLine="261"/>
+        <Caret Line="451" Column="25" TopLine="440"/>
       </Position18>
       <Position19>
-        <Filename Value="Settings.pas"/>
-        <Caret Line="106" TopLine="96"/>
+        <Filename Value="GridInQuestII.lpr"/>
+        <Caret Line="46"/>
       </Position19>
-      <Position20>
-        <Filename Value="Settings.pas"/>
-        <Caret Line="688" Column="13" TopLine="684"/>
-      </Position20>
-      <Position21>
-        <Filename Value="Settings.pas"/>
-        <Caret Line="704" Column="125" TopLine="693"/>
-      </Position21>
-      <Position22>
-        <Filename Value="Settings.pas"/>
-        <Caret Line="709" Column="3" TopLine="706"/>
-      </Position22>
-      <Position23>
-        <Filename Value="Settings.pas"/>
-        <Caret Line="711" Column="17" TopLine="707"/>
-      </Position23>
-      <Position24>
-        <Filename Value="Settings.pas"/>
-        <Caret Line="152" Column="12" TopLine="145"/>
-      </Position24>
-      <Position25>
-        <Filename Value="Settings.pas"/>
-        <Caret Line="156" TopLine="143"/>
-      </Position25>
-      <Position26>
-        <Filename Value="Main.pas"/>
-        <Caret Line="508" Column="16" TopLine="500"/>
-      </Position26>
-      <Position27>
-        <Filename Value="Main.pas"/>
-        <Caret Line="510" Column="10" TopLine="500"/>
-      </Position27>
-      <Position28>
-        <Filename Value="BNG.pas"/>
-        <Caret Line="285" TopLine="275"/>
-      </Position28>
-      <Position29>
-        <Filename Value="GridInQuestII.lpr"/>
-        <Caret Line="32" Column="53" TopLine="18"/>
-      </Position29>
-      <Position30>
-        <Filename Value="GridInQuestII.lpr"/>
-        <Caret Line="46" TopLine="24"/>
-      </Position30>
     </JumpHistory>
   </ProjectSession>
   <Debugging>

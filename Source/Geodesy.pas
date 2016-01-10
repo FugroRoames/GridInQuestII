@@ -181,12 +181,12 @@ Type
     AxisOrder: TAxisOrder;
     CoordinateType: TCoordinateType;
     Description: String;
-    EPSGNumber: Integer;
+    SRIDNumber: Integer;
     GeodeticBounds: TGeodeticBounds;
     Name: String;
     PreferredVerticalDatum: TVerticalDatumCode; { These fields should be in the TITMCoordinateSystem declaration in the ITM unit. }
     LastVerticalDatum: TVerticalDatumCode; { They have been declared here to avoid a compiler bug that incorrectly handles object inheritance. }
-    Constructor Initialize(NewName: String; NewAbbreviation: String; NewDescription: String; NewEPSGNumber: Integer;
+    Constructor Initialize(NewName: String; NewAbbreviation: String; NewDescription: String; NewSRIDNumber: Integer;
                            NewCoordinateType: TCoordinateType; NewAxisOrder: TAxisOrder; NewBounds: TGeodeticBounds);
     Function AxisNames: TAxisNames;
     Function ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual; Abstract;
@@ -198,10 +198,10 @@ Type
 Type
   TCoordinateSystems = Object
     Count: Integer;
-    Function AvailableSystemsList(EPSGPrefix: Boolean = False): String;
+    Function AvailableSystemsList(SRIDPrefix: Boolean = False): String;
     Function CompatibleSystemsList(SystemIndex: Integer): String;
     Function FindByDescription(Const Description: String): Integer;
-    Function FindEPSGNumber(Const Number: Integer): Integer;
+    Function FindSRIDNumber(Const Number: Integer): Integer;
     Function IndexOf(Const CoordinateSystem: TCoordinateSystem): Integer;
     Function Items(Index: Integer): TCoordinateSystem;
     Function Pointers(Index: Integer): TCoordinateSystemPointer;
@@ -650,13 +650,13 @@ Begin
   EccentricitySquared := (SemiMajorAxisSquared-SemiMinorAxisSquared)/SemiMajorAxisSquared;
 End;
 
-Constructor TCoordinateSystem.Initialize(NewName: String; NewAbbreviation: String; NewDescription: String; NewEPSGNumber: Integer;
+Constructor TCoordinateSystem.Initialize(NewName: String; NewAbbreviation: String; NewDescription: String; NewSRIDNumber: Integer;
                                          NewCoordinateType: TCoordinateType; NewAxisOrder: TAxisOrder; NewBounds: TGeodeticBounds);
 Begin
   Name := NewName;
   Abbreviation := NewAbbreviation;
   Description := NewDescription;
-  EPSGNumber := NewEPSGNumber;
+  SRIDNumber := NewSRIDNumber;
   CoordinateType := NewCoordinateType;
   AxisOrder := NewAxisOrder;
   GeodeticBounds := NewBounds;
@@ -685,7 +685,7 @@ Var
 Type
   TIndexList = Set Of Byte;
 
-Function BuildCoordinateSystemsList(OmitList: TIndexList; EPSGPrefix: Boolean = False): String;
+Function BuildCoordinateSystemsList(OmitList: TIndexList; SRIDPrefix: Boolean = False): String;
 Var
   FirstIndex: Integer;
   LastIndex: Integer;
@@ -697,8 +697,8 @@ Begin
   For Index := FirstIndex To LastIndex Do
     If Not (Index In OmitList) Then
       Begin
-        If EPSGPrefix Then
-          Result := Result+IntToStr(CoordinateSystemsList[Index]^.EPSGNumber)+' - ';
+        If SRIDPrefix Then
+          Result := Result+IntToStr(CoordinateSystemsList[Index]^.SRIDNumber)+' - ';
         Result := Result+CoordinateSystemsList[Index]^.Description;
         If Index<>LastIndex Then
           Result := Result+LineEnding;
@@ -706,33 +706,33 @@ Begin
 End;
 
 
-Function TCoordinateSystems.AvailableSystemsList(EPSGPrefix: Boolean = False): String;
+Function TCoordinateSystems.AvailableSystemsList(SRIDPrefix: Boolean = False): String;
 Begin
-  Result := BuildCoordinateSystemsList([], EPSGPrefix);
+  Result := BuildCoordinateSystemsList([], SRIDPrefix);
 End;
 
 Function TCoordinateSystems.CompatibleSystemsList(SystemIndex: Integer): String;
 Var
-  EPSGNumber: Integer;
+  SRIDNumber: Integer;
 Begin
   If SystemIndex=-1 Then
-    EPSGNumber := 0
+    SRIDNumber := 0
   Else
-    EPSGNumber := CoordinateSystemsList[SystemIndex]^.EPSGNumber;
+    SRIDNumber := CoordinateSystemsList[SystemIndex]^.SRIDNumber;
   With CoordinateSystems Do
-    Case EPSGNumber Of
+    Case SRIDNumber Of
     0: { Full List }
       Result := BuildCoordinateSystemsList([]);
     25831:{ UTM Zone 31N, no Ireland overlap. }
-      Result := BuildCoordinateSystemsList([Byte(SystemIndex), Byte(FindEPSGNumber(25830)), Byte(FindEPSGNumber(25829)), Byte(FindEPSGNumber(29903)), Byte(FindEPSGNumber(2157))]);
+      Result := BuildCoordinateSystemsList([Byte(SystemIndex), Byte(FindSRIDNumber(25830)), Byte(FindSRIDNumber(25829)), Byte(FindSRIDNumber(29903)), Byte(FindSRIDNumber(2157))]);
     25830:{ UTM Zone 30N }
-      Result := BuildCoordinateSystemsList([Byte(SystemIndex), Byte(FindEPSGNumber(25831)), Byte(FindEPSGNumber(25829))]);
+      Result := BuildCoordinateSystemsList([Byte(SystemIndex), Byte(FindSRIDNumber(25831)), Byte(FindSRIDNumber(25829))]);
     25829:{ UTM Zone 29N }
-      Result := BuildCoordinateSystemsList([Byte(SystemIndex), Byte(FindEPSGNumber(25831)), Byte(FindEPSGNumber(25830))]);
+      Result := BuildCoordinateSystemsList([Byte(SystemIndex), Byte(FindSRIDNumber(25831)), Byte(FindSRIDNumber(25830))]);
     29903, 2157: { Irish Grid and Irish Transverse Mercator }
-      Result := BuildCoordinateSystemsList([Byte(SystemIndex), Byte(FindEPSGNumber(27700)), Byte(FindEPSGNumber(27701))]);
+      Result := BuildCoordinateSystemsList([Byte(SystemIndex), Byte(FindSRIDNumber(27700)), Byte(FindSRIDNumber(27701))]);
     27700, 27701: { British National Grid (TN02/GM02) and (TN15/GM15) }
-      Result := BuildCoordinateSystemsList([Byte(SystemIndex), Byte(FindEPSGNumber(29903)), Byte(FindEPSGNumber(2157))]);
+      Result := BuildCoordinateSystemsList([Byte(SystemIndex), Byte(FindSRIDNumber(29903)), Byte(FindSRIDNumber(2157))]);
     Else { Otherwsie build a full list of available systems omiting the source. }
       Result := BuildCoordinateSystemsList([Byte(SystemIndex)]);
     End;
@@ -755,7 +755,7 @@ Begin
   Result := -1;
 End;
 
-Function TCoordinateSystems.FindEPSGNumber(Const Number: Integer): Integer;
+Function TCoordinateSystems.FindSRIDNumber(Const Number: Integer): Integer;
 Var
   FirstIndex: Integer;
   LastIndex: Integer;
@@ -764,7 +764,7 @@ Begin
   FirstIndex := Low(CoordinateSystemsList);
   LastIndex := High(CoordinateSystemsList);
   For Index := FirstIndex To LastIndex Do
-    If Number=CoordinateSystemsList[Index]^.EPSGNumber Then
+    If Number=CoordinateSystemsList[Index]^.SRIDNumber Then
       Begin
         Result := Index;
         Exit;
@@ -774,7 +774,7 @@ End;
 
 Function TCoordinateSystems.IndexOf(Const CoordinateSystem: TCoordinateSystem): Integer;
 Begin
-  Result := FindEPSGNumber(CoordinateSystem.EPSGNumber);
+  Result := FindSRIDNumber(CoordinateSystem.SRIDNumber);
 End;
 
 Function TCoordinateSystems.Items(Index: Integer): TCoordinateSystem;
