@@ -200,10 +200,9 @@ Begin
   WriteWord(0); { Ensure that the memory data is zero terminated. }
   { If load progress events are required, send the last event. }
   If Assigned(FOnLoadProgress) Then
-    If DataSize>MinProgressSize Then
-      Begin
-        FOnLoadProgress(Self, 100);
-      End;
+    Begin
+      FOnLoadProgress(Self, 100);
+    End;
   ParseRows;
 End;
 
@@ -613,8 +612,7 @@ Begin
     End;
   { If parse progress events are required, send the final event. }
   If Assigned(FOnParseProgress) Then
-    If Size>MinProgressSize Then
-      FOnParseProgress(Self, 100);
+    FOnParseProgress(Self, 100);
 End;
 
 Procedure  TDataStream.ParseFields;
