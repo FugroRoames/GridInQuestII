@@ -78,23 +78,15 @@ Begin
   WriteLn('--source (-s)<EPSG>:  Source coordinate system EPSG number.');
   WriteLn('--target (-t)<EPSG>:  Target coordinate system EPSG number.');
   WriteLn;
-  WriteLn('CGI script web mode');
+  WriteLn('CGI command mode');
   WriteLn;
   WriteLn('Usage: ', ChangeFileExt(ExtractFileName(ExeName),EmptyStr), '?<param1>=<value1>&<param2>=<value2>&..&<paramn>=<valuen>');
   WriteLn;
   WriteLn('CGI parameters');
-  WriteLn('EPSGIn|I:  Input coordinate system EPSG number.');
-  WriteLn('EPSGOut|O:  Output coordinate system EPSG number.');
-  WriteLn('Lat:  Input geodetic latitude value in decimal degrees.');
-  WriteLn('Lon:  Input geodetic longitude value in decimal degrees.');
-  WriteLn('Alt:  Optional input geodetic height value in metres.');
-  WriteLn('East|E:  Input projected easting value in decimal degrees.');
-  WriteLn('North|N:  Input projected northing value in decimal degrees.');
-  WriteLn('Height|H:  Optional input projected height value in metres.');
-  WriteLn('X:  Input cartesian X value in metres.');
-  WriteLn('Y:  Input cartesian Y value in metres.');
-  WriteLn('Z:  Input cartesian Z value in metres.');
-
+  WriteLn('SourceSRID:  Input coordinate system SRID number.');
+  WriteLn('TargetSRID:  Output coordinate system SRID number.');
+  WriteLn('PreferredDatum:  Preferred Irish vertical datum code (13 - Malin Head or 14 - Belfast).');
+  WriteLn('Geometry:  Input geometry in GeoJSON format.');
 End;
 
 Procedure TGITransApplication.WriteToConsole(Text: String);
@@ -199,7 +191,7 @@ Begin
             End
           Else
             OutputFormat := ofCSV;}
-          ProcessFileTransformation(InputFileName, OutputFileName);
+          ProcessFile(InputFileName, OutputFileName);
         End;
       omCGI:
         Begin

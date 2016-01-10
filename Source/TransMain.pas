@@ -25,7 +25,7 @@ Uses
   Classes, SysUtils, fpJSON, JSONParser, Math, Geometry, Geodesy, GeodProc, ETRS, BNG, ITM, IG;
 
 Function BuildAvailableSystemsList(): String;
-Procedure ProcessFileTransformation(Const InputFileName: String; Const OutputFileName: String);
+Procedure ProcessFile(Const InputFileName: String; Const OutputFileName: String);
 Procedure ProcessCGIRequest(Const RequestText: String);
 
 Implementation
@@ -35,7 +35,7 @@ Begin
   Result := CoordinateSystems.AvailableSystemsList(True);
 End;
 
-Procedure ProcessFileTransformation(Const InputFileName: String; Const OutputFileName: String);
+Procedure ProcessFile(Const InputFileName: String; Const OutputFileName: String);
 Begin
   WriteLn('File input from: '+InputFileName);
   WriteLn('File output to: '+OutputFileName);

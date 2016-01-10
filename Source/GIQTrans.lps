@@ -3,11 +3,13 @@
   <ProjectSession>
     <Version Value="9"/>
     <BuildModes Active="Release"/>
-    <Units Count="29">
+    <Units Count="30">
       <Unit0>
         <Filename Value="GIQTrans.pas"/>
         <IsPartOfProject Value="True"/>
-        <CursorPos X="2" Y="201"/>
+        <IsVisibleTab Value="True"/>
+        <TopLine Value="71"/>
+        <CursorPos X="55" Y="89"/>
         <UsageCount Value="48"/>
         <Loaded Value="True"/>
       </Unit0>
@@ -15,8 +17,8 @@
         <Filename Value="TransMain.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="10"/>
-        <CursorPos X="77" Y="25"/>
+        <TopLine Value="71"/>
+        <CursorPos X="43" Y="79"/>
         <UsageCount Value="46"/>
         <Loaded Value="True"/>
       </Unit1>
@@ -30,188 +32,197 @@
         <DefaultSyntaxHighlighter Value="JScript"/>
       </Unit2>
       <Unit3>
+        <Filename Value="GeodProc.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="7"/>
+        <CursorPos X="40" Y="25"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+      </Unit3>
+      <Unit4>
         <Filename Value="/usr/share/fpcsrc/tests/webtbs/tw17907/main/main.pas"/>
         <EditorIndex Value="-1"/>
         <UsageCount Value="8"/>
-      </Unit3>
-      <Unit4>
+      </Unit4>
+      <Unit5>
         <Filename Value="/usr/share/fpcsrc/rtl/objpas/sysutils/filutilh.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="134"/>
         <CursorPos X="10" Y="144"/>
         <UsageCount Value="9"/>
-      </Unit4>
-      <Unit5>
+      </Unit5>
+      <Unit6>
         <Filename Value="/usr/share/fpcsrc/rtl/unix/sysutils.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="584"/>
         <CursorPos X="3" Y="588"/>
         <UsageCount Value="9"/>
-      </Unit5>
-      <Unit6>
+      </Unit6>
+      <Unit7>
         <Filename Value="BNG.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="7"/>
         <CursorPos X="23" Y="22"/>
         <UsageCount Value="8"/>
-      </Unit6>
-      <Unit7>
+      </Unit7>
+      <Unit8>
         <Filename Value="Main.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="13"/>
         <UsageCount Value="8"/>
-      </Unit7>
-      <Unit8>
+      </Unit8>
+      <Unit9>
         <Filename Value="GridInQuestII.lpr"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="16"/>
         <CursorPos X="64" Y="27"/>
         <UsageCount Value="8"/>
-      </Unit8>
-      <Unit9>
+      </Unit9>
+      <Unit10>
         <Filename Value="Geodesy.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="262"/>
         <CursorPos X="3" Y="264"/>
         <UsageCount Value="12"/>
-      </Unit9>
-      <Unit10>
-        <Filename Value="ITM.pas"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="293"/>
-        <CursorPos X="21" Y="302"/>
-        <UsageCount Value="9"/>
       </Unit10>
       <Unit11>
+        <Filename Value="ITM.pas"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="14"/>
+        <CursorPos X="30" Y="25"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit11>
+      <Unit12>
         <Filename Value="/usr/share/fpcsrc/rtl/objpas/objpas.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="129"/>
         <CursorPos X="13" Y="139"/>
         <UsageCount Value="8"/>
-      </Unit11>
-      <Unit12>
+      </Unit12>
+      <Unit13>
         <Filename Value="/usr/share/fpcsrc/rtl/unix/sysunixh.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="51"/>
         <CursorPos X="5" Y="61"/>
         <UsageCount Value="8"/>
-      </Unit12>
-      <Unit13>
+      </Unit13>
+      <Unit14>
         <Filename Value="/usr/share/fpcsrc/packages/fcl-base/src/custapp.pp"/>
         <UnitName Value="CustApp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="75"/>
         <CursorPos X="41" Y="83"/>
         <UsageCount Value="8"/>
-      </Unit13>
-      <Unit14>
+      </Unit14>
+      <Unit15>
         <Filename Value="../Examples/Web/index.html"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="62" Y="8"/>
         <UsageCount Value="9"/>
         <DefaultSyntaxHighlighter Value="HTML"/>
-      </Unit14>
-      <Unit15>
+      </Unit15>
+      <Unit16>
         <Filename Value="OSTrans.lpr"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="136"/>
         <UsageCount Value="8"/>
-      </Unit15>
-      <Unit16>
+      </Unit16>
+      <Unit17>
         <Filename Value="../Examples/Web/GIQTrans.js"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="14"/>
         <CursorPos X="21" Y="25"/>
         <UsageCount Value="9"/>
         <DefaultSyntaxHighlighter Value="JScript"/>
-      </Unit16>
-      <Unit17>
+      </Unit17>
+      <Unit18>
         <Filename Value="../../FreePascal/3.1.1/rtl/objpas/sysutils/sysstrh.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="113"/>
         <CursorPos X="10" Y="124"/>
         <UsageCount Value="9"/>
-      </Unit17>
-      <Unit18>
+      </Unit18>
+      <Unit19>
         <Filename Value="ETRS.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="116"/>
         <CursorPos X="37" Y="120"/>
         <UsageCount Value="9"/>
-      </Unit18>
-      <Unit19>
+      </Unit19>
+      <Unit20>
         <Filename Value="LibGIQ.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="16"/>
         <CursorPos X="30" Y="27"/>
         <UsageCount Value="9"/>
-      </Unit19>
-      <Unit20>
+      </Unit20>
+      <Unit21>
         <Filename Value="Geometry.pas"/>
         <EditorIndex Value="-1"/>
         <UsageCount Value="12"/>
-      </Unit20>
-      <Unit21>
+      </Unit21>
+      <Unit22>
         <Filename Value="../../FreePascal/3.1.1/packages/fcl-base/src/uriparser.pp"/>
         <UnitName Value="URIParser"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="30"/>
         <UsageCount Value="9"/>
-      </Unit21>
-      <Unit22>
+      </Unit22>
+      <Unit23>
         <Filename Value="../../FreePascal/3.1.1/packages/fcl-web/src/base/fphttp.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="11"/>
         <CursorPos X="26" Y="20"/>
         <UsageCount Value="9"/>
-      </Unit22>
-      <Unit23>
+      </Unit23>
+      <Unit24>
         <Filename Value="../../FreePascal/3.1.1/packages/fcl-web/src/base/httpdefs.pp"/>
         <UnitName Value="HTTPDefs"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="622"/>
         <CursorPos X="28" Y="636"/>
         <UsageCount Value="10"/>
-      </Unit23>
-      <Unit24>
+      </Unit24>
+      <Unit25>
         <Filename Value="../../FreePascal/3.1.1/packages/fcl-json/src/jsonparser.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="70"/>
         <UsageCount Value="9"/>
-      </Unit24>
-      <Unit25>
+      </Unit25>
+      <Unit26>
         <Filename Value="../../FreePascal/3.1.1/packages/fcl-web/src/base/fpweb.pp"/>
         <UnitName Value="fpWeb"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="102"/>
         <CursorPos X="41" Y="115"/>
         <UsageCount Value="11"/>
-      </Unit25>
-      <Unit26>
+      </Unit26>
+      <Unit27>
         <Filename Value="../../FreePascal/3.1.1/packages/fcl-web/src/base/httpprotocol.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="134"/>
         <CursorPos X="40" Y="152"/>
         <UsageCount Value="11"/>
-      </Unit26>
-      <Unit27>
+      </Unit27>
+      <Unit28>
         <Filename Value="../../FreePascal/3.1.1/packages/fcl-json/src/fpjson.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="1165"/>
         <CursorPos X="3" Y="1187"/>
         <UsageCount Value="11"/>
-      </Unit27>
-      <Unit28>
-        <Filename Value="GeodProc.pas"/>
-        <IsPartOfProject Value="True"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="2"/>
-        <CursorPos X="14"/>
-        <UsageCount Value="20"/>
-        <Loaded Value="True"/>
       </Unit28>
+      <Unit29>
+        <Filename Value="OSTab.pas"/>
+        <EditorIndex Value="4"/>
+        <TopLine Value="85"/>
+        <CursorPos X="63" Y="103"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit29>
     </Units>
-    <JumpHistory Count="27" HistoryIndex="26">
+    <JumpHistory Count="29" HistoryIndex="28">
       <Position1>
         <Filename Value="TransMain.pas"/>
         <Caret Line="27" Column="21" TopLine="10"/>
@@ -320,6 +331,14 @@
         <Filename Value="TransMain.pas"/>
         <Caret Line="100" Column="19" TopLine="91"/>
       </Position27>
+      <Position28>
+        <Filename Value="GeodProc.pas"/>
+        <Caret Line="25" Column="40" TopLine="7"/>
+      </Position28>
+      <Position29>
+        <Filename Value="ITM.pas"/>
+        <Caret Line="25" Column="30" TopLine="14"/>
+      </Position29>
     </JumpHistory>
   </ProjectSession>
 </CONFIG>
