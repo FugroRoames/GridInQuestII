@@ -7,6 +7,8 @@
       <Unit0>
         <Filename Value="GridInQuestII.lpr"/>
         <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
+        <TopLine Value="24"/>
         <CursorPos Y="46"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
@@ -18,6 +20,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="1"/>
+        <TopLine Value="488"/>
         <CursorPos X="13" Y="510"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
@@ -54,6 +57,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="2"/>
+        <TopLine Value="608"/>
         <CursorPos X="71" Y="630"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
@@ -103,6 +107,7 @@
         <Filename Value="ETRS.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="11"/>
+        <TopLine Value="106"/>
         <CursorPos X="96" Y="128"/>
         <UsageCount Value="202"/>
         <Loaded Value="True"/>
@@ -110,7 +115,6 @@
       <Unit12>
         <Filename Value="OSTab.pas"/>
         <IsPartOfProject Value="True"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="13"/>
         <TopLine Value="241"/>
         <CursorPos X="18" Y="243"/>
@@ -128,6 +132,7 @@
         <Filename Value="Config.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="9"/>
+        <TopLine Value="39"/>
         <CursorPos X="16" Y="61"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
@@ -136,6 +141,7 @@
         <Filename Value="CtrlUtils.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="5"/>
+        <TopLine Value="10"/>
         <CursorPos X="11" Y="32"/>
         <UsageCount Value="161"/>
         <Loaded Value="True"/>
@@ -161,6 +167,7 @@
       <Unit19>
         <Filename Value="DataStreams.pas"/>
         <EditorIndex Value="10"/>
+        <TopLine Value="331"/>
         <CursorPos X="25" Y="353"/>
         <UsageCount Value="101"/>
         <Loaded Value="True"/>
@@ -182,6 +189,7 @@
       <Unit22>
         <Filename Value="GlobeCtrl.pas"/>
         <EditorIndex Value="6"/>
+        <TopLine Value="48"/>
         <CursorPos X="15" Y="69"/>
         <UsageCount Value="100"/>
         <Loaded Value="True"/>
@@ -202,6 +210,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="4"/>
+        <TopLine Value="116"/>
         <CursorPos Y="137"/>
         <UsageCount Value="100"/>
         <Loaded Value="True"/>
@@ -209,6 +218,7 @@
       <Unit25>
         <Filename Value="CoordCtrls.pas"/>
         <EditorIndex Value="7"/>
+        <TopLine Value="27"/>
         <CursorPos X="25" Y="49"/>
         <UsageCount Value="100"/>
         <Loaded Value="True"/>
@@ -216,6 +226,7 @@
       <Unit26>
         <Filename Value="GeodUtils.pas"/>
         <EditorIndex Value="8"/>
+        <TopLine Value="431"/>
         <CursorPos X="3" Y="453"/>
         <UsageCount Value="100"/>
         <Loaded Value="True"/>
@@ -223,6 +234,7 @@
       <Unit27>
         <Filename Value="BNG.pas"/>
         <EditorIndex Value="12"/>
+        <TopLine Value="119"/>
         <CursorPos X="10" Y="141"/>
         <UsageCount Value="100"/>
         <Loaded Value="True"/>
@@ -272,6 +284,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="3"/>
+        <TopLine Value="170"/>
         <CursorPos X="37" Y="192"/>
         <UsageCount Value="100"/>
         <Loaded Value="True"/>

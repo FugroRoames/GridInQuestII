@@ -236,7 +236,7 @@ Begin
       SetupDataGrid;
       ProgressDisplay.Hide;
       ShowSettingsForm(InputData);
-      If InputData.RecordCount>0 Then;
+      If InputData.RecordCount>0 Then
         Begin
           DataDrawGrid.Row := 1;
           DataDrawGrid.TopRow := 1;
