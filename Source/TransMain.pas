@@ -22,10 +22,9 @@ Unit TransMain;
 Interface
 
 Uses
-  Classes, SysUtils, fpJSON, JSONParser, Math, Geometry, Geodesy, ETRS, BNG, ITM, IG;
+  Classes, SysUtils, fpJSON, JSONParser, Math, Geometry, Geodesy, GeodProc, ETRS, BNG, ITM, IG;
 
 Function BuildAvailableSystemsList(): String;
-Function ConvertCoordinates(SourceEPSG, TargetEPSG: Integer; Var InputCoordinates: TCoordinates; Var OutputCoordinates: TCoordinates; Var DatumCode: Integer): Boolean;
 Procedure ProcessFileTransformation(Const InputFileName: String; Const OutputFileName: String);
 Procedure ProcessCGIRequest(Const RequestText: String);
 
@@ -34,32 +33,6 @@ Implementation
 Function BuildAvailableSystemsList: String;
 Begin
   Result := CoordinateSystems.AvailableSystemsList(True);
-End;
-
-Function ConvertCoordinates(SourceEPSG, TargetEPSG: Integer; Var InputCoordinates: TCoordinates; Var OutputCoordinates: TCoordinates; Var DatumCode: Integer): Boolean;
-Var
-  SourcePointer: TCoordinateSystemPointer;
-  TargetPointer: TCoordinateSystemPointer;
-  GeocentricCoordinates: TCoordinates;
-Begin
-  Result := False;
-  With CoordinateSystems Do
-    SourcePointer := Pointers(FindEPSGNumber(SourceEPSG));
-  With CoordinateSystems Do
-    TargetPointer := Pointers(FindEPSGNumber(TargetEPSG));
-  If Assigned(SourcePointer) Then
-    GeocentricCoordinates := SourcePointer^.ConvertToGeocentric(InputCoordinates)
-  Else
-    Exit;
-  If Assigned(TargetPointer) Then
-    Begin
-      TargetPointer^.PreferredVerticalDatum := TVerticalDatumCode(DatumCode);
-      OutputCoordinates := TargetPointer^.ConvertFromGeocentric(GeocentricCoordinates);
-      DatumCode := Integer(TargetPointer^.LastVerticalDatum);
-    End
-  Else
-    Exit;
-  Result := True;
 End;
 
 Procedure ProcessFileTransformation(Const InputFileName: String; Const OutputFileName: String);
@@ -112,7 +85,7 @@ Begin
   InputCoordinates.Y := ExtractGeometryJSONCoordinate(1);
   InputCoordinates.Z := ExtractGeometryJSONCoordinate(2);
   InputCoordinates := GeodeticDegToRad(InputCoordinates);
-  ConvertCoordinates(SourceSRID, TargetSRID, InputCoordinates, OutputCoordinates, DatumCode);
+  TransformCoordinates(SourceSRID, TargetSRID, InputCoordinates, OutputCoordinates, DatumCode);
   With OutputCoordinates Do
     If HasHeight Then
       GeometryJSONText := Format('{"type":"Point","coordinates":[%G,%G,%G],"datum":%D}',[X, Y, Z, DatumCode])

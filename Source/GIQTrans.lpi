@@ -60,7 +60,7 @@
         <CommandLineParams Value="&quot;/home/paul/Projects/GridInQuestII/Sample Files/Test.txt&quot;  Test.out"/>
       </local>
     </RunParams>
-    <Units Count="3">
+    <Units Count="4">
       <Unit0>
         <Filename Value="GIQTrans.pas"/>
         <IsPartOfProject Value="True"/>
@@ -73,6 +73,10 @@
         <Filename Value="../Examples/Web/GITrans.js"/>
         <IsPartOfProject Value="True"/>
       </Unit2>
+      <Unit3>
+        <Filename Value="GeodProc.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit3>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
