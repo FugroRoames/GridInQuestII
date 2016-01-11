@@ -165,10 +165,12 @@ End;
 
 Procedure TTransformationData.SetParameters(Const Coordinates: TCoordinates);
 Begin
-  NIParameters := BilinearGridInterpolationParameters(NIGMData.Header.Origin, Coordinates, GridScale);
-  NIValid := ParametersValid(NIParameters, NIGMData.Header);
-  RoIParameters := BilinearGridInterpolationParameters(RoIGMData.Header.Origin, Coordinates, GridScale);
-  RoIValid := ParametersValid(RoIParameters, RoIGMData.Header);
+  NIValid := BilinearGridInterpolationParameters(NIGMData.Header, Coordinates, GridScale, NIParameters);
+  If NIValid Then
+    NIValid := ParametersValid(NIParameters, NIGMData.Header);
+  RoIValid := BilinearGridInterpolationParameters(RoIGMData.Header, Coordinates, GridScale, RoIParameters);
+  If RoIValid Then
+    RoIValid := ParametersValid(RoIParameters, RoIGMData.Header);
 End;
 
 Function TTransformationData.SetZoneHeight(Const DatumZone: TDatumZone; Var OutputCoordinates: TCoordinates; Var OutputDatum: TVerticalDatumCode; Const AdjustDirection: TAdjustDirection): Boolean;

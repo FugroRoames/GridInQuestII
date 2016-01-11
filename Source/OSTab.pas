@@ -111,11 +111,12 @@ Type
     T, TI: TCoordinate;
     U, UI: TCoordinate;
   End;
-
+// TODO: Refactor Data to Datum
 Function VerticalDataCodeToAbbreviation(DatumCode: TVerticalDatumCode): String;
 Function VerticalDataCodeToName(DatumCode: TVerticalDatumCode): String;
 Function VerticalDataNameToCode(DatumName: String): TVerticalDatumCode;
-Function BilinearGridInterpolationParameters(Const Origin: TCoordinates; Const Coordinates: TCoordinates; Const GridScale: TCoordinate): TInterpolationParameters;
+Function BilinearGridInterpolationParameters(Const Header: TDataHeader; Const Coordinates: TCoordinates;
+                                             Const GridScale: TCoordinate; Var Parameters: TInterpolationParameters): Boolean;
 Function InterpolateHorizontalTable(Const HorizontalTable: THorizontalTable; Parameters: TInterpolationParameters): TPlanarCoordinates;
 Function InterpolateVerticalTable(Const VerticalTable: TVerticalTable; Parameters: TInterpolationParameters): TCoordinate;
 Function ParametersValid(Parameters: TInterpolationParameters; DataHeader: TDataHeader): Boolean;
@@ -164,22 +165,33 @@ Begin
   Result := vdNone;
 End;
 
-Function BilinearGridInterpolationParameters(Const Origin: TCoordinates; Const Coordinates: TCoordinates; Const GridScale: TCoordinate): TInterpolationParameters;
+Function BilinearGridInterpolationParameters(Const Header: TDataHeader; Const Coordinates: TCoordinates;
+                                             Const GridScale: TCoordinate; Var Parameters: TInterpolationParameters): Boolean;
 Var
   InvGridScale: TCoordinate;
 Begin
+  Result := False;
   InvGridScale := 1/GridScale;
-  With Result Do
+  With Parameters Do
     Begin
-      X1 := Trunc((Coordinates.Easting-Origin.Easting)*InvGridScale);
-      Y1 := Trunc((Coordinates.Northing-Origin.Northing)*InvGridScale);
+      X1 := Trunc((Coordinates.Easting-Header.Origin.Easting)*InvGridScale);
+      If X1<0 Then
+        Exit;
+      Y1 := Trunc((Coordinates.Northing-Header.Origin.Northing)*InvGridScale);
+      If Y1<0 Then
+        Exit;
       X2 := X1+1;
+      If X2>=Header.ColumnCount Then
+        Exit;
       Y2 := Y1+1;
-      T := (Coordinates.Easting-(X1*GridScale+Origin.Easting))*InvGridScale;
+      If Y2>=Header.RowCount Then
+        Exit;
+      T := (Coordinates.Easting-(X1*GridScale+Header.Origin.Easting))*InvGridScale;
       TI := (1-T);
-      U := (Coordinates.Northing-(Y1*GridScale+Origin.Northing))*InvGridScale;
+      U := (Coordinates.Northing-(Y1*GridScale+Header.Origin.Northing))*InvGridScale;
       UI := (1-U);
     End;
+  Result := True;
 End;
 
 Function InterpolateHorizontalTable(Const HorizontalTable: THorizontalTable; Parameters: TInterpolationParameters): TPlanarCoordinates;

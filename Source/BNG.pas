@@ -189,6 +189,7 @@ Function WGS84CoordinatesToBNGCoordinates(Const Coordinates: TCoordinates; Const
 Var
 {$IFNDEF LEVEL1}Parameters: TInterpolationParameters;{$ENDIF}
   Shifts: TCoordinates;
+  WithinGrid: Boolean;
 {$IFDEF LEVEL2}Const GridScale = 100000;{$ENDIF}
 {$IFDEF LEVEL3}Const GridScale = 10000;{$ENDIF}
 {$IFDEF LEVEL4}Const GridScale = 1000;{$ENDIF}
@@ -206,7 +207,9 @@ Begin
   Shifts.Altitude := -51.16; { Geoid height is subtracted. }
   Result := True;
 {$ELSE}
-  Parameters := BilinearGridInterpolationParameters(TNData.Header.Origin, OutputCoordinates, GridScale);
+  WithinGrid := BilinearGridInterpolationParameters(TNData.Header, OutputCoordinates, GridScale, Parameters);
+  If Not WithinGrid Then
+    Exit;
   Shifts := InterpolateHorizontalTable(TNData, Parameters);
   Shifts.Elevation := -InterpolateVerticalTable(GMData, Parameters); { Geoid is below ellipsoid. }
   { Lookup the vertical datum for the current geoid model grid square. }
@@ -225,6 +228,7 @@ Var
   PriorCoordinates: TCoordinates;
   Shifts: TCoordinates;
   Iteration: Integer;
+  WithinGrid: Boolean;
 Const
   IterationLimit = 6;
   Epsilon: TCoordinate = 0.0001;
@@ -252,7 +256,9 @@ Begin
   PriorCoordinates := NullCoordinates;
   For Iteration := 1 To IterationLimit Do
     Begin
-      Parameters := BilinearGridInterpolationParameters(TNData.Header.Origin, GeodeticCoordinates, GridScale);
+      WithinGrid := BilinearGridInterpolationParameters(TNData.Header, GeodeticCoordinates, GridScale, Parameters);
+      If Not WithinGrid Then
+        Exit;
       Shifts := InterpolateHorizontalTable(TNData, Parameters);
       Shifts.Elevation := -InterpolateVerticalTable(GMData, Parameters); { Geoid is below ellipsoid. }
       GeodeticCoordinates := Coordinates-Shifts;
