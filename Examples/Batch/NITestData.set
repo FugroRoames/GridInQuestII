@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Settings>
+  <InputSettings>
+    <Format Value="Delimited"/>
+    <FieldTerminator Value=","/>
+    <ConsecutiveDelimiters Value="False"/>
+    <TextDelimiter Value="&quot;"/>
+    <NameRow Value="1"/>
+    <FirstRow Value="2"/>
+    <SRIDNumber Value="4937"/>
+    <XColumn Value="3"/>
+    <YColumn Value="2"/>
+    <ZColumn Value="4"/>
+  </InputSettings>
+  <OutputSettings>
+    <SRIDNumber Value="29903"/>
+    <NameRow Value="1"/>
+    <IncludeDatum Value="True"/>
+    <PreferredDatum Value="14"/>
+  </OutputSettings>
+</Settings>
