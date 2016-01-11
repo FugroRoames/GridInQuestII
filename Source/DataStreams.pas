@@ -15,7 +15,7 @@ Unit DataStreams;
   for more details. }
 
 {$IFDEF FPC}
-  {$MODE objfpc}
+  {$MODE OBJFPC}
   {$LONGSTRINGS ON}
 {$ENDIF}
 
@@ -75,6 +75,7 @@ Type
     Procedure ParseFields;
     Procedure UpdateRecordCount;
   Public
+    MinProgressSize: Int64;
     Constructor Create;
     Constructor Create(InputStream: TStream);
     Constructor Create(FileName: String);
@@ -115,7 +116,7 @@ Type
 Const
   TabTerminator: Char = #9;
   CommaTerminator: Char = ',';
-  MinProgressSize: Int64 = 10485760; { 10Mb }
+  DefaultMinProgressSize: Int64 = 10485760; { 10Mb }
   StandardRecordTerminators: TSysCharSet = [#0, #10, #13];
   StandardTextDelimiter: Char = '"';
 
@@ -134,6 +135,7 @@ Begin
   FLastRow := -1; { Unlimited flag. }
   FFormatType := ftDelimited;
   FieldTerminator := CommaTerminator;
+  MinProgressSize := DefaultMinProgressSize;
   RecordTerminators := StandardRecordTerminators;
   SetFieldCount(1); { Always at least one field: the whole row of the data file. }
 End;
@@ -171,10 +173,10 @@ Begin
   BytesLoaded := 0;
   Progress := 0;
   LastProgress := 0;
+  DataSize := InputStream.Size;
   { If load progress events are required. }
   If Assigned(FOnLoadProgress) Then
       Begin
-        DataSize := InputStream.Size;
         { If the data file is large enough, send the first load event. }
         If DataSize>MinProgressSize Then
           FOnLoadProgress(Self, 0);
