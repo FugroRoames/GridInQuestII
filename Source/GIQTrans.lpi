@@ -37,9 +37,6 @@
           </SearchPaths>
           <CodeGeneration>
             <SmartLinkUnit Value="True"/>
-            <Optimizations>
-              <OptimizationLevel Value="3"/>
-            </Optimizations>
             <SmallerCode Value="True"/>
           </CodeGeneration>
           <Linking>
@@ -57,7 +54,7 @@
     <RunParams>
       <local>
         <FormatVersion Value="1"/>
-        <CommandLineParams Value="&quot;/home/paul/Projects/GridInQuestII/Sample Files/worldcitiespop.csv&quot; &quot;/home/paul/Projects/GridInQuestII/Sample Files/uktownslist-sample-out.csv&quot;"/>
+        <CommandLineParams Value="&quot;L:/Projects/GridInQuestII/Sample Files/worldcitiespop.set&quot; &quot;L:/Projects/GridInQuestII/Sample Files/worldcitiespop.csv&quot; &quot;L:/Projects/GridInQuestII/Sample Files/worldcitiespop-out.csv&quot;"/>
       </local>
     </RunParams>
     <Units Count="5">

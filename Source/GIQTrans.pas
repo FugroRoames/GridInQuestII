@@ -26,16 +26,21 @@ Type
   TOperatingMode = (omIO, omCGI);
 
 Type
+  TStringArray = Array Of String;
+
+Type
   TGITransApplication = Class(TCustomApplication)
   Public
     FileNames: TStringArray;
     InputFileName: String;
     OutputFileName: String;
+    SettingsFileName: String;
     ProtectOutputMode: Boolean;
     SilentMode: Boolean;
     OperatingMode: TOperatingMode;
     Constructor Create(TheOwner: TComponent); Override;
     Destructor Destroy; Override;
+    Function GetFileNames: TStringArray;
     Procedure WriteHeader;
     Procedure WriteHelp;
     Procedure WriteToConsole(Text: String);
@@ -53,6 +58,23 @@ Begin
   Inherited Destroy;
 End;
 
+Function TGITransApplication.GetFileNames: TStringArray;
+Var
+  Index: Integer;
+  LastIndex: Integer;
+  FileCount: Integer;
+Begin
+  FileCount := 0;
+  LastIndex := ParamCount;
+  For Index := 1 To LastIndex Do
+    If Params[Index][1]<>'-' Then
+      Begin
+        Inc(FileCount);
+        SetLength(Result, FileCount);
+        Result[FileCount-1] := Params[Index];
+      End;
+End;
+
 Procedure TGITransApplication.WriteHeader;
 Begin
   If SilentMode Then
@@ -64,8 +86,9 @@ End;
 
 Procedure TGITransApplication.WriteHelp;
 Begin
-  WriteLn('Usage: ', ChangeFileExt(ExtractFileName(ExeName),EmptyStr), ' <InputFileName> <OutputFileName> [Options]');
+  WriteLn('Usage: ', ChangeFileExt(ExtractFileName(ExeName),EmptyStr), ' <SettingsFileName> <InputFileName> <OutputFileName> [Options]');
   WriteLn;
+  WriteLn('SettingsFileName - File Name identifying transformation settings XML file.');
   WriteLn('InputFileName - File Name identifying input text file.');
   WriteLn('OutputFileName - File Name identifying output text file.');
   WriteLn;
@@ -73,8 +96,7 @@ Begin
   WriteLn('--help (-h):  This help information.');
   WriteLn('--list (-l):  List available coordinate reference systems.');
   WriteLn('--protect (-p):  Prevent output file from being over-written if it exists.');
-  WriteLn('--silent (-i):  Supress all command line output.');
-  WriteLn('--settings (-s) File Name of transformation settings XML file.');
+  WriteLn('--silent (-s):  Supress all command line output.');
   WriteLn;
   WriteLn('CGI command mode');
   WriteLn;
@@ -164,7 +186,7 @@ Begin
                 End;
               Exit;
             End;
-          SilentMode := HasOption('i', 'silent');
+          SilentMode := HasOption('s', 'silent');
           WriteHeader;
           If HasOption('h', 'help') Then
             Begin
@@ -179,28 +201,33 @@ Begin
             End;
           ProtectOutputMode := HasOption('p', 'protect');
           { Retrieve the IO filenames from the command-line parameters. }
-          FileNames := GetNonOptions('',[]);
-          If Length(FileNames)>=2 Then
+          FileNames := GetFileNames;
+          If Length(FileNames)>=3 Then
             Begin
-              InputFileName := FileNames[0];
-              OutputFileName := FileNames[1];
+              SettingsFileName := FileNames[0];
+              InputFileName := FileNames[1];
+              OutputFileName := FileNames[2];
             End
           Else
-          Begin
-            If Length(FileNames)=0 Then
-              WriteToConsole('Input and output filenames not given.')
-            Else
-              WriteToConsole('Output filename not given.');
-            Exit;
-          End;
-          { Validate the input file name parameter. }
+            Begin
+              WriteToConsole('Settings, Input and Output filenames are missing or incomplete.');
+              Exit;
+            End;
+          { Validate the settings file name. }
+          SettingsFileName := ExpandFileName(SettingsFileName);
+          If Not FileExists(SettingsFileName) Then
+            Begin
+              WriteToConsole('Settings file not found: '+SettingsFileName);
+              Exit;
+            End;
+          { Validate the input file name. }
           InputFileName := ExpandFileName(InputFileName);
           If Not FileExists(InputFileName) Then
             Begin
               WriteToConsole('Input file not found: '+InputFileName);
               Exit;
             End;
-          { Validate the output file name parameter. }
+          { Validate the output file name. }
           OutputFileName := ExpandFileName(OutputFileName);
           If FileExists(OutputFileName) And ProtectOutputMode Then
             Begin
@@ -213,7 +240,7 @@ Begin
               Exit;
             End;
           { Process the file transformation. }
-          ProcessFile(InputFileName, OutputFileName, Not SilentMode);
+          ProcessFile(SettingsFileName, InputFileName, OutputFileName, Not SilentMode);
         End;
       omCGI:
         Begin

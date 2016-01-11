@@ -25,7 +25,8 @@ Uses
   Math, Geometry, Geodesy, ETRS, BNG, ITM, IG, DataStreams;
 
 Function IsSRIDGeodeticSystem(SRID: Integer): Boolean;
-Function TransformCoordinates(SourceSRID, TargetSRID: Integer; Var InputCoordinates: TCoordinates; Var OutputCoordinates: TCoordinates; Var DatumCode: Integer): Boolean;
+Function SRIDToSystemPointer(SRID: Integer): TCoordinateSystemPointer;
+Function TransformCoordinates(SourceSRID, TargetSRID: Integer; Var InputCoordinates: TCoordinates; Var OutputCoordinates: TCoordinates; Var DatumCode: TVerticalDatumCode): Boolean;
 
 Implementation
 
@@ -33,25 +34,28 @@ Function IsSRIDGeodeticSystem(SRID: Integer): Boolean;
 Var
   SystemPointer: TCoordinateSystemPointer;
 Begin
-  With CoordinateSystems Do
-    SystemPointer := Pointers(FindSRIDNumber(SRID));
+  SystemPointer := SRIDToSystemPointer(SRID);
   If Assigned(SystemPointer) Then
     Result := (SystemPointer^.CoordinateType=ctGeodetic)
   Else
     Result := False;
 End;
 
-Function TransformCoordinates(SourceSRID, TargetSRID: Integer; Var InputCoordinates: TCoordinates; Var OutputCoordinates: TCoordinates; Var DatumCode: Integer): Boolean;
+Function SRIDToSystemPointer(SRID: Integer): TCoordinateSystemPointer;
+Begin
+  With CoordinateSystems Do
+    Result := Pointers(FindSRIDNumber(SRID));
+End;
+
+Function TransformCoordinates(SourceSRID, TargetSRID: Integer; Var InputCoordinates: TCoordinates; Var OutputCoordinates: TCoordinates; Var DatumCode: TVerticalDatumCode): Boolean;
 Var
   SourceSystemPointer: TCoordinateSystemPointer;
   TargetSystemPointer: TCoordinateSystemPointer;
   GeocentricCoordinates: TCoordinates;
 Begin
   Result := False;
-  With CoordinateSystems Do
-    SourceSystemPointer := Pointers(FindSRIDNumber(SourceSRID));
-  With CoordinateSystems Do
-    TargetSystemPointer := Pointers(FindSRIDNumber(TargetSRID));
+  SourceSystemPointer := SRIDToSystemPointer(SourceSRID);
+  TargetSystemPointer := SRIDToSystemPointer(TargetSRID);
   If Assigned(SourceSystemPointer) Then
     GeocentricCoordinates := SourceSystemPointer^.ConvertToGeocentric(InputCoordinates)
   Else
@@ -60,7 +64,7 @@ Begin
     Begin
       TargetSystemPointer^.PreferredVerticalDatum := TVerticalDatumCode(DatumCode);
       OutputCoordinates := TargetSystemPointer^.ConvertFromGeocentric(GeocentricCoordinates);
-      DatumCode := Integer(TargetSystemPointer^.LastVerticalDatum);
+      DatumCode := TargetSystemPointer^.LastVerticalDatum;
     End
   Else
     Exit;
