@@ -173,10 +173,10 @@ Begin
   BytesLoaded := 0;
   Progress := 0;
   LastProgress := 0;
-  DataSize := InputStream.Size;
   { If load progress events are required. }
   If Assigned(FOnLoadProgress) Then
       Begin
+        DataSize := InputStream.Size;
         { If the data file is large enough, send the first load event. }
         If DataSize>MinProgressSize Then
           FOnLoadProgress(Self, 0);
