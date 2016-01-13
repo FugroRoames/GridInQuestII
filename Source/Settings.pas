@@ -586,6 +586,7 @@ Begin
         Data.FieldTerminator := InputText[1];
     End;
   End;
+  PopulateNameLists;
   DisplayDataInformation;
 End;
 
