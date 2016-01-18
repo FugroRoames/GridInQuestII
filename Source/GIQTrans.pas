@@ -20,7 +20,7 @@ Program GIQTrans;
 {$ENDIF}
 
 Uses
-  Classes, SysUtils, CustApp, DOS, TransMain, GeodProc, GeoJSON;
+  Classes, SysUtils, CustApp, DOS, IOMain, CGIMain, Geodesy, GeodProc, GeoJSON;
 
 Type
   TOperatingMode = (omIO, omCGI);
@@ -34,9 +34,15 @@ Type
     FileNames: TStringArray;
     InputFileName: String;
     OutputFileName: String;
+    CGIFileName: String;
     SettingsFileName: String;
+    SettingsInfo: TSettingsInfo;
     ProtectOutputMode: Boolean;
     SilentMode: Boolean;
+    IsGetRequest: Boolean;
+    IsPostRequest: Boolean;
+    InputChar: Char;
+    RequestText: String;
     OperatingMode: TOperatingMode;
     Constructor Create(TheOwner: TComponent); Override;
     Destructor Destroy; Override;
@@ -109,6 +115,11 @@ Begin
   WriteLn('Geometry:  Input point geometry in GeoJSON format.');
 End;
 
+Function BuildAvailableSystemsList: String;
+Begin
+  Result := CoordinateSystems.AvailableSystemsList(True);
+End;
+
 Procedure TGITransApplication.WriteToConsole(Text: String);
 Begin
   If Not SilentMode Then
@@ -120,7 +131,7 @@ Var
   FileHandle: THandle;
 Begin
   FileHandle := FileCreate(FileName);
-  Result := (FileHandle<>-1);
+  Result := (FileHandle<>THandle(-1));
   If Result Then
     Begin
       FileClose(FileHandle);
@@ -139,13 +150,6 @@ Begin
   TextBuffer.Read(Result[1], TextBuffer.Size);
   TextBuffer.Free;
 End;
-
-Var
-  IsGetRequest: Boolean;
-  IsPostRequest: Boolean;
-  InputChar: Char;
-  RequestText: String;
-  FileName: String;
 
 {$R *.res}
 
@@ -172,11 +176,11 @@ Begin
           If HasOption('CGI') Then
             Begin
               { Simulate CGI mode from file input. }
-              FileName := GetOptionValue('CGI');
-              FileName := ExpandFileName(FileName);
-              If FileExists(FileName) Then
+              CGIFileName := GetOptionValue('CGI');
+              CGIFileName := ExpandFileName(CGIFileName);
+              If FileExists(CGIFileName) Then
                 Begin
-                  RequestText := LoadFileAsText(FileName);
+                  RequestText := LoadFileAsText(CGIFileName);
                   ProcessCGIRequest(RequestText);
                 End
               Else
@@ -220,6 +224,20 @@ Begin
               WriteToConsole('Settings file not found: '+SettingsFileName);
               Exit;
             End;
+          { Load the setting values. }
+          If Not LoadSettings(SettingsFileName, SettingsInfo) Then
+            Begin
+              WriteToConsole('Invalid settings file: '+SettingsFileName);
+              Exit;
+            End;
+          { Set the fixed output settings. }
+          With SettingsInfo Do
+          With SettingsInfo Do
+            Begin
+              HorizontalDecimalPlaces := -1;
+              VerticalDecimalPlaces := -1;
+              ZeroFill := False;
+            End;
           { Validate the input file name. }
           InputFileName := ExpandFileName(InputFileName);
           If Not FileExists(InputFileName) Then
@@ -240,7 +258,7 @@ Begin
               Exit;
             End;
           { Process the file transformation. }
-          ProcessFile(SettingsFileName, InputFileName, OutputFileName, Not SilentMode);
+          ProcessFile(SettingsInfo, InputFileName, OutputFileName, Not SilentMode);
         End;
       omCGI:
         Begin

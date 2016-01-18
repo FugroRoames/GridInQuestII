@@ -582,7 +582,7 @@ Begin
         If Assigned(FOnParseProgress) Then
           If Size>MinProgressSize Then
             Begin
-              Progress := Integer((99*Int64(BufferPointer-BufferStartPointer)) Div Size);
+              Progress := Integer((99*(Int64(BufferPointer)-Int64(BufferStartPointer))) Div Size);
               { Limit the progress reporting to 99 as 100 will be sent once as the last event below. }
               If Progress>99 Then
                 Progress := 99;
