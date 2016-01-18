@@ -22,7 +22,7 @@ Unit GeodProc;
 Interface
 
 Uses
-  Math, Geometry, Geodesy, ETRS, BNG, ITM, IG, DataStreams;
+  Geodesy, ETRS, BNG, ITM, IG;
 
 Function IsSRIDGeodeticSystem(SRID: Integer): Boolean;
 Function SRIDToSystemPointer(SRID: Integer): TCoordinateSystemPointer;

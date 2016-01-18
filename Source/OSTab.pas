@@ -279,7 +279,7 @@ Begin
           If DataSize=SizeOf(Header) Then
             Begin
               RecordCount := Header.RowCount*Header.ColumnCount;
-              DataSize := RecordCount*SizeOf(THorizontalRecord);
+              DataSize := Int64(RecordCount)*Int64(SizeOf(THorizontalRecord));
               RecordsPointer := GetMem(DataSize);
               FileRead(FileHandle, RecordsPointer^, DataSize);
               Result := True;
@@ -350,7 +350,7 @@ Begin
           If DataSize=SizeOf(Header) Then
             Begin
               RecordCount := Header.RowCount*Header.ColumnCount;
-              DataSize := RecordCount*SizeOf(TVerticalRecord);
+              DataSize := Int64(RecordCount)*Int64(SizeOf(TVerticalRecord));
               RecordsPointer := GetMem(DataSize);
               FileRead(FileHandle, RecordsPointer^, DataSize);
               Result := True;
