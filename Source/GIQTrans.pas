@@ -232,7 +232,6 @@ Begin
             End;
           { Set the fixed output settings. }
           With SettingsInfo Do
-          With SettingsInfo Do
             Begin
               HorizontalDecimalPlaces := -1;
               VerticalDecimalPlaces := -1;
