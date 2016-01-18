@@ -1,0 +1,3 @@
+@cls
+giqtrans --help
+@pause

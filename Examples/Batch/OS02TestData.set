@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Settings>
+  <InputSettings>
+    <Format Value="Delimited"/>
+    <FieldTerminator Value=","/>
+    <ConsecutiveDelimiters Value="False"/>
+    <NameRow Value="1"/>
+    <XColumn Value="2"/>
+    <YColumn Value="3"/>
+    <ZColumn Value="4"/>
+  </InputSettings>
+</Settings>
