@@ -423,8 +423,6 @@ Begin
   FFirstCoordinatePanel.TabOrder := 1;
   FSecondCoordinatePanel.TabOrder := 2;
   FThirdCoordinatePanel.TabOrder := 3;
-  If TheOwner Is TWinControl Then
-    Parent := TWinControl(TheOwner);
 End;
 
 Function TCoordinatesEntryPanel.GetCoordinates: TCoordinates;

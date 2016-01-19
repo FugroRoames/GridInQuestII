@@ -174,7 +174,9 @@ Begin
   MainGlobe.Parent := Self;
   { Panels must be created in reverse order for top alignment to work correctly. }
   OutputPanel := TCoordinatesEntryPanel.Create(SidePanel, ptOutput);
+  OutputPanel.Parent := SidePanel;
   InputPanel := TCoordinatesEntryPanel.Create(SidePanel, ptInput);
+  InputPanel.Parent := SidePanel;
   BlankPanel := TPanel.Create(SidePanel);
   BlankPanel.Parent := SidePanel;
   BlankPanel.Align := alClient;
