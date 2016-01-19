@@ -87,15 +87,15 @@ Begin
       SplashForm := TForm.Create(Nil);
       With SplashForm Do
         Begin
+          AutoSize := True;
           FormStyle := fsStayOnTop;
+          Position := poScreenCenter;
           With TImage.Create(SplashForm) Do
             Begin
               BorderStyle := bsNone;
               Picture.Bitmap.Assign(SplashscreenJpeg);
               Parent := SplashForm;
               SetBounds(0, 0, Picture.Width, Picture.Height);
-              SplashForm.SetBounds((Screen.Width-Picture.Width) Div 2, (Screen.Height-Picture.Height) Div 2,
-                                    Picture.Width, Picture.Height);
             End;
           With TLabel.Create(SplashForm) Do
             Begin
