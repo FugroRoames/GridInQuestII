@@ -85,7 +85,7 @@ Procedure TGITransApplication.WriteHeader;
 Begin
   If SilentMode Then
     Exit;
-  WriteLn('GITrans - GridInQuestII spatial transformation utility.');
+  WriteLn('GITrans - Grid InQuest II spatial transformation utility.');
   WriteLn('(c) 2015 Paul F. Michell, Michell Computing.');
   WriteLn;
 End;

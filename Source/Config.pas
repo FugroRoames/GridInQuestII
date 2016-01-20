@@ -131,9 +131,19 @@ Begin
   XMLConfig.CloseKey;
   { Irish datum settings. }
   XMLConfig.OpenKey(IrishSettingsKey);
-  With IGCoordinateSystem Do
+{$IFDEF IG02}
+  With IG02CoordinateSystem Do
     PreferredVerticalDatum := VerticalDataNameToCode(XMLConfig.GetValue(IGPreferredDatumKey,
                                                      VerticalDataCodeToName(PreferredVerticalDatum)));
+{$ENDIF}
+  With IG15CoordinateSystem Do
+    PreferredVerticalDatum := VerticalDataNameToCode(XMLConfig.GetValue(IGPreferredDatumKey,
+                                                     VerticalDataCodeToName(PreferredVerticalDatum)));
+{$IFDEF ITM02}
+  With ITM02CoordinateSystem Do
+    PreferredVerticalDatum := VerticalDataNameToCode(XMLConfig.GetValue(ITMPreferredDatumKey,
+                                                     VerticalDataCodeToName(PreferredVerticalDatum)));
+{$ENDIF}
   With ITM15CoordinateSystem Do
     PreferredVerticalDatum := VerticalDataNameToCode(XMLConfig.GetValue(ITMPreferredDatumKey,
                                                      VerticalDataCodeToName(PreferredVerticalDatum)));
@@ -199,8 +209,16 @@ Begin
   XMLConfig.CloseKey;
   { Irish datum settings. }
   XMLConfig.OpenKey(IrishSettingsKey);
-  With IGCoordinateSystem Do
+{$IFDEF IG02}
+  With IG02CoordinateSystem Do
     XMLConfig.SetValue(IGPreferredDatumKey, VerticalDataCodeToName(PreferredVerticalDatum));
+{$ENDIF}
+  With IG15CoordinateSystem Do
+    XMLConfig.SetValue(IGPreferredDatumKey, VerticalDataCodeToName(PreferredVerticalDatum));
+{$IFDEF ITM02}
+  With ITM02CoordinateSystem Do
+    XMLConfig.SetValue(ITMPreferredDatumKey, VerticalDataCodeToName(PreferredVerticalDatum));
+{$ENDIF}
   With ITM15CoordinateSystem Do
     XMLConfig.SetValue(ITMPreferredDatumKey, VerticalDataCodeToName(PreferredVerticalDatum));
   XMLConfig.CloseKey;

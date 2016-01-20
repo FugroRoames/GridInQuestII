@@ -34,9 +34,10 @@ Type
   TITMCoordinateSystem = Object(TCoordinateSystem)
 //    PreferredVerticalDatum: TVerticalDatumCode; { These fields should be define here but have been moved to the parent object in the Geodesy unit. }
 //    LastVerticalDatum: TVerticalDatumCode; { They have been moved to avoid a compiler bug that incorrectly handles object inheritance. }
+    VerticalModel: TOSVerticalModel;
     Constructor Initialize(NewName: String; NewAbbreviation: String; NewDescription: String; NewEPSGNumber: Integer;
                            NewCoordinateType: TCoordinateType; NewAxisOrder: TAxisOrder;
-                           NewBounds: TGeodeticBounds; NewPreferredVerticalDatum: TVerticalDatumCode);
+                           NewBounds: TGeodeticBounds; NewPreferredVerticalDatum: TVerticalDatumCode; NewVerticalModel: TOSVerticalModel);
     Function ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
     Function ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
   End;
@@ -48,7 +49,9 @@ Var
   GM15RoIData: TVerticalTable;
   GRS80Ellipsoid: TEllipsoid;
   ITMProjection: TProjection;
+{$IFDEF ITM02}
   ITM02CoordinateSystem: TITMCoordinateSystem;
+{$ENDIF}
   ITM15CoordinateSystem: TITMCoordinateSystem;
 
 Const
@@ -113,19 +116,20 @@ Const
 
 Constructor TITMCoordinateSystem.Initialize(NewName: String; NewAbbreviation: String; NewDescription: String; NewEPSGNumber: Integer;
                                             NewCoordinateType: TCoordinateType; NewAxisOrder: TAxisOrder;
-                                            NewBounds: TGeodeticBounds; NewPreferredVerticalDatum: TVerticalDatumCode);
+                                            NewBounds: TGeodeticBounds; NewPreferredVerticalDatum: TVerticalDatumCode; NewVerticalModel: TOSVerticalModel);
 Begin
   Inherited Initialize(NewName, NewAbbreviation, NewDescription, NewEPSGNumber,
                              NewCoordinateType, NewAxisOrder, NewBounds);
   PreferredVerticalDatum := NewPreferredVerticalDatum;
   LastVerticalDatum := vdNone;
+  VerticalModel := NewVerticalModel;
 End;
 
 Function TITMCoordinateSystem.ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates;
 Var
   GeodeticCoordinates: TCoordinates;
 Begin
-  If ITMCoordinatesToWGS84Coordinates(Coordinates, vmGM15, PreferredVerticalDatum, GeodeticCoordinates, LastVerticalDatum) Then
+  If ITMCoordinatesToWGS84Coordinates(Coordinates, VerticalModel, PreferredVerticalDatum, GeodeticCoordinates, LastVerticalDatum) Then
     If WithinGeodeticBounds(GeodeticCoordinates) Then
       Result := GeodeticToGeocentric(GeodeticCoordinates, GRS80Ellipsoid)
     Else
@@ -141,7 +145,7 @@ Var
 Begin
   GeodeticCoordinates := GeocentricToGeodetic(Coordinates, GRS80Ellipsoid);
   If WithinGeodeticBounds(GeodeticCoordinates) Then
-    If WGS84CoordinatesToITMCoordinates(GeodeticCoordinates, vmGM15, PreferredVerticalDatum, Result, LastVerticalDatum) Then
+    If WGS84CoordinatesToITMCoordinates(GeodeticCoordinates, VerticalModel, PreferredVerticalDatum, Result, LastVerticalDatum) Then
       Exit;
   LastVerticalDatum := vdNone;
   Result := NullCoordinates
@@ -309,13 +313,13 @@ ITMProjection.Initialize(0.99982, DegToRad(53.5), DegToRad(-8), 600000, 750000, 
 // TODO: EPSG number needes to be distinct from GM15 for this to work.
 ITM02CoordinateSystem.Initialize('Irish Transverse Mercator', 'IRENET95',
                                  'Irish Transverse Mercator (ITM/GM02)', 2157,
-                                 ctProjected, aoXYZ, ITMBounds, vdMalinHead);
+                                 ctProjected, aoXYZ, ITMBounds, vdMalinHead, vmGM02);
 CoordinateSystems.Register(ITM02CoordinateSystem);
 {$ENDIF}
 
 ITM15CoordinateSystem.Initialize('Irish Transverse Mercator', 'IRENET95',
-                                 'Irish Transverse Mercator (ITM/GM15)', 2157,
-                                 ctProjected, aoXYZ, ITMBounds, vdMalinHead);
+                                 'Irish Transverse Mercator (ITM/GM15)', 12157,
+                                 ctProjected, aoXYZ, ITMBounds, vdMalinHead, vmGM15);
 CoordinateSystems.Register(ITM15CoordinateSystem);
 
 Finalization

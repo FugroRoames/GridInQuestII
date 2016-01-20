@@ -45,6 +45,11 @@
             </Debugging>
             <LinkSmart Value="True"/>
           </Linking>
+          <Other>
+            <CustomOptions Value="-dBNG02
+-dITM02
+-dIG02"/>
+          </Other>
         </CompilerOptions>
       </Item2>
     </BuildModes>

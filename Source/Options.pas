@@ -167,7 +167,7 @@ Begin
       HeightPlacesOutputEdit.Text := IntToStr(HeightDecimalPlaces);
       DatumSuffixOutputCheckBox.Checked := HeightDatumSuffix;
     End;
-  IGDatumComboBox.Text := DatumCodeToText(IGCoordinateSystem.PreferredVerticalDatum);
+  IGDatumComboBox.Text := DatumCodeToText(IG15CoordinateSystem.PreferredVerticalDatum);
   ITMDatumComboBox.Text := DatumCodeToText(ITM15CoordinateSystem.PreferredVerticalDatum);
 End;
 
@@ -280,7 +280,13 @@ Begin
       HeightDecimalPlaces := StrToIntDef(HeightPlacesOutputEdit.Text, 2);
       HeightDatumSuffix := DatumSuffixOutputCheckBox.Checked;
     End;
-  IGCoordinateSystem.PreferredVerticalDatum := DatumTextToCode(IGDatumComboBox.Text);
+{$IFDEF IG02}
+  IG02CoordinateSystem.PreferredVerticalDatum := DatumTextToCode(IGDatumComboBox.Text);
+{$ENDIF}
+  IG15CoordinateSystem.PreferredVerticalDatum := DatumTextToCode(IGDatumComboBox.Text);
+{$IFDEF ITM02}
+  ITM02CoordinateSystem.PreferredVerticalDatum := DatumTextToCode(ITMDatumComboBox.Text);
+{$ENDIF}
   ITM15CoordinateSystem.PreferredVerticalDatum := DatumTextToCode(ITMDatumComboBox.Text);
   WriteConfigOptions;
 End;

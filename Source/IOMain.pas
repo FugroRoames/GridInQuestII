@@ -370,6 +370,7 @@ Var
   OutputText: String;
   SourceSystemPointer: TCoordinateSystemPointer;
   TargetSystemPointer: TCoordinateSystemPointer;
+  IncludeXYAxes: Boolean;
   IncludeZAxis: Boolean;
   SourceIsGeodetic: Boolean;
   TargetIsGeodetic: Boolean;
@@ -511,28 +512,32 @@ Begin
     Progress.Message('Writing output to: '+OutputFileName);
     With SettingsInfo, TargetSystemPointer^ Do
       Try
-        IncludeZAxis := ((SourceZIndex<>-1) Or (CoordinateType=ctCartesian));
+        IncludeXYAxes := (TargetXName<>'') And (TargetYName<>'');
+        IncludeZAxis := (TargetZName<>'') And ((SourceZIndex<>-1) Or (CoordinateType=ctCartesian));
         Progress.StartSave(InputData.RecordCount);
         OutputFile := TFileStream.Create(OutputFileName, fmCreate);
         { Write the header line for the output file. }
         If IncludeNames Then
           Begin
             OutputText := InputData.NamesAsText(FieldTerminator, TextDelimiter);
-            Case AxisOrder Of
-            aoXYZ:
-              Begin
-                AddFieldValue(TargetXName);
-                AddFieldValue(TargetYName);
+            { Output the horizontal axes names. }
+            If IncludeXYAxes Then
+              Case AxisOrder Of
+              aoXYZ:
+                Begin
+                  AddFieldValue(TargetXName);
+                  AddFieldValue(TargetYName);
+                End;
+              aoYXZ:
+                Begin
+                  AddFieldValue(TargetYName);
+                  AddFieldValue(TargetXName);
+                End;
               End;
-            aoYXZ:
-              Begin
-                AddFieldValue(TargetYName);
-                AddFieldValue(TargetXName);
-              End;
-            End;
-            { Output the third coordinate name if needed. }
+            { Output the third coordinate axis name if needed. }
             If IncludeZAxis Then
               AddFieldValue(TargetZName);
+            { Output the datum column name. }
             If IncludeDatum Then
               AddFieldValue('Datum');
             OutputText := OutputText+LineEnding;
@@ -545,8 +550,11 @@ Begin
             { Write the output line for the current record. }
             InputData.RecordNumber := RecordIndex;
             OutputText := InputData.RecordAsText(FieldTerminator, TextDelimiter);
-            AddFieldValue(AxisCoordinateValue(0, OutputData[RecordIndex].Coordinates));
-            AddFieldValue(AxisCoordinateValue(1, OutputData[RecordIndex].Coordinates));
+            If IncludeXYAxes Then
+              Begin
+                AddFieldValue(AxisCoordinateValue(0, OutputData[RecordIndex].Coordinates));
+                AddFieldValue(AxisCoordinateValue(1, OutputData[RecordIndex].Coordinates));
+              End;
             If IncludeZAxis Then
               AddFieldValue(AxisCoordinateValue(2, OutputData[RecordIndex].Coordinates));
             If IncludeDatum Then
