@@ -20,7 +20,7 @@ Program GIQTrans;
 {$ENDIF}
 
 Uses
-  Classes, SysUtils, CustApp, DOS, IOMain, CGIMain, Geodesy, GeodProc, GeoJSON;
+  {$IFDEF UNIX}CWString, {$ENDIF}Classes, SysUtils, CustApp, DOS, IOMain, CGIMain, Geodesy, GeodProc, GeoJSON;
 
 Type
   TOperatingMode = (omIO, omCGI);
