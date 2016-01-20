@@ -5,6 +5,7 @@
     <FieldTerminator Value=","/>
     <ConsecutiveDelimiters Value="False"/>
     <NameRow Value="1"/>
+    <SRIDNumber Value="27700"/>
     <XColumn Value="2"/>
     <YColumn Value="3"/>
     <ZColumn Value="4"/>
