@@ -46,9 +46,11 @@
             <LinkSmart Value="True"/>
           </Linking>
           <Other>
-            <CustomOptions Value="-dBNG02
--dITM02
--dIG02"/>
+            <OtherDefines Count="3">
+              <Define0 Value="BNG02"/>
+              <Define1 Value="ITM02"/>
+              <Define2 Value="IG02"/>
+            </OtherDefines>
           </Other>
         </CompilerOptions>
       </Item2>

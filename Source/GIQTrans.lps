@@ -7,8 +7,6 @@
       <Unit0>
         <Filename Value="GIQTrans.pas"/>
         <IsPartOfProject Value="True"/>
-        <IsVisibleTab Value="True"/>
-        <TopLine Value="3"/>
         <CursorPos X="34" Y="23"/>
         <UsageCount Value="88"/>
         <Loaded Value="True"/>
@@ -262,15 +260,18 @@
       </Unit35>
       <Unit36>
         <Filename Value="IOMain.pas"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <CursorPos X="26" Y="4"/>
+        <TopLine Value="289"/>
+        <CursorPos X="25" Y="301"/>
         <UsageCount Value="11"/>
         <Loaded Value="True"/>
       </Unit36>
       <Unit37>
         <Filename Value="CGIMain.pas"/>
         <EditorIndex Value="2"/>
-        <CursorPos X="22" Y="25"/>
+        <TopLine Value="53"/>
+        <CursorPos X="87" Y="65"/>
         <UsageCount Value="11"/>
         <Loaded Value="True"/>
       </Unit37>
@@ -289,126 +290,131 @@
         <UsageCount Value="10"/>
       </Unit39>
     </Units>
+    <OtherDefines Count="3">
+      <Define0 Value="BNG02"/>
+      <Define1 Value="ITM02"/>
+      <Define2 Value="IG02"/>
+    </OtherDefines>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="OSTab.pas"/>
-        <Caret Line="169" Column="80" TopLine="168"/>
+        <Filename Value="DataStreams.pas"/>
+        <Caret Line="346" TopLine="330"/>
       </Position1>
       <Position2>
-        <Filename Value="OSTab.pas"/>
-        <Caret Line="282" Column="78" TopLine="268"/>
+        <Filename Value="DataStreams.pas"/>
+        <Caret Line="391" Column="31" TopLine="376"/>
       </Position2>
       <Position3>
         <Filename Value="DataStreams.pas"/>
-        <Caret Line="346" TopLine="330"/>
+        <Caret Line="41" Column="5" TopLine="26"/>
       </Position3>
       <Position4>
-        <Filename Value="DataStreams.pas"/>
-        <Caret Line="391" Column="31" TopLine="376"/>
+        <Filename Value="GeodProc.pas"/>
+        <Caret Line="25" Column="46" TopLine="10"/>
       </Position4>
       <Position5>
         <Filename Value="DataStreams.pas"/>
-        <Caret Line="41" Column="5" TopLine="26"/>
+        <Caret Line="293" Column="26" TopLine="278"/>
       </Position5>
       <Position6>
-        <Filename Value="GeodProc.pas"/>
-        <Caret Line="25" Column="46" TopLine="10"/>
+        <Filename Value="DataStreams.pas"/>
+        <Caret Line="186" Column="45" TopLine="172"/>
       </Position6>
       <Position7>
         <Filename Value="DataStreams.pas"/>
-        <Caret Line="293" Column="26" TopLine="278"/>
+        <Caret Line="288" Column="13" TopLine="274"/>
       </Position7>
       <Position8>
-        <Filename Value="DataStreams.pas"/>
-        <Caret Line="186" Column="45" TopLine="172"/>
-      </Position8>
-      <Position9>
-        <Filename Value="DataStreams.pas"/>
-        <Caret Line="288" Column="13" TopLine="274"/>
-      </Position9>
-      <Position10>
         <Filename Value="IOMain.pas"/>
         <Caret Line="25" Column="31" TopLine="10"/>
-      </Position10>
-      <Position11>
+      </Position8>
+      <Position9>
         <Filename Value="GIQTrans.pas"/>
         <Caret Line="134" Column="24" TopLine="119"/>
-      </Position11>
-      <Position12>
+      </Position9>
+      <Position10>
         <Filename Value="GIQTrans.pas"/>
         <Caret Line="131" Column="20" TopLine="119"/>
+      </Position10>
+      <Position11>
+        <Filename Value="DataStreams.pas"/>
+        <Caret Line="41" Column="5" TopLine="26"/>
+      </Position11>
+      <Position12>
+        <Filename Value="DataStreams.pas"/>
+        <Caret Line="585" Column="45" TopLine="571"/>
       </Position12>
       <Position13>
         <Filename Value="DataStreams.pas"/>
-        <Caret Line="41" Column="5" TopLine="26"/>
+        <Caret Line="396" Column="19" TopLine="382"/>
       </Position13>
       <Position14>
         <Filename Value="DataStreams.pas"/>
-        <Caret Line="585" Column="45" TopLine="571"/>
+        <Caret Line="585" Column="45" TopLine="570"/>
       </Position14>
       <Position15>
-        <Filename Value="DataStreams.pas"/>
-        <Caret Line="396" Column="19" TopLine="382"/>
-      </Position15>
-      <Position16>
-        <Filename Value="DataStreams.pas"/>
-        <Caret Line="585" Column="45" TopLine="570"/>
-      </Position16>
-      <Position17>
         <Filename Value="GIQTrans.pas"/>
         <Caret Line="45" TopLine="24"/>
-      </Position17>
-      <Position18>
+      </Position15>
+      <Position16>
         <Filename Value="GIQTrans.pas"/>
         <Caret Line="37" Column="16" TopLine="28"/>
+      </Position16>
+      <Position17>
+        <Filename Value="IOMain.pas"/>
+        <Caret Line="28" Column="23" TopLine="25"/>
+      </Position17>
+      <Position18>
+        <Filename Value="IOMain.pas"/>
+        <Caret Line="36" Column="20" TopLine="25"/>
       </Position18>
       <Position19>
         <Filename Value="IOMain.pas"/>
-        <Caret Line="28" Column="23" TopLine="25"/>
+        <Caret Line="335" Column="26" TopLine="331"/>
       </Position19>
       <Position20>
         <Filename Value="IOMain.pas"/>
-        <Caret Line="36" Column="20" TopLine="25"/>
+        <Caret Line="340" Column="26" TopLine="331"/>
       </Position20>
       <Position21>
         <Filename Value="IOMain.pas"/>
-        <Caret Line="335" Column="26" TopLine="331"/>
+        <Caret Line="344" Column="26" TopLine="331"/>
       </Position21>
       <Position22>
         <Filename Value="IOMain.pas"/>
-        <Caret Line="340" Column="26" TopLine="331"/>
+        <Caret Line="419" Column="61" TopLine="407"/>
       </Position22>
       <Position23>
         <Filename Value="IOMain.pas"/>
-        <Caret Line="344" Column="26" TopLine="331"/>
+        <Caret Line="424" Column="61" TopLine="407"/>
       </Position23>
       <Position24>
         <Filename Value="IOMain.pas"/>
-        <Caret Line="419" Column="61" TopLine="407"/>
+        <Caret Line="272" TopLine="269"/>
       </Position24>
       <Position25>
         <Filename Value="IOMain.pas"/>
-        <Caret Line="424" Column="61" TopLine="407"/>
+        <Caret Line="42" Column="17" TopLine="22"/>
       </Position25>
       <Position26>
         <Filename Value="IOMain.pas"/>
-        <Caret Line="272" TopLine="269"/>
+        <Caret Line="345" Column="20" TopLine="317"/>
       </Position26>
       <Position27>
         <Filename Value="IOMain.pas"/>
-        <Caret Line="42" Column="17" TopLine="22"/>
+        <Caret Line="320" Column="26" TopLine="318"/>
       </Position27>
       <Position28>
         <Filename Value="IOMain.pas"/>
-        <Caret Line="345" Column="20" TopLine="317"/>
+        <Caret Line="404" Column="56" TopLine="390"/>
       </Position28>
       <Position29>
-        <Filename Value="IOMain.pas"/>
-        <Caret Line="320" Column="26" TopLine="318"/>
+        <Filename Value="CGIMain.pas"/>
+        <Caret Line="25" Column="22"/>
       </Position29>
       <Position30>
         <Filename Value="IOMain.pas"/>
-        <Caret Line="404" Column="56" TopLine="390"/>
+        <Caret Line="4" Column="26"/>
       </Position30>
     </JumpHistory>
   </ProjectSession>
