@@ -310,7 +310,6 @@ If Not GM15RoIDataFound Then
 GRS80Ellipsoid.Initialize(6378137.0000, 6356752.314140);
 ITMProjection.Initialize(0.99982, DegToRad(53.5), DegToRad(-8), 600000, 750000, GRS80Ellipsoid);
 {$IFDEF ITM02}
-// TODO: EPSG number needes to be distinct from GM15 for this to work.
 ITM02CoordinateSystem.Initialize('Irish Transverse Mercator', 'IRENET95',
                                  'Irish Transverse Mercator (ITM/GM02)', 2157,
                                  ctProjected, aoXYZ, ITMBounds, vdMalinHead, vmGM02);
@@ -318,7 +317,7 @@ CoordinateSystems.Register(ITM02CoordinateSystem);
 {$ENDIF}
 
 ITM15CoordinateSystem.Initialize('Irish Transverse Mercator', 'IRENET95',
-                                 'Irish Transverse Mercator (ITM/GM15)', 12157,
+                                 'Irish Transverse Mercator (ITM/GM15)', 2157,
                                  ctProjected, aoXYZ, ITMBounds, vdMalinHead, vmGM15);
 CoordinateSystems.Register(ITM15CoordinateSystem);
 

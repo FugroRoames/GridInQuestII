@@ -355,7 +355,7 @@ BNG02CoordinateSystem.Initialize('British National Grid (2002)', 'OSGB36',
 CoordinateSystems.Register(BNG02CoordinateSystem);
 {$ENDIF}
 BNG15CoordinateSystem.Initialize('British National Grid (2015)', 'OSGB36',
-                                 'OSGB36 / British National Grid (TN15/GM15)', 27701, ctProjected, aoXYZ, BNGBounds, TN15GBData, GM15GBData);
+                                 'OSGB36 / British National Grid (TN15/GM15)', 27700, ctProjected, aoXYZ, BNGBounds, TN15GBData, GM15GBData);
 CoordinateSystems.Register(BNG15CoordinateSystem);
 
 Finalization

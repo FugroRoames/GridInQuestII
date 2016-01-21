@@ -251,7 +251,7 @@ IrishGPSGridProjection.Initialize(1.000035, DegToRad(53.5), DegToRad(-8), 200000
 IG02CoordinateSystem.Initialize('Irish Grid', 'IG75', 'Irish Grid (IG/GM02)', 29903, ctProjected, aoXYZ, IGBounds, vdMalinHead, vmGM02);
 CoordinateSystems.Register(IG02CoordinateSystem);
 {$ENDIF}
-IG15CoordinateSystem.Initialize('Irish Grid', 'IG75', 'Irish Grid (IG/GM15)', 129903, ctProjected, aoXYZ, IGBounds, vdMalinHead, vmGM15);
+IG15CoordinateSystem.Initialize('Irish Grid', 'IG75', 'Irish Grid (IG/GM15)', 29903, ctProjected, aoXYZ, IGBounds, vdMalinHead, vmGM15);
 CoordinateSystems.Register(IG15CoordinateSystem);
 
 End.
