@@ -26,7 +26,7 @@ Type
   TStringArray = Array Of String;
 
 Type
-  BNGUpdateApplication = Class(TCustomApplication)
+  OSGMUpdateApplication = Class(TCustomApplication)
   Public
     FileNames: TStringArray;
     InputFileName: String;
@@ -47,19 +47,19 @@ Type
     Procedure WriteToConsole(Text: String);
   End;
 
-Constructor BNGUpdateApplication.Create(TheOwner: TComponent);
+Constructor OSGMUpdateApplication.Create(TheOwner: TComponent);
 Begin
   Inherited Create(TheOwner);
   CaseSensitiveOptions := False;
   StopOnException := True;
 End;
 
-Destructor BNGUpdateApplication.Destroy;
+Destructor OSGMUpdateApplication.Destroy;
 Begin
   Inherited Destroy;
 End;
 
-Function BNGUpdateApplication.GetFileNames: TStringArray;
+Function OSGMUpdateApplication.GetFileNames: TStringArray;
 Var
   Index: Integer;
   LastIndex: Integer;
@@ -76,7 +76,7 @@ Begin
       End;
 End;
 
-Procedure BNGUpdateApplication.WriteHeader;
+Procedure OSGMUpdateApplication.WriteHeader;
 Begin
   If SilentMode Then
     Exit;
@@ -85,7 +85,7 @@ Begin
   WriteLn;
 End;
 
-Procedure BNGUpdateApplication.WriteHelp;
+Procedure OSGMUpdateApplication.WriteHelp;
 Begin
   WriteLn('Usage: ', ChangeFileExt(ExtractFileName(ExeName),EmptyStr), ' <SettingsFileName> <InputFileName> <OutputFileName> [Options]');
   WriteLn;
@@ -99,7 +99,7 @@ Begin
   WriteLn('--silent (-s):  Supress all command line output.');
 End;
 
-Procedure BNGUpdateApplication.WriteToConsole(Text: String);
+Procedure OSGMUpdateApplication.WriteToConsole(Text: String);
 Begin
   If Not SilentMode Then
     WriteLn(Text);
@@ -121,7 +121,7 @@ End;
 {$R *.res}
 
 Begin
-  With BNGUpdateApplication.Create(Nil) Do
+  With OSGMUpdateApplication.Create(Nil) Do
     Try
       SilentMode := HasOption('s', 'silent');
       WriteHeader;
@@ -166,15 +166,15 @@ Begin
           Case SourceSRID Of
           27700: { BNG/TN02 }
             Begin
-              TargetSRID := 27701;
+              TargetSRID := 27700;
               { For BNG output the updated horizontal coordinates. }
               TargetXName := 'OSTN15Easting';
               TargetYName := 'OSTN15Northing';
             End;
           29903: { IG/GM02 }
-            TargetSRID := 129903;
+            TargetSRID := 29903;
           2157: { ITM/GM02 }
-            TargetSRID := 12157;
+            TargetSRID := 2157;
           Else
             WriteToConsole('Unknown source SRID: '+IntToStr(SourceSRID));
             Exit;
