@@ -182,11 +182,12 @@ Type
     CoordinateType: TCoordinateType;
     Description: String;
     SRIDNumber: Integer;
+    Revision: Integer;
     GeodeticBounds: TGeodeticBounds;
     Name: String;
     PreferredVerticalDatum: TVerticalDatumCode; { These fields should be in the TITMCoordinateSystem declaration in the ITM unit. }
     LastVerticalDatum: TVerticalDatumCode; { They have been declared here to avoid a compiler bug that incorrectly handles object inheritance. }
-    Constructor Initialize(NewName: String; NewAbbreviation: String; NewDescription: String; NewSRIDNumber: Integer;
+    Constructor Initialize(NewName: String; NewAbbreviation: String; NewDescription: String; NewSRIDNumber: Integer; NewRevision: Integer;
                            NewCoordinateType: TCoordinateType; NewAxisOrder: TAxisOrder; NewBounds: TGeodeticBounds);
     Function AxisNames: TAxisNames;
     Function ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual; Abstract;
@@ -201,7 +202,7 @@ Type
     Function AvailableSystemsList(SRIDPrefix: Boolean = False): String;
     Function CompatibleSystemsList(SystemIndex: Integer): String;
     Function FindByDescription(Const Description: String): Integer;
-    Function FindSRIDNumber(Const Number: Integer): Integer;
+    Function FindSRIDNumber(Const Number: Integer; Const Revision: Integer = 0): Integer;
     Function IndexOf(Const CoordinateSystem: TCoordinateSystem): Integer;
     Function Items(Index: Integer): TCoordinateSystem;
     Function Pointers(Index: Integer): TCoordinateSystemPointer;
@@ -650,13 +651,14 @@ Begin
   EccentricitySquared := (SemiMajorAxisSquared-SemiMinorAxisSquared)/SemiMajorAxisSquared;
 End;
 
-Constructor TCoordinateSystem.Initialize(NewName: String; NewAbbreviation: String; NewDescription: String; NewSRIDNumber: Integer;
+Constructor TCoordinateSystem.Initialize(NewName: String; NewAbbreviation: String; NewDescription: String; NewSRIDNumber: Integer; NewRevision: Integer;
                                          NewCoordinateType: TCoordinateType; NewAxisOrder: TAxisOrder; NewBounds: TGeodeticBounds);
 Begin
   Name := NewName;
   Abbreviation := NewAbbreviation;
   Description := NewDescription;
   SRIDNumber := NewSRIDNumber;
+  Revision := NewRevision;
   CoordinateType := NewCoordinateType;
   AxisOrder := NewAxisOrder;
   GeodeticBounds := NewBounds;
@@ -755,7 +757,7 @@ Begin
   Result := -1;
 End;
 
-Function TCoordinateSystems.FindSRIDNumber(Const Number: Integer): Integer;
+Function TCoordinateSystems.FindSRIDNumber(Const Number: Integer; Const Revision: Integer = 0): Integer;
 Var
   FirstIndex: Integer;
   LastIndex: Integer;
@@ -765,6 +767,7 @@ Begin
   LastIndex := High(CoordinateSystemsList);
   For Index := FirstIndex To LastIndex Do
     If Number=CoordinateSystemsList[Index]^.SRIDNumber Then
+      If (Revision=0) Or (Revision=CoordinateSystemsList[Index]^.Revision) Then
       Begin
         Result := Index;
         Exit;

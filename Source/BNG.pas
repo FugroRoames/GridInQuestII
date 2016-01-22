@@ -57,7 +57,7 @@ Type
   TBNGCoordinateSystem = Object(TCoordinateSystem)
     GMDataPointer: TVerticalTablePointer;
     TNDataPointer: THorizontalTablePointer;
-    Constructor Initialize(NewName: String; NewAbbreviation: String; NewDescription: String; NewEPSGNumber: Integer;
+    Constructor Initialize(NewName: String; NewAbbreviation: String; NewDescription: String; NewSRIDNumber: Integer; NewRevision: Integer;
                            NewCoordinateType: TCoordinateType; NewAxisOrder: TAxisOrder;
                            NewBounds: TGeodeticBounds; Const NewTNData: THorizontalTable; Const NewGMData: TVerticalTable);
     Function ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
@@ -149,11 +149,11 @@ Var
   TN15DataFound: Boolean;
 
 Constructor TBNGCoordinateSystem.Initialize(NewName: String; NewAbbreviation: String; NewDescription: String;
-                                            NewEPSGNumber: Integer; NewCoordinateType: TCoordinateType;
+                                            NewSRIDNumber: Integer; NewRevision: Integer; NewCoordinateType: TCoordinateType;
                                             NewAxisOrder: TAxisOrder; NewBounds: TGeodeticBounds;
                                             Const NewTNData: THorizontalTable; Const NewGMData: TVerticalTable);
 Begin
-  Inherited Initialize(NewName, NewAbbreviation, NewDescription, NewEPSGNumber,
+  Inherited Initialize(NewName, NewAbbreviation, NewDescription, NewSRIDNumber, NewRevision,
                              NewCoordinateType, NewAxisOrder, NewBounds);
   TNDataPointer := @NewTNData;
   GMDataPointer := @NewGMData;
@@ -351,11 +351,11 @@ GRS80Ellipsoid.Initialize(6378137.0000, 6356752.314140);
 BNGGridProjection.Initialize(0.9996012717, DegToRad(49), DegToRad(-2), 400000, -100000, GRS80Ellipsoid);
 {$IFDEF BNG02}
 BNG02CoordinateSystem.Initialize('British National Grid (2002)', 'OSGB36',
-                                 'OSGB36 / British National Grid (TN02/GM02)', 27700, ctProjected, aoXYZ, BNGBounds, TN02GBData, GM02GBData);
+                                 'OSGB36 / British National Grid (TN02/GM02)', 27700, 2002, ctProjected, aoXYZ, BNGBounds, TN02GBData, GM02GBData);
 CoordinateSystems.Register(BNG02CoordinateSystem);
 {$ENDIF}
 BNG15CoordinateSystem.Initialize('British National Grid (2015)', 'OSGB36',
-                                 'OSGB36 / British National Grid (TN15/GM15)', 27700, ctProjected, aoXYZ, BNGBounds, TN15GBData, GM15GBData);
+                                 'OSGB36 / British National Grid (TN15/GM15)', 27700, 2015, ctProjected, aoXYZ, BNGBounds, TN15GBData, GM15GBData);
 CoordinateSystems.Register(BNG15CoordinateSystem);
 
 Finalization

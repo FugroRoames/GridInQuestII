@@ -8,6 +8,7 @@
         <Filename Value="GridInQuestII.lpr"/>
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
+        <TopLine Value="10"/>
         <CursorPos X="53" Y="32"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
@@ -140,7 +141,7 @@
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="11" Y="32"/>
-        <UsageCount Value="169"/>
+        <UsageCount Value="170"/>
       </Unit15>
       <Unit16>
         <Filename Value="TN02.pas"/>

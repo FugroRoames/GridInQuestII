@@ -24,27 +24,27 @@ Interface
 Uses
   Geodesy, ETRS, BNG, ITM, IG;
 
-Function IsSRIDGeodeticSystem(SRID: Integer): Boolean;
-Function SRIDToSystemPointer(SRID: Integer): TCoordinateSystemPointer;
+Function IsSRIDGeodeticSystem(SRID: Integer; Revision: Integer = 0): Boolean;
+Function SRIDToSystemPointer(SRID: Integer; Revision: Integer = 0): TCoordinateSystemPointer;
 Function TransformCoordinates(SourceSRID, TargetSRID: Integer; Var InputCoordinates: TCoordinates; Var OutputCoordinates: TCoordinates; Var DatumCode: TVerticalDatumCode): Boolean;
 
 Implementation
 
-Function IsSRIDGeodeticSystem(SRID: Integer): Boolean;
+Function IsSRIDGeodeticSystem(SRID: Integer; Revision: Integer = 0): Boolean;
 Var
   SystemPointer: TCoordinateSystemPointer;
 Begin
-  SystemPointer := SRIDToSystemPointer(SRID);
+  SystemPointer := SRIDToSystemPointer(SRID, Revision);
   If Assigned(SystemPointer) Then
     Result := (SystemPointer^.CoordinateType=ctGeodetic)
   Else
     Result := False;
 End;
 
-Function SRIDToSystemPointer(SRID: Integer): TCoordinateSystemPointer;
+Function SRIDToSystemPointer(SRID: Integer; Revision: Integer = 0): TCoordinateSystemPointer;
 Begin
   With CoordinateSystems Do
-    Result := Pointers(FindSRIDNumber(SRID));
+    Result := Pointers(FindSRIDNumber(SRID, Revision));
 End;
 
 Function TransformCoordinates(SourceSRID, TargetSRID: Integer; Var InputCoordinates: TCoordinates; Var OutputCoordinates: TCoordinates; Var DatumCode: TVerticalDatumCode): Boolean;

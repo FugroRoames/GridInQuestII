@@ -166,15 +166,25 @@ Begin
           Case SourceSRID Of
           27700: { BNG/TN02 }
             Begin
+              SourceRevision := 2002;
               TargetSRID := 27700;
+              TargetRevision := 2015;
               { For BNG output the updated horizontal coordinates. }
               TargetXName := 'OSTN15Easting';
               TargetYName := 'OSTN15Northing';
             End;
           29903: { IG/GM02 }
-            TargetSRID := 29903;
+            Begin
+              SourceRevision := 2002;
+              TargetSRID := 29903;
+              TargetRevision := 2015;
+            End;
           2157: { ITM/GM02 }
-            TargetSRID := 2157;
+            Begin
+              SourceRevision := 2002;
+              TargetSRID := 2157;
+              TargetRevision := 2015;
+            End;
           Else
             WriteToConsole('Unknown source SRID: '+IntToStr(SourceSRID));
             Exit;

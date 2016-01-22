@@ -39,10 +39,12 @@ Type
     PreferredDatumCode: TVerticalDatumCode;
     TextDelimiter: Char;
     SourceSRID: Integer;
+    SourceRevision: Integer;
     SourceXIndex: Integer;
     SourceYIndex: Integer;
     SourceZIndex: Integer;
     TargetSRID: Integer;
+    TargetRevision: Integer;
     TargetXName: String;
     TargetYName: String;
     TargetZName: String;
@@ -470,10 +472,10 @@ Begin
         End;
     End;
     { Fetch coordinate system information. }
-    SourceSystemPointer := SRIDToSystemPointer(SettingsInfo.SourceSRID);
-    TargetSystemPointer := SRIDToSystemPointer(SettingsInfo.TargetSRID);
-    SourceIsGeodetic := IsSRIDGeodeticSystem(SettingsInfo.SourceSRID);
-    TargetIsGeodetic := IsSRIDGeodeticSystem(SettingsInfo.TargetSRID);
+    SourceSystemPointer := SRIDToSystemPointer(SettingsInfo.SourceSRID, SettingsInfo.SourceRevision);
+    TargetSystemPointer := SRIDToSystemPointer(SettingsInfo.TargetSRID, SettingsInfo.TargetRevision);
+    SourceIsGeodetic := IsSRIDGeodeticSystem(SettingsInfo.SourceSRID, SettingsInfo.TargetRevision);
+    TargetIsGeodetic := IsSRIDGeodeticSystem(SettingsInfo.TargetSRID, SettingsInfo.TargetRevision);
     TargetSystemPointer^.PreferredVerticalDatum := SettingsInfo.PreferredDatumCode;
     { Set the default default target field names if required. }
     With SettingsInfo, TargetSystemPointer^ Do
