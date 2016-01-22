@@ -7,6 +7,7 @@
       <Unit0>
         <Filename Value="GIQTrans.pas"/>
         <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
         <CursorPos X="34" Y="23"/>
         <UsageCount Value="88"/>
         <Loaded Value="True"/>
@@ -260,9 +261,7 @@
       </Unit35>
       <Unit36>
         <Filename Value="IOMain.pas"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="289"/>
         <CursorPos X="25" Y="301"/>
         <UsageCount Value="11"/>
         <Loaded Value="True"/>

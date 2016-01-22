@@ -9,7 +9,7 @@
         <Filename Value="LibGIQ.pas"/>
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
-        <CursorPos X="40" Y="41"/>
+        <CursorPos X="29" Y="12"/>
         <UsageCount Value="55"/>
         <Loaded Value="True"/>
       </Unit0>
@@ -134,6 +134,11 @@
         <UsageCount Value="9"/>
       </Unit17>
     </Units>
+    <OtherDefines Count="3">
+      <Define0 Value="BNG02"/>
+      <Define1 Value="ITM02"/>
+      <Define2 Value="IG02"/>
+    </OtherDefines>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="LibGIQ.pas"/>

@@ -7,6 +7,7 @@
       <Unit0>
         <Filename Value="GridInQuestII.lpr"/>
         <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
         <CursorPos X="53" Y="32"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
@@ -22,7 +23,6 @@
         <CursorPos X="44" Y="176"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
       </Unit1>
       <Unit2>
         <Filename Value="Geodesy.pas"/>
@@ -227,7 +227,6 @@
       </Unit26>
       <Unit27>
         <Filename Value="BNG.pas"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="7"/>
         <CursorPos X="51" Y="6"/>
         <UsageCount Value="100"/>
