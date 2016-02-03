@@ -1,7 +1,7 @@
 object MainForm: TMainForm
-  Left = 339
+  Left = 316
   Height = 750
-  Top = 119
+  Top = 56
   Width = 1200
   Caption = 'Grid InQuest II'
   ClientHeight = 730
@@ -430,7 +430,7 @@ object MainForm: TMainForm
     TabOrder = 0
     object DataDrawGrid: TDrawGrid
       Left = 0
-      Height = 688
+      Height = 690
       Top = 0
       Width = 571
       Align = alClient
@@ -451,17 +451,18 @@ object MainForm: TMainForm
     end
     object BottomPanel: TPanel
       Left = 0
-      Height = 42
-      Top = 688
+      Height = 40
+      Top = 690
       Width = 571
       Align = alBottom
-      ClientHeight = 42
+      AutoSize = True
+      ClientHeight = 40
       ClientWidth = 571
       TabOrder = 1
       Visible = False
       object TransformButton: TButton
         Left = 431
-        Height = 30
+        Height = 28
         Top = 6
         Width = 134
         Action = TransformAction
