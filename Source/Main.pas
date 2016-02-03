@@ -351,14 +351,14 @@ Begin
           Begin
             SRIDText := IntToStr(SRIDNumber);
             OutputText := OutputText+OutputFieldTerminator;
-            OutputText := OutputText+AddDelimiters(SRIDText+'-'+AxisShortName(OutputSystemIndex, 0));
+            OutputText := OutputText+AddDelimiters(Abbreviation+'-'+AxisShortName(OutputSystemIndex, 0));
             OutputText := OutputText+OutputFieldTerminator;
-            OutputText := OutputText+AddDelimiters(SRIDText+'-'+AxisShortName(OutputSystemIndex, 1));
+            OutputText := OutputText+AddDelimiters(Abbreviation+'-'+AxisShortName(OutputSystemIndex, 1));
             { Output the third coordinate name if needed. }
             If (InputThirdFieldIndex<>-1) Or (CoordinateType=ctCartesian) Then
               Begin
                 OutputText := OutputText+OutputFieldTerminator;
-                OutputText := OutputText+AddDelimiters(SRIDText+'-'+AxisShortName(OutputSystemIndex, 2));
+                OutputText := OutputText+AddDelimiters(Abbreviation+'-'+AxisShortName(OutputSystemIndex, 2));
               End;
             OutputText := OutputText+LineEnding;
           End;

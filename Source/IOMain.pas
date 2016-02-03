@@ -481,11 +481,11 @@ Begin
     With SettingsInfo, TargetSystemPointer^ Do
       Begin
         If TargetXName=EmptyStr Then
-          TargetXName := IntToStr(TargetSRID)+'-'+AxisNames.ShortX;
+          TargetXName := Abbreviation+'-'+AxisNames.ShortX;
         If TargetYName=EmptyStr Then
-          TargetYName := IntToStr(TargetSRID)+'-'+AxisNames.ShortY;
+          TargetYName := Abbreviation+'-'+AxisNames.ShortY;
         If TargetZName=EmptyStr Then
-          TargetZName := IntToStr(TargetSRID)+'-'+AxisNames.ShortZ;
+          TargetZName := Abbreviation+'-'+AxisNames.ShortZ;
       End;
     { Transform data records. }
     Progress.StartTransform(InputData.RecordCount);
