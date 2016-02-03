@@ -1,10 +1,10 @@
 object MainForm: TMainForm
-  Left = 243
+  Left = 339
   Height = 750
-  Top = 124
+  Top = 119
   Width = 1200
   Caption = 'Grid InQuest II'
-  ClientHeight = 750
+  ClientHeight = 730
   ClientWidth = 1200
   Font.Name = 'Arial'
   Font.Quality = fqCleartype
@@ -420,17 +420,17 @@ object MainForm: TMainForm
   LCLVersion = '1.6.0.2'
   object SidePanel: TPanel
     Left = 0
-    Height = 750
+    Height = 730
     Top = 0
     Width = 571
     Align = alLeft
     BevelOuter = bvNone
-    ClientHeight = 750
+    ClientHeight = 730
     ClientWidth = 571
     TabOrder = 0
     object DataDrawGrid: TDrawGrid
       Left = 0
-      Height = 750
+      Height = 688
       Top = 0
       Width = 571
       Align = alClient
@@ -449,10 +449,32 @@ object MainForm: TMainForm
       OnDrawCell = DataDrawGridDrawCell
       OnSelection = DataDrawGridSelection
     end
+    object BottomPanel: TPanel
+      Left = 0
+      Height = 42
+      Top = 688
+      Width = 571
+      Align = alBottom
+      ClientHeight = 42
+      ClientWidth = 571
+      TabOrder = 1
+      Visible = False
+      object TransformButton: TButton
+        Left = 431
+        Height = 30
+        Top = 6
+        Width = 134
+        Action = TransformAction
+        Align = alRight
+        AutoSize = True
+        BorderSpacing.Around = 5
+        TabOrder = 0
+      end
+    end
   end
   object PanelSplitter: TSplitter
     Left = 571
-    Height = 750
+    Height = 730
     Top = 0
     Width = 5
     Beveled = True

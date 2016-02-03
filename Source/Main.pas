@@ -29,8 +29,10 @@ Uses
 
 Type
   TMainForm = Class(TForm)
+    TransformButton: TButton;
     ExchangeAction: TAction;
     DataBreak: TMenuItem;
+    BottomPanel: TPanel;
     TransformMenuItem: TMenuItem;
     TransformAction: TAction;
     DataSettingsAction: TAction;
@@ -233,6 +235,8 @@ Begin
       End;
       SaveAction.Enabled := True;
       UnloadAction.Enabled := True;
+      DataSettingsAction.Enabled := True;
+      TransformAction.Enabled := True;
       InputPanel.Hide;
       OutputPanel.Hide;
       SetupDataGrid;
@@ -439,6 +443,7 @@ End;
 
 Procedure TMainForm.UnloadActionExecute(Sender: TObject);
 Begin
+  BottomPanel.Hide;
   DataDrawGrid.Hide;
   InputPanel.Show;
   OutputPanel.Show;
@@ -794,6 +799,7 @@ Begin
             End;
       End;
   DataDrawGrid.Show;
+  BottomPanel.Show;
   DataDrawGrid.EndUpdate;
 End;
 
