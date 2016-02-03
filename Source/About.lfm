@@ -135,7 +135,7 @@ object AboutForm: TAboutForm
         Width = 546
         Align = alTop
         BorderSpacing.Around = 5
-        Caption = 'This application is supplied as freeware, please see the licence agreement for further details.'#13#10#13#10'Ordnance Survey, the OS Symbol and OSTN02 are registered trademarks of Ordnance Survey.'#13#10#13#10'OSGM02 and OSVRF10 are registered trademarks of Ordnance Survey Great Britain, Ordnance Survey Ireland and Land and Property Services Northern Ireland.'
+        Caption = 'This application is supplied as freeware, please see the licence agreement for further details.'#13#10#13#10'Ordnance Survey, the OS Symbol, OSTN02 and OSTN15 are registered trademarks of Ordnance Survey.'#13#10#13#10'OSGM02 and OSGM15 are registered trademarks of Ordnance Survey Great Britain, Ordnance Survey Ireland and Land and Property Services Northern Ireland.'
         Font.Quality = fqCleartype
         ParentColor = False
         ParentFont = False
