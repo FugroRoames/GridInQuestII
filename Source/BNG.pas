@@ -75,7 +75,7 @@ Var
   TN15GBData: THorizontalTable;
 
 Const
-  BNGBounds: TGeodeticBounds = (Western: -8.74*PI/180; Southern: 49.81*PI/180; Eastern: 1.84*PI/180; Northern: 60.9*PI/180);
+  BNGBounds: TGeodeticBounds = (Western: -9.5*PI/180; Southern: 49.7*PI/180; Eastern: 3.6*PI/180; Northern: 61.2*PI/180);
 
 Function WGS84CoordinatesToBNGCoordinates(Const Coordinates: TCoordinates; Const TNData: THorizontalTable; Const GMData: TVerticalTable; Out OutputCoordinates: TCoordinates; Out OutputDatum: TVerticalDatumCode): Boolean;
 Function BNGCoordinatesToWGS84Coordinates(Const Coordinates: TCoordinates; Const TNData: THorizontalTable; Const GMData: TVerticalTable; Out OutputCoordinates: TCoordinates; Out OutputDatum: TVerticalDatumCode): Boolean;
