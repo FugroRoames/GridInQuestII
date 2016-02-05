@@ -194,7 +194,7 @@ Begin
       FixedColumnBreaksEdit.Enabled := True;
     End;
   End;
-  ColumnDelimiterComboBox.Items[3] := 'Custom';
+  ColumnDelimiterComboBox.Items[4] := 'Custom'; { Reset custom in case it has be previously used. }
   Case Data.FieldTerminator Of
   ',':
     ColumnDelimiterComboBox.ItemIndex := 0;
@@ -202,9 +202,11 @@ Begin
     ColumnDelimiterComboBox.ItemIndex := 1;
   #9:
     ColumnDelimiterComboBox.ItemIndex := 2;
-  Else { Custom }
+  ' ':
     ColumnDelimiterComboBox.ItemIndex := 3;
-    ColumnDelimiterComboBox.Items[3] := 'Custom: '+Data.FieldTerminator;
+  Else { Custom }
+    ColumnDelimiterComboBox.ItemIndex := 4;
+    ColumnDelimiterComboBox.Items[4] := 'Custom: '+Data.FieldTerminator;
   End;
   If FixedColumnBreaksEdit.Enabled Then
     Begin
@@ -577,7 +579,9 @@ Begin
     Data.FieldTerminator := ';';
   2: { Tab }
     Data.FieldTerminator := #9;
-  3: { Custom }
+  3: { Space }
+    Data.FieldTerminator := ' ';
+  4: { Custom }
     Begin
       InputText := InputBox('Input Settings', 'Enter Custom Terminator Character:', Data.FieldTerminator);
       If InputText=EmptyStr Then

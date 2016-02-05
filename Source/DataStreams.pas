@@ -31,6 +31,9 @@ Type
   TOnProgressEvent = Procedure(Sender: TObject; Progress: Integer) Of Object;
 
 Type
+
+  { TDataStream }
+
   TDataStream = Class(TMemoryStream)
   Private
     FBOF: Boolean;
@@ -59,6 +62,7 @@ Type
     Function GetName(Index: Integer): String;
     Function GetNamesList: String;
     Function GetValue(RecordIndex, FieldIndex: Integer): String;
+    Procedure SetConsecutiveDelimiters(Value: Boolean);
     Procedure SetFieldCount(Value: Integer);
     Procedure SetFieldLengths(Index: Integer; Value: Integer);
     Procedure SetFieldStarts(Index: Integer; Value: Integer);
@@ -90,7 +94,7 @@ Type
     Function RecordAsText(OutputFieldTerminator: Char; TextDelimiter: Char = #0): String;
     Function RowLength(RowIndex: Integer): Integer;
     Property BOF: Boolean Read FBOF;
-    Property ConsecutiveDelimiters: Boolean Read FConsecutiveDelimiters Write FConsecutiveDelimiters;
+    Property ConsecutiveDelimiters: Boolean Read FConsecutiveDelimiters Write SetConsecutiveDelimiters;
     Property EOF: Boolean Read FEOF;
     Property FieldCount: Integer Read FFieldCount Write SetFieldCount;
     Property FieldLengths[Index: Integer]: Integer Read GetFieldLengths Write SetFieldLengths;
@@ -122,7 +126,7 @@ Const
 
 Implementation
 
-Constructor TDataStream.Create;
+constructor TDataStream.Create;
 Begin
   FTextDelimiter := #0;
   FCurrentRow := TStringList.Create;
@@ -140,19 +144,19 @@ Begin
   SetFieldCount(1); { Always at least one field: the whole row of the data file. }
 End;
 
-Constructor TDataStream.Create(InputStream: TStream);
+constructor TDataStream.Create(InputStream: TStream);
 Begin
   Create;
   LoadFromStream(InputStream);
 End;
 
-Constructor TDataStream.Create(FileName: String);
+constructor TDataStream.Create(FileName: String);
 Begin
   Create;
   LoadFromFile(FileName);
 End;
 
-Destructor TDataStream.Destroy;
+destructor TDataStream.Destroy;
 Begin
   FreeAndNil(FCurrentRow);
   FreeAndNil(FFieldStarts);
@@ -162,7 +166,7 @@ Begin
   Inherited Destroy;
 End;
 
-Procedure TDataStream.LoadFromStream(InputStream: TStream);
+procedure TDataStream.LoadFromStream(InputStream: TStream);
 Var
   BytesRead: Int64;
   BytesLoaded: Int64;
@@ -208,7 +212,7 @@ Begin
   ParseRows;
 End;
 
-Procedure TDataStream.LoadFromFile(FileName: String);
+procedure TDataStream.LoadFromFile(FileName: String);
 Var
   FileStream: TFileStream;
   Extension: String;
@@ -224,27 +228,28 @@ Begin
   FileStream.Free;
 End;
 
-Procedure TDataStream.First;
+procedure TDataStream.First;
 Begin
   SetRecordNumber(0);
 End;
 
-Procedure TDataStream.Last;
+procedure TDataStream.Last;
 Begin
   SetRecordNumber(RecordCount-1);
 End;
 
-Procedure TDataStream.Next;
+procedure TDataStream.Next;
 Begin
   SetRecordNumber(RecordNumber+1);
 End;
 
-Procedure TDataStream.Prior;
+procedure TDataStream.Prior;
 Begin
   SetRecordNumber(RecordNumber-1);
 End;
 
-Function TDataStream.NamesAsText(OutputFieldTerminator: Char; TextDelimiter: Char = #0): String;
+function TDataStream.NamesAsText(OutputFieldTerminator: Char;
+  TextDelimiter: Char): String;
 Var
   Index, LastIndex: Integer;
 Begin
@@ -261,7 +266,8 @@ Begin
     End;
 End;
 
-Function TDataStream.RecordAsText(OutputFieldTerminator: Char; TextDelimiter: Char = #0): String;
+function TDataStream.RecordAsText(OutputFieldTerminator: Char;
+  TextDelimiter: Char): String;
 Var
   Index, LastIndex: Integer;
 Begin
@@ -278,22 +284,22 @@ Begin
     End;
 End;
 
-Function TDataStream.RowLength(RowIndex: Integer): Integer;
+function TDataStream.RowLength(RowIndex: Integer): Integer;
 Begin
   Result := FRows[RowIndex+1]-FRows[RowIndex]
 End;
 
-Procedure TDataStream.SetFieldLengths(Index: Integer; Value: Integer);
+procedure TDataStream.SetFieldLengths(Index: Integer; Value: Integer);
 Begin
   FFieldLengths[Index] := Pointer(Value);
 End;
 
-Procedure TDataStream.SetFieldStarts(Index: Integer; Value: Integer);
+procedure TDataStream.SetFieldStarts(Index: Integer; Value: Integer);
 Begin
   FFieldStarts[Index] := Pointer(Value);
 End;
 
-Procedure TDataStream.SetFieldTerminator(Value: Char);
+procedure TDataStream.SetFieldTerminator(Value: Char);
 Begin
   If FFieldTerminator<>Value Then
     Begin
@@ -303,7 +309,7 @@ Begin
     End;
 End;
 
-Procedure TDataStream.SetFirstRow(Value: Integer);
+procedure TDataStream.SetFirstRow(Value: Integer);
 Begin
   If Value<0 Then
     Value := 0;
@@ -320,7 +326,7 @@ Begin
     End;
 End;
 
-Procedure TDataStream.SetLastRow(Value: Integer);
+procedure TDataStream.SetLastRow(Value: Integer);
 Begin
   If FLastRow<>Value Then
     Begin
@@ -339,7 +345,7 @@ Begin
     End;
 End;
 
-Procedure TDataStream.SetNameRow(Value: Integer);
+procedure TDataStream.SetNameRow(Value: Integer);
 Begin
   If Value<0 Then
     Value := -1; { Indicates no named row. }
@@ -356,7 +362,7 @@ Begin
     End;
 End;
 
-Procedure TDataStream.SetRecordNumber(Const Value: Integer);
+procedure TDataStream.SetRecordNumber(const Value: Integer);
 Begin
   If RecordNumber<>Value Then
     Begin
@@ -378,7 +384,7 @@ Begin
     End;
 End;
 
-Function TDataStream.GetField(Index: Integer): String;
+function TDataStream.GetField(Index: Integer): String;
 Begin
   If Index<FCurrentRow.Count Then
     Result := FCurrentRow[Index]
@@ -386,17 +392,17 @@ Begin
     Result := EmptyStr;
 End;
 
-Function TDataStream.GetFieldLengths(Index: Integer): Integer;
+function TDataStream.GetFieldLengths(Index: Integer): Integer;
 Begin
   Result := Integer(FFieldLengths[Index]);
 End;
 
-Function TDataStream.GetFieldStarts(Index: Integer): Integer;
+function TDataStream.GetFieldStarts(Index: Integer): Integer;
 Begin
   Result := Integer(FFieldStarts[Index]);
 End;
 
-Function TDataStream.GetName(Index: Integer): String;
+function TDataStream.GetName(Index: Integer): String;
 Begin
   Result := EmptyStr;
   If Index<FFieldCount Then
@@ -407,7 +413,7 @@ Begin
         Result := FNames[Index];
 End;
 
-Function TDataStream.GetNamesList: String;
+function TDataStream.GetNamesList: String;
 Var
   Index, LastIndex: Integer;
 Begin
@@ -421,13 +427,22 @@ Begin
     End;
 End;
 
-Function TDataStream.GetValue(RecordIndex, FieldIndex: Integer): String;
+function TDataStream.GetValue(RecordIndex, FieldIndex: Integer): String;
 Begin
   SetRecordNumber(RecordIndex);
   Result := GetField(FieldIndex);
 End;
 
-Procedure TDataStream.SetFieldCount(Value: Integer);
+Procedure TDataStream.SetConsecutiveDelimiters(Value: Boolean);
+Begin
+  If FConsecutiveDelimiters<>Value Then
+    Begin
+      FConsecutiveDelimiters := Value;
+      ParseFields;
+    End;
+End;
+
+procedure TDataStream.SetFieldCount(Value: Integer);
 Begin
   If FFieldCount<>Value Then
     Begin
@@ -440,7 +455,8 @@ Begin
     End;
 End;
 
-Procedure TDataStream.ParseRow(Const Data: TStringList; Const RowIndex: Integer);
+procedure TDataStream.ParseRow(const Data: TStringList; const RowIndex: Integer
+  );
 Var
   RecordPointer: PChar;
   CurrentPointer: PChar;
@@ -535,7 +551,7 @@ Begin
     This code will need further work to accomodate UTF8 extended characters. }
 End;
 
-Procedure TDataStream.ParseRows;
+procedure TDataStream.ParseRows;
 Var
   BufferPointer: PChar;
   BufferStartPointer: PChar;
@@ -617,7 +633,7 @@ Begin
     FOnParseProgress(Self, 100);
 End;
 
-Procedure  TDataStream.ParseFields;
+procedure TDataStream.ParseFields;
 Var
   FoundFields: Integer;
   Function CountRowFields(RowIndex: Integer): Integer;
@@ -628,9 +644,38 @@ Var
     BufferPointer := FRows[RowIndex];
     While BufferPointer<FRows[RowIndex+1] Do
       Begin
+        { Find the start of the next field. }
+        While Not (BufferPointer^ In FieldTerminators) Do
+          Begin
+            { If there is a text delimiter in use and a delimiter is encountered. }
+            If (TextDelimiter<>#0) And (BufferPointer^=TextDelimiter) Then
+              Begin
+                { Move passed the delimiter. }
+                Inc(BufferPointer);
+                { Skip all characters until the next delimiter or out of characters. }
+                While BufferPointer^<>TextDelimiter Do
+                  Begin
+                    Inc(BufferPointer);
+                    If BufferPointer>=FRows[RowIndex+1] Then
+                      Break;
+                  End;
+                { Skip the final text delimiter. }
+                Inc(BufferPointer);
+              End
+            Else
+              { Otherwise advance to the next character. }
+              Inc(BufferPointer);
+          End;
+        { If the end of field is found. }
         If BufferPointer^=FieldTerminator Then
-           Inc(Result);
-        Inc(BufferPointer);
+          { Increment the field count result. }
+          Inc(Result);
+        { Skip any field terminators if needed. }
+        If ConsecutiveDelimiters Then
+          While BufferPointer^ In FieldTerminators Do
+            Inc(BufferPointer)
+        Else
+          Inc(BufferPointer);
       End;
   End;
   Procedure UpdateFieldCount(NewCount: Integer);
@@ -670,7 +715,7 @@ Begin
         End;
 End;
 
-Procedure TDataStream.UpdateRecordCount;
+procedure TDataStream.UpdateRecordCount;
 Begin
   { Set the found record count, or truncate to the last row if one given. }
   FRecordCount := FRows.Count-FirstRow-1;
