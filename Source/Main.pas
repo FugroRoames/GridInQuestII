@@ -304,7 +304,6 @@ Procedure TMainForm.SaveActionExecute(Sender: TObject);
 Var
   OutputFile: TFileStream;
   OutputText: String;
-  SRIDText: String;
   RecordIndex, LastRecordIndex: Integer;
   Function AddDelimiters(Text: String): String;
   Begin
@@ -349,7 +348,6 @@ Begin
         OutputText := InputData.NamesAsText(OutputFieldTerminator, OutputTextDelimiter);
         With CoordinateSystems.Items(OutputSystemIndex) Do
           Begin
-            SRIDText := IntToStr(SRIDNumber);
             OutputText := OutputText+OutputFieldTerminator;
             OutputText := OutputText+AddDelimiters(Abbreviation+'-'+AxisShortName(OutputSystemIndex, 0));
             OutputText := OutputText+OutputFieldTerminator;
@@ -751,7 +749,6 @@ Procedure TMainForm.SetupDataGrid;
 Var
   Col, LastCol: Integer;
   NewWidth, AlternativeWidth: Integer;
-  SRIDText: String;
 Begin
   DataDrawGrid.BeginUpdate;
   ClearDataGrid;
@@ -779,22 +776,21 @@ Begin
       Begin
         { Calculate the width of a 10 character column. }
         NewWidth := Canvas.TextWidth('0123456789');
-        SRIDText := IntToStr(SRIDNumber);
         With DataDrawGrid.Columns.Add Do
           Begin
-            Title.Caption := SRIDText+'-'+AxisShortName(OutputSystemIndex, 0);
+            Title.Caption := Abbreviation+'-'+AxisShortName(OutputSystemIndex, 0);
             Width := NewWidth;
           End;
         With DataDrawGrid.Columns.Add Do
           Begin
-            Title.Caption := SRIDText+'-'+AxisShortName(OutputSystemIndex, 1);
+            Title.Caption := Abbreviation+'-'+AxisShortName(OutputSystemIndex, 1);
             Width := NewWidth;
           End;
         { Add an elevation column if required. }
         If (InputThirdFieldIndex<>-1) Or (CoordinateType=ctCartesian) Then
           With DataDrawGrid.Columns.Add Do
             Begin
-              Title.Caption := SRIDText+'-'+AxisShortName(OutputSystemIndex, 2);
+              Title.Caption := Abbreviation+'-'+AxisShortName(OutputSystemIndex, 2);
               Width := NewWidth;
             End;
       End;
