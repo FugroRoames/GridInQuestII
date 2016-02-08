@@ -22,7 +22,7 @@ Unit IOMain;
 Interface
 
 Uses
-  Classes, SysUtils, XMLConf, Geometry, Geodesy, GeodProc, GeomUtils,
+  Classes, SysUtils, XMLConf, Geometry, Geodesy, GeodProc, GeodUtils, GeomUtils,
   ETRS, BNG, ITM, IG, OSTab, DataStreams;
 
 Type
@@ -399,15 +399,17 @@ Var
   End;
   Function InputDataToCoordinates(Index: Integer): TCoordinates;
   Begin
-    With InputData, SettingsInfo Do
+    { Construct Input coordinate. }
+    With InputData, SettingsInfo, SourceSystemPointer^ Do
       Begin
         { Locate the required record. }
         RecordNumber := Index;
-        { Construct the input coordinate. }
-        Result.X := StrToFloatDef(Fields[SourceXIndex], 0);
-        Result.Y:= StrToFloatDef(Fields[SourceYIndex], 0);
+        { Convert the X and Y coordinates. }
+        TryTextToCoordinate(Fields[SourceXIndex], Result.X, CoordinateType, atXAxis);
+        TryTextToCoordinate(Fields[SourceYIndex], Result.Y, CoordinateType, atYAxis);
+        { Convert the Z coordinate if needed. }
         If SourceZIndex<>-1 Then
-          Result.Z := StrToFloatDef(Fields[SourceZIndex], 0)
+          TryTextToCoordinate(Fields[SourceZIndex], Result.Z, CoordinateType, atZAxis)
         Else
           Result.Z := 0;
       End;

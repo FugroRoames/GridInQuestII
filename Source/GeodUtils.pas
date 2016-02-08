@@ -37,6 +37,7 @@ Function FormatTypedCoordinate(Const Coordinate: TCoordinate; CoordinateType: TC
                                DecimalPlaces: Integer = -1; Options: TTypedOptions = []; DatumSuffix: String = ''): String;
 Function FormatTypedCoordinates(Const Coordinates: TCoordinates; CoordinateType: TCoordinateType; AxisOrder: TAxisOrder;
                                 DecimalPlaces: Integer = -1; Options: TTypedOptions = []; DatumSuffix: String = ''; Const Spacer: String = ' '): String;
+Function TryTextToCoordinate(Text: String; Var Coordinate: TCoordinate; CoordinateType: TCoordinateType; AxisType: TAxisType): Boolean;
 Function TryGeodeticTextToCoordinate(Text: String; Var Coordinate: TCoordinate; AxisType: TAxisType; UnitSuffix: String = 'm'): Boolean;
 Function TryCartesianTextToCoordinate(Text: String; Var Coordinate: TCoordinate; AxisType: TAxisType; UnitSuffix: String = 'm'): Boolean;
 Function TryProjectedTextToCoordinate(Text: String; Var Coordinate: TCoordinate; AxisType: TAxisType; UnitSuffix: String = 'm'): Boolean;
@@ -225,6 +226,20 @@ Begin
   { Atempt to convert the remainder to a valid value and quit. }
   Text := Trim(Text);
   Result := TryStrToFloat(Text, Coordinate);
+End;
+
+Function TryTextToCoordinate(Text: String; Var Coordinate: TCoordinate; CoordinateType: TCoordinateType; AxisType: TAxisType): Boolean;
+Begin
+  Case CoordinateType Of
+  ctCartesian:
+    Result := TryCartesianTextToCoordinate(Text, Coordinate, AxisType);
+  ctGeodetic:
+    Result := TryGeodeticTextToCoordinate(Text, Coordinate, AxisType);
+  ctProjected:
+    Result := TryProjectedTextToCoordinate(Text, Coordinate, AxisType);
+  Else
+    Result := False;
+  End;
 End;
 
 Function TryGeodeticTextToCoordinate(Text: String; Var Coordinate: TCoordinate; AxisType: TAxisType; UnitSuffix: String = 'm'): Boolean;

@@ -595,19 +595,6 @@ Begin
 End;
 
 Function TMainForm.DataDrawGridCoordinates(Row: Integer): TCoordinates;
-Function TryTextToCoordinate(Text: String; CoordinateType: TCoordinateType; AxisType: TAxisType; Var Coordinate: TCoordinate): Boolean;
-Begin
-  Case CoordinateType Of
-  ctCartesian:
-    Result := TryCartesianTextToCoordinate(Text, Coordinate, AxisType);
-  ctGeodetic:
-    Result := TryGeodeticTextToCoordinate(Text, Coordinate, AxisType);
-  ctProjected:
-    Result := TryProjectedTextToCoordinate(Text, Coordinate, AxisType);
-  Else
-    Result := False;
-  End;
-End;
 Begin
   InputData.RecordNumber := Row-1;
   { Construct Input coordinate. }
@@ -616,18 +603,18 @@ Begin
       Case AxisOrder Of
       aoXYZ:
         Begin
-          TryTextToCoordinate(InputData.Fields[InputFirstFieldIndex], CoordinateType, atXAxis, Result.X);
-          TryTextToCoordinate(InputData.Fields[InputSecondFieldIndex], CoordinateType, atYAxis, Result.Y);
+          TryTextToCoordinate(InputData.Fields[InputFirstFieldIndex], Result.X, CoordinateType, atXAxis);
+          TryTextToCoordinate(InputData.Fields[InputSecondFieldIndex], Result.Y, CoordinateType, atYAxis);
         End;
       aoYXZ:
         Begin
-          TryTextToCoordinate(InputData.Fields[InputFirstFieldIndex], CoordinateType, atYAxis, Result.Y);
-          TryTextToCoordinate(InputData.Fields[InputSecondFieldIndex], CoordinateType, atXAxis, Result.X);
+          TryTextToCoordinate(InputData.Fields[InputFirstFieldIndex], Result.Y, CoordinateType, atYAxis);
+          TryTextToCoordinate(InputData.Fields[InputSecondFieldIndex], Result.X, CoordinateType, atXAxis);
         End;
       End;
       { Output the third coordinate name if needed. }
       If InputThirdFieldIndex<>-1 Then
-        TryTextToCoordinate(InputData.Fields[InputThirdFieldIndex], CoordinateType, atZAxis, Result.Z)
+        TryTextToCoordinate(InputData.Fields[InputThirdFieldIndex], Result.Z, CoordinateType, atZAxis)
       Else
         Result.Z := 0;
     End;
