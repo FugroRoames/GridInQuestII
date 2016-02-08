@@ -31,9 +31,6 @@ Type
   TOnProgressEvent = Procedure(Sender: TObject; Progress: Integer) Of Object;
 
 Type
-
-  { TDataStream }
-
   TDataStream = Class(TMemoryStream)
   Private
     FBOF: Boolean;
@@ -455,8 +452,9 @@ Begin
     End;
 End;
 
-procedure TDataStream.ParseRow(const Data: TStringList; const RowIndex: Integer
-  );
+procedure TDataStream.ParseRow(const Data: TStringList; const RowIndex: Integer);
+Label
+  SkipDoubleDelimiter;
 Var
   RecordPointer: PChar;
   CurrentPointer: PChar;
@@ -484,22 +482,28 @@ Begin
             End
           Else
             Begin
+              { Find the start of the field. }
+              FieldPointer := CurrentPointer;
               { Move past any whitespace. }
               While CurrentPointer^=' ' Do
                 Inc(CurrentPointer);
               { If a text delimiter is set, skip any delimited data. }
               If (TextDelimiter<>#0) And (CurrentPointer^=TextDelimiter) Then
                 Begin
-                  { Find the start of the delimited text. }
+SkipDoubleDelimiter:
+                  { Move past the delimiter. }
                   Inc(CurrentPointer);
-                  FieldPointer := CurrentPointer;
+                  { Look for the terminating delimiter. }
                   While CurrentPointer^<>TextDelimiter Do
                     Inc(CurrentPointer);
+                  { Move past the delimiter. }
+                  Inc(CurrentPointer);
+                  { If a double delimiter is found, continue searching for the true terminator. }
+                  If CurrentPointer^=TextDelimiter Then
+                    Goto SkipDoubleDelimiter;
                 End
               Else
                 Begin
-                  { Find the start of the field. }
-                  FieldPointer := CurrentPointer;
                   { Find the end of the current field. }
                   While Not (CurrentPointer^ In FieldTerminators) Do
                     Inc(CurrentPointer);
@@ -540,12 +544,18 @@ Begin
           FieldText[Index] := CurrentPointer^;
           Inc(CurrentPointer);
         End;
-      FieldText := Trim(FieldText);
+      { Isolate the current field's text. }
+      If TextDelimiter=#0 Then
+        FieldText := Trim(FieldText)
+      Else
+        FieldText := AnsiDequotedStr(Trim(FieldText), TextDelimiter);
       Data.Add(FieldText);
     End;
   { Note: The above loop block is equivolent to:
 
     Data.Add(Trim(Copy(RecordPointer, FieldStarts[FieldIndex], FieldLengths[FieldIndex])));
+    or
+    Data.Add(AnsiDequotedStr(Trim(Copy(RecordPointer, FieldStarts[FieldIndex], FieldLengths[FieldIndex])), TextDelimiter));
 
     However, Copy performs poorly on large data files, hence the direct character copying above.
     This code will need further work to accomodate UTF8 extended characters. }
