@@ -28,6 +28,7 @@ Uses
 Type
   TSettingsForm = Class(TForm)
     BottomPanel: TPanel;
+    OutputVerticalDatumCheckBox: TCheckBox;
     LoadSettingsButton: TButton;
     OpenDialog: TOpenDialog;
     SaveDialog: TSaveDialog;
@@ -82,6 +83,7 @@ Type
     Procedure LoadSettingsButtonClick(Sender: TObject);
     Procedure OKButtonChangeBounds(Sender: TObject);
     Procedure OutputSystemComboBoxChange(Sender: TObject);
+    procedure OutputVerticalDatumCheckBoxChange(Sender: TObject);
     Procedure SaveSettingsButtonClick(Sender: TObject);
     Procedure SecondColumnComboBoxChange(Sender: TObject);
     Procedure StartRowEditEditingDone(Sender: TObject);
@@ -133,6 +135,7 @@ Const
   FixedKey = 'Fixed';
   FieldTerminatorKey = 'FieldTerminator';
   FieldBreaksKey = 'FieldBreaks';
+  IncludeDatumKey = 'IncludeDatum';
   ConsecutiveDelimitersKey = 'ConsecutiveDelimiters';
   TextDelimiterKey = 'TextDelimiter';
   NameRowKey = 'NameRow';
@@ -275,6 +278,7 @@ Begin
   Else
     With CoordinateSystems.Items(MainForm.OutputSystemIndex) Do
       OutputSystemComboBox.Text := Description;
+  OutputVerticalDatumCheckBox.Checked := MainForm.OutputVerticalDatum;
   MainForm.SetupDataGrid;
 End;
 
@@ -377,6 +381,9 @@ Begin
       OpenKey(OutputKey);
         OpenKey(SRIDNumberKey);
           MainForm.OutputSystemIndex := CoordinateSystems.FindSRIDNumber(GetValue(ValueKey, 0));
+        CloseKey;
+        OpenKey(IncludeDatumKey);
+          MainForm.OutputVerticalDatum := GetValue(ValueKey, False);
         CloseKey;
       CloseKey;
       { Close settings configuration file. }
@@ -495,6 +502,9 @@ Begin
             OpenKey(SRIDNumberKey);
               With CoordinateSystems Do
                 SetValue(ValueKey, Items(MainForm.OutputSystemIndex).SRIDNumber);
+            CloseKey;
+            OpenKey(IncludeDatumKey);
+              SetValue(ValueKey, MainForm.OutputVerticalDatum);
             CloseKey;
           End;
       CloseKey;
@@ -760,6 +770,12 @@ End;
 Procedure TSettingsForm.OutputSystemComboBoxChange(Sender: TObject);
 Begin
   MainForm.OutputSystemIndex := CoordinateSystems.FindByDescription(OutputSystemComboBox.Text);
+  DisplayDataInformation;
+End;
+
+Procedure TSettingsForm.OutputVerticalDatumCheckBoxChange(Sender: TObject);
+Begin
+  MainForm.OutputVerticalDatum := OutputVerticalDatumCheckBox.Checked;
   DisplayDataInformation;
 End;
 

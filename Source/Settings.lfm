@@ -1,12 +1,12 @@
 object SettingsForm: TSettingsForm
   Left = 374
-  Height = 510
+  Height = 541
   Top = 148
   Width = 801
   AutoSize = True
   BorderStyle = bsDialog
   Caption = 'Data Settings'
-  ClientHeight = 510
+  ClientHeight = 541
   ClientWidth = 801
   Font.Quality = fqCleartype
   OnShow = FormShow
@@ -473,7 +473,7 @@ object SettingsForm: TSettingsForm
   end
   object OuputDataGroupBox: TGroupBox
     Left = 5
-    Height = 69
+    Height = 100
     Top = 398
     Width = 791
     Align = alTop
@@ -481,7 +481,7 @@ object SettingsForm: TSettingsForm
     BorderSpacing.Around = 5
     BorderSpacing.InnerBorder = 5
     Caption = 'Ouput Data Settings'
-    ClientHeight = 46
+    ClientHeight = 77
     ClientWidth = 789
     TabOrder = 2
     object OutputSystemLabel: TLabel
@@ -518,11 +518,24 @@ object SettingsForm: TSettingsForm
       Style = csDropDownList
       TabOrder = 0
     end
+    object OutputVerticalDatumCheckBox: TCheckBox
+      AnchorSideLeft.Control = OutputSystemComboBox
+      AnchorSideTop.Control = OutputSystemComboBox
+      AnchorSideTop.Side = asrBottom
+      Left = 252
+      Height = 26
+      Top = 41
+      Width = 376
+      BorderSpacing.Top = 5
+      Caption = 'Output vertical datum as aditional field.'
+      OnChange = OutputVerticalDatumCheckBoxChange
+      TabOrder = 1
+    end
   end
   object BottomPanel: TPanel
     Left = 4
     Height = 34
-    Top = 472
+    Top = 503
     Width = 793
     Align = alClient
     AutoSize = True
@@ -563,7 +576,7 @@ object SettingsForm: TSettingsForm
       AnchorSideTop.Control = BottomPanel
       AnchorSideRight.Control = CancelButton
       Left = 588
-      Height = 20
+      Height = 34
       Top = 0
       Width = 100
       Anchors = [akTop, akRight]
@@ -579,7 +592,7 @@ object SettingsForm: TSettingsForm
       AnchorSideRight.Control = BottomPanel
       AnchorSideRight.Side = asrBottom
       Left = 693
-      Height = 20
+      Height = 34
       Top = 0
       Width = 100
       Anchors = [akTop, akRight]

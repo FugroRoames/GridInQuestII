@@ -40,7 +40,6 @@ Type
     CartesianStyleLabel: TLabel;
     CartesianStyleOutputLabel: TLabel;
     DatumSuffixCheckBox: TCheckBox;
-    DatumSuffixOutputCheckBox: TCheckBox;
     GeodeticDisplayGroupBox: TGroupBox;
     GeodeticOutputGroupBox: TGroupBox;
     GeodeticPlacesEdit: TEdit;
@@ -165,7 +164,6 @@ Begin
       CartesianPlacesOutputEdit.Text := IntToStr(CartesianDecimalPlaces);
       HeightStyleOutputComboBox.Text := HeightStyle;
       HeightPlacesOutputEdit.Text := IntToStr(HeightDecimalPlaces);
-      DatumSuffixOutputCheckBox.Checked := HeightDatumSuffix;
     End;
   IGDatumComboBox.Text := DatumCodeToText(IG15CoordinateSystem.PreferredVerticalDatum);
   ITMDatumComboBox.Text := DatumCodeToText(ITM15CoordinateSystem.PreferredVerticalDatum);
@@ -278,7 +276,7 @@ Begin
       CartesianDecimalPlaces := StrToIntDef(CartesianPlacesOutputEdit.Text, 2);
       HeightStyle := HeightStyleOutputComboBox.Text;
       HeightDecimalPlaces := StrToIntDef(HeightPlacesOutputEdit.Text, 2);
-      HeightDatumSuffix := DatumSuffixOutputCheckBox.Checked;
+      HeightDatumSuffix := False;
     End;
 {$IFDEF IG02}
   IG02CoordinateSystem.PreferredVerticalDatum := DatumTextToCode(IGDatumComboBox.Text);

@@ -145,6 +145,7 @@ Type
     OutputSystemIndex: Integer;
     OutputCoordinates: Array Of TCoordinates;
     OutputData: Array Of TVerticalDatumCode;
+    OutputVerticalDatum: Boolean;
     OutputFieldTerminator: Char;
     OutputTextDelimiter: Char;
     Procedure ClearOutputData;
@@ -203,6 +204,7 @@ Begin
   InputSecondFieldIndex := -1;
   InputThirdFieldIndex := -1;
   OutputSystemIndex := -1;
+  OutputVerticalDatum := False;
   GlobeSystemIndex := CoordinateSystems.FindSRIDNumber(4937); { Globe uses WGS84/ETRS89. }
 End;
 
@@ -286,7 +288,9 @@ Begin
             Else If aCol=InputData.FieldCount+2 Then
               CellText := RecordOutputCoordinateText(aRow-1, 1, AxisOrder, CoordinateType)
             Else If aCol=InputData.FieldCount+3 Then
-              CellText := RecordOutputCoordinateText(aRow-1, 2, AxisOrder, CoordinateType);
+              CellText := RecordOutputCoordinateText(aRow-1, 2, AxisOrder, CoordinateType)
+            Else If aCol=InputData.FieldCount+4 Then
+              CellText := VerticalDataCodeToName(OutputData[aRow-1]);
         TOverrideGrid(DataDrawGrid).DrawCellText(aCol, aRow, aRect, aState, CellText);
       End;
 End;
@@ -794,6 +798,13 @@ Begin
           With DataDrawGrid.Columns.Add Do
             Begin
               Title.Caption := Abbreviation+'-'+AxisShortName(OutputSystemIndex, 2);
+              Width := NewWidth;
+            End;
+        { Add a vertical datum column if required. }
+        If OutputVerticalDatum Then
+          With DataDrawGrid.Columns.Add Do
+            Begin
+              Title.Caption := Abbreviation+'-Datum';
               Width := NewWidth;
             End;
       End;
