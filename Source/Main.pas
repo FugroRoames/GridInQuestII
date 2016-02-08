@@ -24,7 +24,7 @@ Interface
 Uses
   Classes, SysUtils, FileUtil, LCLIntf, Forms, Controls, Graphics, Dialogs,
   ExtCtrls, Menus, ActnList, StdCtrls, Grids, Clipbrd, GlobeCtrl, CoordCtrls,
-  DataStreams, Progress, Settings, Options, About, Config, Geodesy,
+  DataStreams, Progress, Settings, Options, About, Config, Geometry, Geodesy,
   GeodUtils, OSTab;
 
 Type
@@ -595,26 +595,42 @@ Begin
 End;
 
 Function TMainForm.DataDrawGridCoordinates(Row: Integer): TCoordinates;
+Function TryTextToCoordinate(Text: String; CoordinateType: TCoordinateType; AxisType: TAxisType; Var Coordinate: TCoordinate): Boolean;
+Begin
+  Case CoordinateType Of
+  ctCartesian:
+    Result := TryCartesianTextToCoordinate(Text, Coordinate, AxisType);
+  ctGeodetic:
+    Result := TryGeodeticTextToCoordinate(Text, Coordinate, AxisType);
+  ctProjected:
+    Result := TryProjectedTextToCoordinate(Text, Coordinate, AxisType);
+  Else
+    Result := False;
+  End;
+End;
 Begin
   InputData.RecordNumber := Row-1;
   { Construct Input coordinate. }
-  Case CoordinateSystems.Items(InputSystemIndex).AxisOrder Of
-  aoXYZ:
+  With CoordinateSystems.Items(InputSystemIndex) Do
     Begin
-      Result.X := StrToFloatDef(InputData.Fields[InputFirstFieldIndex], 0);
-      Result.Y:= StrToFloatDef(InputData.Fields[InputSecondFieldIndex], 0);
+      Case AxisOrder Of
+      aoXYZ:
+        Begin
+          TryTextToCoordinate(InputData.Fields[InputFirstFieldIndex], CoordinateType, atXAxis, Result.X);
+          TryTextToCoordinate(InputData.Fields[InputSecondFieldIndex], CoordinateType, atYAxis, Result.Y);
+        End;
+      aoYXZ:
+        Begin
+          TryTextToCoordinate(InputData.Fields[InputFirstFieldIndex], CoordinateType, atYAxis, Result.Y);
+          TryTextToCoordinate(InputData.Fields[InputSecondFieldIndex], CoordinateType, atXAxis, Result.X);
+        End;
+      End;
+      { Output the third coordinate name if needed. }
+      If InputThirdFieldIndex<>-1 Then
+        TryTextToCoordinate(InputData.Fields[InputThirdFieldIndex], CoordinateType, atZAxis, Result.Z)
+      Else
+        Result.Z := 0;
     End;
-  aoYXZ:
-    Begin
-      Result.Y := StrToFloatDef(InputData.Fields[InputFirstFieldIndex], 0);
-      Result.X := StrToFloatDef(InputData.Fields[InputSecondFieldIndex], 0);
-    End;
-  End;
-  { Output the third coordinate name if needed. }
-  If InputThirdFieldIndex<>-1 Then
-    Result.Z := StrToFloatDef(InputData.Fields[InputThirdFieldIndex], 0)
-  Else
-    Result.Z := 0;
 End;
 
 Function TMainForm.DataLoaded: Boolean;
