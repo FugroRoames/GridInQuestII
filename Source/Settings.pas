@@ -274,10 +274,23 @@ Begin
   SecondColumnComboBox.ItemIndex := MainForm.InputSecondFieldIndex;
   ThirdColumnComboBox.ItemIndex := MainForm.InputThirdFieldIndex;
   If (MainForm.OutputSystemIndex=-1) Or (MainForm.OutputSystemIndex=MainForm.InputSystemIndex) Then
-    OutputSystemComboBox.Text := EmptyStr
+    Begin
+      OutputSystemComboBox.Text := EmptyStr;
+      OutputVerticalDatumCheckBox.Enabled := False;
+    End
   Else
     With CoordinateSystems.Items(MainForm.OutputSystemIndex) Do
-      OutputSystemComboBox.Text := Description;
+      Begin
+        OutputSystemComboBox.Text := Description;
+        Case CoordinateSystems.Items(MainForm.OutputSystemIndex).SRIDNumber Of
+        27700, 29903, 2157:
+          OutputVerticalDatumCheckBox.Enabled := True;
+        Else
+          OutputVerticalDatumCheckBox.Enabled := False;                                          ;
+        End;
+      End;
+  If Not OutputVerticalDatumCheckBox.Enabled Then
+    MainForm.OutputVerticalDatum := False;
   OutputVerticalDatumCheckBox.Checked := MainForm.OutputVerticalDatum;
   MainForm.SetupDataGrid;
 End;
