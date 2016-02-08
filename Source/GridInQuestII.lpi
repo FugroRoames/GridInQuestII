@@ -16,11 +16,10 @@
     <VersionInfo>
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
-      <MinorVersionNr Value="9"/>
-      <BuildNr Value="551"/>
+      <MajorVersionNr Value="1"/>
+      <BuildNr Value="576"/>
       <Language Value="0809"/>
-      <Attributes pvaPreRelease="True"/>
-      <StringTable Comments="Developed for the three Ordnance Surveys of Britain and Ireland." CompanyName="Michell Computing" FileDescription="Coordinate Transformation Program" LegalCopyright="(c) 2015 Michell Computing" ProductName="Grid InQuest II" ProductVersion="0.90B"/>
+      <StringTable Comments="Developed for the three Ordnance Surveys of Britain and Ireland." CompanyName="Michell Computing" FileDescription="Coordinate Transformation Program" LegalCopyright="(c) 2016 Michell Computing" ProductName="Grid InQuest II" ProductVersion="1.00"/>
     </VersionInfo>
     <BuildModes Count="3">
       <Item1 Name="Debug" Default="True"/>
@@ -206,7 +205,19 @@
         <DebugInfoType Value="dsDwarf2Set"/>
         <UseHeaptrc Value="True"/>
       </Debugging>
+      <Options>
+        <Win32>
+          <GraphicApplication Value="True"/>
+        </Win32>
+      </Options>
     </Linking>
+    <Other>
+      <OtherDefines Count="3">
+        <Define0 Value="IG02"/>
+        <Define1 Value="ITM02"/>
+        <Define2 Value="BNG02"/>
+      </OtherDefines>
+    </Other>
   </CompilerOptions>
   <Debugging>
     <Exceptions Count="5">

@@ -20,11 +20,10 @@
     <VersionInfo>
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
-      <MinorVersionNr Value="9"/>
-      <BuildNr Value="87"/>
+      <MajorVersionNr Value="1"/>
+      <BuildNr Value="89"/>
       <Language Value="0809"/>
-      <Attributes pvaPreRelease="True"/>
-      <StringTable Comments="Developed for the three Ordnance Surveys of Britain and Ireland." CompanyName="Michell Computing" FileDescription="Coordinate Transformation Library" LegalCopyright="(c) 2015 Michell Computing" ProductName="Lib Grid InQuest II" ProductVersion="0.90B"/>
+      <StringTable Comments="Developed for the three Ordnance Surveys of Britain and Ireland." CompanyName="Michell Computing" FileDescription="Coordinate Transformation Library" LegalCopyright="(c) 2016 Michell Computing" ProductName="Lib Grid InQuest II" ProductVersion="1.00"/>
     </VersionInfo>
     <BuildModes Count="2">
       <Item1 Name="Debug" Default="True"/>

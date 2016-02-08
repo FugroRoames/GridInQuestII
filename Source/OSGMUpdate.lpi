@@ -18,10 +18,9 @@
     </i18n>
     <VersionInfo>
       <UseVersionInfo Value="True"/>
-      <MinorVersionNr Value="9"/>
+      <MajorVersionNr Value="1"/>
       <Language Value="0809"/>
-      <Attributes pvaPreRelease="True"/>
-      <StringTable ProductVersion="0.9B"/>
+      <StringTable Comments="Developed for the three Ordnance Surveys of Britain and Ireland." CompanyName="Michell Computing" FileDescription="Coordinate Transformation Utility" LegalCopyright="(c) 2016 Michell Computing" ProductName="Grid InQuest II" ProductVersion="1.00"/>
     </VersionInfo>
     <BuildModes Count="2">
       <Item1 Name="Debug" Default="True"/>

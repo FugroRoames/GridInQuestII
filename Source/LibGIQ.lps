@@ -4,12 +4,11 @@
     <PathDelim Value="\"/>
     <Version Value="9"/>
     <BuildModes Active="Release"/>
-    <Units Count="18">
+    <Units Count="19">
       <Unit0>
         <Filename Value="LibGIQ.pas"/>
         <IsPartOfProject Value="True"/>
-        <IsVisibleTab Value="True"/>
-        <CursorPos X="29" Y="12"/>
+        <CursorPos X="97" Y="3"/>
         <UsageCount Value="55"/>
         <Loaded Value="True"/>
       </Unit0>
@@ -45,14 +44,17 @@
       <Unit5>
         <Filename Value="ETRS.pas"/>
         <EditorIndex Value="1"/>
+        <TopLine Value="107"/>
         <CursorPos X="53" Y="127"/>
         <UsageCount Value="25"/>
         <Loaded Value="True"/>
       </Unit5>
       <Unit6>
         <Filename Value="BNG.pas"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="2"/>
-        <CursorPos Y="186"/>
+        <TopLine Value="66"/>
+        <CursorPos X="3" Y="78"/>
         <UsageCount Value="25"/>
         <Loaded Value="True"/>
       </Unit6>
@@ -133,6 +135,12 @@
         <CursorPos X="33" Y="765"/>
         <UsageCount Value="9"/>
       </Unit17>
+      <Unit18>
+        <Filename Value="L:\Public\3852 xml version.docx"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="None"/>
+      </Unit18>
     </Units>
     <OtherDefines Count="3">
       <Define0 Value="BNG02"/>
