@@ -1,7 +1,7 @@
 object MainForm: TMainForm
-  Left = 316
+  Left = 424
   Height = 750
-  Top = 56
+  Top = 115
   Width = 1200
   Caption = 'Grid InQuest II'
   ClientHeight = 720
@@ -507,6 +507,9 @@ object MainForm: TMainForm
       object TransformMenuItem: TMenuItem
         Action = TransformAction
       end
+      object SaveOutputMenuItem: TMenuItem
+        Action = SaveOutputAction
+      end
       object ExitBreak: TMenuItem
         Caption = '-'
       end
@@ -595,7 +598,7 @@ object MainForm: TMainForm
       OnExecute = UnloadActionExecute
     end
     object DataSettingsAction: TAction
-      Caption = '&Data Settings'
+      Caption = '&Data Settings...'
       Enabled = False
       OnExecute = DataSettingsActionExecute
       ShortCut = 16452
@@ -605,6 +608,11 @@ object MainForm: TMainForm
       Enabled = False
       OnExecute = TransformActionExecute
       ShortCut = 16468
+    end
+    object SaveOutputAction: TAction
+      Caption = 'Save &Output...'
+      Enabled = False
+      OnExecute = SaveOutputActionExecute
     end
     object ExitAction: TAction
       Caption = 'E&xit'

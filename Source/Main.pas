@@ -29,6 +29,8 @@ Uses
 
 Type
   TMainForm = Class(TForm)
+    SaveOutputAction: TAction;
+    SaveOutputMenuItem: TMenuItem;
     TransformButton: TButton;
     ExchangeAction: TAction;
     DataBreak: TMenuItem;
@@ -107,6 +109,7 @@ Type
     Procedure DataDrawGridSelection(Sender: TObject; aCol, aRow: Integer);
     Procedure ReCenterActionExecute(Sender: TObject);
     Procedure SaveActionExecute(Sender: TObject);
+    procedure SaveOutputActionExecute(Sender: TObject);
     Procedure TransformActionExecute(Sender: TObject);
     Procedure UnloadActionExecute(Sender: TObject);
     Procedure ZoomInActionExecute(Sender: TObject);
@@ -163,6 +166,9 @@ Implementation
 Type
   TOverrideGrid = Class(TCustomDrawGrid)
   End;
+
+Const
+  BoundaryErrorText: String = 'Coordinate Outside Transformation Boundary';
 
 Procedure TMainForm.FormCreate(Sender: TObject);
 Begin
@@ -307,6 +313,7 @@ End;
 Procedure TMainForm.SaveActionExecute(Sender: TObject);
 Var
   OutputFile: TFileStream;
+  UsesVerticalDatum: Boolean;
   OutputText: String;
   RecordIndex, LastRecordIndex: Integer;
   Function AddDelimiters(Text: String): String;
@@ -362,29 +369,169 @@ Begin
                 OutputText := OutputText+OutputFieldTerminator;
                 OutputText := OutputText+AddDelimiters(Abbreviation+'-'+AxisShortName(OutputSystemIndex, 2));
               End;
+            { Output the vertical datum column if needed. }
+            If OutputVerticalDatum Then
+              Begin
+                OutputText := OutputText+OutputFieldTerminator;
+                OutputText := OutputText+Abbreviation+'-Datum';
+              End;
             OutputText := OutputText+LineEnding;
           End;
         OutputFile.Write(OutputText[1], Length(OutputText));
+        { Determine vertical datum use. }
+        Case CoordinateSystems.Items(OutputSystemIndex).SRIDNumber Of
+        27700, 29903, 2157:
+          UsesVerticalDatum := True;
+        Else
+          UsesVerticalDatum := False;
+        End;
         LastRecordIndex := InputData.RecordCount-1;
         For RecordIndex := 0 To LastRecordIndex Do
           Begin
             { Write the output line for the current record. }
             InputData.RecordNumber := RecordIndex;
             OutputText := InputData.RecordAsText(OutputFieldTerminator, OutputTextDelimiter);
-            With CoordinateSystems.Items(OutputSystemIndex) Do
+            OutputText := OutputText+OutputFieldTerminator;
+            { If the point is out of area, output the boundary error message. }
+            If UsesVerticalDatum And (OutputData[RecordIndex]=vdNone) Then
+              OutputText := OutputText+BoundaryErrorText
+            Else
+              With CoordinateSystems.Items(OutputSystemIndex) Do
+                Begin
+                  OutputText := OutputText+AddDelimiters(RecordOutputCoordinateText(RecordIndex, 0, AxisOrder, CoordinateType));
+                  OutputText := OutputText+OutputFieldTerminator;
+                  OutputText := OutputText+AddDelimiters(RecordOutputCoordinateText(RecordIndex, 1, AxisOrder, CoordinateType));
+                  { Output the third coordinate if needed. }
+                  If (InputThirdFieldIndex<>-1) Or (CoordinateType=ctCartesian) Then
+                    Begin
+                      OutputText := OutputText+OutputFieldTerminator;
+                      OutputText := OutputText+AddDelimiters(RecordOutputCoordinateText(RecordIndex, 2, AxisOrder, CoordinateType));
+                    End;
+                  { Output the vertical datum column if needed. }
+                  If OutputVerticalDatum Then
+                    Begin
+                      OutputText := OutputText+OutputFieldTerminator;
+                      OutputText := OutputText+VerticalDataCodeToName(OutputData[RecordIndex]);
+                    End;
+                End;
+            OutputText := OutputText+LineEnding;
+            OutputFile.Write(OutputText[1], Length(OutputText));
+            { Update progress display. }
+            ProgressDisplay.Progress := Integer(Int64(100*Int64(RecordIndex)) Div LastRecordIndex);
+          End;
+      Except
+        On E:Exception Do
+          ShowMessage('Insufficient memory to save data.');
+      End;
+    Finally
+      OutputFile.Free;
+      ProgressDisplay.Hide;
+      Screen.Cursor := crDefault;
+    End;
+End;
+
+Procedure TMainForm.SaveOutputActionExecute(Sender: TObject);
+Var
+  OutputFile: TFileStream;
+  UsesVerticalDatum: Boolean;
+  OutputText: String;
+  RecordIndex, LastRecordIndex: Integer;
+  Function AddDelimiters(Text: String): String;
+  Begin
+    If OutputTextDelimiter=#0 Then
+      Result := Text
+    Else
+      Result := OutputTextDelimiter+StringReplace(Text, OutputTextDelimiter, OutputTextDelimiter+OutputTextDelimiter, [rfReplaceAll])+OutputTextDelimiter;
+  End;
+Begin
+  If Length(OutputCoordinates)=0 Then
+    Begin
+      ShowMessage('There is no transformed data to save.');
+      Exit;
+    End;
+  If SavePointsDialog.Execute Then
+    Try
+      { Warn the user if the file already exists. }
+      If FileExists(SavePointsDialog.FileName) Then
+        If MessageDlg('This file already exists! Do you want to overwrite it?', mtWarning, [mbYes, mbNo],0) = mrNo Then
+          Exit;
+      Screen.Cursor := crHourglass;
+      Try
+        OutputFile := TFileStream.Create(SavePointsDialog.FileName, fmCreate);
+        ProgressDisplay.Show('Saving Output');
+        { Set delimiters as needed by output formats. }
+        Case ExtractFileExt(SavePointsDialog.FileName) Of
+        '.csv':
+          Begin
+            OutputFieldTerminator := ',';
+            OutputTextDelimiter := '"';
+          End;
+        '.tab':
+          Begin
+            OutputFieldTerminator := #9;
+            OutputTextDelimiter := #0;
+          End;
+        Else
+          OutputFieldTerminator := ',';
+          OutputTextDelimiter := #0;
+        End;
+        { Write the header line for the output file. }
+        With CoordinateSystems.Items(OutputSystemIndex) Do
+          Begin
+            OutputText := EmptyStr;
+            OutputText := OutputText+AddDelimiters(Abbreviation+'-'+AxisShortName(OutputSystemIndex, 0));
+            OutputText := OutputText+OutputFieldTerminator;
+            OutputText := OutputText+AddDelimiters(Abbreviation+'-'+AxisShortName(OutputSystemIndex, 1));
+            { Output the third coordinate name if needed. }
+            If (InputThirdFieldIndex<>-1) Or (CoordinateType=ctCartesian) Then
               Begin
                 OutputText := OutputText+OutputFieldTerminator;
-                OutputText := OutputText+AddDelimiters(RecordOutputCoordinateText(RecordIndex, 0, AxisOrder, CoordinateType));
-                OutputText := OutputText+OutputFieldTerminator;
-                OutputText := OutputText+AddDelimiters(RecordOutputCoordinateText(RecordIndex, 1, AxisOrder, CoordinateType));
-                { Output the third coordinate if needed. }
-                If (InputThirdFieldIndex<>-1) Or (CoordinateType=ctCartesian) Then
-                  Begin
-                    OutputText := OutputText+OutputFieldTerminator;
-                    OutputText := OutputText+AddDelimiters(RecordOutputCoordinateText(RecordIndex, 2, AxisOrder, CoordinateType));
-                  End;
-                OutputText := OutputText+LineEnding;
+                OutputText := OutputText+AddDelimiters(Abbreviation+'-'+AxisShortName(OutputSystemIndex, 2));
               End;
+            { Output the vertical datum column if needed. }
+            If OutputVerticalDatum Then
+              Begin
+                OutputText := OutputText+OutputFieldTerminator;
+                OutputText := OutputText+Abbreviation+'-Datum';
+              End;
+            OutputText := OutputText+LineEnding;
+          End;
+        OutputFile.Write(OutputText[1], Length(OutputText));
+        { Determine vertical datum use. }
+        Case CoordinateSystems.Items(OutputSystemIndex).SRIDNumber Of
+        27700, 29903, 2157:
+          UsesVerticalDatum := True;
+        Else
+          UsesVerticalDatum := False;
+        End;
+        LastRecordIndex := InputData.RecordCount-1;
+        For RecordIndex := 0 To LastRecordIndex Do
+          Begin
+            { Write the output line for the current record. }
+            InputData.RecordNumber := RecordIndex;
+            { If the point is out of area, output the boundary error message. }
+            If UsesVerticalDatum And (OutputData[RecordIndex]=vdNone) Then
+              OutputText := BoundaryErrorText
+            Else
+              With CoordinateSystems.Items(OutputSystemIndex) Do
+                Begin
+                  OutputText := AddDelimiters(RecordOutputCoordinateText(RecordIndex, 0, AxisOrder, CoordinateType));
+                  OutputText := OutputText+OutputFieldTerminator;
+                  OutputText := OutputText+AddDelimiters(RecordOutputCoordinateText(RecordIndex, 1, AxisOrder, CoordinateType));
+                  { Output the third coordinate if needed. }
+                  If (InputThirdFieldIndex<>-1) Or (CoordinateType=ctCartesian) Then
+                    Begin
+                      OutputText := OutputText+OutputFieldTerminator;
+                      OutputText := OutputText+AddDelimiters(RecordOutputCoordinateText(RecordIndex, 2, AxisOrder, CoordinateType));
+                    End;
+                  { Output the vertical datum column if needed. }
+                  If OutputVerticalDatum Then
+                    Begin
+                      OutputText := OutputText+OutputFieldTerminator;
+                      OutputText := OutputText+VerticalDataCodeToName(OutputData[RecordIndex]);
+                    End;
+                End;
+            OutputText := OutputText+LineEnding;
             OutputFile.Write(OutputText[1], Length(OutputText));
             { Update progress display. }
             ProgressDisplay.Progress := Integer(Int64(100*Int64(RecordIndex)) Div LastRecordIndex);
@@ -470,6 +617,7 @@ Begin
   UnloadAction.Enabled := DataLoaded;
   DataSettingsAction.Enabled := DataLoaded;
   TransformAction.Enabled := DataLoaded;
+  SaveOutputAction.Enabled := DataLoaded;
 End;
 
 Procedure TMainForm.EditMenuItemClick(Sender: TObject);
