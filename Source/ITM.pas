@@ -212,29 +212,20 @@ End;
 Function TTransformationData.AdjustHeight(Var OutputCoordinates: TCoordinates; Var OutputDatum: TVerticalDatumCode; Const AdjustDirection: TAdjustDirection): Boolean;
 Begin
   Result := False;
-  If NIValid Then
-    Begin
-      { If both data tables are valid. }
-      If RoIValid Then
-        Begin
-          { If NI preferred then try it first. }
-          If PreferredDatum=vdBelfast Then
-            Result := SetZoneHeight(dzNI, OutputCoordinates, OutputDatum, AdjustDirection);
-          { If there was no valid output, try RoI. }
-          If Not Result Then
-            Result := SetZoneHeight(dzRoI, OutputCoordinates, OutputDatum, AdjustDirection);
-          { If still no valid output, try NI again if needed. }
-          If Not Result And (PreferredDatum<>vdBelfast) Then
-            Result := SetZoneHeight(dzNI, OutputCoordinates, OutputDatum, AdjustDirection);
-        End
-      Else
-        Result := SetZoneHeight(dzNI, OutputCoordinates, OutputDatum, AdjustDirection);
-    End
-  Else
-    Begin
-      If RoIValid Then
+  If RoIValid Then
+    If PreferredDatum=vdMalinHead Then
+      Begin
         Result := SetZoneHeight(dzRoI, OutputCoordinates, OutputDatum, AdjustDirection);
-    End;
+        Exit;
+      End;
+  If NIValid Then
+    If PreferredDatum=vdBelfast Then
+      Begin
+        Result := SetZoneHeight(dzNI, OutputCoordinates, OutputDatum, AdjustDirection);
+        Exit;
+      End;
+  OutputDatum := vdNone;
+  Result := False;
 End;
 
 Function WGS84CoordinatesToITMCoordinates(Const InputCoordinates: TCoordinates; Const VerticalModel: TOSVerticalModel; Const PreferredDatum: TVerticalDatumCode; Out OutputCoordinates: TCoordinates; Out OutputDatum: TVerticalDatumCode): Boolean;
