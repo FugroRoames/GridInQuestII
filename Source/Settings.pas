@@ -286,7 +286,7 @@ Begin
         27700, 29903, 2157:
           OutputVerticalDatumCheckBox.Enabled := True;
         Else
-          OutputVerticalDatumCheckBox.Enabled := False;                                          ;
+          OutputVerticalDatumCheckBox.Enabled := False;
         End;
       End;
   If Not OutputVerticalDatumCheckBox.Enabled Then
