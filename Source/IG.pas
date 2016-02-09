@@ -57,7 +57,7 @@ Var
   IG15CoordinateSystem: TIGCoordinateSystem;
 
 Const
-  IGBounds: TGeodeticBounds = (Western: -10.56*PI/180; Southern: 51.39*PI/180; Eastern: -5.34*PI/180; Northern: 55.43*PI/180);
+  IGBounds: TGeodeticBounds = (Western: -10.98*PI/180; Southern: 51.24*PI/180; Eastern: -5.27*PI/180; Northern: 55.63*PI/180);
 
 {$IFDEF LEVEL1}
 { Mean offset of planar Irish Grid to Irish GPS Grid coordinates and average ellipsoid geoid separation. }

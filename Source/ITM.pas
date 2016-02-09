@@ -55,7 +55,7 @@ Var
   ITM15CoordinateSystem: TITMCoordinateSystem;
 
 Const
-  ITMBounds: TGeodeticBounds = (Western: -10.56*PI/180; Southern: 51.39*PI/180; Eastern: -5.34*PI/180; Northern: 55.43*PI/180);
+  ITMBounds: TGeodeticBounds = (Western: -10.98*PI/180; Southern: 51.24*PI/180; Eastern: -5.27*PI/180; Northern: 55.63*PI/180);
 
 Function WGS84CoordinatesToITMCoordinates(Const InputCoordinates: TCoordinates; Const VerticalModel: TOSVerticalModel; Const PreferredDatum: TVerticalDatumCode; Out OutputCoordinates: TCoordinates; Out OutputDatum: TVerticalDatumCode): Boolean;
 Function ITMCoordinatesToWGS84Coordinates(Const InputCoordinates: TCoordinates; Const VerticalModel: TOSVerticalModel; Const PreferredDatum: TVerticalDatumCode; Out OutputCoordinates: TCoordinates; Out OutputDatum: TVerticalDatumCode): Boolean;
