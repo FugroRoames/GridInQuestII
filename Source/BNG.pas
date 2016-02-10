@@ -165,12 +165,12 @@ Var
 Begin
   If BNGCoordinatesToWGS84Coordinates(Coordinates, TNDataPointer^, GMDataPointer^, GeodeticCoordinates, LastVerticalDatum) Then
     If WithinGeodeticBounds(GeodeticCoordinates) Then
-      Result := GeodeticToGeocentric(GeodeticCoordinates, GRS80Ellipsoid)
-    Else
       Begin
-        LastVerticalDatum := vdNone;
-        Result := NullCoordinates
+        Result := GeodeticToGeocentric(GeodeticCoordinates, GRS80Ellipsoid);
+        Exit;
       End;
+  LastVerticalDatum := vdNone;
+  Result := NullCoordinates
 End;
 
 Function TBNGCoordinateSystem.ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates;

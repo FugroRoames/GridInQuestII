@@ -119,7 +119,7 @@ Constructor TITMCoordinateSystem.Initialize(NewName: String; NewAbbreviation: St
                                             NewBounds: TGeodeticBounds; NewPreferredVerticalDatum: TVerticalDatumCode; NewVerticalModel: TOSVerticalModel);
 Begin
   Inherited Initialize(NewName, NewAbbreviation, NewDescription, NewSRIDNumber, NewRevision,
-                             NewCoordinateType, NewAxisOrder, NewBounds);
+                       NewCoordinateType, NewAxisOrder, NewBounds);
   PreferredVerticalDatum := NewPreferredVerticalDatum;
   LastVerticalDatum := vdNone;
   VerticalModel := NewVerticalModel;
@@ -131,12 +131,12 @@ Var
 Begin
   If ITMCoordinatesToWGS84Coordinates(Coordinates, VerticalModel, PreferredVerticalDatum, GeodeticCoordinates, LastVerticalDatum) Then
     If WithinGeodeticBounds(GeodeticCoordinates) Then
-      Result := GeodeticToGeocentric(GeodeticCoordinates, GRS80Ellipsoid)
-    Else
       Begin
-        LastVerticalDatum := vdNone;
-        Result := NullCoordinates
+        Result := GeodeticToGeocentric(GeodeticCoordinates, GRS80Ellipsoid);
+        Exit;
       End;
+  LastVerticalDatum := vdNone;
+  Result := NullCoordinates
 End;
 
 Function TITMCoordinateSystem.ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates;
