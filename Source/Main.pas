@@ -321,7 +321,7 @@ Var
     If OutputTextDelimiter=#0 Then
       Result := Text
     Else
-      Result := OutputTextDelimiter+StringReplace(Text, OutputTextDelimiter, OutputTextDelimiter+OutputTextDelimiter, [rfReplaceAll])+OutputTextDelimiter;
+      Result := AnsiQuotedStr(Text, OutputTextDelimiter);
   End;
 Begin
   If Length(OutputCoordinates)=0 Then
@@ -441,7 +441,7 @@ Var
     If OutputTextDelimiter=#0 Then
       Result := Text
     Else
-      Result := OutputTextDelimiter+StringReplace(Text, OutputTextDelimiter, OutputTextDelimiter+OutputTextDelimiter, [rfReplaceAll])+OutputTextDelimiter;
+      Result := AnsiQuotedStr(Text, OutputTextDelimiter);
   End;
 Begin
   If Length(OutputCoordinates)=0 Then
@@ -478,7 +478,7 @@ Begin
         { Write the header line for the output file. }
         With CoordinateSystems.Items(OutputSystemIndex) Do
           Begin
-            OutputText := EmptyStr;
+            OutputText := InputData.NameAsText(0, OutputTextDelimiter)+OutputFieldTerminator;
             OutputText := OutputText+AddDelimiters(Abbreviation+'-'+AxisShortName(OutputSystemIndex, 0));
             OutputText := OutputText+OutputFieldTerminator;
             OutputText := OutputText+AddDelimiters(Abbreviation+'-'+AxisShortName(OutputSystemIndex, 1));
@@ -511,11 +511,12 @@ Begin
             InputData.RecordNumber := RecordIndex;
             { If the point is out of area, output the boundary error message. }
             If UsesVerticalDatum And (OutputData[RecordIndex]=vdNone) Then
-              OutputText := BoundaryErrorText
+              OutputText := InputData.FieldAsText(0, OutputTextDelimiter)+OutputFieldTerminator+BoundaryErrorText
             Else
               With CoordinateSystems.Items(OutputSystemIndex) Do
                 Begin
-                  OutputText := AddDelimiters(RecordOutputCoordinateText(RecordIndex, 0, AxisOrder, CoordinateType));
+                  OutputText := InputData.FieldAsText(0, OutputTextDelimiter)+OutputFieldTerminator;
+                  OutputText := OutputText+AddDelimiters(RecordOutputCoordinateText(RecordIndex, 0, AxisOrder, CoordinateType));
                   OutputText := OutputText+OutputFieldTerminator;
                   OutputText := OutputText+AddDelimiters(RecordOutputCoordinateText(RecordIndex, 1, AxisOrder, CoordinateType));
                   { Output the third coordinate if needed. }
