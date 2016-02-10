@@ -87,6 +87,8 @@ Type
     Procedure Last;
     Procedure Next;
     Procedure Prior;
+    Function FieldAsText(Index: Integer; TextDelimiter: Char): String;
+    Function NameAsText(Index: Integer; TextDelimiter: Char = #0): String;
     Function NamesAsText(OutputFieldTerminator: Char; TextDelimiter: Char = #0): String;
     Function RecordAsText(OutputFieldTerminator: Char; TextDelimiter: Char = #0): String;
     Function RowLength(RowIndex: Integer): Integer;
@@ -245,8 +247,23 @@ Begin
   SetRecordNumber(RecordNumber-1);
 End;
 
-function TDataStream.NamesAsText(OutputFieldTerminator: Char;
-  TextDelimiter: Char): String;
+Function TDataStream.FieldAsText(Index: Integer; TextDelimiter: Char): String;
+Begin
+  If TextDelimiter=#0 Then
+    Result := Fields[Index]
+  Else
+    Result := AnsiQuotedStr(Fields[Index], TextDelimiter);
+End;
+
+Function TDataStream.NameAsText(Index: Integer; TextDelimiter: Char): String;
+Begin
+  If TextDelimiter=#0 Then
+    Result := GetName(Index)
+  Else
+    Result := AnsiQuotedStr(GetName(Index), TextDelimiter);
+End;
+
+Function TDataStream.NamesAsText(OutputFieldTerminator: Char; TextDelimiter: Char): String;
 Var
   Index, LastIndex: Integer;
 Begin
@@ -254,17 +271,13 @@ Begin
   LastIndex := FieldCount-1;
   For Index := 0 To LastIndex Do
     Begin
-      If TextDelimiter=#0 Then
-        Result := Result+GetName(Index)
-      Else
-        Result := Result+TextDelimiter+GetName(Index)+TextDelimiter;
+      Result := Result+NameAsText(Index, TextDelimiter);
       If Index<LastIndex Then
         Result := Result+OutputFieldTerminator;
     End;
 End;
 
-function TDataStream.RecordAsText(OutputFieldTerminator: Char;
-  TextDelimiter: Char): String;
+Function TDataStream.RecordAsText(OutputFieldTerminator: Char; TextDelimiter: Char): String;
 Var
   Index, LastIndex: Integer;
 Begin
@@ -272,10 +285,7 @@ Begin
   LastIndex := FieldCount-1;
   For Index := 0 To LastIndex Do
     Begin
-      If TextDelimiter=#0 Then
-        Result := Result+Fields[Index]
-      Else
-        Result := Result+TextDelimiter+StringReplace(Fields[Index], TextDelimiter, TextDelimiter+TextDelimiter, [rfReplaceAll])+TextDelimiter;
+      Result := Result+FieldAsText(Index, TextDelimiter);
       If Index<LastIndex Then
         Result := Result+OutputFieldTerminator;
     End;
@@ -430,7 +440,7 @@ Begin
   Result := GetField(FieldIndex);
 End;
 
-Procedure TDataStream.SetConsecutiveDelimiters(Value: Boolean);
+procedure TDataStream.SetConsecutiveDelimiters(Value: Boolean);
 Begin
   If FConsecutiveDelimiters<>Value Then
     Begin
