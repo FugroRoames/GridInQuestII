@@ -127,6 +127,7 @@ Type
     Function DataLoaded: Boolean;
     Function RecordOutputCoordinateText(RecordNumber, AxisIndex: Integer; AxisOrder: TAxisOrder; CoordinateType: TCoordinateType): String;
     Function TransformCoordinates(Const Coordinates: TCoordinates; InputIndex, OutputIndex: Integer): TCoordinates;
+    Function UsesVerticalDatum(SystemIndex: Integer): Boolean;
     Procedure ClearDataGrid;
     Procedure LocateOnMap(Const Coordinates: TCoordinates; CoordinateSystemIndex: Integer);
     Procedure DoInputValid(Sender: TObject);
@@ -279,25 +280,56 @@ End;
 Procedure TMainForm.DataDrawGridDrawCell(Sender: TObject; aCol, aRow: Integer; aRect: TRect; aState: TGridDrawState);
 Var
   CellText: String;
+  ShowBoundsError: Boolean;
 Begin
-  If aRow=0 Then
+  DataDrawGrid.Canvas.Font.Color := clBlack;
+  If (aRow=0) Or (aCol=0) Then
     DataDrawGrid.DefaultDrawCell(aCol, aRow, aRect, aState)
   Else
     If aCol>0 Then
       Begin
+        ShowBoundsError := False;
+        If UsesVerticalDatum(OutputSystemIndex) Then
+          Begin
+            If Length(OutputData)>=aRow Then
+              If (OutputData[aRow-1]=vdNone) Then
+                ShowBoundsError := True;
+          End
+        Else
+          Begin
+            If Length(OutputData)>=aRow Then
+              If (OutputCoordinates[aRow-1].X=0) And (OutputCoordinates[aRow-1].Y=0) Then
+                ShowBoundsError := True;
+          End;
         If aCol<=InputData.FieldCount Then
           CellText := InputData.Values[aRow-1, aCol-1]
         Else
-          With CoordinateSystems.Items(OutputSystemIndex) Do
-            If aCol=InputData.FieldCount+1 Then
-              CellText := RecordOutputCoordinateText(aRow-1, 0, AxisOrder, CoordinateType)
-            Else If aCol=InputData.FieldCount+2 Then
-              CellText := RecordOutputCoordinateText(aRow-1, 1, AxisOrder, CoordinateType)
-            Else If aCol=InputData.FieldCount+3 Then
-              CellText := RecordOutputCoordinateText(aRow-1, 2, AxisOrder, CoordinateType)
-            Else If aCol=InputData.FieldCount+4 Then
-              CellText := VerticalDataCodeToName(OutputData[aRow-1]);
-        TOverrideGrid(DataDrawGrid).DrawCellText(aCol, aRow, aRect, aState, CellText);
+          If ShowBoundsError Then
+            Begin
+              DataDrawGrid.Canvas.Font.Color := clRed;
+              CellText := BoundaryErrorText;
+              aRect.Top := aRect.Top-1;
+              aRect.Left := DataDrawGrid.CellRect(InputData.FieldCount+1, aRow).Left-1;
+              aRect.Right := DataDrawGrid.CellRect(DataDrawGrid.ColCount-1, aRow).Right;
+              DataDrawGrid.Canvas.Clipping := False;
+              If gdSelected In aState Then
+                DataDrawGrid.Canvas.Brush.Color := DataDrawGrid.SelectedColor
+              Else
+                DataDrawGrid.Canvas.Brush.Color := DataDrawGrid.Color;
+              DataDrawGrid.Canvas.Pen.Color := DataDrawGrid.GridLineColor;
+              DataDrawGrid.Canvas.Rectangle(aRect);
+            End
+          Else
+            With CoordinateSystems.Items(OutputSystemIndex) Do
+              If aCol=InputData.FieldCount+1 Then
+                CellText := RecordOutputCoordinateText(aRow-1, 0, AxisOrder, CoordinateType)
+              Else If aCol=InputData.FieldCount+2 Then
+                CellText := RecordOutputCoordinateText(aRow-1, 1, AxisOrder, CoordinateType)
+              Else If aCol=InputData.FieldCount+3 Then
+                CellText := RecordOutputCoordinateText(aRow-1, 2, AxisOrder, CoordinateType)
+              Else If aCol=InputData.FieldCount+4 Then
+                CellText := VerticalDataCodeToName(OutputData[aRow-1]);
+        TOverrideGrid(DataDrawGrid).DrawCellText(aCol, aRow, aRect, aState, CellText)
       End;
 End;
 
@@ -313,7 +345,6 @@ End;
 Procedure TMainForm.SaveActionExecute(Sender: TObject);
 Var
   OutputFile: TFileStream;
-  UsesVerticalDatum: Boolean;
   OutputText: String;
   RecordIndex, LastRecordIndex: Integer;
   Function AddDelimiters(Text: String): String;
@@ -378,13 +409,6 @@ Begin
             OutputText := OutputText+LineEnding;
           End;
         OutputFile.Write(OutputText[1], Length(OutputText));
-        { Determine vertical datum use. }
-        Case CoordinateSystems.Items(OutputSystemIndex).SRIDNumber Of
-        27700, 29903, 2157:
-          UsesVerticalDatum := True;
-        Else
-          UsesVerticalDatum := False;
-        End;
         LastRecordIndex := InputData.RecordCount-1;
         For RecordIndex := 0 To LastRecordIndex Do
           Begin
@@ -393,7 +417,7 @@ Begin
             OutputText := InputData.RecordAsText(OutputFieldTerminator, OutputTextDelimiter);
             OutputText := OutputText+OutputFieldTerminator;
             { If the point is out of area, output the boundary error message. }
-            If UsesVerticalDatum And (OutputData[RecordIndex]=vdNone) Then
+            If UsesVerticalDatum(OutputSystemIndex) And (OutputData[RecordIndex]=vdNone) Then
               OutputText := OutputText+BoundaryErrorText
             Else
               With CoordinateSystems.Items(OutputSystemIndex) Do
@@ -433,7 +457,6 @@ End;
 Procedure TMainForm.SaveOutputActionExecute(Sender: TObject);
 Var
   OutputFile: TFileStream;
-  UsesVerticalDatum: Boolean;
   OutputText: String;
   RecordIndex, LastRecordIndex: Integer;
   Function AddDelimiters(Text: String): String;
@@ -497,20 +520,13 @@ Begin
             OutputText := OutputText+LineEnding;
           End;
         OutputFile.Write(OutputText[1], Length(OutputText));
-        { Determine vertical datum use. }
-        Case CoordinateSystems.Items(OutputSystemIndex).SRIDNumber Of
-        27700, 29903, 2157:
-          UsesVerticalDatum := True;
-        Else
-          UsesVerticalDatum := False;
-        End;
         LastRecordIndex := InputData.RecordCount-1;
         For RecordIndex := 0 To LastRecordIndex Do
           Begin
             { Write the output line for the current record. }
             InputData.RecordNumber := RecordIndex;
             { If the point is out of area, output the boundary error message. }
-            If UsesVerticalDatum And (OutputData[RecordIndex]=vdNone) Then
+            If UsesVerticalDatum(OutputSystemIndex) And (OutputData[RecordIndex]=vdNone) Then
               OutputText := InputData.FieldAsText(0, OutputTextDelimiter)+OutputFieldTerminator+BoundaryErrorText
             Else
               With CoordinateSystems.Items(OutputSystemIndex) Do
@@ -807,6 +823,7 @@ Begin
     Begin
       InputCoordinateSystemPointer := CoordinateSystems.Pointers(InputIndex);
       OutputCoordinateSystemPointer := CoordinateSystems.Pointers(OutputIndex);
+      OutputCoordinateSystemPointer^.LastVerticalDatum := vdNone;
       If InputCoordinateSystemPointer^.CoordinateType=ctGeodetic Then
         InputCoordinates := GeodeticDegToRad(Coordinates)
       Else
@@ -822,6 +839,20 @@ Begin
       Except
         Result := NullCoordinates;
       End;
+    End;
+End;
+
+Function TMainForm.UsesVerticalDatum(SystemIndex: Integer): Boolean;
+Begin
+  If SystemIndex=-1 Then
+    Result := False
+  Else
+    { Determine vertical datum use. }
+    Case CoordinateSystems.Items(SystemIndex).SRIDNumber Of
+    27700, 29903, 2157:
+      Result := True;
+    Else
+      Result := False;
     End;
 End;
 
