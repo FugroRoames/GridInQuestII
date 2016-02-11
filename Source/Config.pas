@@ -240,6 +240,7 @@ ConfigurationFolder := IncludeTrailingPathDelimiter(GetAppConfigDir(False));
 SafeForceDirectories(ConfigurationFolder);
 XMLConfig := TXMLConfig.Create(Nil);
 XMLConfig.RootName := 'Configuration';
+// TODO: Delete this file if unable to open?
 XMLConfig.Filename := ConfigurationFolder+ApplicationName+ConfigExtension;
 
 Finalization
