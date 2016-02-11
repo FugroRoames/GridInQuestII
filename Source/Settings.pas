@@ -403,6 +403,7 @@ Begin
       Free;
     End;
   AllowNameReset := False;
+  PopulateNameLists;
   DisplayDataInformation;
   AllowNameReset := True;
 End;
