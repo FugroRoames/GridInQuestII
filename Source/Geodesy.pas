@@ -732,8 +732,8 @@ Begin
     25829:{ UTM Zone 29N }
       Result := BuildCoordinateSystemsList([Byte(SystemIndex), Byte(FindSRIDNumber(25831)), Byte(FindSRIDNumber(25830))]);
     29903, 2157: { Irish Grid and Irish Transverse Mercator }
-      Result := BuildCoordinateSystemsList([Byte(SystemIndex), Byte(FindSRIDNumber(27700)), Byte(FindSRIDNumber(27701))]);
-    27700, 27701: { British National Grid (TN02/GM02) and (TN15/GM15) }
+      Result := BuildCoordinateSystemsList([Byte(SystemIndex), Byte(FindSRIDNumber(27700))]);
+    27700: { British National Grid }
       Result := BuildCoordinateSystemsList([Byte(SystemIndex), Byte(FindSRIDNumber(29903)), Byte(FindSRIDNumber(2157))]);
     Else { Otherwsie build a full list of available systems omiting the source. }
       Result := BuildCoordinateSystemsList([Byte(SystemIndex)]);
