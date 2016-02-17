@@ -173,7 +173,7 @@ Type
   TVerticalDatumCode = (vdNone, vdOrdnanceDatumNewlyn, vdStMarys, vdDouglas02,
                         vdStornoway, vdStKilda, vdLerwick, vdNewlyn, vdFairIsle,
                         vdFlannanIsles, vdNorthRona, vdSuleSkerry, vdFoula,
-                        vdMalinHead, vdBelfast, vdOffshore);
+                        vdMalinHead, vdBelfast, vdOffshore, vdOutside);
 
 Type
   TCoordinateSystem = Object

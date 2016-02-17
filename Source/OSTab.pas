@@ -35,7 +35,7 @@ Type
 //  TVerticalDatumCode = (vdNone, vdOrdnanceDatumNewlyn, vdStMarys, vdDouglas02,
 //                        vdStornoway, vdStKilda, vdLerwick, vdNewlyn, vdFairIsle,
 //                        vdFlannanIsles, vdNorthRona, vdSuleSkerry, vdFoula,
-//                        vdMalinHead, vdBelfast, vdOffshore);
+//                        vdMalinHead, vdBelfast, vdOffshore, vdOutside);
 
 Type
   TDatumRecord = Packed Record
@@ -86,7 +86,7 @@ Type
   TVerticalTablePointer = ^TVerticalTable;
 
 Const
-  VerticalData: Array [0..15] Of TDatumRecord =
+  VerticalData: Array [0..16] Of TDatumRecord =
     ((Code: vdNone; Abbreviation: ''; Name: 'None'; Region: 'Outside Model'),
     (Code: vdOrdnanceDatumNewlyn; Abbreviation: 'ODN'; Name: 'Ordnance Datum Newlyn'; Region: 'UK Mainland'),
     (Code: vdStMarys; Abbreviation: 'MAR'; Name: 'St Marys'; Region: 'Scilly Isles'),
@@ -102,7 +102,8 @@ Const
     (Code: vdFoula; Abbreviation: 'FOU'; Name: 'Foula'; Region: 'Foula'),
     (Code: vdMalinHead; Abbreviation: 'MAL'; Name: 'Malin Head'; Region: 'Republic of Ireland'),
     (Code: vdBelfast; Abbreviation: 'BEL'; Name: 'Belfast'; Region: 'Northern Ireland'),
-    (Code: vdOffshore; Abbreviation: 'OFF'; Name: 'Ordnance Datum Newlyn (Offshore)'; Region: 'UK Offshore'));
+    (Code: vdOffshore; Abbreviation: 'OFF'; Name: 'Ordnance Datum Newlyn (Offshore)'; Region: 'UK Offshore'),
+    (Code: vdOutside; Abbreviation: 'OUT'; Name: 'Outside Official Transformation Extent'; Region: 'UK Outside Extent' ));
 
 Type
   TInterpolationParameters = Record
