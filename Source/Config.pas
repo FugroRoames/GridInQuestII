@@ -137,16 +137,16 @@ Begin
                                                      VerticalDataCodeToName(PreferredVerticalDatum)));
 {$ENDIF}
   With IG15CoordinateSystem Do
-    PreferredVerticalDatum := VerticalDataNameToCode(XMLConfig.GetValue(IGPreferredDatumKey,
-                                                     VerticalDataCodeToName(PreferredVerticalDatum)));
+    PreferredVerticalDatum := VerticalDatumNameToCode(XMLConfig.GetValue(IGPreferredDatumKey,
+                                                     VerticalDatumCodeToName(PreferredVerticalDatum)));
 {$IFDEF ITM02}
   With ITM02CoordinateSystem Do
     PreferredVerticalDatum := VerticalDataNameToCode(XMLConfig.GetValue(ITMPreferredDatumKey,
                                                      VerticalDataCodeToName(PreferredVerticalDatum)));
 {$ENDIF}
   With ITM15CoordinateSystem Do
-    PreferredVerticalDatum := VerticalDataNameToCode(XMLConfig.GetValue(ITMPreferredDatumKey,
-                                                     VerticalDataCodeToName(PreferredVerticalDatum)));
+    PreferredVerticalDatum := VerticalDatumNameToCode(XMLConfig.GetValue(ITMPreferredDatumKey,
+                                                     VerticalDatumCodeToName(PreferredVerticalDatum)));
   XMLConfig.CloseKey;
 End;
 
@@ -214,13 +214,13 @@ Begin
     XMLConfig.SetValue(IGPreferredDatumKey, VerticalDataCodeToName(PreferredVerticalDatum));
 {$ENDIF}
   With IG15CoordinateSystem Do
-    XMLConfig.SetValue(IGPreferredDatumKey, VerticalDataCodeToName(PreferredVerticalDatum));
+    XMLConfig.SetValue(IGPreferredDatumKey, VerticalDatumCodeToName(PreferredVerticalDatum));
 {$IFDEF ITM02}
   With ITM02CoordinateSystem Do
     XMLConfig.SetValue(ITMPreferredDatumKey, VerticalDataCodeToName(PreferredVerticalDatum));
 {$ENDIF}
   With ITM15CoordinateSystem Do
-    XMLConfig.SetValue(ITMPreferredDatumKey, VerticalDataCodeToName(PreferredVerticalDatum));
+    XMLConfig.SetValue(ITMPreferredDatumKey, VerticalDatumCodeToName(PreferredVerticalDatum));
   XMLConfig.CloseKey;
   XMLConfig.Flush;
 End;

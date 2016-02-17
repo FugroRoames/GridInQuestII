@@ -103,7 +103,7 @@ Const
     (Code: vdMalinHead; Abbreviation: 'MAL'; Name: 'Malin Head'; Region: 'Republic of Ireland'),
     (Code: vdBelfast; Abbreviation: 'BEL'; Name: 'Belfast'; Region: 'Northern Ireland'),
     (Code: vdOffshore; Abbreviation: 'OFF'; Name: 'Ordnance Datum Newlyn (Offshore)'; Region: 'UK Offshore'),
-    (Code: vdOutside; Abbreviation: 'OUT'; Name: 'Outside Official Transformation Extent'; Region: 'UK Outside Extent' ));
+    (Code: vdOutside; Abbreviation: 'OUT'; Name: 'Outside Official Transformation Extent'; Region: 'UK Outside Extent'));
 
 Type
   TInterpolationParameters = Record
@@ -112,10 +112,10 @@ Type
     T, TI: TCoordinate;
     U, UI: TCoordinate;
   End;
-// TODO: Refactor Data to Datum
-Function VerticalDataCodeToAbbreviation(DatumCode: TVerticalDatumCode): String;
-Function VerticalDataCodeToName(DatumCode: TVerticalDatumCode): String;
-Function VerticalDataNameToCode(DatumName: String): TVerticalDatumCode;
+
+Function VerticalDatumCodeToAbbreviation(DatumCode: TVerticalDatumCode): String;
+Function VerticalDatumCodeToName(DatumCode: TVerticalDatumCode): String;
+Function VerticalDatumNameToCode(DatumName: String): TVerticalDatumCode;
 Function BilinearGridInterpolationParameters(Const Header: TDataHeader; Const Coordinates: TCoordinates;
                                              Const GridScale: TCoordinate; Var Parameters: TInterpolationParameters): Boolean;
 Function InterpolateHorizontalTable(Const HorizontalTable: THorizontalTable; Parameters: TInterpolationParameters): TPlanarCoordinates;
@@ -124,7 +124,7 @@ Function ParametersValid(Parameters: TInterpolationParameters; DataHeader: TData
 
 Implementation
 
-Function VerticalDataCodeToAbbreviation(DatumCode: TVerticalDatumCode): String;
+Function VerticalDatumCodeToAbbreviation(DatumCode: TVerticalDatumCode): String;
 Var
   Index: Integer;
 Begin
@@ -138,7 +138,7 @@ Begin
   Result := EmptyStr;
 End;
 
-Function VerticalDataCodeToName(DatumCode: TVerticalDatumCode): String;
+Function VerticalDatumCodeToName(DatumCode: TVerticalDatumCode): String;
 Var
   Index: Integer;
 Begin
@@ -152,7 +152,7 @@ Begin
   Result := EmptyStr;
 End;
 
-Function VerticalDataNameToCode(DatumName: String): TVerticalDatumCode;
+Function VerticalDatumNameToCode(DatumName: String): TVerticalDatumCode;
 Var
   Index: Integer;
 Begin

@@ -199,7 +199,7 @@ Begin
       Try
         If (toHeightDatumSuffix In TCoordinatesEntryPanel(Parent).Options) And
            (TCoordinatesEntryPanel(Parent).FPanelType=ptOutput) Then
-          DatumSuffix := VerticalDataCodeToAbbreviation(TCoordinatesEntryPanel(Parent).VerticalDatum)
+          DatumSuffix := VerticalDatumCodeToAbbreviation(TCoordinatesEntryPanel(Parent).VerticalDatum)
         Else
           DatumSuffix := '';
         If TCoordinatesEntryPanel(Parent).CoordinateSystemIndex=-1 Then

@@ -328,7 +328,7 @@ Begin
               Else If aCol=InputData.FieldCount+3 Then
                 CellText := RecordOutputCoordinateText(aRow-1, 2, AxisOrder, CoordinateType)
               Else If aCol=InputData.FieldCount+4 Then
-                CellText := VerticalDataCodeToName(OutputData[aRow-1]);
+                CellText := VerticalDatumCodeToName(OutputData[aRow-1]);
         TOverrideGrid(DataDrawGrid).DrawCellText(aCol, aRow, aRect, aState, CellText)
       End;
 End;
@@ -435,7 +435,7 @@ Begin
                   If OutputVerticalDatum Then
                     Begin
                       OutputText := OutputText+OutputFieldTerminator;
-                      OutputText := OutputText+VerticalDataCodeToName(OutputData[RecordIndex]);
+                      OutputText := OutputText+VerticalDatumCodeToName(OutputData[RecordIndex]);
                     End;
                 End;
             OutputText := OutputText+LineEnding;
@@ -545,7 +545,7 @@ Begin
                   If OutputVerticalDatum Then
                     Begin
                       OutputText := OutputText+OutputFieldTerminator;
-                      OutputText := OutputText+VerticalDataCodeToName(OutputData[RecordIndex]);
+                      OutputText := OutputText+VerticalDatumCodeToName(OutputData[RecordIndex]);
                     End;
                 End;
             OutputText := OutputText+LineEnding;
@@ -809,7 +809,7 @@ Begin
   atXAxis: Result := FormatTypedCoordinate(OutputCoordinates[RecordNumber].X, CoordinateType, AxisType, DecimalPlaces, Options);
   atYAxis: Result := FormatTypedCoordinate(OutputCoordinates[RecordNumber].Y, CoordinateType, AxisType, DecimalPlaces, Options);
   atZAxis: Result := FormatTypedCoordinate(OutputCoordinates[RecordNumber].Z, CoordinateType, AxisType, DecimalPlaces, Options,
-                                           VerticalDataCodeToAbbreviation(OutputData[RecordNumber]));
+                                           VerticalDatumCodeToAbbreviation(OutputData[RecordNumber]));
   End;
 End;
 
