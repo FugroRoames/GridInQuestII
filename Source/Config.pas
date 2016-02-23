@@ -98,7 +98,7 @@ Begin
       XMLConfig.OpenKey(HeightFormatKey);
       HeightStyle := XMLConfig.GetValue(StyleKey, 'Value Only');
       HeightDecimalPlaces := XMLConfig.GetValue(DecimalPlacesKey, 2);
-      HeightDatumSuffix := XMLConfig.GetValue(DatumSuffixKey, False);
+      HeightDatumSuffix := XMLConfig.GetValue(DatumSuffixKey, True);
       XMLConfig.CloseKey;
     End;
   XMLConfig.CloseKey;
