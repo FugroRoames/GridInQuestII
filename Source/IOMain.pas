@@ -562,7 +562,7 @@ Begin
             If IncludeZAxis Then
               AddFieldValue(AxisCoordinateValue(2, OutputData[RecordIndex].Coordinates));
             If IncludeDatum Then
-              AddFieldValue(VerticalDataCodeToAbbreviation(OutputData[RecordIndex].DatumCode));
+              AddFieldValue(VerticalDatumCodeToAbbreviation(OutputData[RecordIndex].DatumCode));
             OutputText := OutputText+LineEnding;
             OutputFile.WriteBuffer(OutputText[1], Length(OutputText));
             { Update progress display. }
