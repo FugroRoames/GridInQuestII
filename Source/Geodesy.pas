@@ -171,7 +171,7 @@ Const
 // TODO: Remove back to OSTab.
 Type
   TVerticalDatumCode = (vdNone, vdOrdnanceDatumNewlyn, vdStMarys, vdDouglas02,
-                        vdStornoway, vdStKilda, vdLerwick, vdNewlyn, vdFairIsle,
+                        vdStornoway, vdStKilda, vdLerwick, vdOrkney, vdFairIsle,
                         vdFlannanIsles, vdNorthRona, vdSuleSkerry, vdFoula,
                         vdMalinHead, vdBelfast, vdOffshore, vdOutside);
 

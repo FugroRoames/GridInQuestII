@@ -94,7 +94,7 @@ Const
     (Code: vdStornoway; Abbreviation: 'STO'; Name: 'Stornoway'; Region: 'Outer Hebrides'),
     (Code: vdStKilda; Abbreviation: 'KIL'; Name: 'St Kilda'; Region: 'St Kilda'),
     (Code: vdLerwick; Abbreviation: 'LER'; Name: 'Lerwick'; Region: 'Shetland Isles'),
-    (Code: vdNewlyn; Abbreviation: 'NEW'; Name: 'Newlyn'; Region: 'Orkney Isles'),
+    (Code: vdOrkney; Abbreviation: 'ORK'; Name: 'Orkney (Newlyn)'; Region: 'Orkney Isles'),
     (Code: vdFairIsle; Abbreviation: 'FAI'; Name: 'Fair Isle'; Region: 'Fair Isle'),
     (Code: vdFlannanIsles; Abbreviation: 'FLA'; Name: 'Flannan Isles'; Region: 'Flannan Isles'),
     (Code: vdNorthRona; Abbreviation: 'NRO'; Name: 'North Rona'; Region: 'North Rona'),
