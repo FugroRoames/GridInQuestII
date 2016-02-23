@@ -89,7 +89,6 @@ Begin
         Begin
           AutoSize := True;
           FormStyle := fsStayOnTop;
-          Position := poScreenCenter;
           With TImage.Create(SplashForm) Do
             Begin
               BorderStyle := bsNone;
@@ -115,6 +114,7 @@ Begin
                   Caption := 'Version: '+VersionStrings.Values['ProductVersion'];
                 End;
             End;
+          Position := poScreenCenter;
           Show;
         End;
       Application.ProcessMessages;
