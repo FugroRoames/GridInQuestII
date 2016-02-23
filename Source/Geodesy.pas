@@ -168,7 +168,6 @@ Const
   CartesianAxisNames: TAxisNames = (LongX: 'Easting'; LongY: 'Northing'; LongZ: 'Elevation';
                                     ShortX: 'East'; ShortY: 'North'; ShortZ: 'Height');
 
-// TODO: Remove back to OSTab.
 Type
   TVerticalDatumCode = (vdNone, vdOrdnanceDatumNewlyn, vdStMarys, vdDouglas02,
                         vdStornoway, vdStKilda, vdLerwick, vdOrkney, vdFairIsle,
@@ -185,8 +184,11 @@ Type
     Revision: Integer;
     GeodeticBounds: TGeodeticBounds;
     Name: String;
-    PreferredVerticalDatum: TVerticalDatumCode; { These fields should be in the TITMCoordinateSystem declaration in the ITM unit. }
-    LastVerticalDatum: TVerticalDatumCode; { They have been declared here to avoid a compiler bug that incorrectly handles object inheritance. }
+    { These fields should be defined in a TOSGMCoordinateSystem in the OSTab unit. }
+    { All coordinate systems in BNG, ITM and IG should inherit from this class and TVerticalDatumCode should be defined in OSTab. }
+    { They have been declared here to avoid a compiler bug that incorrectly handles object inheritance. }
+    PreferredVerticalDatum: TVerticalDatumCode;
+    LastVerticalDatum: TVerticalDatumCode;
     Constructor Initialize(NewName: String; NewAbbreviation: String; NewDescription: String; NewSRIDNumber: Integer; NewRevision: Integer;
                            NewCoordinateType: TCoordinateType; NewAxisOrder: TAxisOrder; NewBounds: TGeodeticBounds);
     Function AxisNames: TAxisNames;

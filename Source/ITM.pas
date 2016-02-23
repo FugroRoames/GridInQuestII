@@ -32,8 +32,6 @@ Uses
 
 Type
   TITMCoordinateSystem = Object(TCoordinateSystem)
-//    PreferredVerticalDatum: TVerticalDatumCode; { These fields should be define here but have been moved to the parent object in the Geodesy unit. }
-//    LastVerticalDatum: TVerticalDatumCode; { They have been moved to avoid a compiler bug that incorrectly handles object inheritance. }
     VerticalModel: TOSVerticalModel;
     Constructor Initialize(NewName: String; NewAbbreviation: String; NewDescription: String; NewSRIDNumber: Integer; NewRevision: Integer;
                            NewCoordinateType: TCoordinateType; NewAxisOrder: TAxisOrder;
