@@ -242,7 +242,7 @@ End;
 Initialization
 
 Airy1830ModifiedEllipsoid.Initialize(6377340.1890, 6356034.4470);
-GRS80Ellipsoid.Initialize(6378137.0000, 6356752.314140);
+GRS80Ellipsoid.Initialize(6378137.0000, 6356752.3141);
 IrishGridProjection.Initialize(1.000035, DegToRad(53.5), DegToRad(-8), 200000, 250000, Airy1830ModifiedEllipsoid);
 IrishGPSGridProjection.Initialize(1.000035, DegToRad(53.5), DegToRad(-8), 200000, 250000, GRS80Ellipsoid);
 {$IFDEF IG02}

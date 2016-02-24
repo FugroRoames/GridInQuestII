@@ -296,7 +296,7 @@ If Not GM15RoIDataFound Then
   GM15RoIDataFound := GM15RoIData.LoadFromResource('GM15RoI', 'DATA');
 {$ENDIF}
 
-GRS80Ellipsoid.Initialize(6378137.0000, 6356752.314140);
+GRS80Ellipsoid.Initialize(6378137.0000, 6356752.3141);
 ITMProjection.Initialize(0.99982, DegToRad(53.5), DegToRad(-8), 600000, 750000, GRS80Ellipsoid);
 {$IFDEF ITM02}
 ITM02CoordinateSystem.Initialize('Irish Transverse Mercator', 'IRENET95',

@@ -119,7 +119,7 @@ End;
 
 Initialization
 
-GRS80Ellipsoid.Initialize(6378137.0000, 6356752.314140);
+GRS80Ellipsoid.Initialize(6378137.0000, 6356752.3141);
 UTMZone29Projection.Initialize(0.9996, 0, DegToRad(-9), 500000, 0, GRS80Ellipsoid);
 UTMZone30Projection.Initialize(0.9996, 0, DegToRad(-3), 500000, 0, GRS80Ellipsoid);
 UTMZone31Projection.Initialize(0.9996, 0, DegToRad(3), 500000, 0, GRS80Ellipsoid);

@@ -347,7 +347,7 @@ If Not TN15DataFound Then
   TN15DataFound := TN15GBData.LoadFromResource('TN15GB', 'DATA');
 {$ENDIF}
 
-GRS80Ellipsoid.Initialize(6378137.0000, 6356752.314140);
+GRS80Ellipsoid.Initialize(6378137.0000, 6356752.3141);
 BNGGridProjection.Initialize(0.9996012717, DegToRad(49), DegToRad(-2), 400000, -100000, GRS80Ellipsoid);
 {$IFDEF BNG02}
 BNG02CoordinateSystem.Initialize('British National Grid (2002)', 'OSGB36',
