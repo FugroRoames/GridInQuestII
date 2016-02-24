@@ -25,7 +25,7 @@ Uses
   Classes, SysUtils, FileUtil, LCLIntf, Forms, Controls, Graphics, Dialogs,
   ExtCtrls, Menus, ActnList, StdCtrls, Grids, Clipbrd, GlobeCtrl, CoordCtrls,
   DataStreams, Progress, Settings, Options, About, Config, Geometry, Geodesy,
-  GeodUtils, OSTab;
+  GeodUtils, ETRS, OSTab;
 
 Type
   TMainForm = Class(TForm)
@@ -815,7 +815,7 @@ End;
 
 Function TMainForm.TransformCoordinates(Const Coordinates: TCoordinates; InputIndex, OutputIndex: Integer): TCoordinates;
 Var
-  InputCoordinates, GeocentricCoordinates: TCoordinates;
+  InputCoordinates, GlobalCoordinates: TCoordinates;
   InputCoordinateSystemPointer: TCoordinateSystemPointer;
   OutputCoordinateSystemPointer: TCoordinateSystemPointer;
 Begin
@@ -829,11 +829,19 @@ Begin
       Else
         InputCoordinates := Coordinates;
       Try
-        GeocentricCoordinates := InputCoordinateSystemPointer^.ConvertToGeocentric(InputCoordinates);
-        If GeocentricCoordinates=NullCoordinates Then
+        GlobalCoordinates := InputCoordinateSystemPointer^.ConvertToGlobal(InputCoordinates);
+        Case InputCoordinateSystemPointer^.GlobalType Of
+        gtCartesian:
+          If OutputCoordinateSystemPointer^.GlobalType=gtGeodetic Then
+            GlobalCoordinates := GeocentricToGeodetic(GlobalCoordinates, GRS80Ellipsoid);
+        gtGeodetic:
+          If OutputCoordinateSystemPointer^.GlobalType=gtCartesian Then
+            GlobalCoordinates := GeodeticToGeocentric(GlobalCoordinates, GRS80Ellipsoid);
+        End;
+        If GlobalCoordinates=NullCoordinates Then
           Result := NullCoordinates
         Else
-          Result := OutputCoordinateSystemPointer^.ConvertFromGeocentric(GeocentricCoordinates);
+          Result := OutputCoordinateSystemPointer^.ConvertFromGlobal(GlobalCoordinates);
         If OutputCoordinateSystemPointer^.CoordinateType=ctGeodetic Then
           Result := GeodeticRadToDeg(Result);
       Except

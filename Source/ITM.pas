@@ -22,7 +22,7 @@ Unit ITM;
 Interface
 
 Uses
-  SysUtils, Math, Geodesy, OSTab;
+  SysUtils, Math, Geodesy, ETRS, OSTab;
 
 { Define to embed the data table within the executable. }
 //{$DEFINE EMBED}
@@ -45,7 +45,6 @@ Var
   GM15NIData: TVerticalTable;
   GM02RoIData: TVerticalTable;
   GM15RoIData: TVerticalTable;
-  GRS80Ellipsoid: TEllipsoid;
   ITMProjection: TProjection;
 {$IFDEF ITM02}
   ITM02CoordinateSystem: TITMCoordinateSystem;
@@ -296,7 +295,6 @@ If Not GM15RoIDataFound Then
   GM15RoIDataFound := GM15RoIData.LoadFromResource('GM15RoI', 'DATA');
 {$ENDIF}
 
-GRS80Ellipsoid.Initialize(6378137.0000, 6356752.3141);
 ITMProjection.Initialize(0.99982, DegToRad(53.5), DegToRad(-8), 600000, 750000, GRS80Ellipsoid);
 {$IFDEF ITM02}
 ITM02CoordinateSystem.Initialize('Irish Transverse Mercator', 'IRENET95',

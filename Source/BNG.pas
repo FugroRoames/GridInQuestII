@@ -22,7 +22,7 @@ Unit BNG;
 Interface
 
 Uses
-  SysUtils, Math, Geometry, Geodesy, OSTab;
+  SysUtils, Math, Geometry, Geodesy, ETRS, OSTab;
 
 { Define British National Grid accuracy level options. }
 
@@ -60,15 +60,14 @@ Type
     Constructor Initialize(NewName: String; NewAbbreviation: String; NewDescription: String; NewSRIDNumber: Integer; NewRevision: Integer;
                            NewCoordinateType: TCoordinateType; NewAxisOrder: TAxisOrder;
                            NewBounds: TGeodeticBounds; Const NewTNData: THorizontalTable; Const NewGMData: TVerticalTable);
-    Function ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
-    Function ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
+    Function ConvertToGlobal(Coordinates: TCoordinates): TCoordinates; Virtual;
+    Function ConvertFromGlobal(Coordinates: TCoordinates): TCoordinates; Virtual;
   End;
 
 Var
   BNGGridProjection: TProjection;
   BNG02CoordinateSystem: TBNGCoordinateSystem;
   BNG15CoordinateSystem: TBNGCoordinateSystem;
-  GRS80Ellipsoid: TEllipsoid;
   GM02GBData: TVerticalTable;
   GM15GBData: TVerticalTable;
   TN02GBData: THorizontalTable;
@@ -159,7 +158,7 @@ Begin
   GMDataPointer := @NewGMData;
 End;
 
-Function TBNGCoordinateSystem.ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates;
+Function TBNGCoordinateSystem.ConvertToGlobal(Coordinates: TCoordinates): TCoordinates;
 Var
   GeodeticCoordinates: TCoordinates;
 Begin
@@ -173,7 +172,7 @@ Begin
   Result := NullCoordinates
 End;
 
-Function TBNGCoordinateSystem.ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates;
+Function TBNGCoordinateSystem.ConvertFromGlobal(Coordinates: TCoordinates): TCoordinates;
 Var
   GeodeticCoordinates: TCoordinates;
 Begin
@@ -347,7 +346,6 @@ If Not TN15DataFound Then
   TN15DataFound := TN15GBData.LoadFromResource('TN15GB', 'DATA');
 {$ENDIF}
 
-GRS80Ellipsoid.Initialize(6378137.0000, 6356752.3141);
 BNGGridProjection.Initialize(0.9996012717, DegToRad(49), DegToRad(-2), 400000, -100000, GRS80Ellipsoid);
 {$IFDEF BNG02}
 BNG02CoordinateSystem.Initialize('British National Grid (2002)', 'OSGB36',

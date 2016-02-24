@@ -175,25 +175,30 @@ Type
                         vdMalinHead, vdBelfast, vdOffshore, vdOutside);
 
 Type
+  TGlobalType = (gtCartesian, gtGeodetic);
+
+Type
   TCoordinateSystem = Object
     Abbreviation: String;
     AxisOrder: TAxisOrder;
     CoordinateType: TCoordinateType;
     Description: String;
+    GlobalType: TGlobalType;
     SRIDNumber: Integer;
     Revision: Integer;
     GeodeticBounds: TGeodeticBounds;
     Name: String;
+
     { These fields should be defined in a TOSGMCoordinateSystem in the OSTab unit. }
     { All coordinate systems in BNG, ITM and IG should inherit from this class and TVerticalDatumCode should be defined in OSTab. }
     { They have been declared here to avoid a compiler bug that incorrectly handles object inheritance. }
     PreferredVerticalDatum: TVerticalDatumCode;
     LastVerticalDatum: TVerticalDatumCode;
     Constructor Initialize(NewName: String; NewAbbreviation: String; NewDescription: String; NewSRIDNumber: Integer; NewRevision: Integer;
-                           NewCoordinateType: TCoordinateType; NewAxisOrder: TAxisOrder; NewBounds: TGeodeticBounds);
+                           NewCoordinateType: TCoordinateType; NewAxisOrder: TAxisOrder; NewBounds: TGeodeticBounds; NewGlobalType: TGlobalType = gtCartesian);
     Function AxisNames: TAxisNames;
-    Function ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual; Abstract;
-    Function ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual; Abstract;
+    Function ConvertToGlobal(Coordinates: TCoordinates): TCoordinates; Virtual; Abstract;
+    Function ConvertFromGlobal(Coordinates: TCoordinates): TCoordinates; Virtual; Abstract;
     Function WithinGeodeticBounds(Coordinates: TCoordinates): Boolean;
   End;
   TCoordinateSystemPointer = ^TCoordinateSystem;
@@ -654,7 +659,7 @@ Begin
 End;
 
 Constructor TCoordinateSystem.Initialize(NewName: String; NewAbbreviation: String; NewDescription: String; NewSRIDNumber: Integer; NewRevision: Integer;
-                                         NewCoordinateType: TCoordinateType; NewAxisOrder: TAxisOrder; NewBounds: TGeodeticBounds);
+                                         NewCoordinateType: TCoordinateType; NewAxisOrder: TAxisOrder; NewBounds: TGeodeticBounds; NewGlobalType: TGlobalType = gtCartesian);
 Begin
   Name := NewName;
   Abbreviation := NewAbbreviation;
@@ -664,6 +669,7 @@ Begin
   CoordinateType := NewCoordinateType;
   AxisOrder := NewAxisOrder;
   GeodeticBounds := NewBounds;
+  GlobalType := NewGlobalType;
 End;
 
 Function TCoordinateSystem.AxisNames: TAxisNames;

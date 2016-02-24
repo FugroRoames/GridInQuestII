@@ -26,14 +26,14 @@ Uses
 
 Type
   TETRS89CoordinateSystemGC = Object(TCoordinateSystem)
-    Function ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
-    Function ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
+    Function ConvertToGlobal(Coordinates: TCoordinates): TCoordinates; Virtual;
+    Function ConvertFromGlobal(Coordinates: TCoordinates): TCoordinates; Virtual;
   End;
 
 Type
   TETRS89CoordinateSystemGD = Object(TCoordinateSystem)
-    Function ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
-    Function ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
+    Function ConvertToGlobal(Coordinates: TCoordinates): TCoordinates; Virtual;
+    Function ConvertFromGlobal(Coordinates: TCoordinates): TCoordinates; Virtual;
   End;
 
 Type
@@ -42,8 +42,8 @@ Type
     Constructor Initialize(NewName: String; NewAbbreviation: String; NewDescription: String; NewSRIDNumber: Integer;
                            NewRevision: Integer; NewCoordinateType: TCoordinateType; NewAxisOrder: TAxisOrder;
                            NewBounds: TGeodeticBounds; Const NewProjection: TProjection);
-    Function ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
-    Function ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
+    Function ConvertToGlobal(Coordinates: TCoordinates): TCoordinates; Virtual;
+    Function ConvertFromGlobal(Coordinates: TCoordinates): TCoordinates; Virtual;
   End;
 
 Var
@@ -65,24 +65,24 @@ Const
 
 Implementation
 
-Function TETRS89CoordinateSystemGC.ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates;
+Function TETRS89CoordinateSystemGC.ConvertToGlobal(Coordinates: TCoordinates): TCoordinates;
 Begin
   Result := Coordinates; { No conversion required. }
 End;
 
-Function TETRS89CoordinateSystemGC.ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates;
+Function TETRS89CoordinateSystemGC.ConvertFromGlobal(Coordinates: TCoordinates): TCoordinates;
 Begin
   Result := Coordinates; { No conversion required. }
 End;
 
-Function TETRS89CoordinateSystemGD.ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates;
+Function TETRS89CoordinateSystemGD.ConvertToGlobal(Coordinates: TCoordinates): TCoordinates;
 Begin
-  Result := GeodeticToGeocentric(Coordinates, GRS80Ellipsoid);
+  Result := Coordinates; { No conversion required. }
 End;
 
-Function TETRS89CoordinateSystemGD.ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates;
+Function TETRS89CoordinateSystemGD.ConvertFromGlobal(Coordinates: TCoordinates): TCoordinates;
 Begin
-  Result := GeocentricToGeodetic(Coordinates, GRS80Ellipsoid);
+  Result := Coordinates; { No conversion required. }
 End;
 
 Constructor TETRS89CoordinateSystemUTM.Initialize(NewName: String;
@@ -95,7 +95,7 @@ Begin
   ProjectionPointer := @NewProjection;
 End;
 
-Function TETRS89CoordinateSystemUTM.ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates;
+Function TETRS89CoordinateSystemUTM.ConvertToGlobal(Coordinates: TCoordinates): TCoordinates;
 Var
   GeodeticCoordinates: TCoordinates;
 Begin
@@ -106,7 +106,7 @@ Begin
     Result := NullCoordinates
 End;
 
-Function TETRS89CoordinateSystemUTM.ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates;
+Function TETRS89CoordinateSystemUTM.ConvertFromGlobal(Coordinates: TCoordinates): TCoordinates;
 Var
   GeodeticCoordinates: TCoordinates;
 Begin
@@ -123,8 +123,8 @@ GRS80Ellipsoid.Initialize(6378137.0000, 6356752.3141);
 UTMZone29Projection.Initialize(0.9996, 0, DegToRad(-9), 500000, 0, GRS80Ellipsoid);
 UTMZone30Projection.Initialize(0.9996, 0, DegToRad(-3), 500000, 0, GRS80Ellipsoid);
 UTMZone31Projection.Initialize(0.9996, 0, DegToRad(3), 500000, 0, GRS80Ellipsoid);
-ETRS89CoordinateSystemGC.Initialize('ETRS89 Cartesian', 'ETRS89CT', 'ETRS89 Cartesian', 4936, 1989, ctCartesian, aoXYZ, EuropeBounds);
-ETRS89CoordinateSystemGD.Initialize('ETRS89 Geodetic', 'ETRS89GD', 'ETRS89 Geodetic', 4937, 1989, ctGeodetic, aoYXZ, EuropeBounds);
+ETRS89CoordinateSystemGC.Initialize('ETRS89 Cartesian', 'ETRS89CT', 'ETRS89 Cartesian', 4936, 1989, ctCartesian, aoXYZ, EuropeBounds, gtCartesian);
+ETRS89CoordinateSystemGD.Initialize('ETRS89 Geodetic', 'ETRS89GD', 'ETRS89 Geodetic', 4937, 1989, ctGeodetic, aoYXZ, EuropeBounds, gtGeodetic);
 ETRS89CoordinateSystem29N.Initialize('ETRS89 UTM 29N', 'UTM29N', 'ETRS89 / UTM Zone 29N', 25829, 1989, ctProjected, aoXYZ, UTM29NBounds, UTMZone29Projection);
 ETRS89CoordinateSystem30N.Initialize('ETRS89 UTM 30N', 'UTM30N', 'ETRS89 / UTM Zone 30N', 25830, 1989, ctProjected, aoXYZ, UTM30NBounds, UTMZone30Projection);
 ETRS89CoordinateSystem31N.Initialize('ETRS89 UTM 31N', 'UTM31N', 'ETRS89 / UTM Zone 31N', 25831, 1989, ctProjected, aoXYZ, UTM31NBounds, UTMZone31Projection);
