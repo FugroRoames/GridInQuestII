@@ -366,7 +366,7 @@ Var
   RecordIndex: Integer;
   LastRecordIndex: Integer;
   InputCoordinates: TCoordinates;
-  GeocentricCoordinates: TCoordinates;
+  GlobalCoordinates: TCoordinates;
   OutputData: TOutputData;
   OutputFile: TFileStream;
   OutputText: String;
@@ -500,11 +500,19 @@ Begin
         If SourceIsGeodetic Then
           InputCoordinates := GeodeticDegToRad(InputCoordinates);
         { Transform to geocentric. }
-        GeocentricCoordinates := SourceSystemPointer^.ConvertToGeocentric(InputCoordinates);
+        GlobalCoordinates := SourceSystemPointer^.ConvertToGlobal(InputCoordinates);
         { Calculate the output coordinates}
         With OutputData[RecordIndex] Do
           Begin
-            Coordinates := TargetSystemPointer^.ConvertFromGeocentric(GeocentricCoordinates);
+            Case SourceSystemPointer^.GlobalType Of
+            gtCartesian:
+              If TargetSystemPointer^.GlobalType=gtGeodetic Then
+                GlobalCoordinates := GeocentricToGeodetic(GlobalCoordinates, GRS80Ellipsoid);
+            gtGeodetic:
+              If TargetSystemPointer^.GlobalType=gtCartesian Then
+                GlobalCoordinates := GeodeticToGeocentric(GlobalCoordinates, GRS80Ellipsoid);
+            End;
+            Coordinates := TargetSystemPointer^.ConvertFromGlobal(GlobalCoordinates);
             If TargetIsGeodetic Then
               Coordinates := GeodeticDegToRad(Coordinates);
             DatumCode := TargetSystemPointer^.LastVerticalDatum;

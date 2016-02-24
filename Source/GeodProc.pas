@@ -51,19 +51,32 @@ Function TransformCoordinates(SourceSRID, TargetSRID: Integer; Var InputCoordina
 Var
   SourceSystemPointer: TCoordinateSystemPointer;
   TargetSystemPointer: TCoordinateSystemPointer;
-  GeocentricCoordinates: TCoordinates;
+  GlobalCoordinates: TCoordinates;
 Begin
   Result := False;
+  { Find the source and target coordinate systems. }
   SourceSystemPointer := SRIDToSystemPointer(SourceSRID);
   TargetSystemPointer := SRIDToSystemPointer(TargetSRID);
+  { Transform the input coordinates to their global representation. }
   If Assigned(SourceSystemPointer) Then
-    GeocentricCoordinates := SourceSystemPointer^.ConvertToGeocentric(InputCoordinates)
+    GlobalCoordinates := SourceSystemPointer^.ConvertToGlobal(InputCoordinates)
   Else
     Exit;
+  { If the target system is available. }
   If Assigned(TargetSystemPointer) Then
     Begin
+      { Perform any required global type transformations. }
+      Case SourceSystemPointer^.GlobalType Of
+      gtCartesian:
+        If TargetSystemPointer^.GlobalType=gtGeodetic Then
+          GlobalCoordinates := GeocentricToGeodetic(GlobalCoordinates, GRS80Ellipsoid);
+      gtGeodetic:
+        If TargetSystemPointer^.GlobalType=gtCartesian Then
+          GlobalCoordinates := GeodeticToGeocentric(GlobalCoordinates, GRS80Ellipsoid);
+      End;
+      { Transform the global coordinates to the target system. }
       TargetSystemPointer^.PreferredVerticalDatum := TVerticalDatumCode(DatumCode);
-      OutputCoordinates := TargetSystemPointer^.ConvertFromGeocentric(GeocentricCoordinates);
+      OutputCoordinates := TargetSystemPointer^.ConvertFromGlobal(GlobalCoordinates);
       DatumCode := TargetSystemPointer^.LastVerticalDatum;
     End
   Else
