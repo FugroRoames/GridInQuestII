@@ -34,10 +34,10 @@ Type
   TITMCoordinateSystem = Object(TCoordinateSystem)
     VerticalModel: TOSVerticalModel;
     Constructor Initialize(NewName: String; NewAbbreviation: String; NewDescription: String; NewSRIDNumber: Integer; NewRevision: Integer;
-                           NewCoordinateType: TCoordinateType; NewAxisOrder: TAxisOrder;
-                           NewBounds: TGeodeticBounds; NewPreferredVerticalDatum: TVerticalDatumCode; NewVerticalModel: TOSVerticalModel);
-    Function ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
-    Function ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
+                           NewCoordinateType: TCoordinateType; NewAxisOrder: TAxisOrder; NewBounds: TGeodeticBounds;
+                           NewPreferredVerticalDatum: TVerticalDatumCode; NewVerticalModel: TOSVerticalModel; NewGlobalType: TGlobalType);
+    Function ConvertToGlobal(Coordinates: TCoordinates): TCoordinates; Virtual;
+    Function ConvertFromGlobal(Coordinates: TCoordinates): TCoordinates; Virtual;
   End;
 
 Var
@@ -112,37 +112,29 @@ Const
   GridScale = 1000;
 
 Constructor TITMCoordinateSystem.Initialize(NewName: String; NewAbbreviation: String; NewDescription: String; NewSRIDNumber: Integer;
-                                            NewRevision: Integer; NewCoordinateType: TCoordinateType; NewAxisOrder: TAxisOrder;
-                                            NewBounds: TGeodeticBounds; NewPreferredVerticalDatum: TVerticalDatumCode; NewVerticalModel: TOSVerticalModel);
+                                            NewRevision: Integer; NewCoordinateType: TCoordinateType; NewAxisOrder: TAxisOrder; NewBounds: TGeodeticBounds;
+                                            NewPreferredVerticalDatum: TVerticalDatumCode; NewVerticalModel: TOSVerticalModel; NewGlobalType: TGlobalType);
 Begin
   Inherited Initialize(NewName, NewAbbreviation, NewDescription, NewSRIDNumber, NewRevision,
-                       NewCoordinateType, NewAxisOrder, NewBounds);
+                       NewCoordinateType, NewAxisOrder, NewBounds, NewGlobalType);
   PreferredVerticalDatum := NewPreferredVerticalDatum;
   LastVerticalDatum := vdNone;
   VerticalModel := NewVerticalModel;
 End;
 
-Function TITMCoordinateSystem.ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates;
-Var
-  GeodeticCoordinates: TCoordinates;
+Function TITMCoordinateSystem.ConvertToGlobal(Coordinates: TCoordinates): TCoordinates;
 Begin
-  If ITMCoordinatesToWGS84Coordinates(Coordinates, VerticalModel, PreferredVerticalDatum, GeodeticCoordinates, LastVerticalDatum) Then
-    If WithinGeodeticBounds(GeodeticCoordinates) Then
-      Begin
-        Result := GeodeticToGeocentric(GeodeticCoordinates, GRS80Ellipsoid);
-        Exit;
-      End;
+  If ITMCoordinatesToWGS84Coordinates(Coordinates, VerticalModel, PreferredVerticalDatum, Result, LastVerticalDatum) Then
+    If WithinGeodeticBounds(Result) Then
+      Exit;
   LastVerticalDatum := vdNone;
   Result := NullCoordinates
 End;
 
-Function TITMCoordinateSystem.ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates;
-Var
-  GeodeticCoordinates: TCoordinates;
+Function TITMCoordinateSystem.ConvertFromGlobal(Coordinates: TCoordinates): TCoordinates;
 Begin
-  GeodeticCoordinates := GeocentricToGeodetic(Coordinates, GRS80Ellipsoid);
-  If WithinGeodeticBounds(GeodeticCoordinates) Then
-    If WGS84CoordinatesToITMCoordinates(GeodeticCoordinates, VerticalModel, PreferredVerticalDatum, Result, LastVerticalDatum) Then
+  If WithinGeodeticBounds(Coordinates) Then
+    If WGS84CoordinatesToITMCoordinates(Coordinates, VerticalModel, PreferredVerticalDatum, Result, LastVerticalDatum) Then
       Exit;
   LastVerticalDatum := vdNone;
   Result := NullCoordinates
@@ -299,13 +291,13 @@ ITMProjection.Initialize(0.99982, DegToRad(53.5), DegToRad(-8), 600000, 750000, 
 {$IFDEF ITM02}
 ITM02CoordinateSystem.Initialize('Irish Transverse Mercator', 'IRENET95',
                                  'Irish Transverse Mercator (ITM/GM02)', 2157, 2002,
-                                 ctProjected, aoXYZ, ITMBounds, vdMalinHead, vmGM02);
+                                 ctProjected, aoXYZ, ITMBounds, vdMalinHead, vmGM02, gtGeodetic);
 CoordinateSystems.Register(ITM02CoordinateSystem);
 {$ENDIF}
 
 ITM15CoordinateSystem.Initialize('Irish Transverse Mercator', 'IRENET95',
                                  'Irish Transverse Mercator (ITM/GM15)', 2157, 2015,
-                                 ctProjected, aoXYZ, ITMBounds, vdMalinHead, vmGM15);
+                                 ctProjected, aoXYZ, ITMBounds, vdMalinHead, vmGM15, gtGeodetic);
 CoordinateSystems.Register(ITM15CoordinateSystem);
 
 Finalization

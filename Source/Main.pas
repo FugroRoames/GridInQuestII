@@ -830,6 +830,7 @@ Begin
         InputCoordinates := Coordinates;
       Try
         GlobalCoordinates := InputCoordinateSystemPointer^.ConvertToGlobal(InputCoordinates);
+        { Perform any required global type transformations. }
         Case InputCoordinateSystemPointer^.GlobalType Of
         gtCartesian:
           If OutputCoordinateSystemPointer^.GlobalType=gtGeodetic Then

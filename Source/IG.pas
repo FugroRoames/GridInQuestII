@@ -38,10 +38,10 @@ Type
   TIGCoordinateSystem = Object(TCoordinateSystem)
     VerticalModel: TOSVerticalModel;
     Constructor Initialize(NewName: String; NewAbbreviation: String; NewDescription: String; NewSRIDNumber: Integer;
-                           NewRevision: Integer; NewCoordinateType: TCoordinateType; NewAxisOrder: TAxisOrder;
-                           NewBounds: TGeodeticBounds; NewPreferredVerticalDatum: TVerticalDatumCode; NewVerticalModel: TOSVerticalModel);
-    Function ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
-    Function ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates; Virtual;
+                           NewRevision: Integer; NewCoordinateType: TCoordinateType; NewAxisOrder: TAxisOrder; NewBounds: TGeodeticBounds;
+                           NewPreferredVerticalDatum: TVerticalDatumCode; NewVerticalModel: TOSVerticalModel; NewGlobalType: TGlobalType);
+    Function ConvertToGlobal(Coordinates: TCoordinates): TCoordinates; Virtual;
+    Function ConvertFromGlobal(Coordinates: TCoordinates): TCoordinates; Virtual;
   End;
 
 Var
@@ -91,37 +91,29 @@ Uses
 {$ENDIF}
 
 Constructor TIGCoordinateSystem.Initialize(NewName: String; NewAbbreviation: String; NewDescription: String; NewSRIDNumber: Integer;
-                                           NewRevision: Integer; NewCoordinateType: TCoordinateType; NewAxisOrder: TAxisOrder;
-                                           NewBounds: TGeodeticBounds; NewPreferredVerticalDatum: TVerticalDatumCode; NewVerticalModel: TOSVerticalModel);
+                                           NewRevision: Integer; NewCoordinateType: TCoordinateType; NewAxisOrder: TAxisOrder; NewBounds: TGeodeticBounds;
+                                           NewPreferredVerticalDatum: TVerticalDatumCode; NewVerticalModel: TOSVerticalModel; NewGlobalType: TGlobalType);
 Begin
   Inherited Initialize(NewName, NewAbbreviation, NewDescription, NewSRIDNumber, NewRevision,
-                             NewCoordinateType, NewAxisOrder, NewBounds);
+                             NewCoordinateType, NewAxisOrder, NewBounds, NewGlobalType);
   PreferredVerticalDatum := NewPreferredVerticalDatum;
   LastVerticalDatum := vdNone;
   VerticalModel := NewVerticalModel;
 End;
 
-Function TIGCoordinateSystem.ConvertToGeocentric(Coordinates: TCoordinates): TCoordinates;
-Var
-  GeodeticCoordinates: TCoordinates;
+Function TIGCoordinateSystem.ConvertToGlobal(Coordinates: TCoordinates): TCoordinates;
 Begin
-  If IGCoordinatesToWGS84Coordinates(Coordinates, VerticalModel, PreferredVerticalDatum, GeodeticCoordinates, LastVerticalDatum) Then
-    If WithinGeodeticBounds(GeodeticCoordinates) Then
-      Begin
-        Result := GeodeticToGeocentric(GeodeticCoordinates, GRS80Ellipsoid);
-        Exit;
-      End;
+  If IGCoordinatesToWGS84Coordinates(Coordinates, VerticalModel, PreferredVerticalDatum, Result, LastVerticalDatum) Then
+    If WithinGeodeticBounds(Result) Then
+      Exit;
   LastVerticalDatum := vdNone;
   Result := NullCoordinates
 End;
 
-Function TIGCoordinateSystem.ConvertFromGeocentric(Coordinates: TCoordinates): TCoordinates;
-Var
-  GeodeticCoordinates: TCoordinates;
+Function TIGCoordinateSystem.ConvertFromGlobal(Coordinates: TCoordinates): TCoordinates;
 Begin
-  GeodeticCoordinates := GeocentricToGeodetic(Coordinates, GRS80Ellipsoid);
-  If WithinGeodeticBounds(GeodeticCoordinates) Then
-    If WGS84CoordinatesToIGCoordinates(GeodeticCoordinates, VerticalModel, PreferredVerticalDatum, Result, LastVerticalDatum) Then
+  If WithinGeodeticBounds(Coordinates) Then
+    If WGS84CoordinatesToIGCoordinates(Coordinates, VerticalModel, PreferredVerticalDatum, Result, LastVerticalDatum) Then
       Exit;
   LastVerticalDatum := vdNone;
   Result := NullCoordinates
@@ -244,10 +236,10 @@ Airy1830ModifiedEllipsoid.Initialize(6377340.1890, 6356034.4470);
 IrishGridProjection.Initialize(1.000035, DegToRad(53.5), DegToRad(-8), 200000, 250000, Airy1830ModifiedEllipsoid);
 IrishGPSGridProjection.Initialize(1.000035, DegToRad(53.5), DegToRad(-8), 200000, 250000, GRS80Ellipsoid);
 {$IFDEF IG02}
-IG02CoordinateSystem.Initialize('Irish Grid', 'IG75', 'Irish Grid (IG/GM02)', 29903, 2002, ctProjected, aoXYZ, IGBounds, vdMalinHead, vmGM02);
+IG02CoordinateSystem.Initialize('Irish Grid', 'IG75', 'Irish Grid (IG/GM02)', 29903, 2002, ctProjected, aoXYZ, IGBounds, vdMalinHead, vmGM02, gtGeodetic);
 CoordinateSystems.Register(IG02CoordinateSystem);
 {$ENDIF}
-IG15CoordinateSystem.Initialize('Irish Grid', 'IG75', 'Irish Grid (IG/GM15)', 29903, 2015, ctProjected, aoXYZ, IGBounds, vdMalinHead, vmGM15);
+IG15CoordinateSystem.Initialize('Irish Grid', 'IG75', 'Irish Grid (IG/GM15)', 29903, 2015, ctProjected, aoXYZ, IGBounds, vdMalinHead, vmGM15, gtGeodetic);
 CoordinateSystems.Register(IG15CoordinateSystem);
 
 End.
