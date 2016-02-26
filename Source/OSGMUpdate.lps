@@ -7,8 +7,8 @@
       <Unit0>
         <Filename Value="OSGMUpdate.pas"/>
         <IsPartOfProject Value="True"/>
-        <TopLine Value="164"/>
-        <CursorPos X="44" Y="172"/>
+        <IsVisibleTab Value="True"/>
+        <CursorPos X="5" Y="2"/>
         <UsageCount Value="97"/>
         <Loaded Value="True"/>
       </Unit0>
@@ -268,9 +268,7 @@
       </Unit35>
       <Unit36>
         <Filename Value="IOMain.pas"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="378"/>
         <CursorPos X="98" Y="478"/>
         <UsageCount Value="14"/>
         <Loaded Value="True"/>
