@@ -302,7 +302,11 @@ Begin
                 ShowBoundsError := True;
           End;
         If aCol<=InputData.FieldCount Then
-          CellText := InputData.Values[aRow-1, aCol-1]
+          Begin
+            CellText := InputData.Values[aRow-1, aCol-1];
+            If Pos(#176, CellText)>0 Then { Swap ANSI code with UTF8 code for '°' character. }
+              CellText := StringReplace(CellText, #176, #$C2#$B0, [rfReplaceAll]);
+          End
         Else
           If ShowBoundsError Then
             Begin
