@@ -4,13 +4,11 @@
     <PathDelim Value="\"/>
     <Version Value="9"/>
     <BuildModes Active="Release"/>
-    <Units Count="19">
+    <Units Count="20">
       <Unit0>
         <Filename Value="LibGIQ.pas"/>
         <IsPartOfProject Value="True"/>
-        <IsVisibleTab Value="True"/>
-        <TopLine Value="30"/>
-        <CursorPos X="25" Y="37"/>
+        <CursorPos X="20" Y="27"/>
         <UsageCount Value="56"/>
         <Loaded Value="True"/>
       </Unit0>
@@ -23,9 +21,9 @@
       </Unit1>
       <Unit2>
         <Filename Value="Geodesy.pas"/>
-        <EditorIndex Value="6"/>
-        <TopLine Value="174"/>
-        <CursorPos X="47" Y="187"/>
+        <EditorIndex Value="7"/>
+        <TopLine Value="185"/>
+        <CursorPos X="28" Y="200"/>
         <UsageCount Value="26"/>
         <Loaded Value="True"/>
       </Unit2>
@@ -39,7 +37,8 @@
       <Unit4>
         <Filename Value="ITM.pas"/>
         <EditorIndex Value="4"/>
-        <CursorPos X="102" Y="293"/>
+        <TopLine Value="25"/>
+        <CursorPos X="18" Y="39"/>
         <UsageCount Value="26"/>
         <Loaded Value="True"/>
       </Unit4>
@@ -54,8 +53,7 @@
       <Unit6>
         <Filename Value="BNG.pas"/>
         <EditorIndex Value="2"/>
-        <TopLine Value="66"/>
-        <CursorPos X="15" Y="73"/>
+        <CursorPos X="17" Y="60"/>
         <UsageCount Value="26"/>
         <Loaded Value="True"/>
       </Unit6>
@@ -82,7 +80,7 @@
       </Unit9>
       <Unit10>
         <Filename Value="OSTab.pas"/>
-        <EditorIndex Value="5"/>
+        <EditorIndex Value="6"/>
         <CursorPos Y="229"/>
         <UsageCount Value="21"/>
         <Loaded Value="True"/>
@@ -142,6 +140,14 @@
         <UsageCount Value="10"/>
         <DefaultSyntaxHighlighter Value="None"/>
       </Unit18>
+      <Unit19>
+        <Filename Value="OSGMUpdate.lps"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="5"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="XML"/>
+      </Unit19>
     </Units>
     <OtherDefines Count="3">
       <Define0 Value="BNG02"/>
@@ -151,123 +157,123 @@
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="LibGIQ.pas"/>
-        <Caret Line="43" TopLine="31"/>
+        <Caret Line="48" TopLine="31"/>
       </Position1>
       <Position2>
         <Filename Value="LibGIQ.pas"/>
-        <Caret Line="46" TopLine="31"/>
+        <Caret Line="49" TopLine="31"/>
       </Position2>
       <Position3>
         <Filename Value="LibGIQ.pas"/>
-        <Caret Line="48" TopLine="31"/>
+        <Caret Line="27" Column="6" TopLine="23"/>
       </Position3>
       <Position4>
         <Filename Value="LibGIQ.pas"/>
-        <Caret Line="49" TopLine="31"/>
+        <Caret Line="23" Column="14" TopLine="23"/>
       </Position4>
       <Position5>
         <Filename Value="LibGIQ.pas"/>
-        <Caret Line="27" Column="6" TopLine="23"/>
+        <Caret Line="39" TopLine="23"/>
       </Position5>
       <Position6>
         <Filename Value="LibGIQ.pas"/>
-        <Caret Line="23" Column="14" TopLine="23"/>
+        <Caret Line="38" TopLine="23"/>
       </Position6>
       <Position7>
         <Filename Value="LibGIQ.pas"/>
-        <Caret Line="39" TopLine="23"/>
+        <Caret Line="41" TopLine="23"/>
       </Position7>
       <Position8>
         <Filename Value="LibGIQ.pas"/>
-        <Caret Line="38" TopLine="23"/>
+        <Caret Line="40" TopLine="23"/>
       </Position8>
       <Position9>
         <Filename Value="LibGIQ.pas"/>
-        <Caret Line="41" TopLine="23"/>
+        <Caret Line="42" TopLine="23"/>
       </Position9>
       <Position10>
         <Filename Value="LibGIQ.pas"/>
-        <Caret Line="40" TopLine="23"/>
+        <Caret Line="43" TopLine="23"/>
       </Position10>
       <Position11>
         <Filename Value="LibGIQ.pas"/>
-        <Caret Line="42" TopLine="23"/>
+        <Caret Line="33" Column="10" TopLine="31"/>
       </Position11>
       <Position12>
         <Filename Value="LibGIQ.pas"/>
-        <Caret Line="43" TopLine="23"/>
+        <Caret Line="48" Column="27" TopLine="35"/>
       </Position12>
       <Position13>
         <Filename Value="LibGIQ.pas"/>
-        <Caret Line="33" Column="10" TopLine="31"/>
+        <Caret Line="44" Column="47" TopLine="35"/>
       </Position13>
       <Position14>
         <Filename Value="LibGIQ.pas"/>
-        <Caret Line="48" Column="27" TopLine="35"/>
+        <Caret Line="37" TopLine="31"/>
       </Position14>
       <Position15>
         <Filename Value="LibGIQ.pas"/>
-        <Caret Line="44" Column="47" TopLine="35"/>
+        <Caret Line="39" TopLine="31"/>
       </Position15>
       <Position16>
         <Filename Value="LibGIQ.pas"/>
-        <Caret Line="37" TopLine="31"/>
+        <Caret Line="38" TopLine="31"/>
       </Position16>
       <Position17>
         <Filename Value="LibGIQ.pas"/>
-        <Caret Line="39" TopLine="31"/>
+        <Caret Line="41" TopLine="31"/>
       </Position17>
       <Position18>
         <Filename Value="LibGIQ.pas"/>
-        <Caret Line="38" TopLine="31"/>
+        <Caret Line="40" TopLine="31"/>
       </Position18>
       <Position19>
         <Filename Value="LibGIQ.pas"/>
-        <Caret Line="41" TopLine="31"/>
+        <Caret Line="42" TopLine="31"/>
       </Position19>
       <Position20>
         <Filename Value="LibGIQ.pas"/>
-        <Caret Line="40" TopLine="31"/>
+        <Caret Line="43" TopLine="31"/>
       </Position20>
       <Position21>
         <Filename Value="LibGIQ.pas"/>
-        <Caret Line="42" TopLine="31"/>
+        <Caret Line="46" TopLine="31"/>
       </Position21>
       <Position22>
         <Filename Value="LibGIQ.pas"/>
-        <Caret Line="43" TopLine="31"/>
+        <Caret Line="48" TopLine="31"/>
       </Position22>
       <Position23>
         <Filename Value="LibGIQ.pas"/>
-        <Caret Line="46" TopLine="31"/>
+        <Caret Line="49" TopLine="31"/>
       </Position23>
       <Position24>
         <Filename Value="LibGIQ.pas"/>
-        <Caret Line="48" TopLine="31"/>
+        <Caret Line="50" TopLine="31"/>
       </Position24>
       <Position25>
         <Filename Value="LibGIQ.pas"/>
-        <Caret Line="49" TopLine="31"/>
+        <Caret Line="54" TopLine="23"/>
       </Position25>
       <Position26>
         <Filename Value="LibGIQ.pas"/>
-        <Caret Line="50" TopLine="31"/>
+        <Caret Line="30" Column="19" TopLine="25"/>
       </Position26>
       <Position27>
         <Filename Value="LibGIQ.pas"/>
-        <Caret Line="54" TopLine="23"/>
+        <Caret Line="39" Column="39" TopLine="25"/>
       </Position27>
       <Position28>
         <Filename Value="LibGIQ.pas"/>
-        <Caret Line="30" Column="19" TopLine="25"/>
+        <Caret Line="31" Column="51"/>
       </Position28>
       <Position29>
         <Filename Value="LibGIQ.pas"/>
-        <Caret Line="39" Column="39" TopLine="25"/>
+        <Caret Line="27" Column="20"/>
       </Position29>
       <Position30>
-        <Filename Value="LibGIQ.pas"/>
-        <Caret Line="31" Column="51"/>
+        <Filename Value="BNG.pas"/>
+        <Caret Line="347" Column="28" TopLine="324"/>
       </Position30>
     </JumpHistory>
   </ProjectSession>

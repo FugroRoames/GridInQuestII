@@ -5,13 +5,13 @@ Unit BNG;
   Copyright (C) 2015 Paul Michell, Michell Computing.
 
   This library is free software; you can redistribute it and/or modify it
-  under the terms of the GNU Library General Public License as published by
-  the Free Software Foundation; either version 2 of the License, or (at your
+  under the terms of the GNU Lesser General Public License as published by
+  the Free Software Foundation; either version 2.1 of the License, or (at your
   option) any later version.
 
-  This program is distributed in the hope that it will be useful, but WITHOUT
+  This library is distributed in the hope that it will be useful, but WITHOUT
   ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-  FITNESS FOR A PARTICULAR PURPOSE. See the GNU Library General Public License
+  FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
   for more details. }
 
 {$IFDEF FPC}
@@ -79,6 +79,17 @@ Const
 Function WGS84CoordinatesToBNGCoordinates(Const Coordinates: TCoordinates; Const TNData: THorizontalTable; Const GMData: TVerticalTable; Out OutputCoordinates: TCoordinates; Out OutputDatum: TVerticalDatumCode): Boolean;
 Function BNGCoordinatesToWGS84Coordinates(Const Coordinates: TCoordinates; Const TNData: THorizontalTable; Const GMData: TVerticalTable; Out OutputCoordinates: TCoordinates; Out OutputDatum: TVerticalDatumCode): Boolean;
 
+Var
+  ProgramFolder: String;
+  GM02FileName: String;
+  TN02FileName: String;
+  GM15FileName: String;
+  TN15FileName: String;
+  GM02DataFound: Boolean;
+  TN02DataFound: Boolean;
+  GM15DataFound: Boolean;
+  TN15DataFound: Boolean;
+
 Implementation
 
 { Embed the required data tables using resource files. }
@@ -135,17 +146,6 @@ Implementation
     {$ENDIF}
   {$ENDIF}
 {$ENDIF}
-
-Var
-  ProgramFolder: String;
-  GM02FileName: String;
-  TN02FileName: String;
-  GM15FileName: String;
-  TN15FileName: String;
-  GM02DataFound: Boolean;
-  TN02DataFound: Boolean;
-  GM15DataFound: Boolean;
-  TN15DataFound: Boolean;
 
 
 Constructor TBNGCoordinateSystem.Initialize(NewName: String; NewAbbreviation: String; NewDescription: String; NewSRIDNumber: Integer; NewRevision: Integer;
