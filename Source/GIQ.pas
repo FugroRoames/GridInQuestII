@@ -1,4 +1,4 @@
-Library LibGIQ;
+Library GIQ;
 
 { Grid InQuest II Coordinate Transformation Utility Library.
 
