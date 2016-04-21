@@ -232,13 +232,15 @@ End;
 Function ITMCoordinatesToWGS84Coordinates(Const InputCoordinates: TCoordinates; Const VerticalModel: TOSVerticalModel; Const PreferredDatum: TVerticalDatumCode; Out OutputCoordinates: TCoordinates; Out OutputDatum: TVerticalDatumCode): Boolean;
 Var
   Data: TTransformationData;
+  AdjustedCoordinates: TCoordinates;
 Begin
   Result := False;
   Data.PreferredDatum := PreferredDatum;
   Data.SetTables(VerticalModel);
   Data.SetParameters(InputCoordinates);
-  OutputCoordinates := InverseTransverseMercator(InputCoordinates, ITMProjection);
-  Result := Data.AdjustHeight(OutputCoordinates, OutputDatum, adAdd);
+  AdjustedCoordinates := InputCoordinates;
+  Result := Data.AdjustHeight(AdjustedCoordinates, OutputDatum, adAdd);
+  OutputCoordinates := InverseTransverseMercator(AdjustedCoordinates, ITMProjection);
 End;
 
 Initialization
