@@ -17,9 +17,9 @@ import os
 from math import radians as deg2rad
 from ctypes import *
 
-# Load the LibGIQ dynamic library.
+# Load the GIQ dynamic library.
 SourceFolder = os.path.dirname(__file__)
-giqdll = WinDLL(os.path.join(SourceFolder, "LibGIQ.dll"))
+giqdll = WinDLL(os.path.join(SourceFolder, "GIQ.dll"))
 
 # Define the library coordinate structure.
 class coordinates(Structure):
@@ -38,7 +38,7 @@ SRIDsource = c_int(4937) # ETRS89 Geodetic
 SRIDtarget = c_int(2157) # Irish Transverse Mercator (ITM/GM15)
 source = coordinates(deg2rad(-7), deg2rad(53), 100) # Longitude, Latitude, Altitude
 target = coordinates(0, 0, 0)
-datum = c_int(0)
+datum = c_int(13) # Malin Head datum
 callok = bool(False)
 
 # Call coordinate converter.
