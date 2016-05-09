@@ -30,11 +30,11 @@ Implementation
 
 { This unit requires a bitmap resource containing the splash screen image. }
 {TODO: Remove the need for Mac define when OSX resource compiler working. }
-//{$IFDEF Darwin}
+{$IFDEF Darwin}
   {$R Splashscreen.res}
-//{$ELSE}
-//  {$R Splashscreen.rc}
-//{$ENDIF}
+{$ELSE}
+  {$R Splashscreen.rc}
+{$ENDIF}
 
 Type
   TSplashThread = Class(TThread)
@@ -77,6 +77,7 @@ Var
   SplashscreenStream: TResourceStream;
   SplashscreenJpeg: TJPEGImage;
   VersionInfo: TFileVersionInfo;
+  VersionText: String;
 Begin
   SplashscreenStream := TResourceStream.Create(hInstance, 'SPLASHSCREEN', 'JPEG');
   Try
@@ -87,8 +88,11 @@ Begin
       SplashForm := TForm.Create(Nil);
       With SplashForm Do
         Begin
-          AutoSize := True;
           FormStyle := fsStayOnTop;
+          With SplashscreenJpeg Do
+            SplashForm.SetBounds((Screen.Width-Width) Div 2,
+                                 (Screen.Height-Height) Div 2,
+                                 Width, Height);
           With TImage.Create(SplashForm) Do
             Begin
               BorderStyle := bsNone;
@@ -111,10 +115,13 @@ Begin
                 Begin
                   FileName := Application.ExeName;
                   Enabled := True;
-                  Caption := 'Version: '+VersionStrings.Values['ProductVersion'];
+                  VersionText := VersionStrings.Values['ProductVersion'];
+                  If VersionText='' Then
+                    VersionText := VersionStrings.Values['FileVersion'];
+                  If VersionText<>'' Then
+                    Caption := 'Version: '+VersionText;
                 End;
             End;
-          Position := poScreenCenter;
           Show;
         End;
       Application.ProcessMessages;
