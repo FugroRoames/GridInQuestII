@@ -117,6 +117,13 @@ Function InterpolateHorizontalTable(Const HorizontalTable: THorizontalTable; Par
 Function InterpolateVerticalTable(Const VerticalTable: TVerticalTable; Parameters: TInterpolationParameters): TCoordinate;
 Function ParametersValid(Parameters: TInterpolationParameters; DataHeader: TDataHeader): Boolean;
 
+Var
+  DataFolder: String;
+  PID: sizeUInt;
+  DataFile: TextFile;
+  MapText: String;
+
+
 Implementation
 
 Function VerticalDatumCodeToAbbreviation(DatumCode: TVerticalDatumCode): String;
@@ -383,6 +390,39 @@ Begin
         End;
     End;
 End;
+
+Initialization
+
+{$IFDEF WINDOWS}
+DataFolder := IncludeTrailingPathDelimiter(ExtractFilePath(GetModuleName(HInstance)));
+{$ELSE}
+If IsLibrary Then
+  Begin
+    //{$MACRO ON}
+    //{$DEFINE ofn:= $Env(HOME)} // GetIDEValue('TargetFile')
+    writeln('libgiq');//{$i TARGETFILE});
+    //{$MACRO OFF}
+    AssignFile(DataFile, '/proc/self/maps');
+    Try
+      Reset(DataFile);
+      While Not EOF(DataFile) Do
+        Begin
+          readln(DataFile, MapText);
+          If Pos('libgiq', MapText)<>0 Then
+            Begin
+              DataFolder := ExtractFilePath(Copy(MapText, LastDelimiter(' ',MapText)+1, Length(MapText)));
+              Exit;
+            End;
+        End;
+      CloseFile(DataFile);
+    Except
+      On E: EInOutError Do
+        writeln('File handling error: ', E.Message);
+    End;
+  End
+Else
+  DataFolder := IncludeTrailingPathDelimiter(ExtractFilePath(ParamStr(0)));
+{$ENDIF}
 
 End.
 
