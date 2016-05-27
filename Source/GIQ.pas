@@ -21,14 +21,15 @@ Library GIQ;
 
 Uses
   {$IFDEF UNIX}
-    cthreads,
-    cmem,
+    cthreads, cmem, BaseUnix, Unix, linux
   {$ENDIF}
   Geodesy, ETRS, BNG, IG, ITM;
 
 {$R *.res}
 
-Function ConvertCoordinates(SourceSRID, TargetSRID: Integer; Var InputCoordinates: TCoordinates; Var OutputCoordinates: TCoordinates; Var DatumCode: Integer): Boolean;{$IFDEF WINDOWS}StdCall;{$ELSE} CDecl;{$ENDIF}
+Function ConvertCoordinates(SourceSRID, TargetSRID: Integer; SourceRevision, TargetRevision: Integer;
+                            Var InputCoordinates: TCoordinates; Var OutputCoordinates: TCoordinates;
+                            Var DatumCode: Integer): Boolean;{$IFDEF WINDOWS}StdCall;{$ELSE} CDecl;{$ENDIF}
 Var
   SourcePointer: TCoordinateSystemPointer;
   TargetPointer: TCoordinateSystemPointer;
@@ -37,9 +38,9 @@ Begin
   Result := False;
   { Find the source and target coordinate systems. }
   With CoordinateSystems Do
-    SourcePointer := Pointers(FindSRIDNumber(SourceSRID));
+    SourcePointer := Pointers(FindSRIDNumber(SourceSRID, SourceRevision));
   With CoordinateSystems Do
-    TargetPointer := Pointers(FindSRIDNumber(TargetSRID));
+    TargetPointer := Pointers(FindSRIDNumber(TargetSRID, TargetRevision));
   { Transform the input coordinates to their global representation. }
   If Assigned(SourcePointer) Then
     GlobalCoordinates := SourcePointer^.ConvertToGlobal(InputCoordinates)
