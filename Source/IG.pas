@@ -29,7 +29,7 @@ Uses
 {$DEFINE LEVEL2}  { 0.4m horizontal accuracy using the OSi/OSNI polynomial transformation. }
 
 { Define to include IG using GM02 as an additional coordinate system. }
-//{$DEFINE IG02}
+{$DEFINE IG02}
 
 { Define to uses inline optimisation. }
 //{$DEFINE USE_INLINE}

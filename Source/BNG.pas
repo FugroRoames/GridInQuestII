@@ -51,7 +51,7 @@ Uses
 //{$DEFINE EMBED}
 
 { Define to include BNG using GM02 as an additional coordinate system. }
-//{$DEFINE BNG02}
+{$DEFINE BNG02}
 
 Type
   TBNGCoordinateSystem = Object(TCoordinateSystem)
@@ -80,7 +80,6 @@ Function WGS84CoordinatesToBNGCoordinates(Const Coordinates: TCoordinates; Const
 Function BNGCoordinatesToWGS84Coordinates(Const Coordinates: TCoordinates; Const TNData: THorizontalTable; Const GMData: TVerticalTable; Out OutputCoordinates: TCoordinates; Out OutputDatum: TVerticalDatumCode): Boolean;
 
 Var
-  ProgramFolder: String;
   GM02FileName: String;
   TN02FileName: String;
   GM15FileName: String;
@@ -273,12 +272,6 @@ End;
 
 Initialization
 
-{$IFDEF WINDOWS}
-ProgramFolder := IncludeTrailingPathDelimiter(ExtractFilePath(GetModuleName(HInstance)));
-{$ELSE}
-ProgramFolder := IncludeTrailingPathDelimiter(ExtractFilePath(ParamStr(0)));
-{$ENDIF}
-
 {$IFDEF LEVEL1}
 GM02DataFound := False;
 TN02DataFound := False;
@@ -286,22 +279,22 @@ GM15DataFound := False;
 TN15DataFound := False;
 {$ENDIF}
 {$IFDEF LEVEL2}
-GM02FileName := ProgramFolder+'GM02GB100.dat';
-TN02FileName := ProgramFolder+'TN02GB100.dat';
-GM15FileName := ProgramFolder+'GM15GB100.dat';
-TN15FileName := ProgramFolder+'TN15GB100.dat';
+GM02FileName := DataFolder+'GM02GB100.dat';
+TN02FileName := DataFolder+'TN02GB100.dat';
+GM15FileName := DataFolder+'GM15GB100.dat';
+TN15FileName := DataFolder+'TN15GB100.dat';
 {$ENDIF}
 {$IFDEF LEVEL3}
-GM02FileName := ProgramFolder+'GM02GB10.dat';
-TN02FileName := ProgramFolder+'TN02GB10.dat';
-GM15FileName := ProgramFolder+'GM15GB10.dat';
-TN15FileName := ProgramFolder+'TN15GB10.dat';
+GM02FileName := DataFolder+'GM02GB10.dat';
+TN02FileName := DataFolder+'TN02GB10.dat';
+GM15FileName := DataFolder+'GM15GB10.dat';
+TN15FileName := DataFolder+'TN15GB10.dat';
 {$ENDIF}
 {$IFDEF LEVEL4}
-GM02FileName := ProgramFolder+'GM02GB.dat';
-TN02FileName := ProgramFolder+'TN02GB.dat';
-GM15FileName := ProgramFolder+'GM15GB.dat';
-TN15FileName := ProgramFolder+'TN15GB.dat';
+GM02FileName := DataFolder+'GM02GB.dat';
+TN02FileName := DataFolder+'TN02GB.dat';
+GM15FileName := DataFolder+'GM15GB.dat';
+TN15FileName := DataFolder+'TN15GB.dat';
 {$ENDIF}
 
 { Prepare any required data table structures. }
