@@ -123,7 +123,6 @@ Var
   DataFile: TextFile;
   MapText: String;
 
-
 Implementation
 
 Function VerticalDatumCodeToAbbreviation(DatumCode: TVerticalDatumCode): String;
