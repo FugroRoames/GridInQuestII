@@ -21,7 +21,7 @@ Library GIQ;
 
 Uses
   {$IFDEF UNIX}
-    cthreads, cmem, BaseUnix, Unix, linux
+    cthreads, cmem, BaseUnix, Unix, linux,
   {$ENDIF}
   Geodesy, ETRS, BNG, IG, ITM;
 

@@ -21,7 +21,7 @@
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
       <MajorVersionNr Value="1"/>
-      <BuildNr Value="102"/>
+      <BuildNr Value="129"/>
       <Language Value="0809"/>
       <StringTable Comments="Developed for the three Ordnance Surveys of Britain and Ireland." CompanyName="Michell Computing" FileDescription="Coordinate Transformation Library" LegalCopyright="(c) 2016 Michell Computing" ProductName="Lib Grid InQuest II" ProductVersion="1.00"/>
     </VersionInfo>
@@ -32,7 +32,7 @@
           <Version Value="11"/>
           <PathDelim Value="\"/>
           <Target>
-            <Filename Value="..\GIQ"/>
+            <Filename Value="C:\PythonTest\GIQ"/>
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
@@ -69,8 +69,8 @@
     <RunParams>
       <local>
         <FormatVersion Value="1"/>
-        <HostApplicationFilename Value="C:\Python27\python.exe"/>
-        <CommandLineParams Value="L:\Projects\GridInQuestII\GridInQuestIIExample.py"/>
+        <HostApplicationFilename Value="C:\Users\paul\AppData\Local\Programs\Python\Python35\Python.exe"/>
+        <CommandLineParams Value="C:\PythonTest"/>
       </local>
     </RunParams>
     <Units Count="1">
@@ -84,7 +84,7 @@
     <Version Value="11"/>
     <PathDelim Value="\"/>
     <Target>
-      <Filename Value="..\GIQ"/>
+      <Filename Value="C:\PythonTest\GIQ"/>
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
@@ -106,7 +106,6 @@
     </CodeGeneration>
     <Linking>
       <Debugging>
-        <DebugInfoType Value="dsDwarf2Set"/>
         <UseHeaptrc Value="True"/>
         <UseExternalDbgSyms Value="True"/>
       </Debugging>
@@ -114,6 +113,13 @@
         <ExecutableType Value="Library"/>
       </Options>
     </Linking>
+    <Other>
+      <OtherDefines Count="3">
+        <Define0 Value="BNG02"/>
+        <Define1 Value="ITM02"/>
+        <Define2 Value="IG02"/>
+      </OtherDefines>
+    </Other>
   </CompilerOptions>
   <Debugging>
     <Exceptions Count="3">
