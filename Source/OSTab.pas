@@ -399,7 +399,7 @@ If IsLibrary Then
   Begin
     //{$MACRO ON}
     //{$DEFINE ofn:= $Env(HOME)} // GetIDEValue('TargetFile')
-    writeln('libgiq');//{$i TARGETFILE});
+    //writeln('libgiq');//{$i TARGETFILE});
     //{$MACRO OFF}
     AssignFile(DataFile, '/proc/self/maps');
     Try
