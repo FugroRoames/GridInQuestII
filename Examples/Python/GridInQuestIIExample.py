@@ -1,4 +1,4 @@
-# Grid InQuest II example calling LibGIQ.dll from Python.
+# Grid InQuest II example calling GIQ dynamic library from Python.
 #
 # Copyright (C) 2016 Paul Michell, Michell Computing.
 #
@@ -35,9 +35,9 @@ LibPath = os.path.join(LibFolder, LibName)
 if sys.platform.startswith('win'):
   GIQLib = WinDLL(LibPath)
 elif sys.platform.startswith('linux'):
-  GIQLib = cdll.LoadLibrary(LibPath)
+  GIQLib = CDLL(LibPath)
 elif sys.platform.startswith('darwin'):
-  GIQLib = cdll.LoadLibrary(LibPath)
+  GIQLib = CDLL(LibPath)
 else:
   print("Unsupported OS")
   exit()
