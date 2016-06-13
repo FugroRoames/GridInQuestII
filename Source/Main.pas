@@ -25,7 +25,7 @@ Uses
   Classes, SysUtils, FileUtil, LCLIntf, Forms, Controls, Graphics, Dialogs,
   ExtCtrls, Menus, ActnList, StdCtrls, Grids, Clipbrd, GlobeCtrl, CoordCtrls,
   DataStreams, Progress, Settings, Options, About, Config, Geometry, Geodesy,
-  GeodUtils, ETRS, OSTab;
+  GeodUtils, ETRS, OSGeoid;
 
 Type
   TMainForm = Class(TForm)

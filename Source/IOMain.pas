@@ -23,7 +23,7 @@ Interface
 
 Uses
   Classes, SysUtils, XMLConf, Geometry, Geodesy, GeodProc, GeodUtils, GeomUtils,
-  ETRS, BNG, ITM, IG, OSTab, DataStreams;
+  ETRS, BNG, ITM, IG, OSGeoid, DataStreams;
 
 Type
   TSettingsInfo = Record

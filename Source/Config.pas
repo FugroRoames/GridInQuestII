@@ -22,7 +22,7 @@ Unit Config;
 Interface
 
 Uses
-  Classes, SysUtils, DOM, XMLConf, OSTab, ITM, IG;
+  Classes, SysUtils, DOM, XMLConf, OSGeoid, ITM, IG;
 
 Type
   TFormatSettings = Record

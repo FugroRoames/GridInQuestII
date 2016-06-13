@@ -23,7 +23,7 @@ Interface
 
 Uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs,
-  StdCtrls, ExtCtrls, ComCtrls, CtrlUtils, Config, OSTab, Geodesy, IG, ITM, Types;
+  StdCtrls, ExtCtrls, ComCtrls, CtrlUtils, Config, OSGeoid, Geodesy, IG, ITM, Types;
 
 Type
   TOptionsForm = Class(TForm)

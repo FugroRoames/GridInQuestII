@@ -22,7 +22,7 @@ Unit ITM;
 Interface
 
 Uses
-  SysUtils, Math, Geodesy, ETRS, OSTab;
+  SysUtils, Math, Geodesy, ETRS, OSGeoid;
 
 { Define to embed the data table within the executable. }
 //{$DEFINE EMBED}

@@ -23,7 +23,7 @@ Interface
 
 Uses
   Classes, SysUtils, Geodesy, GeodProc,
-  ETRS, BNG, ITM, IG, OSTab, GeoJSON;
+  ETRS, BNG, ITM, IG, OSGeoid, GeoJSON;
 
 Procedure ProcessCGIRequest(Const RequestText: String);
 

@@ -22,7 +22,7 @@ Unit BNG;
 Interface
 
 Uses
-  SysUtils, Math, Geometry, Geodesy, ETRS, OSTab;
+  SysUtils, Math, Geometry, Geodesy, ETRS, OSGeoid;
 
 { Define British National Grid accuracy level options. }
 

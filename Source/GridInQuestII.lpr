@@ -29,7 +29,7 @@ Uses
   {$IFDEF LOGDEBUG}
     SysUtils,
   {$ENDIF}
-  Interfaces, Splash, Forms, Controls, Main, ETRS, BNG, ITM, IG, OSTab, Config;
+  Interfaces, Splash, Forms, Controls, Main, ETRS, BNG, ITM, IG, OSGeoid, Config;
 
 {$R *.res}
 

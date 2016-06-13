@@ -22,7 +22,7 @@ Unit IG;
 Interface
 
 Uses
-  Math, Geometry, Geodesy, ETRS, OSTab;
+  Math, Geometry, Geodesy, ETRS, OSGeoid;
 
 { Define Irish Grid accuracy level. }
 //{$DEFINE LEVEL1}  { 2m horizontal accuracy using mean offset adjustments. }
