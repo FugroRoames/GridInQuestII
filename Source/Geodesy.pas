@@ -725,6 +725,7 @@ Function TCoordinateSystems.CompatibleSystemsList(SystemIndex: Integer): String;
 Var
   SRIDNumber: Integer;
 Begin
+  { TODO: Rather than hard code this list, it would be more flexiable if it were built by comparing global extent overlaps. }
   If SystemIndex=-1 Then
     SRIDNumber := 0
   Else
@@ -785,12 +786,13 @@ End;
 
 Function TCoordinateSystems.IndexOf(Const CoordinateSystem: TCoordinateSystem): Integer;
 Begin
-  Result := FindSRIDNumber(CoordinateSystem.SRIDNumber);
+  Result := FindSRIDNumber(CoordinateSystem.SRIDNumber, CoordinateSystem.Revision);
 End;
 
 Function TCoordinateSystems.Items(Index: Integer): TCoordinateSystem;
 Begin
-  Result := CoordinateSystemsList[Index]^;
+  If (Index>=Low(CoordinateSystemsList)) And (Index<=High(CoordinateSystemsList)) Then
+    Result := CoordinateSystemsList[Index]^;
 End;
 
 Function TCoordinateSystems.Pointers(Index: Integer): TCoordinateSystemPointer;
