@@ -18,9 +18,12 @@
     </i18n>
     <VersionInfo>
       <UseVersionInfo Value="True"/>
+      <AutoIncrementBuild Value="True"/>
       <MajorVersionNr Value="1"/>
+      <RevisionNr Value="1"/>
+      <BuildNr Value="657"/>
       <Language Value="0809"/>
-      <StringTable Comments="Developed for the three Ordnance Surveys of Britain and Ireland." CompanyName="Michell Computing" FileDescription="Coordinate Transformation Utility" LegalCopyright="(c) 2016 Michell Computing" ProductName="Grid InQuest II" ProductVersion="1.00"/>
+      <StringTable Comments="Developed for the three Ordnance Surveys of Britain and Ireland." CompanyName="Michell Computing" FileDescription="Coordinate Transformation Utility" LegalCopyright="(c) 2016 Michell Computing" ProductName="Grid InQuest II" ProductVersion="1.01"/>
     </VersionInfo>
     <BuildModes Count="2">
       <Item1 Name="Debug" Default="True"/>
@@ -63,7 +66,7 @@
     <RunParams>
       <local>
         <FormatVersion Value="1"/>
-        <CommandLineParams Value="&quot;L:/Projects/GridInQuestII/Sample Files/worldcitiespop.set&quot; &quot;L:/Projects/GridInQuestII/Sample Files/worldcitiespop.csv&quot; &quot;L:/Projects/GridInQuestII/Sample Files/worldcitiespop-out.csv&quot;"/>
+        <CommandLineParams Value="--CGI='SourceSRID=4937&amp;TargetSRID=2157&amp;PreferredDatum=13&amp;Geometry={&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-7,53,100]}'"/>
       </local>
     </RunParams>
     <Units Count="5">
