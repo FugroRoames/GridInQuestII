@@ -63,6 +63,7 @@ Const
   InputKey = 'InputSettings';
   OutputKey = 'OutputSettings';
   SRIDNumberKey = 'SRIDNumber';
+  RevisionKey = 'Revision';
   FormatKey = 'Format';
   DelimitedKey = 'Delimited';
   FixedKey = 'Fixed';
@@ -320,6 +321,9 @@ Begin
             If SourceSRID=0 Then
               Exit;
         CloseKey;
+        OpenKey(RevisionKey);
+          SourceRevision := GetValue(ValueKey, 0);
+        CloseKey;
         OpenKey(XColumnKey);
           SourceXIndex := GetValue(ValueKey, 0)-1;
           If SourceXIndex=-1 Then
@@ -341,6 +345,9 @@ Begin
           If RequireSRIDs Then
             If TargetSRID=0 Then
               Exit;
+        CloseKey;
+        OpenKey(RevisionKey);
+          TargetRevision := GetValue(ValueKey, 0);
         CloseKey;
         OpenKey(NameRowKey);
           IncludeNames := (GetValue(ValueKey, 1)<>0); { Default to including names. }
