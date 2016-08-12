@@ -26,7 +26,7 @@ Uses
 
 Function IsSRIDGeodeticSystem(SRID: Integer; Revision: Integer = 0): Boolean;
 Function SRIDToSystemPointer(SRID: Integer; Revision: Integer = 0): TCoordinateSystemPointer;
-Function TransformCoordinates(SourceSRID, TargetSRID: Integer; Var InputCoordinates: TCoordinates; Var OutputCoordinates: TCoordinates; Var DatumCode: TVerticalDatumCode): Boolean;
+Function TransformCoordinates(SourceSRID, TargetSRID, SourceRevision, TargetRevision: Integer; Var InputCoordinates: TCoordinates; Var OutputCoordinates: TCoordinates; Var DatumCode: TVerticalDatumCode): Boolean;
 
 Implementation
 
@@ -47,7 +47,7 @@ Begin
     Result := Pointers(FindSRIDNumber(SRID, Revision));
 End;
 
-Function TransformCoordinates(SourceSRID, TargetSRID: Integer; Var InputCoordinates: TCoordinates; Var OutputCoordinates: TCoordinates; Var DatumCode: TVerticalDatumCode): Boolean;
+Function TransformCoordinates(SourceSRID, TargetSRID, SourceRevision, TargetRevision: Integer; Var InputCoordinates: TCoordinates; Var OutputCoordinates: TCoordinates; Var DatumCode: TVerticalDatumCode): Boolean;
 Var
   SourceSystemPointer: TCoordinateSystemPointer;
   TargetSystemPointer: TCoordinateSystemPointer;
@@ -55,8 +55,8 @@ Var
 Begin
   Result := False;
   { Find the source and target coordinate systems. }
-  SourceSystemPointer := SRIDToSystemPointer(SourceSRID);
-  TargetSystemPointer := SRIDToSystemPointer(TargetSRID);
+  SourceSystemPointer := SRIDToSystemPointer(SourceSRID, SourceRevision);
+  TargetSystemPointer := SRIDToSystemPointer(TargetSRID, TargetRevision);
   { Transform the input coordinates to their global representation. }
   If Assigned(SourceSystemPointer) Then
     GlobalCoordinates := SourceSystemPointer^.ConvertToGlobal(InputCoordinates)

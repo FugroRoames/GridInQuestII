@@ -34,6 +34,8 @@ Var
   Parameters: TStringList;
   SourceSRID: Integer;
   TargetSRID: Integer;
+  SourceRevision: Integer;
+  TargetRevision: Integer;
   InputCoordinates: TCoordinates;
   OutputCoordinates: TCoordinates;
   AttributeName: String;
@@ -51,6 +53,8 @@ Begin
       DelimitedText := RequestText;
       SourceSRID := StrToIntDef(Values['SourceSRID'], 0);
       TargetSRID := StrToIntDef(Values['TargetSRID'], 0);
+      SourceRevision := StrToIntDef(Values['SourceRevision'], 0);
+      TargetRevision := StrToIntDef(Values['TargetRevision'], 0);
       DatumCode := TVerticalDatumCode(StrToIntDef(Values['PreferredDatum'], 0));
       GeometryJSONText := Values['Geometry'];
     Finally
@@ -62,7 +66,7 @@ Begin
       InputCoordinates := JSONPointToCoordinates(GeometryJSONText);
       If IsSRIDGeodeticSystem(SourceSRID) Then
         InputCoordinates := GeodeticDegToRad(InputCoordinates);
-      TransformCoordinates(SourceSRID, TargetSRID, InputCoordinates, OutputCoordinates, DatumCode);
+      TransformCoordinates(SourceSRID, TargetSRID, SourceRevision, TargetRevision, InputCoordinates, OutputCoordinates, DatumCode);
       If IsSRIDGeodeticSystem(TargetSRID) Then
         OutputCoordinates := GeodeticDegToRad(OutputCoordinates);
       DatumCodeText := IntToStr(Integer(DatumCode));
