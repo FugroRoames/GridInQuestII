@@ -189,8 +189,8 @@ Type
     GeodeticBounds: TGeodeticBounds;
     Name: String;
 
-    { These fields should be defined in a TOSGMCoordinateSystem in the OSTab unit. }
-    { All coordinate systems in BNG, ITM and IG should inherit from this class and TVerticalDatumCode should be defined in OSTab. }
+    { These fields should be defined in a TOSGMCoordinateSystem in the OSGeoid unit. }
+    { All coordinate systems in BNG, ITM and IG should inherit from this class and TVerticalDatumCode should be defined in OSGeoid. }
     { They have been declared here to avoid a compiler bug that incorrectly handles object inheritance. }
     PreferredVerticalDatum: TVerticalDatumCode;
     LastVerticalDatum: TVerticalDatumCode;
