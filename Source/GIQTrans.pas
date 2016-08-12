@@ -103,6 +103,7 @@ Begin
   WriteLn('--list (-l):  List available coordinate reference systems.');
   WriteLn('--protect (-p):  Prevent output file from being over-written if it exists.');
   WriteLn('--silent (-s):  Supress all command line output.');
+  WriteLn('--CGI:  CGI simulation mode.');
   WriteLn;
   WriteLn('CGI command mode');
   WriteLn;
@@ -113,6 +114,11 @@ Begin
   WriteLn('TargetSRID:  Output coordinate system SRID number.');
   WriteLn('PreferredDatum:  Preferred Irish vertical datum code (13 - Malin Head or 14 - Belfast).');
   WriteLn('Geometry:  Input point geometry in GeoJSON format.');
+  WriteLn;
+  WriteLn('CGI simulation mode');
+  WriteLn;
+  WriteLn('Usage: ', ChangeFileExt(ExtractFileName(ExeName),EmptyStr), ' --CGI=<CGIResquestFileName>');
+  WriteLn('Usage: ', ChangeFileExt(ExtractFileName(ExeName),EmptyStr), ' --CGI=''SourceSRID=<srid>&TargetSRID=<srid>&PreferredDatum=<code>&Geometry={"type":"Point","coordinates":[<x>,<y>,<z>]}''');
 End;
 
 Function BuildAvailableSystemsList: String;
@@ -175,19 +181,20 @@ Begin
         Begin
           If HasOption('CGI') Then
             Begin
-              { Simulate CGI mode from file input. }
-              CGIFileName := GetOptionValue('CGI');
+              { Simulate CGI mode. }
+              RequestText := GetOptionValue('CGI');
+              CGIFileName := RequestText;
               CGIFileName := ExpandFileName(CGIFileName);
+              { If the CGI parameter is a filename. }
               If FileExists(CGIFileName) Then
                 Begin
+                  { Process the file contents as the CGI request. }
                   RequestText := LoadFileAsText(CGIFileName);
                   ProcessCGIRequest(RequestText);
                 End
               Else
-                Begin
-                  WriteToConsole('Input file not found: '+InputFileName);
-                  Exit;
-                End;
+                { Otherwise use the option parameter as the CGI request. }
+                ProcessCGIRequest(RequestText);
               Exit;
             End;
           SilentMode := HasOption('s', 'silent');
