@@ -20,7 +20,7 @@ Program GIQTrans;
 {$ENDIF}
 
 Uses
-  {$IFDEF UNIX}CWString, {$ENDIF}Classes, SysUtils, CustApp, DOS, IOMain, CGIMain, Geodesy, GeodProc, GeoJSON;
+  {$IFDEF UNIX}CWString, {$ENDIF}Classes, SysUtils, CustApp, DOS, FileInfo, IOMain, CGIMain, Geodesy, GeodProc, GeoJSON;
 
 Type
   TOperatingMode = (omIO, omCGI);
@@ -50,6 +50,7 @@ Type
     Procedure WriteHeader;
     Procedure WriteHelp;
     Procedure WriteToConsole(Text: String);
+    Procedure WriteVersion;
   End;
 
 Constructor TGITransApplication.Create(TheOwner: TComponent);
@@ -103,6 +104,7 @@ Begin
   WriteLn('--list (-l):  List available coordinate reference systems.');
   WriteLn('--protect (-p):  Prevent output file from being over-written if it exists.');
   WriteLn('--silent (-s):  Supress all command line output.');
+  WriteLn('--version (-v):  Emit full build version.');
   WriteLn('--CGI:  CGI simulation mode.');
   WriteLn;
   WriteLn('CGI command mode');
@@ -130,6 +132,26 @@ Procedure TGITransApplication.WriteToConsole(Text: String);
 Begin
   If Not SilentMode Then
     WriteLn(Text);
+End;
+
+Procedure TGITransApplication.WriteVersion;
+Var
+  VersionInfo: TFileVersionInfo;
+  VersionText: String;
+Begin
+  VersionInfo := TFileVersionInfo.Create(Nil);
+  Try
+    VersionInfo.FileName := ExeName;
+    VersionInfo.ReadFileInfo;
+    With VersionInfo.VersionStrings Do
+      VersionText := Values['FileVersion'];
+    If SilentMode Then
+      WriteLn(VersionText)
+    Else
+      WriteLn('Version: ',VersionText);
+  Finally
+    VersionInfo.Free;
+  End;
 End;
 
 Function FileNameValid(FileName: String): Boolean;
@@ -208,6 +230,11 @@ Begin
             Begin
               WriteToConsole('Available Coordinate Systems:');
               WriteToConsole(BuildAvailableSystemsList);
+              Exit;
+            End;
+          If HasOption('v', 'version') Then
+            Begin
+              WriteVersion;
               Exit;
             End;
           ProtectOutputMode := HasOption('p', 'protect');
