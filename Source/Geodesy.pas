@@ -771,17 +771,28 @@ Var
   FirstIndex: Integer;
   LastIndex: Integer;
   Index: Integer;
+  CurrentRevision: Integer;
+  CurrentIndex: Integer;
 Begin
+  CurrentRevision := Revision;
+  CurrentIndex := -1;
   FirstIndex := Low(CoordinateSystemsList);
   LastIndex := High(CoordinateSystemsList);
   For Index := FirstIndex To LastIndex Do
     If Number=CoordinateSystemsList[Index]^.SRIDNumber Then
-      If (Revision=0) Or (Revision=CoordinateSystemsList[Index]^.Revision) Then
-      Begin
-        Result := Index;
-        Exit;
-      End;
-  Result := -1;
+      If Revision=CoordinateSystemsList[Index]^.Revision Then
+        Begin
+          Result := Index;
+          Exit;
+        End
+      Else
+        If Revision=0 Then
+          If CoordinateSystemsList[Index]^.Revision>CurrentRevision Then
+            Begin
+              CurrentRevision := CoordinateSystemsList[Index]^.Revision;
+              CurrentIndex := Index;
+            End;
+  Result := CurrentIndex;
 End;
 
 Function TCoordinateSystems.IndexOf(Const CoordinateSystem: TCoordinateSystem): Integer;
