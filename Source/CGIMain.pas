@@ -68,7 +68,7 @@ Begin
         InputCoordinates := GeodeticDegToRad(InputCoordinates);
       TransformCoordinates(SourceSRID, TargetSRID, SourceRevision, TargetRevision, InputCoordinates, OutputCoordinates, DatumCode);
       If IsSRIDGeodeticSystem(TargetSRID) Then
-        OutputCoordinates := GeodeticDegToRad(OutputCoordinates);
+        OutputCoordinates := GeodeticRadToDeg(OutputCoordinates);
       DatumCodeText := IntToStr(Integer(DatumCode));
       AttributeName := 'datum';
       GeometryJSONText := CoordinatesAndAttributeToJSONPoint(OutputCoordinates, AttributeName,

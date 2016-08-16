@@ -521,7 +521,7 @@ Begin
             End;
             Coordinates := TargetSystemPointer^.ConvertFromGlobal(GlobalCoordinates);
             If TargetIsGeodetic Then
-              Coordinates := GeodeticDegToRad(Coordinates);
+              Coordinates := GeodeticRadToDeg(Coordinates);
             DatumCode := TargetSystemPointer^.LastVerticalDatum;
           End;
         { Update progress display. }
