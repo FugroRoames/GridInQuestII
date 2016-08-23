@@ -1,4 +1,4 @@
-GridInQuest II Coordinate Transformation Utility Main Unit.
+GridInQuest II Coordinate Transformation Utility Software.
 
 Copyright (C) 2015 Paul Michell, Michell Computing.
 
