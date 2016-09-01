@@ -717,6 +717,7 @@ End;
 Procedure TSettingsForm.StartRowEditEditingDone(Sender: TObject);
 Begin
   Data.FirstRow := StrToIntDef(StartRowEdit.Text, 1)-1;
+  PopulateNameLists;
   DisplayDataInformation;
 End;
 

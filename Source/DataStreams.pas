@@ -330,6 +330,8 @@ Begin
       If FNameRow>=FFirstRow Then
         FNameRow := -1;
       UpdateRecordCount;
+      If FNameRow=-1 Then
+        ParseFields;
     End;
 End;
 
