@@ -485,8 +485,9 @@ Begin
     TargetSystemPointer := SRIDToSystemPointer(SettingsInfo.TargetSRID, SettingsInfo.TargetRevision);
     SourceIsGeodetic := IsSRIDGeodeticSystem(SettingsInfo.SourceSRID, SettingsInfo.TargetRevision);
     TargetIsGeodetic := IsSRIDGeodeticSystem(SettingsInfo.TargetSRID, SettingsInfo.TargetRevision);
+    SourceSystemPointer^.PreferredVerticalDatum := SettingsInfo.PreferredDatumCode;
     TargetSystemPointer^.PreferredVerticalDatum := SettingsInfo.PreferredDatumCode;
-    { Set the default default target field names if required. }
+           { Set the default default target field names if required. }
     With SettingsInfo, TargetSystemPointer^ Do
       Begin
         If TargetXName=EmptyStr Then

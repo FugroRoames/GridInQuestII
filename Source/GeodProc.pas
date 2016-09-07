@@ -57,6 +57,9 @@ Begin
   { Find the source and target coordinate systems. }
   SourceSystemPointer := SRIDToSystemPointer(SourceSRID, SourceRevision);
   TargetSystemPointer := SRIDToSystemPointer(TargetSRID, TargetRevision);
+  { Assign the preferred vertical datum. }
+  SourceSystemPointer^.PreferredVerticalDatum := TVerticalDatumCode(DatumCode);
+  TargetSystemPointer^.PreferredVerticalDatum := TVerticalDatumCode(DatumCode);
   { Transform the input coordinates to their global representation. }
   If Assigned(SourceSystemPointer) Then
     GlobalCoordinates := SourceSystemPointer^.ConvertToGlobal(InputCoordinates)
@@ -75,7 +78,6 @@ Begin
           GlobalCoordinates := GeodeticToGeocentric(GlobalCoordinates, GRS80Ellipsoid);
       End;
       { Transform the global coordinates to the target system. }
-      TargetSystemPointer^.PreferredVerticalDatum := TVerticalDatumCode(DatumCode);
       OutputCoordinates := TargetSystemPointer^.ConvertFromGlobal(GlobalCoordinates);
       DatumCode := TargetSystemPointer^.LastVerticalDatum;
     End
