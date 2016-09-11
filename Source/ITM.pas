@@ -28,7 +28,7 @@ Uses
 //{$DEFINE EMBED}
 
 { Define to include ITM using GM02 as an additional coordinate system. }
-{$DEFINE ITM02}
+//{$DEFINE ITM02}
 
 Type
   TITMCoordinateSystem = Object(TCoordinateSystem)

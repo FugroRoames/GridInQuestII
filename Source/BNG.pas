@@ -51,7 +51,7 @@ Uses
 //{$DEFINE EMBED}
 
 { Define to include BNG using GM02 as an additional coordinate system. }
-{$DEFINE BNG02}
+//{$DEFINE BNG02}
 
 Type
   TBNGCoordinateSystem = Object(TCoordinateSystem)
