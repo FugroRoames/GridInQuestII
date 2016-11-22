@@ -43,7 +43,10 @@ Begin
     TargetPointer := Pointers(FindSRIDNumber(TargetSRID, TargetRevision));
   { Transform the input coordinates to their global representation. }
   If Assigned(SourcePointer) Then
-    GlobalCoordinates := SourcePointer^.ConvertToGlobal(InputCoordinates)
+    Begin
+      SourcePointer^.PreferredVerticalDatum := TVerticalDatumCode(DatumCode);
+      GlobalCoordinates := SourcePointer^.ConvertToGlobal(InputCoordinates);
+    End
   Else
     Exit;
   { If the target system is available. }
