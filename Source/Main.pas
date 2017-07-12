@@ -445,7 +445,7 @@ Begin
             OutputText := OutputText+LineEnding;
             OutputFile.Write(OutputText[1], Length(OutputText));
             { Update progress display. }
-            ProgressDisplay.Progress := Integer(Int64(100*Int64(RecordIndex)) Div LastRecordIndex);
+            ProgressDisplay.Progress := Integer(Int64(100*Int64(1+RecordIndex)) Div (1+LastRecordIndex));
           End;
       Except
         On E:Exception Do
@@ -555,7 +555,7 @@ Begin
             OutputText := OutputText+LineEnding;
             OutputFile.Write(OutputText[1], Length(OutputText));
             { Update progress display. }
-            ProgressDisplay.Progress := Integer(Int64(100*Int64(RecordIndex)) Div LastRecordIndex);
+            ProgressDisplay.Progress := Integer(Int64(100*Int64(1+RecordIndex)) Div (1+LastRecordIndex));
           End;
       Except
         On E:Exception Do
@@ -603,7 +603,7 @@ Begin
           OutputCoordinates[RecordIndex] := TransformCoordinates(InputCoordinates, InputSystemIndex, OutputSystemIndex);
           OutputData[RecordIndex] := CoordinateSystems.Items(OutputSystemIndex).LastVerticalDatum;
           { Update progress display. }
-          ProgressDisplay.Progress := Integer(Int64(100*Int64(RecordIndex)) Div LastRecordIndex);
+          ProgressDisplay.Progress := Integer(Int64(100*Int64((1+RecordIndex))) Div (1+LastRecordIndex));
         End;
       ProgressDisplay.Hide;
       SetupDataGrid;
