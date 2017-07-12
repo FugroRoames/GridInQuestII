@@ -176,10 +176,15 @@ Begin
   BytesLoaded := 0;
   Progress := 0;
   LastProgress := 0;
+  Try
+    DataSize := InputStream.Size;
+  Except
+    { Stream does not know available data size so skip progress monitoring. }
+    DataSize := MinProgressSize;
+  End;
   { If load progress events are required. }
   If Assigned(FOnLoadProgress) Then
       Begin
-        DataSize := InputStream.Size;
         { If the data file is large enough, send the first load event. }
         If DataSize>MinProgressSize Then
           FOnLoadProgress(Self, 0);
@@ -205,9 +210,8 @@ Begin
   WriteWord(0); { Ensure that the memory data is zero terminated. }
   { If load progress events are required, send the last event. }
   If Assigned(FOnLoadProgress) Then
-    Begin
+    If DataSize>MinProgressSize Then
       FOnLoadProgress(Self, 100);
-    End;
   ParseRows;
 End;
 
@@ -329,10 +333,10 @@ Begin
       { Remove any named row setting if at or after the new first row. }
       If FNameRow>=FFirstRow Then
         FNameRow := -1;
-      UpdateRecordCount;
-      If FNameRow=-1 Then
-        ParseFields;
     End;
+  { Update data information. }
+  UpdateRecordCount;
+  ParseFields;
 End;
 
 procedure TDataStream.SetLastRow(Value: Integer);
@@ -652,7 +656,8 @@ Begin
     End;
   { If parse progress events are required, send the final event. }
   If Assigned(FOnParseProgress) Then
-    FOnParseProgress(Self, 100);
+    If Size>MinProgressSize Then
+      FOnParseProgress(Self, 100);
 End;
 
 procedure TDataStream.ParseFields;
@@ -739,11 +744,14 @@ End;
 
 procedure TDataStream.UpdateRecordCount;
 Begin
+  { If the set first row exceeds the actual available row, set it to the last available row. }
+  If FFirstRow+1>=FRows.Count Then
+    FFirstRow := FRows.Count-2; { -2 because there is the 'end of buffer' row as well. }
   { Set the found record count, or truncate to the last row if one given. }
-  FRecordCount := FRows.Count-FirstRow-1;
-  If LastRow<>-1 Then
-    If 1+LastRow-FirstRow<FRecordCount Then
-      FRecordCount := 1+LastRow-FirstRow;
+  FRecordCount := FRows.Count-FFirstRow-1;
+  If FLastRow<>-1 Then
+    If 1+FLastRow-FFirstRow<FRecordCount Then
+      FRecordCount := 1+FLastRow-FFirstRow;
 End;
 
 End.
