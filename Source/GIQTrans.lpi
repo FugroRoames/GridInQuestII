@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
   <ProjectOptions>
-    <Version Value="9"/>
+    <Version Value="10"/>
     <General>
       <Flags>
         <MainUnitHasCreateFormStatements Value="False"/>
@@ -21,7 +21,7 @@
       <AutoIncrementBuild Value="True"/>
       <MajorVersionNr Value="1"/>
       <RevisionNr Value="1"/>
-      <BuildNr Value="657"/>
+      <BuildNr Value="661"/>
       <Language Value="0809"/>
       <StringTable Comments="Developed for the three Ordnance Surveys of Britain and Ireland." CompanyName="Michell Computing" FileDescription="Coordinate Transformation Utility" LegalCopyright="(c) 2016 Michell Computing" ProductName="Grid InQuest II" ProductVersion="1.01"/>
     </VersionInfo>
@@ -66,7 +66,7 @@
     <RunParams>
       <local>
         <FormatVersion Value="1"/>
-        <CommandLineParams Value="--CGI='SourceSRID=4937&amp;TargetSRID=2157&amp;PreferredDatum=13&amp;Geometry={&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-7,53,100]}'"/>
+        <CommandLineParams Value="--CGI=&quot;SourceSRID=2157&amp;TargetSRID=4937&amp;PreferredDatum=14&amp;Geometry={'type':'Point','coordinates':[688495.973,913905.617]}&quot;"/>
       </local>
     </RunParams>
     <Units Count="5">

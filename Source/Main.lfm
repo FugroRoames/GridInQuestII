@@ -1,11 +1,12 @@
 object MainForm: TMainForm
-  Left = 424
+  Left = 570
   Height = 750
-  Top = 115
+  Top = 182
   Width = 1200
   Caption = 'Grid InQuest II'
   ClientHeight = 716
   ClientWidth = 1200
+  DesignTimePPI = 128
   Font.Name = 'Arial'
   Font.Quality = fqCleartype
   Icon.Data = {
@@ -417,7 +418,7 @@ object MainForm: TMainForm
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   Position = poScreenCenter
-  LCLVersion = '1.7'
+  LCLVersion = '1.9.0.0'
   object SidePanel: TPanel
     Left = 0
     Height = 716
@@ -484,8 +485,8 @@ object MainForm: TMainForm
     ResizeStyle = rsLine
   end
   object MainMenu: TMainMenu
-    left = 632
-    top = 8
+    Left = 632
+    Top = 8
     object FileMenuItem: TMenuItem
       Caption = 'File'
       OnClick = FileMenuItemClick
@@ -581,8 +582,8 @@ object MainForm: TMainForm
     end
   end
   object ActionList: TActionList
-    left = 752
-    top = 8
+    Left = 752
+    Top = 8
     object LoadAction: TAction
       Caption = '&Load Data Points...'
       OnExecute = LoadActionExecute
@@ -688,8 +689,8 @@ object MainForm: TMainForm
     Title = 'Open Data Points File'
     DefaultExt = '.csv'
     Filter = 'Comma Separated Text|*.csv|Tab Delimited Text|*.tab|General Text|*.txt|All Files|*.*'
-    left = 872
-    top = 8
+    Left = 872
+    Top = 8
   end
   object SavePointsDialog: TSaveDialog
     Width = 28
@@ -697,7 +698,7 @@ object MainForm: TMainForm
     Title = 'Save Data Points File'
     DefaultExt = '.csv'
     Filter = 'Comma Separated Text|*.csv|Tab Delimited Text|*.tab|General Text|*.txt|All Files|*.*'
-    left = 992
-    top = 8
+    Left = 992
+    Top = 8
   end
 end

@@ -22,7 +22,7 @@
       <AutoIncrementBuild Value="True"/>
       <MajorVersionNr Value="1"/>
       <RevisionNr Value="1"/>
-      <BuildNr Value="145"/>
+      <BuildNr Value="155"/>
       <Language Value="0809"/>
       <StringTable Comments="Developed for the three Ordnance Surveys of Britain and Ireland." CompanyName="Michell Computing" FileDescription="Coordinate Transformation Library" LegalCopyright="(c) 2016 Michell Computing" ProductName="Lib Grid InQuest II" ProductVersion="1.01"/>
     </VersionInfo>
@@ -73,8 +73,7 @@
     <RunParams>
       <local>
         <FormatVersion Value="1"/>
-        <HostApplicationFilename Value="C:\Users\paul\AppData\Local\Programs\Python\Python35\Python.exe"/>
-        <CommandLineParams Value="C:\PythonTest"/>
+        <HostApplicationFilename Value="L:\Projects\GridInQuestII\OSGM15.exe"/>
       </local>
     </RunParams>
     <Units Count="1">
@@ -88,7 +87,7 @@
     <Version Value="11"/>
     <PathDelim Value="\"/>
     <Target>
-      <Filename Value="C:\PythonTest\GIQ"/>
+      <Filename Value="..\GIQ"/>
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
