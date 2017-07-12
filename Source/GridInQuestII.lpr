@@ -35,7 +35,7 @@ Uses
 
 Begin
   {$IFDEF LOGDEBUG}SetHeapTraceOutput(ChangeFileExt(ParamStr(0), '.log'));{$ENDIF}
-  Application.Title:='Grid InQuest II';
+  Application.Title := 'Grid InQuest II';
   RequireDerivedFormResource := True;
   Screen.Cursor := crHourGlass;
   Application.Initialize;
