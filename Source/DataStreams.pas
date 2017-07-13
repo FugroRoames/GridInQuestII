@@ -136,6 +136,7 @@ Begin
   FNameRow := 0;
   FFirstRow := 1;
   FLastRow := -1; { Unlimited flag. }
+  FRecordNumber := -1;
   FFormatType := ftDelimited;
   FieldTerminator := CommaTerminator;
   MinProgressSize := DefaultMinProgressSize;
@@ -333,10 +334,11 @@ Begin
       { Remove any named row setting if at or after the new first row. }
       If FNameRow>=FFirstRow Then
         FNameRow := -1;
+      { Update data information. }
+      UpdateRecordCount;
+      ParseRow(FCurrentRow, FirstRow+RecordNumber);
+      ParseFields;
     End;
-  { Update data information. }
-  UpdateRecordCount;
-  ParseFields;
 End;
 
 procedure TDataStream.SetLastRow(Value: Integer);
@@ -371,6 +373,7 @@ Begin
       If FFirstRow<=FNameRow Then
         FFirstRow := FNameRow+1;
       UpdateRecordCount;
+      ParseRow(FCurrentRow, FirstRow+RecordNumber);
       ParseFields;
     End;
 End;
@@ -601,6 +604,7 @@ Begin
   FFieldStarts.Count := 1;
   FFieldLengths.Count := 1;
   FCurrentRow.Clear;
+  FRecordNumber := -1;
   FNames.Clear;
   FRows.Clear;
   FRecordCount := 0;
@@ -644,11 +648,7 @@ Begin
   ParseFields;
   { Setup the first record if there are records. }
   If FRecordCount>0 Then
-    Begin
-      FBOF := False;
-      FEOF := False;
-      ParseRow(FCurrentRow, FirstRow);
-    End
+    First
   Else
     Begin
       FBOF := True;
