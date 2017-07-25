@@ -222,13 +222,15 @@ Var
   DLat, DLon: TCoordinate;
 Begin
   If ssLeft In Shift Then
-    Begin
-      DLon := (X-OX)*VS;
-      DLat := (Y-OY)*VS;
-      AdjustLocation(DLat, DLon);
-    End;
-  OX := X;
-  OY := Y;
+    If (X<>OX) Or (Y<>OY) Then
+      Begin
+        DLon := (X-OX)*VS;
+        DLat := (Y-OY)*VS;
+        AdjustLocation(DLat, DLon);
+        Update;
+        OX := X;
+        OY := Y;
+      End;
   Inherited MouseMove(Shift, X, Y);
 End;
 
